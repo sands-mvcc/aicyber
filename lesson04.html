@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI-103 Lesson 4 — NIST AI RMF Measure & Manage. All 22 MEASURE subcategories and 13 MANAGE subcategories with flip cards, expandable contexts, scenario labs, and a risk register builder.">
+<title>AI-103 · Day 4: NIST AI RMF — Measure &amp; Manage</title>
+<style>
+:root{
+  --oxblood:#6b1a1a;--oxblood-dk:#4a1010;--oxblood-lt:#8c2a2a;
+  --gold:#c8960c;--gold-lt:#e8b830;
+  --cream:#faf8f4;--parchment:#f2ede3;
+  --ink:#1a1a1a;--ink-soft:#3a3a3a;--ink-muted:#6b6b6b;
+  --border:#d4cdbf;--border-lt:#e8e2d8;--white:#ffffff;
+  --ms:#1a4a6b;--ms-lt:#2a6a9b;--ms-xlt:#eef4fa;   /* Measure — teal-blue */
+  --mg:#2d4a1a;--mg-lt:#3d6a2a;--mg-xlt:#eef5e8;   /* Manage  — forest   */
+  --warn:#c8960c;--warn-bg:#fff8e1;
+  --success:#1a6b2a;--success-bg:#e8f5eb;
+  --error:#6b1a1a;--error-bg:#fdeaea;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.08);
+  --shadow-md:0 4px 16px rgba(0,0,0,.12);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.16);
+  --radius:6px;
+  --ff-serif:'Fraunces','Georgia',serif;
+  --ff-sans:'IBM Plex Sans','Segoe UI',system-ui,sans-serif;
+  --ff-mono:'IBM Plex Mono','Courier New',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff-sans);font-size:16px;line-height:1.7;color:var(--ink);background:var(--cream)}
+a{color:var(--oxblood)}a:hover{text-decoration:underline}
+
+/* ── Skip / Topbar / Header ─────────────────────────── */
+.skip-link{position:absolute;top:-40px;left:1rem;background:var(--oxblood);color:#fff;padding:.4rem .8rem;border-radius:var(--radius);font-size:.85rem;font-weight:600;transition:top .2s;z-index:9999}
+.skip-link:focus{top:.5rem}
+.topbar{background:var(--oxblood-dk);color:rgba(255,255,255,.7);font-size:.78rem;font-family:var(--ff-mono);letter-spacing:.04em;padding:.45rem 2rem;display:flex;align-items:center;flex-wrap:wrap;gap:.3rem .7rem}
+.topbar a{color:rgba(255,255,255,.8);text-decoration:none}.topbar a:hover{color:#fff}
+.topbar-sep{opacity:.4}
+.site-header{color:#fff;padding:2.8rem 2rem 2.2rem;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--ms) 0%,#0d2d4a 60%,var(--mg) 100%)}
+.site-header::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent,transparent 40px,rgba(255,255,255,.02) 40px,rgba(255,255,255,.02) 41px);pointer-events:none}
+.header-inner{max-width:1080px;margin:0 auto;position:relative}
+.lesson-eyebrow{font-family:var(--ff-mono);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-lt);margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.lesson-eyebrow .sep{opacity:.5}
+.site-header h1{font-family:var(--ff-serif);font-size:clamp(1.7rem,3.5vw,2.5rem);font-weight:700;line-height:1.15;margin-bottom:.5rem}
+.site-header .tagline{font-size:.97rem;color:rgba(255,255,255,.75);max-width:680px;margin-bottom:1.4rem}
+.header-meta{display:flex;flex-wrap:wrap;gap:.5rem 1.2rem;font-size:.82rem;color:rgba(255,255,255,.62)}
+.header-meta strong{color:rgba(255,255,255,.9)}
+
+/* ── Sticky nav ─────────────────────────────────────── */
+.lesson-nav{background:#14304a;border-bottom:2px solid var(--gold);position:sticky;top:0;z-index:100}
+.lesson-nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;overflow-x:auto;scrollbar-width:none}
+.lesson-nav-inner::-webkit-scrollbar{display:none}
+.lesson-nav a{color:rgba(255,255,255,.72);font-size:.78rem;font-weight:600;letter-spacing:.04em;white-space:nowrap;padding:.6rem 1rem;border-bottom:3px solid transparent;transition:all .15s;text-decoration:none}
+.lesson-nav a:hover,.lesson-nav a.active{color:#fff;border-bottom-color:var(--gold-lt);background:rgba(255,255,255,.07)}
+
+/* ── Layout ─────────────────────────────────────────── */
+.page-body{max-width:1080px;margin:0 auto;padding:2.5rem 1.5rem 5rem;display:grid;grid-template-columns:1fr 260px;gap:2.5rem;align-items:start}
+@media(max-width:820px){.page-body{grid-template-columns:1fr}.sidebar{display:none}}
+main{min-width:0}
+
+/* ── Sidebar ─────────────────────────────────────────── */
+.sidebar{position:sticky;top:56px}
+.sidebar-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:1rem;box-shadow:var(--shadow-sm)}
+.sc-head{background:var(--ms);color:#fff;padding:.65rem 1rem;font-size:.78rem;font-family:var(--ff-mono);letter-spacing:.07em;text-transform:uppercase;font-weight:600}
+.sc-head.mg{background:var(--mg)}
+.sc-body{padding:.9rem 1rem}
+.sidebar-toc{list-style:none}
+.sidebar-toc li{border-bottom:1px solid var(--border-lt)}
+.sidebar-toc li:last-child{border-bottom:none}
+.sidebar-toc a{display:block;padding:.45rem 0;font-size:.82rem;color:var(--ink-soft);text-decoration:none;transition:color .15s}
+.sidebar-toc a:hover{color:var(--oxblood)}
+.toc-num{font-family:var(--ff-mono);font-size:.72rem;color:var(--oxblood);margin-right:.4rem}
+.lo-list{list-style:none}
+.lo-list li{font-size:.82rem;color:var(--ink-soft);padding:.35rem 0;border-bottom:1px solid var(--border-lt);display:flex;gap:.5rem;align-items:flex-start;line-height:1.45}
+.lo-list li:last-child{border-bottom:none}
+.lo-check{width:1.1rem;height:1.1rem;border:2px solid var(--oxblood);border-radius:3px;flex-shrink:0;margin-top:.15rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.65rem;color:#fff;background:transparent;transition:background .15s}
+.lo-check.checked{background:var(--oxblood)}.lo-check.checked::after{content:'✓'}
+.progress-wrap{height:6px;background:var(--border-lt);border-radius:3px;margin:.7rem 0 .4rem;overflow:hidden}
+.progress-fill{height:100%;background:var(--oxblood);border-radius:3px;width:0%;transition:width .3s}
+.progress-label{font-size:.75rem;color:var(--ink-muted);font-family:var(--ff-mono)}
+
+/* ── Section structure ───────────────────────────────── */
+.lesson-section{margin-bottom:3rem}
+.section-title{font-family:var(--ff-serif);font-size:1.45rem;font-weight:700;margin-bottom:.3rem;padding-bottom:.45rem;border-bottom:2px solid var(--border);display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap}
+.section-title.ms{color:var(--ms);border-bottom-color:#b0cce4}
+.section-title.mg{color:var(--mg);border-bottom-color:#b0d4b0}
+.section-title.neutral{color:var(--oxblood);border-bottom-color:var(--border)}
+.section-meta{font-family:var(--ff-mono);font-size:.72rem;letter-spacing:.06em;color:var(--ink-muted);text-transform:uppercase;font-weight:normal}
+h3{font-family:var(--ff-sans);font-size:1.05rem;font-weight:700;color:var(--ink);margin:1.5rem 0 .6rem}
+.prose p{margin-bottom:1rem;color:var(--ink-soft)}.prose p:last-child{margin-bottom:0}
+.prose strong{color:var(--ink)}
+
+/* ── Part banner ─────────────────────────────────────── */
+.part-banner{border-radius:var(--radius);padding:.85rem 1.3rem;margin:2.5rem 0 1.8rem;display:flex;align-items:center;gap:1rem;color:#fff}
+.part-banner.ms{background:var(--ms)}
+.part-banner.mg{background:var(--mg)}
+.part-banner.lab{background:var(--oxblood)}
+.pb-num{font-family:var(--ff-mono);font-size:1.3rem;font-weight:700;color:var(--gold-lt);line-height:1}
+.pb-title{font-family:var(--ff-serif);font-size:1.05rem;font-weight:700}
+.pb-time{margin-left:auto;font-family:var(--ff-mono);font-size:.75rem;color:rgba(255,255,255,.6);white-space:nowrap}
+
+/* ── Analogy box ─────────────────────────────────────── */
+.analogy-box{background:var(--parchment);border:1px solid var(--border);border-left:5px solid var(--gold);border-radius:var(--radius);padding:1.2rem 1.5rem;margin:1.5rem 0}
+.analogy-label{font-family:var(--ff-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:.4rem}
+.analogy-box p{color:var(--ink-soft);font-size:.95rem;margin-bottom:.5rem}
+.analogy-box p:last-child{margin-bottom:0}
+
+/* ── Callout ─────────────────────────────────────────── */
+.callout{background:var(--warn-bg);border:1px solid #e8c84a;border-left:5px solid var(--gold);border-radius:var(--radius);padding:1rem 1.3rem;margin:1.2rem 0;font-size:.92rem;color:var(--ink-soft)}
+.callout-label{font-weight:700;color:var(--ink);font-family:var(--ff-mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.3rem}
+.callout-ms{background:var(--ms-xlt);border-color:#90b8d8;border-left-color:var(--ms)}
+.callout-mg{background:var(--mg-xlt);border-color:#90c490;border-left-color:var(--mg)}
+
+/* ── FLIP CARDS ──────────────────────────────────────── */
+.flip-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:1rem;margin:1.5rem 0}
+.flip-card{height:200px;cursor:pointer;perspective:900px}
+.flip-inner{width:100%;height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;position:relative}
+.flip-card.flipped .flip-inner{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--radius);padding:1.1rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:var(--shadow-sm)}
+.flip-front{background:#fff;border:1px solid var(--border)}
+.flip-back{transform:rotateY(180deg);border:none}
+.flip-back.ms{background:var(--ms);color:#fff}
+.flip-back.mg{background:var(--mg);color:#fff}
+.flip-icon{font-size:2rem;margin-bottom:.5rem}
+.flip-code{font-family:var(--ff-mono);font-size:.7rem;letter-spacing:.08em;font-weight:700;margin-bottom:.3rem}
+.flip-code.ms{color:var(--ms)}.flip-code.mg{color:var(--mg)}
+.flip-title{font-weight:700;font-size:.9rem;color:var(--ink);line-height:1.3;margin-bottom:.3rem}
+.flip-hint{font-size:.7rem;color:var(--ink-muted);font-family:var(--ff-mono)}
+.flip-back-title{font-weight:700;font-size:.85rem;margin-bottom:.5rem;color:var(--gold-lt)}
+.flip-body{font-size:.8rem;line-height:1.5;color:rgba(255,255,255,.9)}
+.flip-tag{font-family:var(--ff-mono);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.2);border-radius:3px;padding:.1rem .4rem;margin-top:.5rem;display:inline-block}
+
+/* ── EXPANDABLE DROPDOWN CONTEXT ────────────────────── */
+.expand-section{margin:1.2rem 0}
+.expand-item{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:.5rem;overflow:hidden;box-shadow:var(--shadow-sm);transition:box-shadow .15s}
+.expand-item:hover{box-shadow:var(--shadow-md)}
+.expand-trigger{width:100%;background:#fff;border:none;padding:.9rem 1.1rem;display:flex;align-items:center;gap:.7rem;cursor:pointer;font-family:var(--ff-sans);font-size:.92rem;font-weight:700;color:var(--ink);text-align:left;transition:background .15s}
+.expand-trigger:hover,.expand-trigger.open{background:var(--parchment)}
+.expand-code{font-family:var(--ff-mono);font-size:.75rem;font-weight:800;border-radius:3px;padding:.1rem .45rem;color:#fff;flex-shrink:0}
+.expand-code.ms{background:var(--ms)}.expand-code.mg{background:var(--mg)}
+.expand-badge{font-family:var(--ff-mono);font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:.1rem .45rem;border-radius:3px;margin-left:auto;flex-shrink:0}
+.expand-badge.ms{background:var(--ms-xlt);color:var(--ms)}.expand-badge.mg{background:var(--mg-xlt);color:var(--mg)}
+.expand-chevron{font-size:.8rem;transition:transform .25s;flex-shrink:0;margin-left:.3rem;color:var(--ink-muted)}
+.expand-trigger.open .expand-chevron{transform:rotate(180deg)}
+.expand-body{display:none;background:#fff;border-top:1px solid var(--border-lt)}
+.expand-body.show{display:grid;grid-template-columns:1fr 1fr;gap:0}
+@media(max-width:640px){.expand-body.show{grid-template-columns:1fr}}
+.expand-col{padding:1rem 1.2rem}
+.expand-col+.expand-col{border-left:1px solid var(--border-lt)}
+.expand-col-label{font-family:var(--ff-mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:.5rem}
+.expand-col-label.ms{color:var(--ms)}.expand-col-label.mg{color:var(--mg)}
+.expand-col-label.neutral{color:var(--oxblood)}
+.nist-quote{background:var(--ms-xlt);border-left:4px solid var(--ms);padding:.65rem .9rem;font-size:.85rem;color:var(--ms);font-style:italic;border-radius:0 4px 4px 0;margin-bottom:.7rem;line-height:1.5}
+.nist-quote.mg-q{background:var(--mg-xlt);border-left-color:var(--mg);color:var(--mg)}
+.expand-col p{font-size:.88rem;color:var(--ink-soft);line-height:1.55;margin-bottom:.5rem}
+.expand-col p:last-child{margin-bottom:0}
+.expand-col ul{margin:.3rem 0 .5rem 1.1rem}
+.expand-col li{font-size:.85rem;color:var(--ink-soft);margin-bottom:.25rem;line-height:1.45}
+.pill{display:inline-block;font-family:var(--ff-mono);font-size:.68rem;font-weight:700;border-radius:3px;padding:.1rem .45rem;margin:.15rem .1rem}
+.pill.ms{background:var(--ms-xlt);color:var(--ms)}.pill.mg{background:var(--mg-xlt);color:var(--mg)}
+.pill.warn{background:var(--warn-bg);color:#8a5a00}.pill.ok{background:var(--success-bg);color:var(--success)}
+
+/* ── Tables ──────────────────────────────────────────── */
+.table-wrap{overflow-x:auto;margin:1.5rem 0}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);font-size:.87rem}
+thead tr{background:var(--ms);color:#fff}
+thead.mg-head tr{background:var(--mg)}
+thead.ox-head tr{background:var(--oxblood)}
+thead th{padding:.7rem 1rem;text-align:left;font-family:var(--ff-mono);font-size:.73rem;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+tbody tr{border-bottom:1px solid var(--border-lt)}.tbody tr:last-child{border-bottom:none}
+tbody td{padding:.65rem 1rem;color:var(--ink-soft);vertical-align:top;line-height:1.5}
+tbody td:first-child{font-weight:600;color:var(--ink);font-family:var(--ff-mono);font-size:.81rem}
+tbody tr:hover{background:var(--parchment)}
+
+/* ── ACTIVITY: Risk Register Builder ────────────────── */
+.risk-builder{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:1.5rem 0;box-shadow:var(--shadow-md)}
+.rr-header{background:var(--oxblood);color:#fff;padding:.8rem 1.2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.rr-title{font-family:var(--ff-mono);font-size:.8rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+.rr-score{font-family:var(--ff-mono);font-size:.82rem;color:var(--gold-lt)}
+.rr-body{padding:1.3rem 1.5rem}
+.rr-body>p{color:var(--ink-soft);font-size:.92rem;margin-bottom:1rem}
+.rr-fields{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.9rem;margin-bottom:1rem}
+.rr-field label{display:block;font-family:var(--ff-mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.07em;font-weight:700;margin-bottom:.3rem}
+.rr-field label.ms{color:var(--ms)}.rr-field label.mg{color:var(--mg)}.rr-field label.neutral{color:var(--oxblood)}
+.rr-field select,.rr-field textarea,.rr-field input{width:100%;font-family:var(--ff-sans);font-size:.87rem;border:1px solid var(--border);border-radius:4px;padding:.45rem .7rem;background:#fff;color:var(--ink);resize:vertical}
+.rr-field textarea{min-height:64px}
+.rr-field select:focus,.rr-field textarea:focus,.rr-field input:focus{outline:2px solid var(--ms);border-color:var(--ms)}
+.risk-level-display{border-radius:var(--radius);padding:.6rem 1rem;font-family:var(--ff-mono);font-size:.85rem;font-weight:700;text-align:center;margin-bottom:1rem;display:none}
+.risk-level-display.show{display:block}
+.risk-level-display.critical{background:#fdeaea;color:var(--error);border:1px solid #e8a4a4}
+.risk-level-display.high{background:#fff0e0;color:#8a3a00;border:1px solid #e8c4a0}
+.risk-level-display.medium{background:var(--warn-bg);color:#7a5500;border:1px solid #e8c84a}
+.risk-level-display.low{background:var(--success-bg);color:var(--success);border:1px solid #a8d4b0}
+.rr-output{background:var(--parchment);border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem 1.5rem;display:none;margin-top:.8rem}
+.rr-output.show{display:block}
+.rr-output h4{font-family:var(--ff-serif);font-size:1rem;font-weight:700;color:var(--ms);margin-bottom:.8rem}
+.rr-row{display:flex;gap:.5rem;margin-bottom:.45rem;font-size:.88rem}
+.rr-row .rr-label{font-family:var(--ff-mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-muted);font-weight:700;min-width:160px;flex-shrink:0}
+.rr-row .rr-val{color:var(--ink-soft);border-left:3px solid var(--gold);padding-left:.5rem;line-height:1.5}
+
+/* ── ACTIVITY: Scenario Decision Lab ────────────────── */
+.scenario-lab{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:1.5rem 0;box-shadow:var(--shadow-md)}
+.sl-header{background:var(--mg);color:#fff;padding:.8rem 1.2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.sl-title{font-family:var(--ff-mono);font-size:.8rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+.sl-score{font-family:var(--ff-mono);font-size:.82rem;color:var(--gold-lt)}
+.sl-body{padding:1.3rem 1.5rem}
+.sl-body>p{color:var(--ink-soft);font-size:.92rem;margin-bottom:.8rem}
+.sc-selector{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin-bottom:1rem}
+.sc-selector label{font-weight:600;font-size:.88rem;color:var(--ink-soft)}
+.sc-selector select{font-family:var(--ff-sans);font-size:.88rem;border:1px solid var(--border);border-radius:4px;padding:.4rem .7rem;background:#fff;color:var(--ink);cursor:pointer}
+.sc-card{background:var(--parchment);border:1px solid var(--border);border-left:4px solid var(--mg);border-radius:var(--radius);padding:1rem 1.2rem;margin-bottom:1rem;display:none}
+.sc-card.show{display:block}
+.sc-num{font-family:var(--ff-mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--mg);font-weight:700;margin-bottom:.3rem}
+.sc-question{font-size:.95rem;font-weight:600;color:var(--ink);margin-bottom:.7rem;line-height:1.5}
+.sc-options{display:flex;flex-direction:column;gap:.4rem;margin-bottom:.7rem}
+.sc-option{background:#fff;border:1px solid var(--border-lt);border-radius:4px;padding:.5rem .8rem;font-size:.88rem;color:var(--ink-soft);cursor:pointer;text-align:left;transition:all .15s;font-family:var(--ff-sans)}
+.sc-option:hover{border-color:var(--mg);background:var(--mg-xlt);color:var(--ink)}
+.sc-option.selected{border-color:var(--mg);background:var(--mg-xlt);font-weight:600;color:var(--mg)}
+.sc-option.correct-reveal{border-color:var(--success);background:var(--success-bg);color:var(--success);font-weight:700}
+.sc-option.wrong-reveal{border-color:var(--error);background:var(--error-bg);color:var(--error)}
+.sc-feedback{border-radius:4px;padding:.7rem .9rem;font-size:.86rem;line-height:1.55;display:none;margin-top:.5rem}
+.sc-feedback.show{display:block}
+.sc-feedback.ok{background:var(--success-bg);border:1px solid #a8d4b0;color:var(--success)}
+.sc-feedback.not-ok{background:var(--error-bg);border:1px solid #e8b4b4;color:var(--error)}
+.sc-nav{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:.7rem}
+.sc-progress{font-size:.82rem;color:var(--ink-muted);font-family:var(--ff-mono);margin-left:auto;align-self:center}
+
+/* ── ACTIVITY: Concept Match ─────────────────────────── */
+.match-game{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:1.5rem 0;box-shadow:var(--shadow-md)}
+.mg-header{background:var(--ms);color:#fff;padding:.8rem 1.2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.mg-title{font-family:var(--ff-mono);font-size:.8rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+.mg-score-disp{font-family:var(--ff-mono);font-size:.82rem;color:var(--gold-lt)}
+.match-body{padding:1.3rem 1.5rem}
+.match-body>p{color:var(--ink-soft);font-size:.92rem;margin-bottom:1rem}
+.match-cols{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1rem}
+@media(max-width:580px){.match-cols{grid-template-columns:1fr}}
+.match-col-head{font-family:var(--ff-mono);font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;padding:.4rem .7rem;border-radius:4px;color:#fff;margin-bottom:.5rem;text-align:center}
+.match-col-head.left{background:var(--ms)}.match-col-head.right{background:var(--mg)}
+.match-item{background:var(--parchment);border:2px solid var(--border);border-radius:4px;padding:.5rem .8rem;font-size:.85rem;color:var(--ink-soft);cursor:pointer;margin-bottom:.4rem;transition:all .15s;line-height:1.4}
+.match-item:hover{border-color:var(--ms)}
+.match-item.selected{border-color:var(--ms);background:var(--ms-xlt);color:var(--ms);font-weight:600}
+.match-item.matched{border-color:var(--success);background:var(--success-bg);color:var(--success);cursor:default;font-weight:700}
+.match-item.wrong{border-color:var(--error);background:var(--error-bg);color:var(--error)}
+.match-item.right-selected{border-color:var(--mg);background:var(--mg-xlt);color:var(--mg);font-weight:600}
+.match-result-msg{font-family:var(--ff-mono);font-size:.82rem;color:var(--ink-muted);align-self:center}
+
+/* ── Buttons ─────────────────────────────────────────── */
+.btn{font-family:var(--ff-sans);font-weight:700;font-size:.88rem;padding:.55rem 1.2rem;border:none;border-radius:var(--radius);cursor:pointer;transition:background .15s,transform .1s}
+.btn:active{transform:scale(.97)}
+.btn-ms{background:var(--ms);color:#fff}.btn-ms:hover{background:var(--ms-lt)}
+.btn-mg{background:var(--mg);color:#fff}.btn-mg:hover{background:var(--mg-lt)}
+.btn-ox{background:var(--oxblood);color:#fff}.btn-ox:hover{background:var(--oxblood-lt)}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--ink-soft)}.btn-ghost:hover{background:var(--parchment)}
+
+/* ── Quiz ────────────────────────────────────────────── */
+.quiz-block{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:1.5rem 0;box-shadow:var(--shadow-sm)}
+.quiz-head{background:var(--oxblood-dk);color:#fff;padding:.7rem 1.2rem;font-family:var(--ff-mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;display:flex;align-items:center;justify-content:space-between}
+.quiz-score{color:var(--gold-lt)}
+.quiz-q{padding:1.2rem 1.5rem;border-bottom:1px solid var(--border-lt)}.quiz-q:last-child{border-bottom:none}
+.q-prompt{font-weight:600;color:var(--ink);font-size:.95rem;margin-bottom:.9rem;line-height:1.5}
+.q-num{font-family:var(--ff-mono);font-size:.72rem;color:var(--oxblood);font-weight:700;margin-right:.4rem}
+.q-opts{list-style:none}
+.q-opts li{margin-bottom:.45rem}
+.q-opts label{display:flex;align-items:flex-start;gap:.7rem;cursor:pointer;padding:.5rem .8rem;border:1px solid var(--border-lt);border-radius:4px;font-size:.88rem;color:var(--ink-soft);background:var(--cream);transition:background .12s}
+.q-opts label:hover{background:var(--parchment);border-color:var(--border)}
+.q-opts input[type=radio]{flex-shrink:0;margin-top:.2rem;accent-color:var(--oxblood)}
+.q-fb{margin-top:.7rem;padding:.7rem .9rem;border-radius:4px;font-size:.86rem;display:none;line-height:1.5}
+.q-fb.ok{background:var(--success-bg);border:1px solid #a8d4b0;color:var(--success)}
+.q-fb.bad{background:var(--error-bg);border:1px solid #e8b4b4;color:var(--error)}
+.q-fb.show{display:block}
+.quiz-actions{padding:1rem 1.5rem;border-top:1px solid var(--border-lt);display:flex;gap:.7rem;flex-wrap:wrap;align-items:center}
+.quiz-msg{font-size:.88rem;color:var(--ink-muted);font-family:var(--ff-mono)}
+
+/* ── Artifact ─────────────────────────────────────────── */
+.artifact-block{background:var(--parchment);border:1px solid var(--border);border-left:5px solid var(--oxblood);border-radius:var(--radius);padding:1.2rem 1.5rem;margin:1.5rem 0}
+.artifact-label{font-family:var(--ff-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--oxblood);font-weight:700;margin-bottom:.4rem}
+.artifact-block h4{font-family:var(--ff-serif);font-size:1rem;font-weight:700;margin-bottom:.5rem;color:var(--ink)}
+.artifact-block p{font-size:.9rem;color:var(--ink-soft);margin-bottom:.5rem}
+.artifact-block ul{margin:.4rem 0 .5rem 1.2rem}
+.artifact-block li{font-size:.9rem;color:var(--ink-soft);margin-bottom:.3rem}
+
+/* ── Footer ──────────────────────────────────────────── */
+.lesson-nav-footer{max-width:1080px;margin:0 auto;display:flex;justify-content:space-between;padding:1rem 1.5rem;border-top:1px solid var(--border);flex-wrap:wrap;gap:.5rem}
+.lesson-nav-footer a{font-size:.88rem;font-weight:700;color:var(--oxblood)}
+footer{background:var(--oxblood-dk);color:rgba(255,255,255,.55);text-align:center;font-size:.8rem;padding:1.5rem 1rem;font-family:var(--ff-mono);letter-spacing:.03em}
+footer strong{color:rgba(255,255,255,.8)}
+
+@media(max-width:640px){.site-header{padding:2rem 1rem 1.6rem}.topbar{padding:.4rem 1rem}.flip-grid{grid-template-columns:1fr 1fr}}
+@media print{.lesson-nav,.topbar,.sidebar{display:none}.page-body{grid-template-columns:1fr}body{background:#fff}}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<div class="topbar">
+  <a href="index.html">← AI-103 Course Home</a>
+  <span class="topbar-sep">·</span>
+  <span>MVCC · Dept. of Engineering &amp; Technology</span>
+  <span class="topbar-sep">·</span>
+  <span>Dr. John L. Sands</span>
+</div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="lesson-eyebrow">
+      <span>AI-103: AI Cybersecurity Foundations</span>
+      <span class="sep">·</span><span>Day 4 of 15</span>
+      <span class="sep">·</span><span>4 Contact Hours</span>
+    </div>
+    <h1>NIST AI RMF in Depth — Measure &amp; Manage</h1>
+    <p class="tagline">All 22 MEASURE subcategories. All 13 MANAGE subcategories. Flip every concept. Expand every context. Build a real AI risk register entry — start to finish.</p>
+    <div class="header-meta">
+      <span>📚 <strong>Advanced</strong></span>
+      <span>⏱ <strong>4 hours · 5 modules + 3 activities</strong></span>
+      <span>🎯 <strong>Learning Objective 3</strong></span>
+      <span>📝 <strong>Risk register entry due end of class</strong></span>
+    </div>
+  </div>
+</header>
+
+<nav class="lesson-nav">
+  <div class="lesson-nav-inner">
+    <a href="#overview" class="active">Overview</a>
+    <a href="#m1">1 · Why Measure Differently</a>
+    <a href="#m2">2 · MEASURE Flip Cards</a>
+    <a href="#m3">3 · MEASURE Deep Dive</a>
+    <a href="#m4">4 · MANAGE Flip Cards</a>
+    <a href="#m5">5 · MANAGE Deep Dive</a>
+    <a href="#activity-match">Activity: Concept Match</a>
+    <a href="#activity-rr">Activity: Risk Register</a>
+    <a href="#activity-scenario">Activity: Decision Lab</a>
+    <a href="#artifact">Assessment</a>
+    <a href="#quiz">Quiz</a>
+  </div>
+</nav>
+
+<div class="page-body">
+<main id="main">
+
+<!-- ── OVERVIEW ───────────────────────────────────────────────── -->
+<section id="overview" class="lesson-section">
+  <h2 class="section-title neutral"><span>🧭</span> Lesson Overview <span class="section-meta">Day 4 · 4 hours</span></h2>
+  <div class="prose">
+    <p>Day 3 established the foundations: GOVERN set the organizational rules, MAP identified the risks for each specific system. Now comes the work that separates programs that look good from programs that actually work: <strong>MEASURE</strong> turns MAP's risk inventory into evidence — quantitative and qualitative — and <strong>MANAGE</strong> turns that evidence into decisions and actions.</p>
+    <p>This lesson goes deliberately deep. By the time you finish, you will have interacted with every subcategory of both functions, built a complete risk register entry, and made real governance decisions under simulated incident conditions.</p>
+  </div>
+
+  <div class="analogy-box">
+    <div class="analogy-label">🎓 Anchoring Analogy: The ICU Monitor &amp; the Treatment Protocol</div>
+    <p><strong>MEASURE is the ICU monitor</strong> — the array of instruments (heart rate, oxygen saturation, blood pressure, EEG) that turn a patient's condition into readable numbers in real time. The monitor doesn't treat the patient. It makes the patient's condition visible enough to treat correctly. Without the monitor, decisions are guesses. With it, they're grounded in evidence.</p>
+    <p><strong>MANAGE is the treatment protocol</strong> — the structured decision tree the care team follows when a number goes outside its safe range. Which intervention? Which dosage? Who approves? What is the escalation path? MANAGE answers those questions for AI risk: which treatment, which priority, who decides, how do we communicate, and how do we recover if something goes wrong.</p>
+    <p>MAP told you <em>what to monitor</em>. MEASURE does the monitoring. MANAGE tells you <em>what to do</em> when the monitor alarms.</p>
+  </div>
+
+  <h3>Day 4 Learning Objectives</h3>
+  <ol style="margin-left:1.3rem;color:var(--ink-soft);font-size:.92rem">
+    <li style="margin-bottom:.4rem">Explain the role and purpose of the MEASURE function and how it differs from traditional software testing.</li>
+    <li style="margin-bottom:.4rem">Identify all four MEASURE categories and their 22 subcategories by code and purpose.</li>
+    <li style="margin-bottom:.4rem">Select appropriate metrics and evaluation methods for each NIST trustworthiness characteristic.</li>
+    <li style="margin-bottom:.4rem">Explain the role of MANAGE and the four risk-treatment options (mitigate, transfer, avoid, accept).</li>
+    <li style="margin-bottom:.4rem">Identify all four MANAGE categories and their 13 subcategories by code and purpose.</li>
+    <li style="margin-bottom:.4rem">Complete a risk register entry from MAP through MEASURE into MANAGE for a given AI scenario.</li>
+    <li style="margin-bottom:.4rem">Apply MANAGE decision-making to simulated AI incident scenarios including the go/no-go gate and the kill-switch trigger.</li>
+  </ol>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<div class="part-banner ms">
+  <div class="pb-num">A</div>
+  <div class="pb-title">MEASURE — Turning Risk Identification into Evidence</div>
+  <div class="pb-time">⏱ ~90 min</div>
+</div>
+
+<!-- ── M1: Why Measure Differently ───────────────────────────── -->
+<section id="m1" class="lesson-section">
+  <h2 class="section-title ms"><span>⚗️</span> Module 1 · Why AI Measurement is Fundamentally Different <span class="section-meta">20 min</span></h2>
+
+  <div class="prose">
+    <p>The MEASURE function sits between MAP and MANAGE in the NIST AI RMF. It uses quantitative, qualitative, or mixed-method tools to analyze, assess, benchmark, and monitor AI risk. But it's not traditional software testing — and the differences matter enormously.</p>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Dimension</th><th>Traditional Software Testing</th><th>AI MEASURE Function</th></tr></thead>
+      <tbody>
+        <tr><td>Repeatability</td><td>Same input → same output. Tests are deterministic.</td><td>Same input may produce different outputs. Evaluation must account for stochasticity.</td></tr>
+        <tr><td>Completeness</td><td>"Test to completion" — run all tests, check green/red, ship.</td><td>No test-to-completion. Evaluation covers distributions of inputs, not exhaustive cases.</td></tr>
+        <tr><td>Timing</td><td>Point-in-time gate at release. Pass → ship, done.</td><td>Continuous. Performance degrades silently in production due to data drift.</td></tr>
+        <tr><td>Who evaluates</td><td>QA team, often the same org that built it.</td><td>MEASURE 1.3 requires independent assessors. Separation of duties is mandatory.</td></tr>
+        <tr><td>What's measured</td><td>Functional correctness, performance, security.</td><td>All seven trustworthiness characteristics — including fairness, explainability, and privacy.</td></tr>
+        <tr><td>Failure mode</td><td>Bug: deterministic, reproducible, patchable.</td><td>Drift: probabilistic, gradual, may not be reproducible. Requires monitoring, not just patching.</td></tr>
+        <tr><td>Data as variable</td><td>Test data is fixed. Prod data is assumed stable.</td><td>Production data distribution shifts continuously. Retraining changes model behavior.</td></tr>
+        <tr><td>Human subjects</td><td>Not typically applicable.</td><td>MEASURE 2.2: evaluations involving humans require subject-protection protocols.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout callout-ms">
+    <div class="callout-label">🔑 NIST's Key Phrase</div>
+    NIST AI 100-1 §5.3: <em>"It is incumbent on Framework users to continue applying the MEASURE function to AI systems as knowledge, methodologies, risks, and impacts evolve over time."</em> This language is explicit: MEASURE is not a launch gate. It is a continuous operational practice.
+  </div>
+
+  <div class="analogy-box">
+    <div class="analogy-label">💡 The Blood Test Analogy</div>
+    <p>A doctor doesn't draw blood once at your first appointment and declare you permanently healthy. Blood tests are repeated on schedule, with different panels for different risks, interpreted against reference ranges, and acted on when values drift. A single normal reading at deployment doesn't mean the system will stay healthy. <strong>MEASURE is the blood-work schedule for your AI system.</strong></p>
+  </div>
+
+  <h3>MEASURE: Four Categories at a Glance</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Category</th><th>Purpose</th><th>Subcategories</th></tr></thead>
+      <tbody>
+        <tr><td>MEASURE 1</td><td>Appropriate methods &amp; metrics are identified and applied — prioritization, documentation, independence</td><td>3</td></tr>
+        <tr><td>MEASURE 2</td><td>AI systems evaluated for all trustworthy characteristics — TEVV, safety, security, fairness, explainability, privacy, bias, environment</td><td>13</td></tr>
+        <tr><td>MEASURE 3</td><td>Mechanisms for tracking identified risks over time — evaluation gaps, feedback, continuous improvement</td><td>3</td></tr>
+        <tr><td>MEASURE 4</td><td>Feedback about efficacy of measurement — internal review, external review, documentation improvement</td><td>3</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ── M2: MEASURE Flip Cards ─────────────────────────────────── -->
+<section id="m2" class="lesson-section">
+  <h2 class="section-title ms"><span>🃏</span> Module 2 · MEASURE — All 22 Subcategories (Flip to Learn) <span class="section-meta">30 min</span></h2>
+  <p style="color:var(--ink-soft);font-size:.92rem;margin-bottom:.5rem">Click or tap each card to flip it. The front shows the subcategory code and short name. The back shows what it means and a concrete implementation note. Cover as many as you can before the Module 3 deep dive.</p>
+  <div class="flip-grid" id="ms-flip-grid" role="list" aria-label="MEASURE subcategory flip cards"></div>
+</section>
+
+<!-- ── M3: MEASURE Deep Dive ──────────────────────────────────── -->
+<section id="m3" class="lesson-section">
+  <h2 class="section-title ms"><span>🔬</span> Module 3 · MEASURE Deep Dive — Expand Each Subcategory <span class="section-meta">35 min</span></h2>
+  <p style="color:var(--ink-soft);font-size:.92rem;margin-bottom:1rem">Click any row to expand it. Left column: the official NIST statement + implementation notes. Right column: real example from the MVCC AI context + common failure modes. <span class="pill ms">MS-1</span> <span class="pill ms">MS-2</span> <span class="pill ms">MS-3</span> <span class="pill ms">MS-4</span> badges indicate which MEASURE category.</p>
+
+  <h3 style="color:var(--ms)">MEASURE 1 — Methods &amp; Metrics Selection</h3>
+  <div class="expand-section" id="ms1-expand"></div>
+
+  <h3 style="color:var(--ms);margin-top:1.8rem">MEASURE 2 — Trustworthy Characteristics Evaluation</h3>
+  <div class="expand-section" id="ms2-expand"></div>
+
+  <h3 style="color:var(--ms);margin-top:1.8rem">MEASURE 3 &amp; 4 — Tracking &amp; Feedback</h3>
+  <div class="expand-section" id="ms34-expand"></div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<div class="part-banner mg">
+  <div class="pb-num">B</div>
+  <div class="pb-title">MANAGE — From Evidence to Action</div>
+  <div class="pb-time">⏱ ~60 min</div>
+</div>
+
+<!-- ── M4: MANAGE Flip Cards ──────────────────────────────────── -->
+<section id="m4" class="lesson-section">
+  <h2 class="section-title mg"><span>🃏</span> Module 4 · MANAGE — All 13 Subcategories (Flip to Learn) <span class="section-meta">20 min</span></h2>
+  <div class="prose">
+    <p>MANAGE takes MEASURE's evidence and turns it into decisions. Per NIST AI 100-1 §5.4, after completing the MANAGE function, plans for prioritizing risk and regular monitoring and improvement will be in place. The four MANAGE categories cover: risk prioritization and treatment (MG-1), benefit maximization and harm minimization strategies (MG-2), third-party risk management (MG-3), and response, recovery, and communication (MG-4).</p>
+  </div>
+
+  <div class="analogy-box">
+    <div class="analogy-label">💡 The Four Treatment Options — A Security Parallel</div>
+    <p>Every security professional knows the four risk treatment options from traditional risk management: <strong>Mitigate</strong> (implement a control), <strong>Transfer</strong> (insure it or contract it to a vendor), <strong>Avoid</strong> (don't do the thing), <strong>Accept</strong> (document that you're living with it). NIST AI RMF uses exactly the same four options — but applying them to AI requires new thinking. <em>Avoid</em> might mean "don't use AI for this decision." <em>Transfer</em> might mean "require the vendor to indemnify us." <em>Accept</em> must be documented and escalated for any risk above threshold — not just silently assumed.</p>
+  </div>
+
+  <div class="flip-grid" id="mg-flip-grid" role="list" aria-label="MANAGE subcategory flip cards"></div>
+</section>
+
+<!-- ── M5: MANAGE Deep Dive ───────────────────────────────────── -->
+<section id="m5" class="lesson-section">
+  <h2 class="section-title mg"><span>🔬</span> Module 5 · MANAGE Deep Dive — Expand Each Subcategory <span class="section-meta">25 min</span></h2>
+  <p style="color:var(--ink-soft);font-size:.92rem;margin-bottom:1rem">Click any row to expand it. Left column: official NIST statement + implementation notes. Right column: MVCC example + failure mode to avoid.</p>
+
+  <h3 style="color:var(--mg)">MANAGE 1 — Prioritization &amp; Treatment</h3>
+  <div class="expand-section" id="mg1-expand"></div>
+
+  <h3 style="color:var(--mg);margin-top:1.8rem">MANAGE 2 — Benefit Maximization &amp; Harm Minimization</h3>
+  <div class="expand-section" id="mg2-expand"></div>
+
+  <h3 style="color:var(--mg);margin-top:1.8rem">MANAGE 3 &amp; 4 — Third-Party Risk &amp; Response/Recovery</h3>
+  <div class="expand-section" id="mg34-expand"></div>
+
+  <div class="callout callout-mg">
+    <div class="callout-label">⚡ The Kill-Switch Requirement — MANAGE 2.4</div>
+    MANAGE 2.4 requires a mechanism to "supersede, disengage, or deactivate AI systems that demonstrate performance or outcomes inconsistent with intended use." This isn't optional. Every deployed AI system needs a documented, tested kill-switch with named owners and explicit triggers. A system that cannot be stopped is not governable. The trigger conditions must be defined in advance — not improvised during an incident.
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<div class="part-banner lab">
+  <div class="pb-num">C</div>
+  <div class="pb-title">Lab Activities — Apply Measure &amp; Manage</div>
+  <div class="pb-time">⏱ ~70 min</div>
+</div>
+
+<!-- ── ACTIVITY: Concept Match ────────────────────────────────── -->
+<section id="activity-match" class="lesson-section">
+  <h2 class="section-title neutral"><span>🎯</span> Activity A · Concept Match — Subcategory to Definition <span class="section-meta">15 min</span></h2>
+  <div class="match-game">
+    <div class="mg-header">
+      <span class="mg-title">Match Subcategory Code → Definition</span>
+      <span class="mg-score-disp" id="match-score">0 / 10 matched</span>
+    </div>
+    <div class="match-body">
+      <p>Click a code on the left, then click its matching definition on the right. Correct pairs lock green. Wrong pairs flash red — try again. Match all 10 to complete.</p>
+      <div class="match-cols">
+        <div>
+          <div class="match-col-head left">Subcategory Code</div>
+          <div id="match-left"></div>
+        </div>
+        <div>
+          <div class="match-col-head right">Definition / Outcome</div>
+          <div id="match-right"></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:.7rem;flex-wrap:wrap;align-items:center">
+        <button class="btn btn-ghost" onclick="resetMatch()">Reset</button>
+        <span class="match-result-msg" id="match-msg"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY: Risk Register Builder ───────────────────────── -->
+<section id="activity-rr" class="lesson-section">
+  <h2 class="section-title neutral"><span>📋</span> Activity B · AI Risk Register Builder <span class="section-meta">30 min</span></h2>
+  <div class="risk-builder">
+    <div class="rr-header">
+      <span class="rr-title">AI Risk Register Entry Builder — MAP → MEASURE → MANAGE</span>
+      <span class="rr-score" id="rr-fields-filled">0 / 10 fields completed</span>
+    </div>
+    <div class="rr-body">
+      <p>Build a complete AI risk register entry for the MVCC At-Risk Student Predictor from Day 3. Each field maps to a specific NIST AI RMF subcategory. Complete all fields, then generate the formatted entry. This is the artifact you'll submit.</p>
+      <div class="rr-fields">
+        <div class="rr-field">
+          <label class="ms">MS-1.1 · Risk being measured (from MAP)</label>
+          <select id="rr-risk" onchange="rrUpdate()">
+            <option value="">— Select risk —</option>
+            <option value="bias">Demographic bias → disproportionate flagging of students of color</option>
+            <option value="drift">Model drift → accuracy degrades after semester boundary</option>
+            <option value="injection">Prompt injection via LMS input fields</option>
+            <option value="privacy">FERPA violation through unauthorized data disclosure</option>
+          </select>
+        </div>
+        <div class="rr-field">
+          <label class="ms">MS-1.1 · Measurement approach</label>
+          <select id="rr-method" onchange="rrUpdate()">
+            <option value="">— Select method —</option>
+            <option value="quant">Quantitative — demographic parity / equalized odds metrics</option>
+            <option value="qual">Qualitative — expert review + affected student interviews</option>
+            <option value="mixed">Mixed — statistical audit + community stakeholder review</option>
+            <option value="red">Adversarial red-team evaluation</option>
+          </select>
+        </div>
+        <div class="rr-field">
+          <label class="ms">MS-2 · Trustworthiness characteristic tested</label>
+          <select id="rr-char" onchange="rrUpdate()">
+            <option value="">— Select characteristic —</option>
+            <option value="fair">Fair (Bias Managed) — MS-2.11</option>
+            <option value="valid">Valid &amp; Reliable — MS-2.5</option>
+            <option value="secure">Secure &amp; Resilient — MS-2.7</option>
+            <option value="privacy">Privacy-Enhanced — MS-2.10</option>
+            <option value="explain">Explainable &amp; Interpretable — MS-2.9</option>
+          </select>
+        </div>
+        <div class="rr-field">
+          <label class="ms">MS-2.3 · Performance threshold / pass condition</label>
+          <input id="rr-threshold" type="text" placeholder="e.g., Demographic parity gap ≤ 5% across all racial subgroups" oninput="rrUpdate()">
+        </div>
+        <div class="rr-field">
+          <label class="ms">MS-2.4 · Production monitoring trigger</label>
+          <input id="rr-monitor" type="text" placeholder="e.g., Weekly equity audit; alert if gap exceeds threshold" oninput="rrUpdate()">
+        </div>
+        <div class="rr-field">
+          <label class="ms">MS-3 · Evaluation frequency</label>
+          <select id="rr-freq" onchange="rrUpdate()">
+            <option value="">— Select frequency —</option>
+            <option value="weekly">Weekly automated metric check</option>
+            <option value="semester">Every semester start (major data distribution shift)</option>
+            <option value="event">Event-triggered (after model update or curriculum change)</option>
+            <option value="annual">Annual comprehensive audit</option>
+          </select>
+        </div>
+        <div class="rr-field">
+          <label class="mg">MG-1.2 · Risk priority (impact × likelihood)</label>
+          <select id="rr-priority" onchange="rrCalcLevel()">
+            <option value="">— Select —</option>
+            <option value="high-high">High Impact × High Likelihood = Critical</option>
+            <option value="high-med">High Impact × Medium Likelihood = High</option>
+            <option value="med-high">Medium Impact × High Likelihood = High</option>
+            <option value="high-low">High Impact × Low Likelihood = Medium</option>
+            <option value="med-med">Medium Impact × Medium Likelihood = Medium</option>
+            <option value="low-any">Low Impact = Low</option>
+          </select>
+        </div>
+        <div class="rr-field">
+          <label class="mg">MG-1.3 · Treatment option selected</label>
+          <select id="rr-treatment" onchange="rrUpdate()">
+            <option value="">— Select treatment —</option>
+            <option value="mitigate">Mitigate — implement bias-reduction controls and monitoring</option>
+            <option value="transfer">Transfer — require vendor to indemnify against disparate impact</option>
+            <option value="avoid">Avoid — do not deploy this AI system for this use case</option>
+            <option value="accept">Accept — document residual risk and obtain executive sign-off</option>
+          </select>
+        </div>
+        <div class="rr-field">
+          <label class="mg">MG-1.4 · Residual risk disclosure</label>
+          <input id="rr-residual" type="text" placeholder="e.g., Residual ±3% gap disclosed to Equity Office and advisors" oninput="rrUpdate()">
+        </div>
+        <div class="rr-field">
+          <label class="mg">MG-2.4 · Kill-switch trigger condition</label>
+          <input id="rr-kill" type="text" placeholder="e.g., If gap exceeds 10% or civil rights complaint filed → suspend model" oninput="rrUpdate()">
+        </div>
+      </div>
+      <div id="rr-level-display" class="risk-level-display"></div>
+      <div style="display:flex;gap:.7rem;flex-wrap:wrap;margin-bottom:.5rem">
+        <button class="btn btn-ms" onclick="generateRR()">Generate Register Entry</button>
+        <button class="btn btn-ghost" onclick="clearRR()">Clear</button>
+      </div>
+      <div class="rr-output" id="rr-output"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY: Scenario Decision Lab ───────────────────────── -->
+<section id="activity-scenario" class="lesson-section">
+  <h2 class="section-title neutral"><span>⚡</span> Activity C · Scenario Decision Lab — Apply MEASURE &amp; MANAGE <span class="section-meta">25 min</span></h2>
+  <div class="scenario-lab">
+    <div class="sl-header">
+      <span class="sl-title">NIST AI RMF Scenario Decision Lab</span>
+      <span class="sl-score" id="sl-score">0 / 8 answered</span>
+    </div>
+    <div class="sl-body">
+      <p>Each scenario describes a real situation at an AI-deploying organization. Choose the best NIST AI RMF MEASURE or MANAGE action. Instant feedback explains the rationale.</p>
+      <div class="sc-selector">
+        <label for="sl-select">Scenario:</label>
+        <select id="sl-select" onchange="loadScenario(this.value)">
+          <option value="">— Choose a scenario —</option>
+        </select>
+      </div>
+      <div class="sc-card" id="sl-card">
+        <div class="sc-num" id="sl-num"></div>
+        <div class="sc-question" id="sl-q"></div>
+        <div class="sc-options" id="sl-opts"></div>
+        <div class="sc-feedback" id="sl-fb"></div>
+      </div>
+      <div class="sc-nav">
+        <button class="btn btn-mg" onclick="checkScenario()">Check Answer</button>
+        <button class="btn btn-ghost" onclick="nextScenario()">Next →</button>
+        <button class="btn btn-ghost" onclick="resetScenario()">Reset</button>
+        <span class="sc-progress" id="sl-progress">0 of 8 completed</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ARTIFACT ────────────────────────────────────────────────── -->
+<section id="artifact" class="lesson-section">
+  <h2 class="section-title neutral"><span>📝</span> Assessment Artifact <span class="section-meta">Due: End of Class</span></h2>
+  <div class="artifact-block">
+    <div class="artifact-label">📋 Day 4 Assessment Artifact</div>
+    <h4>Complete AI Risk Register Entry — Submitted via Activity B</h4>
+    <p>Submit the completed risk register entry generated in Activity B. All ten fields must be completed; the generated entry is your submission artifact. Additionally, write a 150-word reflection answering: <em>"Given your chosen treatment option, which MANAGE subcategory is most critical to implement first, and why?"</em></p>
+    <ul>
+      <li><strong>Risk register entry</strong>: All ten fields, logically consistent (treatment must match priority level; residual risk must match treatment choice)</li>
+      <li><strong>Reflection</strong>: 150 words, references specific MANAGE subcategory code (e.g., MG-2.4), grounded in the scenario</li>
+      <li><strong>Connection to Day 3</strong>: Your MAP worksheet (Day 3) should have identified this risk. The register entry operationalizes that identification through MEASURE and MANAGE</li>
+    </ul>
+    <p><strong>Grading:</strong> Daily assignment category (25% of course grade). Evaluated on subcategory accuracy, logical consistency between fields, and depth of reflection.</p>
+  </div>
+</section>
+
+<!-- ── QUIZ ────────────────────────────────────────────────────── -->
+<section id="quiz" class="lesson-section">
+  <h2 class="section-title neutral"><span>❓</span> Day 4 Knowledge Check <span class="section-meta">10 Questions</span></h2>
+  <div class="quiz-block">
+    <div class="quiz-head">
+      <span>Day 4 Knowledge Check — 10 Questions</span>
+      <span class="quiz-score" id="quiz-score-display">Score: 0 / 10</span>
+    </div>
+    <div id="quiz-body"></div>
+    <div class="quiz-actions">
+      <button class="btn btn-ox" onclick="gradeQuiz()">Grade My Quiz</button>
+      <button class="btn btn-ghost" onclick="resetQuiz()">Reset</button>
+      <span class="quiz-msg" id="quiz-msg"></span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ── SIDEBAR ─────────────────────────────────────────────────── -->
+<aside class="sidebar">
+  <div class="sidebar-card">
+    <div class="sc-head">On This Page</div>
+    <div class="sc-body">
+      <ul class="sidebar-toc">
+        <li><a href="#overview"><span class="toc-num">→</span>Overview &amp; Objectives</a></li>
+        <li><a href="#m1"><span class="toc-num">1</span>Why Measure Differently</a></li>
+        <li><a href="#m2"><span class="toc-num">2</span>MEASURE Flip Cards (22)</a></li>
+        <li><a href="#m3"><span class="toc-num">3</span>MEASURE Deep Dive</a></li>
+        <li><a href="#m4"><span class="toc-num">4</span>MANAGE Flip Cards (13)</a></li>
+        <li><a href="#m5"><span class="toc-num">5</span>MANAGE Deep Dive</a></li>
+        <li><a href="#activity-match"><span class="toc-num">A</span>Activity: Concept Match</a></li>
+        <li><a href="#activity-rr"><span class="toc-num">B</span>Activity: Risk Register</a></li>
+        <li><a href="#activity-scenario"><span class="toc-num">C</span>Activity: Decision Lab</a></li>
+        <li><a href="#artifact"><span class="toc-num">✏</span>Assessment Artifact</a></li>
+        <li><a href="#quiz"><span class="toc-num">?</span>Knowledge Check</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="sidebar-card">
+    <div class="sc-head">Objectives Progress</div>
+    <div class="sc-body">
+      <div class="progress-wrap"><div class="progress-fill" id="progress-fill"></div></div>
+      <div class="progress-label" id="progress-label">0 of 7 completed</div>
+      <ul class="lo-list" style="margin-top:.7rem">
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>Explain MEASURE vs traditional testing.</span></li>
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>Identify all 4 MEASURE categories &amp; 22 subcategories.</span></li>
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>Select metrics for each trustworthiness characteristic.</span></li>
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>Explain MANAGE &amp; the four treatment options.</span></li>
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>Identify all 4 MANAGE categories &amp; 13 subcategories.</span></li>
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>Build a complete risk register entry.</span></li>
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>Apply MANAGE decisions to incident scenarios.</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="sidebar-card">
+    <div class="sc-head">Quick Reference</div>
+    <div class="sc-body">
+      <ul class="sidebar-toc">
+        <li><a href="#m2" style="font-size:.8rem"><strong style="color:var(--ms)">MEASURE 1</strong> — Methods (3 sub)</a></li>
+        <li><a href="#m2" style="font-size:.8rem"><strong style="color:var(--ms)">MEASURE 2</strong> — Characteristics (13 sub)</a></li>
+        <li><a href="#m2" style="font-size:.8rem"><strong style="color:var(--ms)">MEASURE 3</strong> — Tracking (3 sub)</a></li>
+        <li><a href="#m2" style="font-size:.8rem"><strong style="color:var(--ms)">MEASURE 4</strong> — Feedback (3 sub)</a></li>
+        <li><a href="#m4" style="font-size:.8rem"><strong style="color:var(--mg)">MANAGE 1</strong> — Priority &amp; Treatment (4 sub)</a></li>
+        <li><a href="#m4" style="font-size:.8rem"><strong style="color:var(--mg)">MANAGE 2</strong> — Strategies (4 sub)</a></li>
+        <li><a href="#m4" style="font-size:.8rem"><strong style="color:var(--mg)">MANAGE 3</strong> — Third-Party (2 sub)</a></li>
+        <li><a href="#m4" style="font-size:.8rem"><strong style="color:var(--mg)">MANAGE 4</strong> — Response (3 sub)</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="sidebar-card">
+    <div class="sc-head">Lesson Navigation</div>
+    <div class="sc-body" style="display:flex;flex-direction:column;gap:.5rem">
+      <a href="lesson03.html" style="font-size:.85rem;font-weight:600;color:var(--oxblood)">← Day 3: GOVERN &amp; MAP</a>
+      <span style="font-size:.85rem;font-weight:600;color:var(--ink-muted)">Day 4 — Current</span>
+      <a href="index.html#lessons" style="font-size:.85rem;font-weight:600;color:var(--ink-muted)">Day 5 — Coming Soon →</a>
+    </div>
+  </div>
+</aside>
+</div>
+
+<div class="lesson-nav-footer">
+  <a href="lesson03.html">← Day 3: GOVERN &amp; MAP</a>
+  <a href="index.html">Course Home</a>
+</div>
+<footer>
+  <strong>AI-103: AI Cybersecurity Foundations · Day 4</strong> · Moraine Valley Community College · Dr. John L. Sands · 2026<br><br>
+  Day 5 covers the EU AI Act risk tiers &amp; obligations — classifying systems and identifying conformity requirements.
+</footer>
+
+<script>
+/* ════════════════════════════════════════════════════════════════
+   DATA
+════════════════════════════════════════════════════════════════ */
+
+/* MEASURE flip-card data */
+const msFlips=[
+  {code:'MS-1.1',icon:'📊',title:'Prioritized Metrics Selection',back:'Select metrics for MAP-identified risks, starting with highest-priority. Document gaps — what CANNOT be measured and why.',tag:'Methods'},
+  {code:'MS-1.2',icon:'🔄',title:'Metrics Reassessment Cycle',back:'Regularly reassess metric appropriateness and control effectiveness as the system and context change. Include error reports and community impact.',tag:'Methods'},
+  {code:'MS-1.3',icon:'🔍',title:'Independent Assessors Required',back:'People who built the system cannot be the only evaluators. Independent internal experts or external assessors must be involved. Breadth of consultation scales with risk.',tag:'Methods'},
+  {code:'MS-2.1',icon:'📋',title:'TEVV Documentation',back:'Test sets, metrics, and tools used during Testing, Evaluation, Verification, and Validation are documented. An independent reviewer could re-run the evaluation from the documentation alone.',tag:'Characteristics'},
+  {code:'MS-2.2',icon:'👥',title:'Human-Subject Protections',back:'Evaluations involving human subjects meet applicable protocols and use representative populations — not just whoever was available. IRB equivalent required.',tag:'Characteristics'},
+  {code:'MS-2.3',icon:'🎯',title:'Performance Under Real Conditions',back:'Performance demonstrated under conditions matching the actual deployment setting — not just lab or in-distribution data. Measurements documented for audit.',tag:'Characteristics'},
+  {code:'MS-2.4',icon:'📡',title:'Production Monitoring',back:'System behavior is monitored in production against the components and behaviors identified in MAP — not against generic placeholder metrics.',tag:'Characteristics'},
+  {code:'MS-2.5',icon:'✅',title:'Valid &amp; Reliable Demonstration',back:'System is demonstrated valid and reliable. Generalization boundaries beyond development conditions are documented explicitly.',tag:'Characteristics'},
+  {code:'MS-2.6',icon:'🛡️',title:'Safety Evaluation',back:'System evaluated for safety risks from MAP. Residual negative risk does not exceed tolerance. System can fail safely if pushed beyond knowledge limits.',tag:'Characteristics'},
+  {code:'MS-2.7',icon:'🔒',title:'Security &amp; Resilience Testing',back:'Evaluated for security risks from MAP — adversarial inputs, data poisoning, prompt injection. Disaggregated for subgroups. Tests negative impacts on security.',tag:'Characteristics'},
+  {code:'MS-2.8',icon:'📢',title:'Accountable &amp; Transparent',back:'Documentation of how system functions and what its limitations are is available and accurate. Transparency appropriate to the deployment context.',tag:'Characteristics'},
+  {code:'MS-2.9',icon:'💡',title:'Explainable &amp; Interpretable',back:'Human-relevant explanations can be produced when required. Explainability constraints and tradeoffs (vs. accuracy) are documented.',tag:'Characteristics'},
+  {code:'MS-2.10',icon:'🔐',title:'Privacy-Enhanced Evaluation',back:'System evaluated for privacy risks. Data minimization, consent alignment, FERPA/HIPAA compliance verified. Re-identification risks assessed.',tag:'Characteristics'},
+  {code:'MS-2.11',icon:'⚖️',title:'Fairness &amp; Bias Managed',back:'Evaluated for harmful bias. Metrics disaggregated by demographic subgroup. Disparate impact identified, documented, and addressed before deployment.',tag:'Characteristics'},
+  {code:'MS-2.12',icon:'🌱',title:'Environmental Impact Measured',back:'Environmental costs (compute, energy, water) evaluated and documented. Compared against non-AI alternatives where relevant.',tag:'Characteristics'},
+  {code:'MS-2.13',icon:'🧪',title:'TEVV Process Meta-Evaluation',back:'The TEVV process itself is evaluated — are the tests the right tests? Are they comprehensive enough? Are they independent enough?',tag:'Characteristics'},
+  {code:'MS-3.1',icon:'📈',title:'Continuous Risk Tracking',back:'Mechanisms to track identified AI risks over time — ongoing monitoring systems, drift detection, audit trails.',tag:'Tracking'},
+  {code:'MS-3.2',icon:'🚨',title:'Evaluation Gap Identification',back:'Gaps in evaluation — things that should be measured but aren\'t — are documented and tracked. The gap itself is treated as a risk.',tag:'Tracking'},
+  {code:'MS-3.3',icon:'💬',title:'External Feedback Channels',back:'Mechanisms exist to collect feedback from operators, users, and affected communities about system performance and impacts.',tag:'Tracking'},
+  {code:'MS-4.1',icon:'🏢',title:'Internal Measurement Review',back:'Internal review process assesses whether measurement practices are effective and up to date.',tag:'Feedback'},
+  {code:'MS-4.2',icon:'🌐',title:'External Measurement Review',back:'External review (third-party audit, red team, regulator) of measurement approach validity and completeness.',tag:'Feedback'},
+  {code:'MS-4.3',icon:'📝',title:'Measurement Documentation Update',back:'Documentation of measurement approaches is updated based on review findings and evolving best practices.',tag:'Feedback'},
+];
+
+/* MANAGE flip-card data */
+const mgFlips=[
+  {code:'MG-1.1',icon:'🚦',title:'Go / No-Go Decision',back:'Explicit documented determination: does the AI system achieve its intended purpose and should deployment proceed? A default-to-ship is not a decision.',tag:'Prioritization'},
+  {code:'MG-1.2',icon:'📊',title:'Treatment Prioritization',back:'Risk treatment is prioritized by impact × likelihood × available resources — not by who is most vocal in the last review meeting.',tag:'Prioritization'},
+  {code:'MG-1.3',icon:'🔧',title:'Treatment Response (M·T·A·A)',back:'High-priority risks get planned responses: Mitigate (control), Transfer (contract), Avoid (don\'t deploy), Accept (document + escalate). Choice is documented with rationale.',tag:'Prioritization'},
+  {code:'MG-1.4',icon:'⚠️',title:'Residual Risk Disclosure',back:'Unmitigated risks (residual risk) are documented and disclosed to downstream acquirers and end users — not silently assumed. Acceptance must be explicit.',tag:'Prioritization'},
+  {code:'MG-2.1',icon:'💰',title:'Resource Allocation + Alternatives',back:'Resources required to manage AI risks are assessed. Non-AI alternatives kept on the table. "Deploy the AI" is not the only option.',tag:'Strategies'},
+  {code:'MG-2.2',icon:'🔁',title:'Value Sustainment',back:'Sustainment mechanisms (retraining, calibration, monitoring, retirement triggers) are engineered and documented — not improvised when value erodes.',tag:'Strategies'},
+  {code:'MG-2.3',icon:'🆕',title:'Unknown Risk Response',back:'Documented procedure for when a previously unknown risk surfaces: triage, contain, communicate, remediate. The team knows what to do before it happens.',tag:'Strategies'},
+  {code:'MG-2.4',icon:'🔴',title:'Kill-Switch Mechanism',back:'System can be superseded, disengaged, or deactivated when performance is inconsistent with intended use. Named owners, explicit triggers, tested mechanism.',tag:'Strategies'},
+  {code:'MG-3.1',icon:'🏭',title:'Third-Party Risk Monitoring',back:'Ongoing monitoring of third-party AI components — foundation models, APIs, training data, plugins. Risk changes when vendors update their systems.',tag:'Third-Party'},
+  {code:'MG-3.2',icon:'📄',title:'Third-Party Contractual Controls',back:'AI risks from third-party entities managed through contractual obligations, SLAs, audit rights, and incident notification requirements.',tag:'Third-Party'},
+  {code:'MG-4.1',icon:'🚨',title:'Incident Response &amp; Recovery',back:'Documented IR and recovery plans for AI-specific incidents — model poisoning, hallucination harm, drift events, bias discovery. Aligned to NIST SP 800-61.',tag:'Response'},
+  {code:'MG-4.2',icon:'📣',title:'Communication Plans',back:'Stakeholder communication plans for AI incidents, treatment decisions, and risk acceptance. Who gets notified, when, through what channel.',tag:'Response'},
+  {code:'MG-4.3',icon:'🔬',title:'Post-Incident Learning',back:'Post-deployment incidents, near-misses, and monitoring findings are documented and fed back to GOVERN and MAP — closing the improvement loop.',tag:'Response'},
+];
+
+/* MEASURE expand-section data */
+const ms1Data=[
+  {code:'MS-1.1',badge:'MS-1',title:'Prioritized Metrics Selection',quote:'Approaches and metrics for measurement of AI risks enumerated during the MAP function are selected for implementation starting with the most significant AI risks. The risks or trustworthiness characteristics that will not – or cannot – be measured are properly documented.',impl:'<p>Translate MAP\'s risk inventory into a prioritized measurement plan. For each risk: select a metric, define the measurement method, set a threshold, and document measurement gaps. A gap (something unmeasurable) is itself a risk — document it explicitly so reviewers can act on it rather than discover it during an audit.</p><p>Prioritization rule: highest MAP-tier risk → most rigorous MEASURE plan. Low-tier risk → lighter monitoring.</p>',example:'<p><strong>MVCC At-Risk Predictor:</strong> Highest priority = demographic bias risk → selected metric: demographic parity ratio across racial subgroups. Measurement gap documented: "System cannot currently be evaluated for ESL students separately due to insufficient sample size — gap treated as elevated monitoring requirement."</p>',failure:'Team selects metrics that are easy to compute (e.g., overall accuracy) rather than the metrics that address the highest-priority MAP risks (e.g., subgroup performance gaps). High accuracy with severe bias = a passing grade on the wrong test.'},
+  {code:'MS-1.2',badge:'MS-1',title:'Metrics Reassessment Cycle',quote:'Appropriateness of AI metrics and effectiveness of existing controls are regularly assessed and updated, including reports of errors and potential impacts on affected communities.',impl:'<p>Metrics become stale as the system, data, and deployment context change. A reassessment cadence (quarterly, per semester, after significant events) updates both the metrics and the control effectiveness evaluation. Include error reports and community impact data in the reassessment inputs.</p>',example:'<p><strong>MVCC enrollment chatbot:</strong> Accuracy metric valid in Year 1. After curriculum restructuring in Year 2, FAQs change and the chatbot\'s accuracy metric must be recalibrated to the new ground truth. Failure to reassess produces a green dashboard for a degrading system.</p>',failure:'Dashboard shows "all green" 18 months after deployment because nobody updated the metrics when the curriculum changed. Green dashboard → false confidence → harm discovery at a student complaint.'},
+  {code:'MS-1.3',badge:'MS-1',title:'Independence in Assessment',quote:'Internal experts who did not serve as front-line developers for the system and/or independent assessors are involved in regular assessments.',impl:'<p>Separation of duties applied to evaluation. Three tiers: (1) automated metrics (no human bias), (2) internal expert who did not build the system, (3) external assessor for high-tier systems. The breadth of independent review scales with MAP risk tier.</p><p>Consultation with affected communities is required for high-risk systems per MAP 5 — that consultation is a MEASURE input.</p>',example:'<p><strong>MVCC grading AI:</strong> The faculty member who piloted the tool should not be the sole evaluator of its fairness. Independent review by the Equity &amp; Inclusion office + student rep is required before expansion to all departments.</p>',failure:'Development team self-reports "no bias found." This is not independent assessment — it is optimism in a spreadsheet. Regulators and plaintiffs will not accept it.'},
+];
+const ms2Data=[
+  {code:'MS-2.1',badge:'MS-2',title:'TEVV Documentation',quote:'Test sets, metrics, and details about the tools used during TEVV are documented.',impl:'<p>Testing, Evaluation, Verification, and Validation documentation must be comprehensive enough that an independent reviewer could reproduce the evaluation. Minimum: dataset description, metric definitions, tool versions, threshold rationale, and pass/fail criteria.</p>',example:'<p>MVCC at-risk model: TEVV doc includes training/validation/test split ratios, fairness metric definitions (demographic parity, equalized odds), Fairlearn library version, threshold choices and rationale.</p>',failure:'TEVV doc says "we tested it and it works." An auditor cannot replicate or challenge this. Under EU AI Act, this fails the technical documentation requirement for high-risk systems.'},
+  {code:'MS-2.5',badge:'MS-2',title:'Valid &amp; Reliable Demonstration',quote:'The AI system to be deployed is demonstrated to be valid and reliable. Limitations of the generalizability beyond the conditions under which the technology was developed are documented.',impl:'<p>Validity: the system measures what it claims to measure. Reliability: it does so consistently across uses, times, and populations. Generalization limits must be stated explicitly — not buried in a footnote. Common failure: claiming the system "works" without specifying on what distribution of inputs.</p>',example:'<p>MVCC chatbot valid for domestic students enrolled in standard programs. Generalization limit: "Not validated for international students, dual enrollment high school students, or students with non-standard course loads. Human advisor required for these cases."</p>',failure:'System validated on Year 1 cohort then deployed to all students including populations not in the validation set. Model may perform worse on out-of-distribution groups — and nobody documented the boundary.'},
+  {code:'MS-2.7',badge:'MS-2',title:'Security &amp; Resilience Testing',quote:'The AI system\'s security and resilience – as identified in the MAP function – are evaluated, documented, and communicated.',impl:'<p>Security evaluation for AI adds the adversarial dimension: prompt injection testing for LLM-based systems; data poisoning resilience for model-based systems; model extraction and inversion testing for high-value models. Must be disaggregated by subgroup — some groups may be more vulnerable to adversarial manipulation.</p>',example:'<p>MVCC chatbot: red-team evaluation for prompt injection via enrollment FAQ inputs. System tested for: (1) attempts to extract system prompt, (2) instruction injection via multi-turn conversation, (3) data exfiltration attempts through malformed queries.</p>',failure:'Security evaluation tests the application layer but not the model layer — prompt injection vulnerabilities are missed because the security team doesn\'t know to test for them.'},
+  {code:'MS-2.11',badge:'MS-2',title:'Fairness &amp; Bias — The Critical Subcategory',quote:'Fairness and bias – as identified in the MAP function – are evaluated, documented, and communicated.',impl:'<p>The most frequently skipped and most legally consequential MEASURE subcategory. Requires: (1) selection of appropriate fairness metric (demographic parity, equalized odds, calibration — these are not the same), (2) disaggregated evaluation by relevant subgroups, (3) documentation of findings, (4) disclosure of disparate impact, (5) comparison of fairness definitions where they conflict.</p><p>Fairness definitions can conflict — individual fairness and group fairness are mathematically incompatible in general. Document the tradeoff explicitly.</p>',example:'<p>MVCC at-risk predictor: demographic parity ratio (% flagged in each racial group should be similar). Equalized odds (false positive rate should be similar — being incorrectly flagged has different consequences than being missed). Both metrics computed, both disclosed to Equity Office.</p>',failure:'Overall accuracy is reported as the only metric. System correctly identifies 85% of at-risk students overall — but misidentifies 30% of Black students as at-risk compared to 8% of white students. Overall accuracy hides the disparate impact.'},
+];
+const ms34Data=[
+  {code:'MS-3.1',badge:'MS-3',title:'Continuous Risk Tracking',quote:'Identified AI risks are monitored on a continuing basis.',impl:'<p>MAP identified the risks. MEASURE 2 evaluated them at point-in-time. MS-3.1 requires ongoing monitoring — dashboards, alert systems, scheduled audits — that track risk indicators continuously in production. When a tracked indicator crosses a threshold, the MANAGE function is triggered.</p>',example:'<p>MVCC at-risk predictor: weekly demographic parity dashboard reviewed by Equity Office. Alert fires if gap exceeds 5% threshold. Monthly accuracy trend report to academic affairs. Semester-boundary retraining evaluation.</p>',failure:'Evaluation done at launch, dashboard built, then nobody checks it for 18 months. The system drifts silently while the dashboard collects dust.'},
+  {code:'MS-4.2',badge:'MS-4',title:'External Measurement Review',quote:'Measurability and effectiveness of measurements are evaluated and documented by a diverse team that includes AI actors external to the team that developed or deployed the AI system.',impl:'<p>Internal teams cannot objectively evaluate their own measurement approach — the same bias that affects the system can affect the choice of metrics. External review (third-party audit, regulatory examination, academic red team) evaluates whether the measurement program itself is fit for purpose.</p><p>For high-risk systems: external review of fairness metrics is an EU AI Act expectation under conformity assessment.</p>',example:'<p>MVCC hires a higher-education equity research center to audit the at-risk predictor\'s measurement approach annually. The audit evaluates: Are the right fairness metrics selected? Are thresholds appropriate? Are community voices included in the evaluation design?</p>',failure:'Organization audits itself. "Our own audit found no problems." This is not independent evaluation and will not satisfy a regulator or plaintiff\'s expert.'},
+];
+const mg1Data=[
+  {code:'MG-1.1',badge:'MG-1',title:'Go / No-Go Decision Gate',quote:'A determination is made as to whether the AI system achieves its intended purposes and stated objectives and whether its development or deployment should proceed.',impl:'<p>An explicit, documented, go/no-go decision — not a default to ship. The decision is made against the intended purpose established in MAP and the measurements from MEASURE. Decision must be documented with rationale, approved by the AI Governance structure (GOVERN 2.3), and retained for audit. For EU AI Act high-risk systems, this decision is part of conformity assessment evidence.</p>',example:'<p>MVCC at-risk predictor: Go/No-Go gate checklist — (1) Demographic parity gap &lt; 5% ✓, (2) Accuracy &gt; 78% on held-out validation set ✓, (3) FERPA review complete ✓, (4) Advisor training complete ✗ — HOLD. System not deployed until advisor training is complete.</p>',failure:'No formal Go/No-Go gate exists. System ships when development is "done" — which means "when the team thinks it works." Any risk that MEASURE identified but MANAGE never resolved is shipped along with the system.'},
+  {code:'MG-1.2',badge:'MG-1',title:'Data-Driven Treatment Prioritization',quote:'Treatment of documented AI risks is prioritized based on impact, likelihood, and available resources or methods.',impl:'<p>Not all risks can be treated simultaneously. Prioritization uses impact × likelihood — but AI risk has additional dimensions: reversibility (can the harm be undone?), velocity (how fast does it compound?), and breadth (how many people are affected?). Resource constraints must also be honest inputs — over-promising treatment of risks you can\'t resource is a governance failure.</p>',example:'<p>MVCC risk backlog: (1) Demographic bias [High Impact, High Likelihood] → immediate treatment. (2) System prompt leakage [Medium Impact, Low Likelihood] → quarterly monitoring. (3) Hallucinated course deadlines [High Impact, Medium Likelihood] → citation-required output controls. Prioritization documented and approved by AI Governance Lead.</p>',failure:'Risks are treated in the order they\'re raised in meetings, not by impact × likelihood. The loudest complaint gets addressed; the highest-risk gap goes untouched.'},
+  {code:'MG-1.3',badge:'MG-1',title:'The Four Treatment Options',quote:'Responses to the AI risks deemed high priority, as identified by the MAP function, are developed, planned, and documented. Risk response options can include mitigating, transferring, avoiding, or accepting.',impl:'<p><strong>Mitigate:</strong> Implement controls that reduce likelihood or impact (bias testing, output filtering, human oversight). <strong>Transfer:</strong> Shift financial liability through contracts, insurance, or vendor indemnification. <strong>Avoid:</strong> Decide not to use AI for this application. Often the right answer for high-risk use cases that can\'t be adequately mitigated. <strong>Accept:</strong> Formally document that the organization is living with the residual risk — with explicit executive sign-off and disclosure to affected parties.</p>',example:'<p>MVCC at-risk predictor: Demographic bias risk → Mitigate (implement fairness controls, advisor training, bias monitoring). Vendor model update risk → Transfer (contract requiring 30-day notice + revalidation support). Deepfake-enhanced counselor impersonation → Avoid (system design excludes voice/video AI at counselor endpoints).</p>',failure:'Accept is used as a default because mitigate is hard. "We accept the risk" with no documentation, no executive approval, and no residual risk disclosure is not risk acceptance — it is negligence with paperwork.'},
+  {code:'MG-1.4',badge:'MG-1',title:'Residual Risk Disclosure',quote:'Negative residual risks to both downstream acquirers of AI systems and end users are documented.',impl:'<p>After treatment, some risk always remains. Residual risk must be: (1) calculated (what is left after controls), (2) documented formally, (3) disclosed to downstream acquirers (institutions buying the system), (4) disclosed to end users where relevant. This turns implicit acceptance into an explicit, reviewable governance decision. Under EU AI Act, high-risk system instructions for use must include known limitations and residual risks.</p>',example:'<p>MVCC discloses to advisors: "The at-risk predictor has a ±3% demographic parity gap after controls. Advisors should treat the flag as a conversation prompt, not a diagnostic. Students have the right to know they have been flagged and to request human review."</p>',failure:'Residual risk is documented internally but never disclosed to advisors or students. When a disproportionate impact pattern surfaces, the institution cannot demonstrate that downstream users were informed — triggering liability.'},
+];
+const mg2Data=[
+  {code:'MG-2.2',badge:'MG-2',title:'Value Sustainment Mechanisms',quote:'Mechanisms are in place and applied to sustain the value of deployed AI systems.',impl:'<p>AI systems degrade over time as data distributions shift, the world changes, and the system\'s training distribution diverges from production reality. Sustainment is engineered in advance: retraining schedule, calibration checkpoints, performance threshold triggers, and retirement criteria. "We\'ll figure it out when it breaks" is not sustainment — it is improvisation under production pressure.</p>',example:'<p>MVCC at-risk model sustainment plan: retraining every academic year; calibration check after add/drop period each semester; automatic retirement trigger if accuracy drops below 70% for two consecutive evaluation periods; replacement plan (return to advisor-driven outreach) documented and tested.</p>',failure:'Model deployed with no retraining plan. 18 months later, semester patterns have shifted, accuracy has degraded to 62%, but the dashboard still shows Year 1 metrics. Nobody initiated retraining because nobody was assigned to monitor for the trigger condition.'},
+  {code:'MG-2.4',badge:'MG-2',title:'The Kill-Switch (Disengage Mechanism)',quote:'Mechanisms are in place and applied, and responsibilities are assigned and understood, to supersede, disengage, or deactivate AI systems that demonstrate performance or outcomes inconsistent with intended use.',impl:'<p>The kill-switch is the most operationally critical MANAGE control for AI security. Requirements: (1) documented trigger conditions (explicit — not "if something goes wrong"), (2) named owner who has authority to execute it, (3) tested mechanism (has it actually been exercised?), (4) fallback process defined (what happens after deactivation?), (5) communication plan ready to execute. For agentic AI systems with real-world action capability, the kill-switch is a safety requirement, not just a governance nicety.</p>',example:'<p>MVCC at-risk predictor kill-switch: Trigger conditions: (1) demographic gap exceeds 10%, (2) civil rights complaint received, (3) FERPA violation confirmed, (4) model behavior inconsistent with documentation. Owner: VP of Academic Affairs. Mechanism: disable API key; system returns to null output. Fallback: advisors revert to LMS engagement monitoring. Post-deactivation: within 48h, root cause analysis report to President\'s Cabinet.</p>',failure:'Kill-switch exists in policy but nobody has tested it. During an actual incident, the team discovers the deactivation requires 3 vendor approvals that take 5 business days. System runs for a week after the decision to stop it was made.'},
+  {code:'MG-2.3',badge:'MG-2',title:'Unknown Risk Response Procedure',quote:'Procedures are followed to respond to and recover from a previously unknown risk when it is identified.',impl:'<p>MAP identifies known risks. But AI systems surface novel failure modes that nobody anticipated. MG-2.3 requires a pre-defined response procedure for unknown risks: (1) recognition and triage (is this a real risk or an anomaly?), (2) initial containment decision (suspend or continue with heightened monitoring?), (3) investigation and root cause, (4) communication to stakeholders, (5) treatment selection from MG-1.3. The procedure must exist before the unknown risk occurs — not improvised during the incident.</p>',example:'<p>MVCC chatbot surfaces a novel failure: it confidently provides incorrect financial aid eligibility determinations to a specific subgroup of non-traditional students not in the original evaluation set. Unknown-risk response: (1) suspend affected query type, (2) audit extent of incorrect outputs, (3) notify affected students through advisor outreach, (4) root cause analysis, (5) MG-1.3 treatment selection (mitigate via improved RAG grounding vs. avoid this query type).</p>',failure:'Unknown risk surfaces → team improvises → inconsistent responses across departments → no documentation → no root cause → same failure recurs six months later.'},
+];
+const mg34Data=[
+  {code:'MG-3.1',badge:'MG-3',title:'Third-Party AI Risk Monitoring',quote:'AI risks and benefits from third-party entities are managed.',impl:'<p>Third-party AI components — foundation models, APIs, training datasets, plugins — create ongoing risk that changes when vendors update their systems. MG-3.1 requires: (1) a monitoring cadence for third-party component changes, (2) impact assessment when changes occur, (3) re-evaluation against MAP-identified risks when significant updates happen. A vendor model update is a trigger for re-running relevant MEASURE subcategories.</p>',example:'<p>MVCC chatbot uses OpenAI GPT model via API. Monitoring plan: subscribe to vendor change logs; evaluate major model updates against MVCC chatbot behavior before enabling in production; require 30-day notice in contract; quarterly vendor security posture review.</p>',failure:'Vendor silently updates the base model. System behavior changes; chatbot begins producing responses that violate MVCC\'s AUP for specific query types. Nobody checks vendor changelogs. Issue discovered 3 months later through student complaints.'},
+  {code:'MG-4.1',badge:'MG-4',title:'AI-Specific Incident Response',quote:'Policies and procedures for AI incident response and recovery are established, communicated, and implemented.',impl:'<p>Traditional IR lifecycles (NIST SP 800-61: Prepare, Detect &amp; Analyze, Contain, Eradicate &amp; Recover, Post-Incident Activity) must be extended for AI-specific incidents. New categories: (1) model drift/degradation, (2) bias discovery post-deployment, (3) hallucination-caused harm, (4) prompt injection compromise, (5) training data poisoning. Each requires different detection methods, containment procedures, and recovery timelines. Day 14 covers this in full depth.',example:'<p>MVCC AI Incident Response Annex: bias discovery → (1) Detect: monitoring alert, (2) Contain: flag for human review while root cause investigated (don\'t stop the system immediately unless gap is severe), (3) Eradicate: bias source identified in training data, mitigation applied, (4) Recover: retraining with corrected data, (5) Post-Incident: governance update, advisor notification, documentation.</p>',failure:'AI incident handled using the standard cybersecurity IR playbook. "Contain" means blocking a network segment — not applicable to model bias. "Eradicate" means removing malware — not applicable to training data issues. Wrong playbook → wrong response → continued harm.'},
+  {code:'MG-4.2',badge:'MG-4',title:'Stakeholder Communication Plans',quote:'Protocols are followed to communicate about the AI system.',impl:'<p>Communication plans for AI incidents, risk treatment decisions, and significant changes must be pre-defined: (1) internal escalation path (Model Owner → AI Governance Lead → executive), (2) affected user notification (what do students/employees need to know?), (3) regulatory disclosure (EU AI Act Article 73 serious incident reporting for high-risk systems), (4) public communication if relevant. Plans must exist before incidents occur.</p>',example:'<p>MVCC at-risk predictor communication plan: Student notification: "You have been identified as potentially at risk for academic difficulties. An advisor will contact you. You have the right to request human review of this determination." Triggered within 72 hours of flag being acted upon.</p>',failure:'Incident occurs. Team argues for 3 weeks about whether to notify affected students because no notification plan existed. During the argument, harmed students have no recourse. Delay compounds reputational damage when the incident becomes public.'},
+  {code:'MG-4.3',badge:'MG-4',title:'Post-Incident Learning Loop',quote:'Incidents and errors are documented and used to improve AI risk management.',impl:'<p>The improvement loop that closes the cycle: incidents and near-misses feed back to GOVERN (policy update needed?), MAP (was this risk identified?), and MEASURE (did monitoring catch it?). Without this loop, the same failure recurs. MG-4.3 produces the lessons-learned artifact that Day 18\'s learning objective requires: documenting AI incident lessons in a way that strengthens the governance program.</p>',example:'<p>Post-incident report: "Demographic parity alert threshold was set too high (10%). Incident would have been caught earlier if threshold was 5%. Recommendation: lower threshold; update MEASURE 3.1 monitoring parameters. Root cause: training data reflected historical enrollment patterns that disadvantaged non-traditional students."</p>',failure:'Post-incident report written, filed, and forgotten. Same root cause produces the same incident 18 months later. No evidence that lessons learned were ever acted on — audit finds the organization incapable of organizational learning.'},
+];
+
+/* Scenario Lab data */
+const scenarios=[
+  {id:1,num:'Scenario 1 of 8',q:'Your organization\'s AI hiring assistant has been in production for 6 months. The MEASURE dashboard shows overall accuracy has stayed at 87% — but a data scientist notices the false rejection rate for female applicants has crept from 8% to 14% over 3 months. No alert fired. Which MEASURE failure does this most directly illustrate?',opts:['MS-1.1 — the wrong metric (overall accuracy) was prioritized. The MAP-identified risk was fairness; the metric selected doesn\'t surface it.','MS-2.4 — production monitoring was not configured for the components identified in MAP.','MS-3.2 — the evaluation gap (no subgroup alert threshold) was not documented as a risk.','All three — and this scenario illustrates why overall accuracy is an insufficient MEASURE for fairness risk.'],correct:3,fb:'Correct — this is a multi-subcategory failure. MS-1.1: overall accuracy wasn\'t the highest-priority metric (fairness was). MS-2.4: production monitoring didn\'t include subgroup tracking. MS-3.2: the gap in subgroup alerting wasn\'t treated as a documented risk. Real incidents typically reveal multiple subcategory gaps simultaneously.'},
+  {id:2,num:'Scenario 2 of 8',q:'The AI Governance Lead recommends deploying the at-risk student predictor despite a demographic parity gap of 8% (threshold: 5%). The VP of Academic Affairs says "we\'ll fix it in the next release — let\'s ship." Which MANAGE subcategory most directly requires a documented decision here, and what does it require?',opts:['MG-1.1: the Go/No-Go gate requires an explicit documented determination — not a default-to-ship. The gap-exceeds-threshold condition means the decision to proceed requires documented executive authorization and residual risk disclosure.','MG-2.4: the kill-switch must be activated before deployment is allowed.','MG-1.2: treatment prioritization should rank the bias risk lower than delivery timelines.','MG-2.1: non-AI alternatives should be considered instead.'],correct:0,fb:'MG-1.1 requires an explicit documented Go/No-Go decision when MEASURE results show conditions not meeting thresholds. Proceeding requires: (1) executive-level documented approval, (2) MG-1.4 residual risk disclosure to advisors and affected students, (3) a timeline-bound commitment to remediation. "We\'ll fix it in the next release" without these three elements is not governance — it is a liability.'},
+  {id:3,num:'Scenario 3 of 8',q:'The foundation model vendor your LLM chatbot depends on releases a major update. Your chatbot\'s behavior changes noticeably — some outputs violate your AI AUP. Which MANAGE subcategory most directly governs the response?',opts:['MG-2.3 — unknown risk response procedure: vendor model update producing AUP violations is a previously-unforeseen risk requiring triage, containment, investigation, and treatment.','MG-3.1 — third-party AI risk monitoring: the absence of a vendor change monitoring cadence allowed the update to affect production before detection.','MG-4.1 — AI incident response: the AUP violation constitutes an AI incident requiring the IR lifecycle.','All three — and this illustrates the vendor-dependency risk chain from GOVERN 6 through MAP 4 to MANAGE 3 and 4.'],correct:3,fb:'Another multi-subcategory answer. MG-3.1 is the preventive control (should have been monitoring vendor changelogs). MG-2.3 kicks in when an unknown risk (the specific behavior change) surfaces. MG-4.1 governs the IR response. This scenario is why GOVERN 6 (third-party policy) and MAP 4 (third-party component mapping) matter — without them, MANAGE 3 and 4 have no foundation to act from.'},
+  {id:4,num:'Scenario 4 of 8',q:'A student files a formal complaint that the at-risk predictor flagged them incorrectly and their advisor treated the flag as a definitive diagnosis. The bias audit shows a 12% false positive rate for students in their demographic group vs. 4% for others. What is the IMMEDIATE MANAGE action?',opts:['MG-1.2: re-prioritize the bias risk to Critical and begin treatment planning.','MG-2.4: evaluate whether the kill-switch trigger condition (10% demographic gap) has been met and, if so, execute it — then initiate MG-4.1 incident response.','MG-4.2: communicate with the student about their rights and next steps.','MG-1.3: select the "Accept" treatment option and document the residual risk.'],correct:1,fb:'If the kill-switch trigger condition (10% gap) is met, MG-2.4 requires executing it — with named owner, tested mechanism, and fallback plan. Simultaneously, MG-4.1 IR lifecycle activates: contain (suspend or heighten oversight), investigate (root cause), communicate (MG-4.2 to the student, advisors, and governance). MG-1.3 Accept is wrong because the gap exceeds the documented threshold — you cannot accept what your own policy defines as unacceptable without executive re-approval.'},
+  {id:5,num:'Scenario 5 of 8',q:'A security researcher discovers that MVCC\'s enrollment chatbot can be prompted to reveal its full system prompt — exposing the internal RAG query structure and a hardcoded API key. Which MEASURE subcategory should have caught this before deployment?',opts:['MS-2.5 — valid and reliable demonstration','MS-2.7 — security and resilience testing (OWASP LLM07 system prompt leakage is an adversarial input test)','MS-2.8 — accountable and transparent evaluation','MS-2.3 — performance under real conditions'],correct:1,fb:'MS-2.7 requires security and resilience evaluation against MAP-identified security risks. System prompt leakage (OWASP LLM07:2025) is an adversarial input test that should be part of red-team evaluation for any LLM deployment. The hardcoded API key is a critical finding that a red-team prompt injection test would surface. MS-2.7 evaluation should have caught this before deployment — its absence is a pre-deployment MEASURE gap.'},
+  {id:6,num:'Scenario 6 of 8',q:'The MVCC AI Governance team is building the risk register for the enrollment chatbot. They\'ve completed MAP (all five categories) and MEASURE (MS-2 evaluation). Now for MANAGE: the MAP showed a medium-likelihood, high-impact risk of students relying on incorrect financial aid deadline information. What is the correct MANAGE treatment selection process?',opts:['Default to Mitigate — always mitigate high-impact risks.','MG-1.2 prioritizes by impact × likelihood → Medium × High = High priority. MG-1.3 selects treatment: Mitigate (require citations for all deadline claims + human escalation for financial aid queries) with Accept for residual risk after controls, documented per MG-1.4.','MG-1.3 select Transfer — make the vendor liable for incorrect information.','MG-1.1 gate: high-impact risk means system should not be deployed (Avoid).'],correct:1,fb:'MG-1.2 prioritizes: Medium Likelihood × High Impact = High priority. MG-1.3 selects Mitigate as primary treatment (citation requirements, human escalation for financial queries) — with residual risk documented (Accept for what\'s left after controls per MG-1.4). Transfer is possible supplementally via vendor contract but doesn\'t address the risk in production. Avoid would apply if mitigation were insufficient — the scenario gives enough mitigation options to make Mitigate viable.'},
+  {id:7,num:'Scenario 7 of 8',q:'An independent auditor reviewing MVCC\'s AI governance program finds that every measurement in the MEASURE function was performed by the team that built the AI systems. No external assessors were involved. Which subcategory is this directly violating, and what does it require?',opts:['MS-2.11 — fairness evaluation must be performed by a demographic diversity specialist.','MS-1.3 — independent assessors: internal experts who did NOT serve as front-line developers and/or external assessors must be involved in regular assessments. For high-risk systems, affected community consultation is also required.','MS-3.2 — evaluation gaps must be documented.','MS-4.1 — internal measurement review must be conducted by a separate internal team.'],correct:1,fb:'MS-1.3 explicitly requires that people who built the system are not the only people evaluating it. The same cognitive biases and blind spots that may have been designed into the system affect how the builders evaluate it. Independent assessors — internal non-developers for lower-risk systems, external evaluators for high-risk systems — are not optional. This is one of the most commonly violated MEASURE subcategories in practice.'},
+  {id:8,num:'Scenario 8 of 8',q:'Six months after deploying the at-risk predictor, a novel failure mode surfaces: the system produces extremely confident risk scores for non-traditional students (working adults returning to college) — but these students were underrepresented in the training data, making the confidence claims unreliable. This risk was not in the MAP worksheet. Which MANAGE subcategory handles this situation?',opts:['MG-1.3 — select the Avoid treatment option for all non-traditional students.','MG-2.3 — unknown risk response procedure: the team must follow a documented procedure for triage, containment, communication, and treatment of a previously unknown risk. Feeds back to MAP for documentation and to GOVERN for policy consideration.','MG-4.3 — post-incident learning: document the failure and update the governance program.','Both MG-2.3 and MG-4.3 — MG-2.3 handles the immediate response; MG-4.3 closes the improvement loop so this failure type is recognized and MAP is updated to include this risk in future deployments.'],correct:3,fb:'MG-2.3 handles the immediate response — triage, containment decision (suspend high-confidence scores for non-traditional students?), investigation, communication, treatment selection. MG-4.3 closes the improvement loop: the lessons learned must feed back to MAP (add non-traditional student representation risk to future deployment MAP worksheets), GOVERN (training data diversity requirement in AI development standards), and MEASURE (add subgroup confidence calibration to MS-2.5 evaluation). Both are required; neither alone is sufficient.'},
+];
+
+/* Concept match data */
+const matchPairs=[
+  {code:'MS-1.1',def:'Select metrics for the highest-priority MAP risks first; document what cannot be measured'},
+  {code:'MS-2.4',def:'Monitor AI system behavior in production against MAP-identified components'},
+  {code:'MS-2.11',def:'Evaluate for harmful bias; disaggregate metrics by demographic subgroup'},
+  {code:'MG-1.1',def:'Explicit go/no-go determination before deployment proceeds'},
+  {code:'MG-1.3',def:'Choose from Mitigate, Transfer, Avoid, or Accept; document rationale'},
+  {code:'MG-1.4',def:'Document unmitigated risks and disclose to downstream users and acquirers'},
+  {code:'MG-2.4',def:'Mechanism to deactivate AI systems that perform inconsistently; named owner + explicit triggers'},
+  {code:'MS-1.3',def:'Independent assessors must evaluate — not just the development team'},
+  {code:'MG-4.1',def:'Documented response and recovery plans for AI-specific incident types'},
+  {code:'MG-4.3',def:'Post-incident findings feed back to GOVERN, MAP, and MEASURE to close the improvement loop'},
+];
+
+/* ════════════════════════════════════════════════════════════════
+   RENDERING FUNCTIONS
+════════════════════════════════════════════════════════════════ */
+
+function buildFlips(data,containerId,colorClass){
+  const grid=document.getElementById(containerId);
+  data.forEach(item=>{
+    const card=document.createElement('div');
+    card.className='flip-card';card.setAttribute('role','listitem');
+    card.setAttribute('tabindex','0');card.setAttribute('aria-label',`${item.code}: ${item.title} — click to flip`);
+    card.innerHTML=`<div class="flip-inner"><div class="flip-front"><div class="flip-icon">${item.icon}</div><div class="flip-code ${colorClass}">${item.code}</div><div class="flip-title">${item.title}</div><div class="flip-hint">Click to flip →</div></div><div class="flip-back ${colorClass}"><div class="flip-back-title">${item.code}</div><div class="flip-body">${item.back}</div><span class="flip-tag">${item.tag}</span></div></div>`;
+    card.addEventListener('click',()=>card.classList.toggle('flipped'));
+    card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();card.classList.toggle('flipped')}});
+    grid.appendChild(card);
+  });
+}
+
+function buildExpand(data,containerId,colorClass){
+  const container=document.getElementById(containerId);
+  data.forEach(item=>{
+    const div=document.createElement('div');div.className='expand-item';
+    const badgeColor=colorClass==='ms'?'ms':'mg';
+    div.innerHTML=`
+      <button class="expand-trigger" onclick="toggleExp(this)" aria-expanded="false">
+        <span class="expand-code ${badgeColor}">${item.code}</span>
+        <span>${item.title}</span>
+        <span class="expand-badge ${badgeColor}">${item.badge}</span>
+        <span class="expand-chevron">▼</span>
+      </button>
+      <div class="expand-body">
+        <div class="expand-col">
+          <div class="expand-col-label ${badgeColor}">NIST Statement &amp; Implementation</div>
+          <div class="nist-quote ${colorClass==='mg'?'mg-q':''}">${item.quote}</div>
+          ${item.impl}
+        </div>
+        <div class="expand-col">
+          <div class="expand-col-label neutral">MVCC Example &amp; Failure Mode</div>
+          <div class="expand-col-label ${badgeColor}" style="margin-top:.7rem">Example</div>
+          ${item.example}
+          <div class="expand-col-label" style="color:var(--oxblood);margin-top:.7rem">⚠️ Common Failure Mode</div>
+          <p style="font-style:italic;color:var(--oxblood)">${item.failure}</p>
+        </div>
+      </div>`;
+    container.appendChild(div);
+  });
+}
+
+function toggleExp(btn){
+  const body=btn.nextElementSibling;
+  const open=body.classList.contains('show');
+  btn.classList.toggle('open',!open);btn.setAttribute('aria-expanded',(!open).toString());
+  body.classList.toggle('show',!open);
+}
+
+/* ── Sticky nav ─────────────────────────────────────────── */
+const navLinks=document.querySelectorAll('.lesson-nav a');
+const navObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){navLinks.forEach(l=>l.classList.remove('active'));const lnk=document.querySelector(`.lesson-nav a[href="#${e.target.id}"]`);if(lnk)lnk.classList.add('active')}})},{rootMargin:'-25% 0px -65% 0px'});
+document.querySelectorAll('section[id]').forEach(s=>navObs.observe(s));
+
+/* ── Progress tracker ───────────────────────────────────── */
+function toggleLO(el){el.classList.toggle('checked');el.setAttribute('aria-checked',el.classList.contains('checked').toString());const all=document.querySelectorAll('.lo-check');const done=document.querySelectorAll('.lo-check.checked').length;document.getElementById('progress-fill').style.width=Math.round(done/all.length*100)+'%';document.getElementById('progress-label').textContent=`${done} of ${all.length} completed`}
+
+/* ── Risk Register Builder ──────────────────────────────── */
+function rrUpdate(){
+  const fields=['rr-risk','rr-method','rr-char','rr-threshold','rr-monitor','rr-freq','rr-priority','rr-treatment','rr-residual','rr-kill'];
+  let filled=0;fields.forEach(id=>{const v=document.getElementById(id);if(v&&(v.value||'').trim()&&v.value!=='')filled++});
+  document.getElementById('rr-fields-filled').textContent=`${filled} / 10 fields completed`;
+}
+function rrCalcLevel(){
+  const p=document.getElementById('rr-priority').value;
+  const display=document.getElementById('rr-level-display');
+  const map={'high-high':['critical','🔴 CRITICAL — Immediate treatment required'],'high-med':['high','🟠 HIGH — Treat within sprint/cycle'],'med-high':['high','🟠 HIGH — Treat within sprint/cycle'],'high-low':['medium','🟡 MEDIUM — Plan treatment this quarter'],'med-med':['medium','🟡 MEDIUM — Plan treatment this quarter'],'low-any':['low','🟢 LOW — Monitor; accept with documentation']};
+  if(p&&map[p]){display.className=`risk-level-display show ${map[p][0]}`;display.textContent=map[p][1]}else{display.className='risk-level-display'}
+  rrUpdate();
+}
+function generateRR(){
+  const get=id=>document.getElementById(id)?.value||'Not specified';
+  const riskMap={bias:'Demographic bias → disproportionate flagging of students of color',drift:'Model drift → accuracy degrades after semester boundary',injection:'Prompt injection via LMS input fields',privacy:'FERPA violation through unauthorized data disclosure'};
+  const riskVal=document.getElementById('rr-risk').value;
+  const rows=[
+    ['System',`MVCC At-Risk Student Predictor — AI-103 Lab`],
+    ['Risk Identified (MS-1.1)',riskMap[riskVal]||get('rr-risk')],
+    ['Measurement Approach (MS-1.1)',get('rr-method')],
+    ['Characteristic Tested (MS-2)',get('rr-char')],
+    ['Performance Threshold (MS-2.3)',get('rr-threshold')],
+    ['Production Monitor (MS-2.4)',get('rr-monitor')],
+    ['Evaluation Frequency (MS-3.1)',get('rr-freq')],
+    ['Risk Priority (MG-1.2)',get('rr-priority')],
+    ['Treatment Selected (MG-1.3)',get('rr-treatment')],
+    ['Residual Risk Disclosure (MG-1.4)',get('rr-residual')],
+    ['Kill-Switch Trigger (MG-2.4)',get('rr-kill')],
+    ['Generated',new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})],
+  ];
+  let html=`<h4>📋 AI Risk Register Entry</h4>`;
+  rows.forEach(([label,val])=>{html+=`<div class="rr-row"><span class="rr-label">${label}</span><span class="rr-val">${val}</span></div>`});
+  const out=document.getElementById('rr-output');out.innerHTML=html;out.classList.add('show');out.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function clearRR(){
+  ['rr-risk','rr-method','rr-char','rr-freq','rr-priority','rr-treatment'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});
+  ['rr-threshold','rr-monitor','rr-residual','rr-kill'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});
+  document.getElementById('rr-output').classList.remove('show');
+  document.getElementById('rr-level-display').className='risk-level-display';
+  document.getElementById('rr-fields-filled').textContent='0 / 10 fields completed';
+}
+
+/* ── Scenario Lab ───────────────────────────────────────── */
+let currentSc=null;let selectedOpt=null;let answeredScs=new Set();
+function buildScenarioSelect(){
+  const sel=document.getElementById('sl-select');
+  scenarios.forEach((s,i)=>{const o=document.createElement('option');o.value=i;o.textContent=s.num;sel.appendChild(o)});
+}
+function loadScenario(idx){
+  if(idx===''){document.getElementById('sl-card').classList.remove('show');return}
+  currentSc=parseInt(idx);selectedOpt=null;
+  const s=scenarios[currentSc];
+  document.getElementById('sl-num').textContent=s.num;
+  document.getElementById('sl-q').textContent=s.q;
+  const optsDiv=document.getElementById('sl-opts');optsDiv.innerHTML='';
+  s.opts.forEach((o,i)=>{
+    const btn=document.createElement('button');btn.className='sc-option';btn.textContent=o;
+    btn.addEventListener('click',()=>{document.querySelectorAll('.sc-option').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');selectedOpt=i});
+    optsDiv.appendChild(btn);
+  });
+  document.getElementById('sl-fb').className='sc-feedback';document.getElementById('sl-fb').innerHTML='';
+  document.getElementById('sl-card').classList.add('show');
+}
+function checkScenario(){
+  if(currentSc===null||selectedOpt===null){alert('Select a scenario and an answer first.');return}
+  const s=scenarios[currentSc];
+  const fb=document.getElementById('sl-fb');const opts=document.querySelectorAll('.sc-option');
+  opts.forEach((b,i)=>{if(i===s.correct)b.classList.add('correct-reveal');else if(i===selectedOpt&&selectedOpt!==s.correct)b.classList.add('wrong-reveal')});
+  const ok=selectedOpt===s.correct;
+  fb.className=`sc-feedback show ${ok?'ok':'not-ok'}`;
+  fb.innerHTML=`${ok?'✅ Correct!':'❌ Incorrect.'} ${s.fb}`;
+  answeredScs.add(currentSc);
+  document.getElementById('sl-score').textContent=`${answeredScs.size} / ${scenarios.length} answered`;
+  document.getElementById('sl-progress').textContent=`${answeredScs.size} of ${scenarios.length} completed`;
+}
+function nextScenario(){if(currentSc===null)return;const next=(currentSc+1)%scenarios.length;document.getElementById('sl-select').value=next;loadScenario(next)}
+function resetScenario(){currentSc=null;selectedOpt=null;answeredScs.clear();document.getElementById('sl-select').value='';document.getElementById('sl-card').classList.remove('show');document.getElementById('sl-score').textContent='0 / 8 answered';document.getElementById('sl-progress').textContent='0 of 8 completed'}
+
+/* ── Concept Match ──────────────────────────────────────── */
+let matchLeft=null;let matchedCount=0;
+const shuffled=arr=>[...arr].sort(()=>Math.random()-.5);
+function buildMatch(){
+  const left=document.getElementById('match-left');const right=document.getElementById('match-right');
+  const codes=shuffled(matchPairs.map(p=>p.code));
+  const defs=shuffled(matchPairs.map(p=>({code:p.code,def:p.def})));
+  codes.forEach(code=>{
+    const el=document.createElement('div');el.className='match-item';el.textContent=code;el.dataset.code=code;
+    el.addEventListener('click',()=>handleMatchLeft(el));left.appendChild(el);
+  });
+  defs.forEach(pair=>{
+    const el=document.createElement('div');el.className='match-item';el.textContent=pair.def;el.dataset.code=pair.code;
+    el.addEventListener('click',()=>handleMatchRight(el));right.appendChild(el);
+  });
+}
+function handleMatchLeft(el){if(el.classList.contains('matched'))return;document.querySelectorAll('#match-left .match-item').forEach(i=>i.classList.remove('selected'));el.classList.add('selected');matchLeft=el}
+function handleMatchRight(el){
+  if(!matchLeft||el.classList.contains('matched'))return;
+  const code=matchLeft.dataset.code;
+  if(el.dataset.code===code){
+    matchLeft.classList.replace('selected','matched');el.classList.add('matched');matchedCount++;
+    document.getElementById('match-score').textContent=`${matchedCount} / ${matchPairs.length} matched`;
+    if(matchedCount===matchPairs.length)document.getElementById('match-msg').textContent='🎉 All matched! Perfect score.';
+  }else{
+    el.classList.add('wrong');matchLeft.style.animation='shake .3s';
+    setTimeout(()=>{el.classList.remove('wrong');matchLeft.style.animation=''},400);
+  }
+  matchLeft=null;document.querySelectorAll('#match-left .match-item').forEach(i=>i.classList.remove('selected'));
+}
+function resetMatch(){document.getElementById('match-left').innerHTML='';document.getElementById('match-right').innerHTML='';matchLeft=null;matchedCount=0;document.getElementById('match-score').textContent='0 / 10 matched';document.getElementById('match-msg').textContent='';buildMatch()}
+
+/* ── Quiz ───────────────────────────────────────────────── */
+const quizData=[
+  {q:'NIST AI 100-1 §5.3 states that MEASURE must be applied "as knowledge, methodologies, risks, and impacts evolve over time." What does this mean for AI governance programs?',opts:['MEASURE is a one-time pre-deployment gate that must be updated when regulations change.','MEASURE is a continuous operational practice — not a release gate — because AI systems degrade in production due to data drift, context change, and emergent behavior.','MEASURE applies only to high-risk AI systems under the EU AI Act.','MEASURE replaces traditional software testing for AI systems.'],correct:1,exp:'NIST\'s explicit language makes MEASURE a continuous function, not a point-in-time activity. AI systems drift, data distributions shift, and deployment contexts change — all of which require ongoing measurement, not just a pre-launch evaluation.'},
+  {q:'MS-1.3 requires independent assessors in MEASURE. Which scenario most correctly implements this requirement?',opts:['The lead developer reviews their own model\'s fairness metrics after deployment.','An internal ML engineer who was not on the development team reviews accuracy metrics, and for this high-risk system, the equity office and a student representative also review the fairness evaluation.','An external consultant is hired to review the model\'s documentation only (not the evaluation itself).','The CISO signs off on the MEASURE results as part of the security review.'],correct:1,exp:'MS-1.3 requires internal experts who did NOT serve as front-line developers, and for high-risk systems, also domain experts, users, and affected communities. The development team alone is insufficient. The CISO signing off on documentation is not the same as independent evaluation.'},
+  {q:'MEASURE 2.11 evaluates "fairness and bias." An organization measures overall accuracy at 91% and declares the system fair. What is the critical gap?',opts:['Overall accuracy is an acceptable fairness metric for AI systems with accuracy above 90%.','Fairness requires disaggregated metrics by demographic subgroup — a 91% overall accuracy can mask severe disparate impact on specific groups. MS-2.11 requires subgroup-level evaluation.','The system should also be tested for security and resilience before claiming fairness.','Overall accuracy above 85% satisfies EU AI Act fairness requirements.'],correct:1,exp:'MS-2.11 explicitly requires disaggregated evaluation by demographic subgroup. A system with 91% overall accuracy can have a 30% error rate for one demographic group and 5% for another — the aggregate hides the harm. Fairness is not measured in the aggregate.'},
+  {q:'What is the MANAGE function\'s relationship to the MAP and MEASURE functions?',opts:['MANAGE is completed before MAP and MEASURE to establish the risk management budget.','MANAGE takes its inputs from MAP (risk identification) and MEASURE (risk quantification) and produces risk treatment decisions, incident response plans, and residual risk documentation.','MANAGE and MEASURE are performed simultaneously as parallel workflows.','MANAGE is only activated when an AI incident occurs.'],correct:1,exp:'NIST AI 100-1 §5.4 explicitly states that MANAGE allocates resources to risks identified and measured in MAP and MEASURE. The flow is: MAP identifies → MEASURE quantifies → MANAGE decides. MANAGE also feeds back to GOVERN and MAP through the post-incident improvement loop.'},
+  {q:'MG-1.1 requires a "go/no-go determination." An AI team says "the model passes QA — ship it." Which best describes whether MG-1.1 is satisfied?',opts:['Yes — QA approval satisfies the go/no-go requirement.','No — MG-1.1 requires an explicit documented determination against the intended purpose defined in MAP, with governance approval and risk basis. "Passes QA" is not a documented governance decision.','Yes — if QA includes security testing.','No — MG-1.1 can only be satisfied by the CEO.'],correct:1,exp:'MG-1.1 requires an explicit documented governance decision — not a QA pass. The determination must be against the intended purpose from MAP, include MEASURE results, have documented rationale, and be approved by the appropriate governance authority defined in GOVERN 2. "Passes QA" is a technical certification, not a governance decision.'},
+  {q:'MG-2.4 requires a "kill-switch" mechanism. Which implementation best satisfies this subcategory?',opts:['A ticket submitted to IT support to disable the system if a problem is noticed.','A documented disengage procedure with explicit trigger conditions, named decision authority, tested mechanism, defined fallback process, and communication plan — activated within 24 hours of trigger.','A vendor API key that can be revoked manually by any engineer.','A policy document stating the system can be turned off.'],correct:1,exp:'MG-2.4 requires: explicit trigger conditions (not "if something goes wrong"), named owner with authority, tested mechanism (not theoretical), fallback process (what happens after deactivation), and communication plan. A ticket to IT support fails on authority, speed, and testing. A policy document without operational implementation fails on execution.'},
+  {q:'Which combination of MEASURE and MANAGE subcategories is triggered when a new failure mode is discovered post-deployment that was not in the MAP worksheet?',opts:['MS-3.2 identifies the gap; MG-2.3 provides the response procedure; MG-4.3 closes the improvement loop by feeding findings back to MAP and GOVERN.','MS-1.1 re-selects metrics; MG-1.1 issues a new go/no-go decision.','MS-2.13 evaluates the TEVV process; MG-1.3 selects the Avoid treatment.','MS-4.2 initiates external review; MG-3.1 activates vendor monitoring.'],correct:0,exp:'MS-3.2 tracks evaluation gaps — an unknown risk IS a gap in the evaluation coverage. MG-2.3 is the specific subcategory for responding to previously unknown risks with a documented procedure. MG-4.3 closes the loop: the finding feeds back to MAP (add to risk registry) and GOVERN (does policy need updating?). All three are required.'},
+  {q:'An AI auditor finds that the organization\'s MEASURE program has never been reviewed by anyone outside the development team. Which subcategory does this violate, and what is the specific requirement?',opts:['MS-2.11 — external community review is required for all fairness evaluations.','MS-1.3 — internal experts who did not serve as front-line developers and/or independent external assessors must be involved in regular assessments, with breadth scaling to system risk.','MS-4.2 — external review of the measurement program\'s validity and completeness.','Both MS-1.3 and MS-4.2 — one requires independent assessors for individual evaluations; the other requires external review of the measurement program itself.'],correct:3,exp:'MS-1.3 governs individual evaluation independence — the people grading each MEASURE activity must include non-developers. MS-4.2 governs the program level — the measurement approach itself must be externally reviewed. Both are violated when only developers do all measurement work. For high-risk systems, both are essential to regulatory defensibility.'},
+  {q:'MG-1.4 requires disclosure of residual risk to "downstream acquirers and end users." At MVCC, what does this require for the at-risk student predictor?',opts:['A confidential internal memo documenting the residual bias gap for the governance committee only.','Public disclosure of all model weights and training data.','Disclosure to advisors (downstream operators) that the model has a ±X% demographic gap after controls, and disclosure to flagged students that they have been identified and have the right to human review.','Disclosure only if a student specifically requests information about the model.'],correct:2,exp:'MG-1.4 requires disclosure to downstream acquirers (advisors using the system — operators) and end users (students affected by the flag). Advisors need to know the system\'s limitations to interpret outputs correctly. Students need to know they\'ve been flagged and have recourse rights. Confidential internal documentation does not satisfy this requirement.'},
+  {q:'How does MANAGE 4.3 (post-incident learning) connect back to the GOVERN function?',opts:['It doesn\'t — MANAGE 4.3 is system-level and GOVERN is organization-level, so they don\'t interact.','Post-incident findings from MG-4.3 should feed back to GOVERN to update organizational policies, risk tolerance, training requirements, and third-party risk standards — closing the continuous improvement loop.','MG-4.3 requires GOVERN approval before any lessons-learned document can be finalized.','MG-4.3 outputs replace the MAP worksheet for the next deployment cycle.'],correct:1,exp:'MG-4.3\'s post-incident documentation is the mechanism that makes the entire NIST AI RMF a continuous improvement cycle rather than a linear checklist. Incident findings may reveal: policies that need updating (GOVERN 1), accountability gaps (GOVERN 2), stakeholder engagement failures (GOVERN 5), or supply chain risks (GOVERN 6). Without MG-4.3 feeding GOVERN, incidents repeat.'},
+];
+function buildQuiz(){
+  const body=document.getElementById('quiz-body');
+  quizData.forEach((q,i)=>{
+    const sec=document.createElement('div');sec.className='quiz-q';
+    sec.innerHTML=`<div class="q-prompt"><span class="q-num">Q${i+1}.</span>${q.q}</div><ul class="q-opts">${q.opts.map((o,j)=>`<li><label><input type="radio" name="q${i}" value="${j}"> ${o}</label></li>`).join('')}</ul><div class="q-fb" id="qf${i}"></div>`;
+    body.appendChild(sec);
+  });
+}
+function gradeQuiz(){
+  let score=0;
+  quizData.forEach((q,i)=>{
+    const sel=document.querySelector(`input[name="q${i}"]:checked`);
+    const fb=document.getElementById(`qf${i}`);fb.classList.add('show');
+    if(sel&&parseInt(sel.value)===q.correct){score++;fb.className='q-fb ok show';fb.innerHTML=`✅ <strong>Correct!</strong> ${q.exp}`}
+    else{fb.className='q-fb bad show';fb.innerHTML=`❌ <strong>${sel?'Incorrect.':'No answer.'}</strong> ${q.exp}`}
+  });
+  document.getElementById('quiz-score-display').textContent=`Score: ${score} / ${quizData.length}`;
+  const msgs=['Keep reviewing — these details are critical.','Good start — review the missed items.','Solid — review multi-subcategory items.','Strong work!','Excellent command of MEASURE &amp; MANAGE!','Perfect score — outstanding!'];
+  document.getElementById('quiz-msg').textContent=msgs[Math.min(5,Math.floor(score/2))];
+}
+function resetQuiz(){
+  document.querySelectorAll('#quiz-body input[type=radio]').forEach(r=>r.checked=false);
+  document.querySelectorAll('.q-fb').forEach(f=>{f.className='q-fb';f.innerHTML=''});
+  document.getElementById('quiz-score-display').textContent=`Score: 0 / ${quizData.length}`;
+  document.getElementById('quiz-msg').textContent='';
+}
+
+/* ── Init ───────────────────────────────────────────────── */
+buildFlips(msFlips,'ms-flip-grid','ms');
+buildFlips(mgFlips,'mg-flip-grid','mg');
+buildExpand(ms1Data,'ms1-expand','ms');
+buildExpand(ms2Data,'ms2-expand','ms');
+buildExpand(ms34Data,'ms34-expand','ms');
+buildExpand(mg1Data,'mg1-expand','mg');
+buildExpand(mg2Data,'mg2-expand','mg');
+buildExpand(mg34Data,'mg34-expand','mg');
+buildScenarioSelect();
+buildMatch();
+buildQuiz();
+</script>
+</body>
+</html>
