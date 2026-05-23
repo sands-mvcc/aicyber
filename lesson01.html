@@ -374,7 +374,7 @@
     align-items: center;
     gap: .5rem;
   }
-  .domain-card-header.cism { background: #3a5a8c; }
+  .domain-card-header.secplus { background: #3a5a8c; }
   .domain-card-header.aaism { background: var(--oxblood); }
   .domain-card ul { list-style: none; padding: .8rem 1rem; }
   .domain-card li {
@@ -818,7 +818,7 @@
 <div class="topbar" role="banner">
   <a href="index.html">← AI-103 Course Home</a>
   <span class="topbar-sep">·</span>
-  <span>MVCC · Computer Intergrated Technoilogies (CIT) &amp; Technology</span>
+  <span>MVCC · Dept. of Engineering &amp; Technology</span>
   <span class="topbar-sep">·</span>
   <span>Dr. John L. Sands</span>
 </div>
@@ -836,7 +836,7 @@
     <h1>Expanding Cybersecurity Principles for AI</h1>
     <p class="tagline">
       Why traditional information security is insufficient for AI-enabled enterprises —
-      and where this course extends the traditional foundation you already know.
+      and where AAISM extends the Security+ foundation you already know.
     </p>
     <div class="header-meta">
       <span>📚 <strong>Intermediate</strong></span>
@@ -851,11 +851,11 @@
 <nav class="lesson-nav" aria-label="Lesson section navigation">
   <div class="lesson-nav-inner">
     <a href="#overview" class="active">Overview</a>
-    <a href="#m1">1 · Why traditional cybersecurity prinicples are not enough</a>
+    <a href="#m1">1 · Why Security+ Isn't Enough</a>
     <a href="#m2">2 · Six New Assumptions</a>
     <a href="#m3">3 · Course Map</a>
     <a href="#activity-a">Activity A</a>
-    <a href="#m4">4 · New AI Prinicples</a>
+    <a href="#m4">4 · AAISM Domains</a>
     <a href="#activity-b">Activity B</a>
     <a href="#artifact">Assessment</a>
     <a href="#quiz">Quiz</a>
@@ -877,7 +877,8 @@
 
       <div class="prose">
         <p>
-          If you have studied for or hold a security credential you already know how to govern, assess risk, build a security program, and manage incidents.
+          If you have studied for or hold a security credential — Security+ or equivalent —
+          you already know how to govern, assess risk, build a security program, and manage incidents.
           <strong>That knowledge is not wrong. It is incomplete.</strong>
         </p>
         <p>
@@ -888,10 +889,10 @@
           real-world consequences. And the regulatory landscape around them is entirely new.
         </p>
         <p>
-          Today we establish the conceptual bridge: what traditional security management covers, what it stops short of,
+          Today we establish the conceptual bridge: what Security+ covers, what it stops short of,
           and exactly where AI cybersecurity must extend it. By the end of this lesson you will
           be able to explain — to an executive, a regulator, or a skeptical peer — why traditional
-          infosec principles alone are insufficient for AI-enabled enterprises, and what AISM
+          infosec principles alone are insufficient for AI-enabled enterprises, and what AAISM
           adds on top.
         </p>
       </div>
@@ -906,7 +907,7 @@
           to a new platform.
         </p>
         <p>
-          <strong>Traditional Security Management is the ATPL. Artificial Intelligence Security Management (AISM) is the type rating for AI.</strong>
+          <strong>Security+ is the ATPL. AAISM is the type rating for AI.</strong>
           The foundational skills — governance, risk management, program development, incident response —
           transfer completely. What changes is the aircraft.
         </p>
@@ -917,9 +918,9 @@
         By the end of this lesson you will be able to:
       </p>
       <ol style="margin-left:1.3rem;color:var(--ink-soft);font-size:.92rem;">
-        <li style="margin-bottom:.4rem;">Explain why traditional security management alone is insufficient for AI-enabled enterprises and where AISM extends it.</li>
+        <li style="margin-bottom:.4rem;">Explain why traditional cybersecurity certifications alone are insufficient for AI-enabled enterprises and where AAISM extends them.</li>
         <li style="margin-bottom:.4rem;">List the six implicit assumptions in traditional security that AI breaks.</li>
-        <li style="margin-bottom:.4rem;">Name the three AISM domains and their percentage weights on the AISM exam.</li>
+        <li style="margin-bottom:.4rem;">Name the three AAISM domains and their percentage weights on the AAISM exam.</li>
         <li style="margin-bottom:.4rem;">Describe the course map — AI as target vs. AI as weapon — and the four major frameworks covered.</li>
         <li style="margin-bottom:.4rem;">Articulate at least three ways AI systems change the information security threat model.</li>
       </ol>
@@ -936,34 +937,33 @@
     <!-- Module 1 -->
     <section id="m1" class="lesson-section" aria-labelledby="m1-h">
       <h2 class="section-title" id="m1-h">
-        <span>🏛️</span> Module 1 · Why CISM Alone Isn't Enough
+        <span>🏛️</span> Module 1 · Why Security+ Alone Isn't Enough
         <span class="section-meta">45 min</span>
       </h2>
 
       <div class="prose">
         <p>
-          The CISM body of knowledge was built around four enduring domains: information security
-          governance, information risk management, information security program development, and
-          incident management. These domains remain correct. They are also incomplete when the
+          The Security+ body of knowledge covers a broad set of foundational cybersecurity domains: threats and vulnerabilities, cryptography, identity and access management, architecture, implementation, and incident response. These domains remain correct. They are also incomplete when the
           assets being governed include systems that <em>learn from data, generate novel outputs,
           and can be manipulated through their inputs in ways that have no parallel in traditional
           software</em>.
         </p>
       </div>
 
-      <h3>The CISM Foundation — and Its Boundaries</h3>
+      <h3>The Security+ Foundation — and Its Boundaries</h3>
 
       <div class="domain-compare">
         <div class="domain-card">
-          <div class="domain-card-header cism">🏛️ CISM — Four Domains</div>
+          <div class="domain-card-header secplus">🛡️ Security+ — Core Domains</div>
           <ul>
-            <li><span class="li-icon">📋</span><div><strong>D1 Governance</strong> — strategy, policy, roles, stakeholder alignment</div></li>
-            <li><span class="li-icon">⚖️</span><div><strong>D2 Risk Management</strong> — assess, treat, monitor information security risk</div></li>
-            <li><span class="li-icon">🔧</span><div><strong>D3 Program Development</strong> — design, implement, manage the security program</div></li>
-            <li><span class="li-icon">🚨</span><div><strong>D4 Incident Management</strong> — prepare, detect, respond, recover, learn</div></li>
+            <li><span class="li-icon">⚠️</span><div><strong>Threats &amp; Vulnerabilities</strong> — identify, classify, and respond to threat actors and attack types</div></li>
+            <li><span class="li-icon">🔐</span><div><strong>Cryptography &amp; PKI</strong> — encryption, hashing, certificates, key management</div></li>
+            <li><span class="li-icon">🪪</span><div><strong>Identity &amp; Access Management</strong> — authentication, authorization, directory services</div></li>
+            <li><span class="li-icon">🏗️</span><div><strong>Architecture &amp; Implementation</strong> — network security, cloud, endpoint, and application hardening</div></li>
+            <li><span class="li-icon">🚨</span><div><strong>Incident Response &amp; Governance</strong> — IR lifecycle, risk management, compliance frameworks</div></li>
           </ul>
           <div style="padding:.5rem 1rem .8rem;">
-            <span class="assumption-tag">Implicit assumption: deterministic systems, stable inputs/outputs, knowable asset inventory, code-centric threats</span>
+            <span class="assumption-tag">Implicit assumption: deterministic systems, stable inputs/outputs, code-centric threats, known CVEs and signatures</span>
           </div>
         </div>
 
@@ -981,12 +981,16 @@
       </div>
 
       <div class="callout">
-        <div class="callout-label">⚠️ Pre-requisite Note</div>
-        AISM is <strong>available only to students that have complete traditional security management courses.</strong>. This course was designed as a
-        stackable specialization, not a standalone class. The implicit message: you cannot
-        competently govern AI security without first understanding how to govern security in general.
-        This course prepares you for that foundation.
+        <div class="callout-label">⚠️ Eligibility Note</div>
+        This course is grounded in <strong>Security+ foundational knowledge</strong> and is designed as the stepping-stone pathway toward advanced AI security governance. Professionals who continue to CISM or CISSP, then pursue AAISM, will find this course laid the conceptual groundwork. The core principle holds: you cannot competently govern AI security without first understanding how to govern security in general.
       </div>
+
+      <h3>The Three ISACA AI Credentials — Knowing Which One Fits</h3>
+      <p style="color:var(--ink-soft);font-size:.92rem;margin-bottom:1rem;">
+        AAISM is one of three new ISACA "Advanced in AI" credentials, each aimed at a different
+        professional role. Understanding the distinctions helps security professionals make the
+        right next-credential decision.
+      </p>
 
       <div class="comp-table-wrap">
         <table>
@@ -1002,17 +1006,17 @@
             <tr>
               <td><strong>AAISM</strong> — Advanced in AI Security Management</td>
               <td>Security managers, CISOs, security architects</td>
-              <td>CISM or CISSP</td>
+              <td>CISM or CISSP<br><em style="font-size:.78rem;color:var(--ink-muted);">Pathway: Security+ → this course → CISM/CISSP → AAISM</em></td>
               <td>Governing and securing enterprise AI</td>
             </tr>
             <tr>
-              <td><strong>AIA</strong> — AI Security Audit</td>
+              <td><strong>AAIA</strong> — Advanced in AI Audit</td>
               <td>Auditors, assurance professionals</td>
               <td>CISA or equivalent</td>
               <td>Auditing AI systems and controls</td>
             </tr>
             <tr>
-              <td><strong>AI</strong> — Advanced in AI Risk</td>
+              <td><strong>AAIR</strong> — Advanced in AI Risk</td>
               <td>Risk and compliance professionals</td>
               <td>CRISC or equivalent</td>
               <td>Enterprise AI risk management</td>
@@ -1023,7 +1027,9 @@
 
       <div class="analogy-box">
         <div class="analogy-label">💡 Bridge Concept</div>
-   
+        <p>
+          For a security professional, the learning pathway runs: Security+ establishes the foundational vocabulary → advanced certifications deepen governance expertise → AAISM adds the AI-specific layer on top. Think of Security+ as the operating system; this course extends it toward the AI security skills that the field now demands.
+        </p>
       </div>
 
     </section>
@@ -1248,8 +1254,8 @@
         <div class="activity-body">
           <p>
             For each course learning objective below, use the dropdown to select which traditional
-            CISM domain it maps to <em>most closely</em>, then decide whether it represents something
-            CISM already covers fully, partially covers, or doesn't cover at all. This exercise
+            Security+ domain it maps to <em>most closely</em>, then decide whether it represents something
+            Security+ already covers fully, partially covers, or doesn't cover at all. This exercise
             surfaces exactly where the AI extension is needed.
           </p>
           <div class="mapping-table-wrap">
@@ -1257,8 +1263,8 @@
               <thead>
                 <tr>
                   <th style="width:40%">Course Learning Objective</th>
-                  <th>Closest CISM Domain</th>
-                  <th>CISM Coverage</th>
+                  <th>Closest Security+ Domain</th>
+                  <th>Security+ Coverage</th>
                 </tr>
               </thead>
               <tbody id="mapping-rows">
@@ -1273,7 +1279,7 @@
           <div id="mapping-feedback" style="margin-top:1rem;display:none;" class="callout"></div>
           <div class="instructions" style="margin-top:1rem;">
             <strong>Share-Out Prompt (5 min):</strong> Which objective was hardest to map?
-            Which CISM domain gets the most AI extensions? What does that tell you about
+            Which Security+ domain gets the most AI extensions? What does that tell you about
             where AI changes security practice most?
           </div>
         </div>
@@ -1307,9 +1313,7 @@
       <h3>Domain 1 — AI Governance &amp; Program Management (31%)</h3>
       <p style="color:var(--ink-soft);font-size:.92rem;margin-bottom:1rem;">
         This domain covers everything required to establish, operate, and maintain a formal
-        AI security program within an enterprise. It is the closest AAISM domain to CISM's
-        D1 (Governance) and D3 (Program Development) — but with AI-specific requirements that
-        those domains do not address.
+        AI security program within an enterprise. It extends beyond Security+'s governance and compliance fundamentals to add AI-specific requirements: AI steering committees, AI use case registers, and AI incident response annexes that Security+ does not address.
       </p>
 
       <div class="comp-table-wrap">
@@ -1318,34 +1322,34 @@
             <tr>
               <th>AAISM D1 Topic</th>
               <th>What It Covers</th>
-              <th>CISM Parallel / Gap</th>
+              <th>Security+ Parallel / AI Gap</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>AI Steering Committee &amp; Charter</td>
               <td>Cross-functional governance body with defined authority, cadence, escalation paths for AI-specific decisions</td>
-              <td>CISM D1 covers security governance structures — AI committee is an extension, not a replacement</td>
+              <td>Security+ covers basic governance concepts — AI steering committee is a new structure not found in Security+</td>
             </tr>
             <tr>
               <td>AI Acceptable Use Policy</td>
               <td>Data classification rules for AI inputs, prohibited use cases, approval pathways, shadow AI handling</td>
-              <td>CISM D3 covers AUP development — but AI AUP requires entirely new clauses CISM never anticipated</td>
+              <td>Security+ covers policies and procedures at a conceptual level — AI AUP requires entirely new clauses Security+ never anticipated</td>
             </tr>
             <tr>
               <td>AI Use Case Register</td>
               <td>Inventory of all approved AI deployments with owner, risk tier, review date — the "asset inventory" for AI</td>
-              <td>CISM D2 covers asset inventories — AI requires a new register format tied to behavioral risk, not just presence</td>
+              <td>Security+ covers asset management fundamentals — AI requires a new register format tied to behavioral risk, not just presence</td>
             </tr>
             <tr>
               <td>Data &amp; Model Lifecycle Governance</td>
               <td>Provenance, lineage, AIBOM, model cards — governance of the full lifecycle from training to retirement</td>
-              <td>CISM D3 covers data classification — lifecycle governance of training data is new and requires AI-specific controls</td>
+              <td>Security+ covers data classification at a foundational level — lifecycle governance of training data is new and requires AI-specific controls</td>
             </tr>
             <tr>
               <td>AI Incident Response Annex</td>
               <td>Extension of NIST SP 800-61 IR lifecycle to cover AI-specific incidents: hallucinations, prompt injection, model poisoning</td>
-              <td>CISM D4 covers IR — but AI incidents have novel detection, analysis, and remediation steps</td>
+              <td>Security+ covers the IR lifecycle — but AI incidents have novel detection, analysis, and remediation steps beyond standard playbooks</td>
             </tr>
           </tbody>
         </table>
@@ -1354,8 +1358,8 @@
       <h3>Domain 2 — AI Risk Management (31%)</h3>
       <p style="color:var(--ink-soft);font-size:.92rem;margin-bottom:1rem;">
         This domain covers the identification, assessment, and treatment of AI-specific risks.
-        CISM D2 (Risk Management) is the closest parallel — but AI introduces risk categories
-        that do not map onto CIA-triad thinking.
+        Security+ introduces risk management concepts — but AI introduces risk categories
+        that do not map cleanly onto CIA-triad thinking familiar from Security+.
       </p>
 
       <div class="comp-table-wrap">
@@ -1449,7 +1453,7 @@
         <p>
           Domain 3 carries the largest exam weight because technical controls are where AI security
           fails most visibly — and because the skills do not transfer cleanly from traditional security.
-          A CISM who can design a firewall ruleset does not automatically know how to design
+          A Security+-certified professional who can design a firewall ruleset does not automatically know how to design
           a prompt injection defense, an AI model isolation architecture, or an MLOps monitoring
           pipeline. These are genuinely new skills.
         </p>
@@ -1510,14 +1514,14 @@
         <h4>One-Page Reflection: "Three Ways AI Breaks Traditional InfoSec Assumptions"</h4>
         <p>
           Write a focused one-page (400–500 word) reflection addressed to a hypothetical
-          CISO colleague who holds a CISM and is skeptical that AI requires new governance
-          structures: <em>"We've governed new technologies before. Why is AI different?"</em>
+          CISO colleague who holds a Security+ and is skeptical that AI requires new governance
+          structures: <em>"We've secured systems before. Why is AI fundamentally different?"</em>
         </p>
         <p><strong>Your reflection must address:</strong></p>
         <ul>
           <li><strong>Three specific ways</strong> AI systems break implicit assumptions in traditional information security — choose from the six covered in Module 2, but go deeper than the card text. Use a concrete example for each.</li>
           <li><strong>One AAISM domain</strong> that you believe addresses the most critical gap — and why you chose it over the other two.</li>
-          <li><strong>One analogy of your own</strong> (not the pilot/type rating analogy from the lesson) that explains the CISM-to-AAISM relationship to a non-technical stakeholder.</li>
+          <li><strong>One analogy of your own</strong> (not the pilot/type rating analogy from the lesson) that explains the Security+→AAISM credential pathway to a non-technical stakeholder.</li>
         </ul>
         <p>
           <strong>Format:</strong> Plain prose, no bullet lists (write it as a professional memo,
@@ -1556,7 +1560,7 @@
           <!-- Q1 -->
           <div class="quiz-question" data-q="1">
             <div class="q-prompt"><span class="q-num">Q1.</span>
-              A CISM-certified security manager says: "We already govern technology risk — just add an
+              A Security+-certified security manager says: "We already handle security risk — just add an
               'AI' section to the existing risk register." Which response BEST explains why this is insufficient?
             </div>
             <ul class="q-options">
@@ -1575,7 +1579,7 @@
               genuinely new security concept?
             </div>
             <ul class="q-options">
-              <li><label><input type="radio" name="q2" value="a"> Training data can contain confidential information, which is a data classification issue already covered by CISM.</label></li>
+              <li><label><input type="radio" name="q2" value="a"> Training data can contain confidential information, which is a data classification issue already covered by Security+.</label></li>
               <li><label><input type="radio" name="q2" value="b"> Training data defines model behavior — poisoning it is a control-plane attack, not merely a data confidentiality issue. The attack modifies what the system does, not just what information it holds.</label></li>
               <li><label><input type="radio" name="q2" value="c"> Training data can be stolen by competitors, which is an intellectual property issue handled by legal.</label></li>
               <li><label><input type="radio" name="q2" value="d"> Training data is usually stored in cloud storage, which introduces standard cloud security risks.</label></li>
@@ -1592,7 +1596,7 @@
             <ul class="q-options">
               <li><label><input type="radio" name="q3" value="a"> Technical controls are where most auditors focus, so ISACA weighted them highest to match audit practice.</label></li>
               <li><label><input type="radio" name="q3" value="b"> Technical controls for AI — prompt injection defense, behavioral monitoring, MLOps security — are the skills that transfer least from traditional security, requiring the most new learning.</label></li>
-              <li><label><input type="radio" name="q3" value="c"> ISACA determined that governance and risk are already covered by CISM, so only the technical domain needed new content.</label></li>
+              <li><label><input type="radio" name="q3" value="c"> ISACA determined that governance and risk are already covered by Security+, so only the technical domain needed new content.</label></li>
               <li><label><input type="radio" name="q3" value="d"> Domain 3 covers the EU AI Act's technical requirements, which are the most complex regulatory obligation.</label></li>
             </ul>
             <div class="q-feedback" id="q3-feedback"></div>
@@ -1618,13 +1622,13 @@
           <!-- Q5 -->
           <div class="quiz-question" data-q="5">
             <div class="q-prompt"><span class="q-num">Q5.</span>
-              Which statement MOST accurately describes the relationship between CISM and AAISM?
+              Which statement MOST accurately describes the relationship between Security+ and AAISM?
             </div>
             <ul class="q-options">
-              <li><label><input type="radio" name="q5" value="a"> AAISM replaces CISM for professionals working in AI-enabled organizations.</label></li>
+              <li><label><input type="radio" name="q5" value="a"> AAISM replaces Security+ for professionals working in AI-enabled organizations.</label></li>
               <li><label><input type="radio" name="q5" value="b"> AAISM is a standalone AI credential that can be earned without prior security management experience.</label></li>
-              <li><label><input type="radio" name="q5" value="c"> AAISM is a stackable specialization that assumes CISM-level foundational knowledge and adds AI-specific governance, risk, and technical control domains on top of it.</label></li>
-              <li><label><input type="radio" name="q5" value="d"> CISM and AAISM cover the same domains but AAISM provides more detail on technical controls.</label></li>
+              <li><label><input type="radio" name="q5" value="c"> AAISM is a stackable specialization that builds on foundational security knowledge and adds AI-specific governance, risk, and technical control domains on top of it.</label></li>
+              <li><label><input type="radio" name="q5" value="d"> Security+ and AAISM cover the same domains but AAISM provides more detail on AI-specific controls.</label></li>
             </ul>
             <div class="q-feedback" id="q5-feedback"></div>
           </div>
@@ -1650,7 +1654,7 @@
       <div class="sidebar-card-body">
         <ul class="sidebar-toc">
           <li><a href="#overview"><span class="toc-num">→</span>Lesson Overview</a></li>
-          <li><a href="#m1"><span class="toc-num">1</span>Why CISM Isn't Enough</a></li>
+          <li><a href="#m1"><span class="toc-num">1</span>Why Security+ Isn't Enough</a></li>
           <li><a href="#m2"><span class="toc-num">2</span>Six New Assumptions</a></li>
           <li><a href="#m3"><span class="toc-num">3</span>Course Map</a></li>
           <li><a href="#activity-a"><span class="toc-num">A</span>Activity A: Mapping</a></li>
@@ -1673,7 +1677,7 @@
         <ul class="lo-list" style="margin-top:.7rem;">
           <li>
             <div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)" aria-label="Mark objective 1 complete"></div>
-            <span>Explain why CISM alone is insufficient for AI enterprises.</span>
+            <span>Explain why traditional security certifications alone are insufficient for AI enterprises.</span>
           </li>
           <li>
             <div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)" aria-label="Mark objective 2 complete"></div>
@@ -1782,18 +1786,18 @@ function updateProgress() {
 
 /* ── Mapping exercise ────────────────────────────────────────── */
 const mappingData = [
-  { obj: "Explain why CISM alone is insufficient for AI-enabled enterprises.", bestDomain: "D1 Governance", bestCoverage: "Partially covered" },
-  { obj: "Identify the major AI governance frameworks (NIST AI RMF, ISO 42001, EU AI Act).", bestDomain: "D1 Governance", bestCoverage: "Not covered" },
-  { obj: "Apply the four NIST AI RMF functions to enterprise AI deployment.", bestDomain: "D2 Risk Management", bestCoverage: "Partially covered" },
-  { obj: "Classify AI systems under the EU AI Act's four risk tiers.", bestDomain: "D2 Risk Management", bestCoverage: "Not covered" },
-  { obj: "Differentiate AI risk categories: model risk, data risk, operational risk.", bestDomain: "D2 Risk Management", bestCoverage: "Partially covered" },
-  { obj: "Recognize shadow AI patterns and apply governance responses.", bestDomain: "D3 Program Development", bestCoverage: "Not covered" },
-  { obj: "Conduct vendor and supply-chain risk assessments for AI solutions.", bestDomain: "D2 Risk Management", bestCoverage: "Partially covered" },
-  { obj: "Design a defense-in-depth architecture for an AI-enabled application.", bestDomain: "D3 Program Development", bestCoverage: "Partially covered" },
-  { obj: "Adapt NIST SP 800-61 incident response lifecycle for AI-specific incidents.", bestDomain: "D4 Incident Management", bestCoverage: "Partially covered" },
+  { obj: "Explain why traditional certifications alone are insufficient for AI-enabled enterprises.", bestDomain: "Governance, Risk & Compliance", bestCoverage: "Partially covered" },
+  { obj: "Identify the major AI governance frameworks (NIST AI RMF, ISO 42001, EU AI Act).", bestDomain: "Governance, Risk & Compliance", bestCoverage: "Not covered" },
+  { obj: "Apply the four NIST AI RMF functions to enterprise AI deployment.", bestDomain: "Governance, Risk & Compliance", bestCoverage: "Partially covered" },
+  { obj: "Classify AI systems under the EU AI Act's four risk tiers.", bestDomain: "Governance, Risk & Compliance", bestCoverage: "Not covered" },
+  { obj: "Differentiate AI risk categories: model risk, data risk, operational risk.", bestDomain: "Governance, Risk & Compliance", bestCoverage: "Partially covered" },
+  { obj: "Recognize shadow AI patterns and apply governance responses.", bestDomain: "Architecture & Implementation", bestCoverage: "Not covered" },
+  { obj: "Conduct vendor and supply-chain risk assessments for AI solutions.", bestDomain: "Governance, Risk & Compliance", bestCoverage: "Partially covered" },
+  { obj: "Design a defense-in-depth architecture for an AI-enabled application.", bestDomain: "Architecture & Implementation", bestCoverage: "Partially covered" },
+  { obj: "Adapt NIST SP 800-61 incident response lifecycle for AI-specific incidents.", bestDomain: "Incident Response", bestCoverage: "Partially covered" },
 ];
 
-const domains = ["D1 Governance", "D2 Risk Management", "D3 Program Development", "D4 Incident Management"];
+const domains = ["Threats & Vulnerabilities", "Architecture & Implementation", "Identity & Access Management", "Cryptography & PKI", "Governance, Risk & Compliance", "Incident Response"];
 const coverages = ["Fully covered", "Partially covered", "Not covered"];
 
 const tbody = document.getElementById('mapping-rows');
@@ -1803,7 +1807,7 @@ if (tbody) {
     tr.innerHTML = `
       <td style="font-size:.84rem;line-height:1.4;">${row.obj}</td>
       <td>
-        <select id="map-domain-${i}" aria-label="CISM domain for objective ${i+1}">
+        <select id="map-domain-${i}" aria-label="Security+ domain for objective ${i+1}">
           <option value="">— Select —</option>
           ${domains.map(d => `<option value="${d}">${d}</option>`).join('')}
         </select>
@@ -1857,7 +1861,7 @@ const answers = {
   q2: { correct: 'b', explanation: 'Correct. The key insight is that training data defines behavior — it is a control plane, not merely stored information. Poisoning it modifies what the system does, making it fundamentally different from traditional data confidentiality risks.' },
   q3: { correct: 'b', explanation: 'Correct. Domain 3 carries the highest weight precisely because these controls — prompt injection defense, behavioral monitoring, MLOps security — transfer least from traditional security. They require genuinely new skills, not extensions of existing ones.' },
   q4: { correct: 'c', explanation: 'Correct. Non-determinism is the assumption that the same input can produce different outputs. This breaks traditional testing and validation approaches that assume repeatability.' },
-  q5: { correct: 'c', explanation: 'Correct. AAISM is explicitly designed as a stackable specialization — it requires CISM or CISSP as a prerequisite because it assumes foundational security management expertise and adds AI-specific domains on top.' },
+  q5: { correct: 'c', explanation: 'Correct. AAISM builds on foundational security knowledge — the learning pathway runs: Security+ foundational skills → advanced governance expertise → AAISM AI-specific domains. This course bridges the first step of that journey, establishing the AI security concepts that extend your Security+ foundation.' },
 };
 
 let quizScore = 0;
