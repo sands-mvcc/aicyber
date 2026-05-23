@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI-103 Lesson 5 — EU AI Act Risk Tiers & Obligations. All four risk tiers, high-risk system requirements (Articles 9–15), provider/deployer/importer roles, GPAI obligations, and penalties — with flip cards, interactive classification tree, and scenario labs.">
+<title>AI-103 · Day 5: EU AI Act — Risk Tiers &amp; Obligations</title>
+<style>
+:root{
+  --eu-blue:#003399;--eu-blue-dk:#001f6b;--eu-blue-lt:#2244aa;--eu-blue-xlt:#eef1fa;
+  --eu-gold:#ffcc00;--eu-gold-dk:#cc9900;
+  --tier-banned:#7a0000;--tier-banned-lt:#a00000;--tier-banned-bg:#fff0f0;
+  --tier-high:#8a3a00;--tier-high-lt:#aa4a00;--tier-high-bg:#fff4eb;
+  --tier-limited:#1a5500;--tier-limited-lt:#226600;--tier-limited-bg:#f0f8ee;
+  --tier-minimal:#1a3a5a;--tier-minimal-lt:#224a6b;--tier-minimal-bg:#eef2f8;
+  --oxblood:#6b1a1a;--oxblood-dk:#4a1010;--oxblood-lt:#8c2a2a;
+  --gold:#c8960c;--gold-lt:#e8b830;
+  --cream:#faf8f4;--parchment:#f2ede3;
+  --ink:#1a1a1a;--ink-soft:#3a3a3a;--ink-muted:#6b6b6b;
+  --border:#d4cdbf;--border-lt:#e8e2d8;--white:#ffffff;
+  --success:#1a6b2a;--success-bg:#e8f5eb;
+  --error:#6b1a1a;--error-bg:#fdeaea;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.08);
+  --shadow-md:0 4px 16px rgba(0,0,0,.12);
+  --shadow-lg:0 8px 36px rgba(0,0,0,.16);
+  --radius:6px;
+  --ff-serif:'Fraunces','Georgia',serif;
+  --ff-sans:'IBM Plex Sans','Segoe UI',system-ui,sans-serif;
+  --ff-mono:'IBM Plex Mono','Courier New',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff-sans);font-size:16px;line-height:1.7;color:var(--ink);background:var(--cream)}
+a{color:var(--eu-blue)}a:hover{text-decoration:underline}
+
+/* ── Skip / Topbar ─────────────────────────────────── */
+.skip-link{position:absolute;top:-40px;left:1rem;background:var(--oxblood);color:#fff;padding:.4rem .8rem;border-radius:var(--radius);font-size:.85rem;font-weight:600;transition:top .2s;z-index:9999}
+.skip-link:focus{top:.5rem}
+.topbar{background:var(--eu-blue-dk);color:rgba(255,255,255,.7);font-size:.78rem;font-family:var(--ff-mono);letter-spacing:.04em;padding:.45rem 2rem;display:flex;align-items:center;flex-wrap:wrap;gap:.3rem .7rem}
+.topbar a{color:rgba(255,255,255,.8);text-decoration:none}.topbar a:hover{color:#fff}
+.topbar-sep{opacity:.4}
+
+/* ── Header ─────────────────────────────────────────── */
+.site-header{background:var(--eu-blue);color:#fff;padding:2.8rem 2rem 2.2rem;position:relative;overflow:hidden}
+.site-header::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent,transparent 50px,rgba(255,255,255,.015) 50px,rgba(255,255,255,.015) 51px);pointer-events:none}
+.eu-stars{position:absolute;top:1.2rem;right:1.5rem;font-size:1.2rem;letter-spacing:.3rem;opacity:.3;display:none}
+@media(min-width:640px){.eu-stars{display:block}}
+.header-inner{max-width:1080px;margin:0 auto;position:relative}
+.lesson-eyebrow{font-family:var(--ff-mono);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--eu-gold);margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.lesson-eyebrow .sep{opacity:.4}
+.site-header h1{font-family:var(--ff-serif);font-size:clamp(1.7rem,3.5vw,2.5rem);font-weight:700;line-height:1.15;margin-bottom:.5rem}
+.site-header .tagline{font-size:.97rem;color:rgba(255,255,255,.75);max-width:700px;margin-bottom:1.4rem}
+.header-meta{display:flex;flex-wrap:wrap;gap:.5rem 1.2rem;font-size:.82rem;color:rgba(255,255,255,.62)}
+.header-meta strong{color:rgba(255,255,255,.9)}
+
+/* ── Sticky nav ─────────────────────────────────────── */
+.lesson-nav{background:var(--eu-blue-lt);border-bottom:3px solid var(--eu-gold);position:sticky;top:0;z-index:100}
+.lesson-nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;overflow-x:auto;scrollbar-width:none}
+.lesson-nav-inner::-webkit-scrollbar{display:none}
+.lesson-nav a{color:rgba(255,255,255,.72);font-size:.78rem;font-weight:600;letter-spacing:.04em;white-space:nowrap;padding:.6rem 1rem;border-bottom:3px solid transparent;margin-bottom:-3px;transition:all .15s;text-decoration:none}
+.lesson-nav a:hover,.lesson-nav a.active{color:#fff;border-bottom-color:var(--eu-gold);background:rgba(255,255,255,.07)}
+
+/* ── Layout ──────────────────────────────────────────── */
+.page-body{max-width:1080px;margin:0 auto;padding:2.5rem 1.5rem 5rem;display:grid;grid-template-columns:1fr 260px;gap:2.5rem;align-items:start}
+@media(max-width:820px){.page-body{grid-template-columns:1fr}.sidebar{display:none}}
+main{min-width:0}
+
+/* ── Sidebar ─────────────────────────────────────────── */
+.sidebar{position:sticky;top:56px}
+.sidebar-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:1rem;box-shadow:var(--shadow-sm)}
+.sc-head{background:var(--eu-blue);color:#fff;padding:.65rem 1rem;font-size:.78rem;font-family:var(--ff-mono);letter-spacing:.07em;text-transform:uppercase;font-weight:600}
+.sc-body{padding:.9rem 1rem}
+.sidebar-toc{list-style:none}
+.sidebar-toc li{border-bottom:1px solid var(--border-lt)}.sidebar-toc li:last-child{border-bottom:none}
+.sidebar-toc a{display:block;padding:.45rem 0;font-size:.82rem;color:var(--ink-soft);text-decoration:none;transition:color .15s}
+.sidebar-toc a:hover{color:var(--eu-blue)}
+.toc-num{font-family:var(--ff-mono);font-size:.72rem;color:var(--eu-blue);margin-right:.4rem}
+.lo-list{list-style:none}
+.lo-list li{font-size:.82rem;color:var(--ink-soft);padding:.35rem 0;border-bottom:1px solid var(--border-lt);display:flex;gap:.5rem;align-items:flex-start;line-height:1.45}
+.lo-list li:last-child{border-bottom:none}
+.lo-check{width:1.1rem;height:1.1rem;border:2px solid var(--eu-blue);border-radius:3px;flex-shrink:0;margin-top:.15rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.65rem;color:#fff;background:transparent;transition:background .15s}
+.lo-check.checked{background:var(--eu-blue)}.lo-check.checked::after{content:'✓'}
+.progress-wrap{height:6px;background:var(--border-lt);border-radius:3px;margin:.7rem 0 .4rem;overflow:hidden}
+.progress-fill{height:100%;background:var(--eu-blue);border-radius:3px;width:0%;transition:width .3s}
+.progress-label{font-size:.75rem;color:var(--ink-muted);font-family:var(--ff-mono)}
+
+/* ── Section structure ───────────────────────────────── */
+.lesson-section{margin-bottom:3rem}
+.section-title{font-family:var(--ff-serif);font-size:1.45rem;font-weight:700;color:var(--eu-blue);margin-bottom:.3rem;padding-bottom:.45rem;border-bottom:2px solid #c0ccee;display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap}
+.section-meta{font-family:var(--ff-mono);font-size:.72rem;letter-spacing:.06em;color:var(--ink-muted);text-transform:uppercase;font-weight:normal}
+h3{font-family:var(--ff-sans);font-size:1.05rem;font-weight:700;color:var(--ink);margin:1.5rem 0 .6rem}
+.prose p{margin-bottom:1rem;color:var(--ink-soft)}.prose p:last-child{margin-bottom:0}.prose strong{color:var(--ink)}
+
+/* ── Part banner ─────────────────────────────────────── */
+.part-banner{background:var(--eu-blue);color:#fff;border-radius:var(--radius);padding:.85rem 1.3rem;margin:2.5rem 0 1.8rem;display:flex;align-items:center;gap:1rem}
+.part-banner.tier-b{background:var(--tier-banned)}
+.part-banner.tier-h{background:var(--tier-high)}
+.part-banner.tier-l{background:var(--tier-limited)}
+.part-banner.tier-m{background:var(--tier-minimal)}
+.part-banner.roles{background:#2d3a6b}
+.part-banner.lab{background:var(--oxblood)}
+.pb-num{font-family:var(--ff-mono);font-size:1.3rem;font-weight:700;color:var(--eu-gold);line-height:1}
+.pb-title{font-family:var(--ff-serif);font-size:1.05rem;font-weight:700}
+.pb-time{margin-left:auto;font-family:var(--ff-mono);font-size:.75rem;color:rgba(255,255,255,.6);white-space:nowrap}
+
+/* ── Analogy box ─────────────────────────────────────── */
+.analogy-box{background:var(--parchment);border:1px solid var(--border);border-left:5px solid var(--gold);border-radius:var(--radius);padding:1.2rem 1.5rem;margin:1.5rem 0}
+.analogy-label{font-family:var(--ff-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dk,#8a6500);font-weight:700;margin-bottom:.4rem}
+.analogy-box p{color:var(--ink-soft);font-size:.95rem;margin-bottom:.5rem}.analogy-box p:last-child{margin-bottom:0}
+
+/* ── Callout ─────────────────────────────────────────── */
+.callout{background:#fff8e1;border:1px solid #e8c84a;border-left:5px solid var(--gold);border-radius:var(--radius);padding:1rem 1.3rem;margin:1.2rem 0;font-size:.92rem;color:var(--ink-soft)}
+.callout-label{font-weight:700;color:var(--ink);font-family:var(--ff-mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.3rem}
+.callout-eu{background:var(--eu-blue-xlt);border-color:#90a8d8;border-left-color:var(--eu-blue)}
+.callout-danger{background:#fdeaea;border-color:#e8a4a4;border-left-color:var(--tier-banned)}
+
+/* ── Timeline ────────────────────────────────────────── */
+.timeline{margin:1.5rem 0;position:relative}
+.timeline::before{content:'';position:absolute;left:1.5rem;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,var(--tier-banned),var(--eu-gold),var(--eu-blue),var(--tier-limited));border-radius:3px}
+.tl-item{display:flex;gap:1.2rem;margin-bottom:1.2rem;position:relative}
+.tl-dot{width:3rem;height:3rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;flex-shrink:0;z-index:1;box-shadow:var(--shadow-sm)}
+.tl-dot.d-banned{background:var(--tier-banned);color:#fff}
+.tl-dot.d-gpai{background:#2d3a6b;color:#fff}
+.tl-dot.d-high{background:var(--tier-high);color:#fff}
+.tl-dot.d-legacy{background:var(--tier-limited);color:#fff}
+.tl-content{flex:1;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:.8rem 1rem;box-shadow:var(--shadow-sm)}
+.tl-date{font-family:var(--ff-mono);font-size:.8rem;font-weight:700;margin-bottom:.2rem}
+.tl-date.banned{color:var(--tier-banned)}.tl-date.gpai{color:#2d3a6b}.tl-date.high{color:var(--tier-high)}.tl-date.legacy{color:var(--tier-limited)}
+.tl-title{font-weight:700;font-size:.92rem;color:var(--ink);margin-bottom:.3rem}
+.tl-detail{font-size:.85rem;color:var(--ink-soft);line-height:1.5}
+.tl-status{display:inline-block;font-family:var(--ff-mono);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:.15rem .5rem;border-radius:3px;margin-bottom:.3rem}
+.tl-status.now{background:#fdeaea;color:var(--tier-banned)}.tl-status.past{background:var(--success-bg);color:var(--success)}.tl-status.coming{background:var(--eu-blue-xlt);color:var(--eu-blue)}
+
+/* ── TIER CARDS — large visual ──────────────────────── */
+.tier-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin:1.5rem 0}
+.tier-card{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-md);display:flex;flex-direction:column;transition:transform .15s,box-shadow .15s}
+.tier-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.tier-card-head{padding:1rem 1.1rem .9rem;color:#fff}
+.tier-card-head.banned{background:var(--tier-banned)}
+.tier-card-head.high{background:var(--tier-high)}
+.tier-card-head.limited{background:var(--tier-limited)}
+.tier-card-head.minimal{background:var(--tier-minimal)}
+.tier-badge{font-family:var(--ff-mono);font-size:.68rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;background:rgba(255,255,255,.2);border-radius:3px;padding:.1rem .45rem;margin-bottom:.3rem;display:inline-block}
+.tier-name{font-family:var(--ff-serif);font-size:1.1rem;font-weight:700;line-height:1.2;margin-bottom:.25rem}
+.tier-penalty{font-family:var(--ff-mono);font-size:.75rem;opacity:.85}
+.tier-card-body{padding:.9rem 1.1rem;flex:1;background:#fff;border:1px solid var(--border);border-top:none}
+.tier-card-body p{font-size:.88rem;color:var(--ink-soft);line-height:1.55;margin-bottom:.5rem}
+.tier-card-body p:last-child{margin-bottom:0}
+.tier-examples{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.6rem}
+.ex-chip{font-size:.73rem;background:var(--parchment);border:1px solid var(--border-lt);color:var(--ink-muted);border-radius:3px;padding:.1rem .45rem}
+
+/* ── FLIP CARDS ──────────────────────────────────────── */
+.flip-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:1rem;margin:1.5rem 0}
+.flip-card{height:210px;cursor:pointer;perspective:900px}
+.flip-inner{width:100%;height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;position:relative}
+.flip-card.flipped .flip-inner{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--radius);padding:1.1rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:var(--shadow-sm)}
+.flip-front{background:#fff;border:1px solid var(--border)}
+.flip-back{transform:rotateY(180deg)}
+.flip-back.banned{background:var(--tier-banned);color:#fff}
+.flip-back.high{background:var(--tier-high);color:#fff}
+.flip-back.limited{background:var(--tier-limited);color:#fff}
+.flip-back.minimal{background:var(--tier-minimal);color:#fff}
+.flip-back.roles{background:#2d3a6b;color:#fff}
+.flip-back.obligations{background:var(--eu-blue);color:#fff}
+.flip-icon{font-size:2rem;margin-bottom:.5rem}
+.flip-article{font-family:var(--ff-mono);font-size:.7rem;font-weight:700;letter-spacing:.06em;margin-bottom:.25rem}
+.flip-article.banned{color:var(--tier-banned)}.flip-article.high{color:var(--tier-high)}.flip-article.limited{color:var(--tier-limited)}.flip-article.minimal{color:var(--tier-minimal)}.flip-article.roles{color:#2d3a6b}.flip-article.obligations{color:var(--eu-blue)}
+.flip-title{font-weight:700;font-size:.9rem;color:var(--ink);line-height:1.3;margin-bottom:.25rem}
+.flip-hint{font-size:.7rem;color:var(--ink-muted);font-family:var(--ff-mono)}
+.flip-back-title{font-weight:700;font-size:.85rem;margin-bottom:.4rem;color:rgba(255,215,0,.9)}
+.flip-body{font-size:.8rem;line-height:1.5;color:rgba(255,255,255,.92)}
+.flip-tag{font-family:var(--ff-mono);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.18);border-radius:3px;padding:.1rem .4rem;margin-top:.5rem;display:inline-block}
+
+/* ── EXPANDABLE DROPDOWNS ─────────────────────────────── */
+.expand-section{margin:1.2rem 0}
+.expand-item{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:.5rem;overflow:hidden;box-shadow:var(--shadow-sm);transition:box-shadow .15s}
+.expand-item:hover{box-shadow:var(--shadow-md)}
+.expand-trigger{width:100%;background:#fff;border:none;padding:.9rem 1.1rem;display:flex;align-items:center;gap:.7rem;cursor:pointer;font-family:var(--ff-sans);font-size:.92rem;font-weight:700;color:var(--ink);text-align:left;transition:background .15s}
+.expand-trigger:hover,.expand-trigger.open{background:var(--parchment)}
+.expand-code{font-family:var(--ff-mono);font-size:.75rem;font-weight:800;border-radius:3px;padding:.15rem .5rem;color:#fff;flex-shrink:0}
+.expand-code.eu{background:var(--eu-blue)}.expand-code.banned{background:var(--tier-banned)}.expand-code.high{background:var(--tier-high)}.expand-code.roles{background:#2d3a6b}
+.expand-badge{font-family:var(--ff-mono);font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:.1rem .45rem;border-radius:3px;margin-left:auto;flex-shrink:0}
+.expand-badge.eu{background:var(--eu-blue-xlt);color:var(--eu-blue)}.expand-badge.banned{background:var(--tier-banned-bg);color:var(--tier-banned)}.expand-badge.high{background:var(--tier-high-bg);color:var(--tier-high)}.expand-badge.roles{background:#eef0fa;color:#2d3a6b}
+.expand-chevron{font-size:.8rem;transition:transform .25s;flex-shrink:0;margin-left:.3rem;color:var(--ink-muted)}
+.expand-trigger.open .expand-chevron{transform:rotate(180deg)}
+.expand-body{display:none;background:#fff;border-top:1px solid var(--border-lt)}
+.expand-body.show{display:grid;grid-template-columns:1fr 1fr;gap:0}
+@media(max-width:640px){.expand-body.show{grid-template-columns:1fr}}
+.expand-col{padding:1rem 1.2rem}.expand-col+.expand-col{border-left:1px solid var(--border-lt)}
+.expand-col-label{font-family:var(--ff-mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:.5rem}
+.expand-col-label.eu{color:var(--eu-blue)}.expand-col-label.banned{color:var(--tier-banned)}.expand-col-label.high{color:var(--tier-high)}.expand-col-label.neutral{color:var(--oxblood)}.expand-col-label.roles{color:#2d3a6b}
+.eu-quote{background:var(--eu-blue-xlt);border-left:4px solid var(--eu-blue);padding:.65rem .9rem;font-size:.84rem;color:var(--eu-blue);font-style:italic;border-radius:0 4px 4px 0;margin-bottom:.7rem;line-height:1.5}
+.banned-quote{background:var(--tier-banned-bg);border-left:4px solid var(--tier-banned);color:var(--tier-banned);font-style:italic}
+.expand-col p{font-size:.88rem;color:var(--ink-soft);line-height:1.55;margin-bottom:.5rem}.expand-col p:last-child{margin-bottom:0}
+.expand-col ul{margin:.3rem 0 .5rem 1.1rem}.expand-col li{font-size:.85rem;color:var(--ink-soft);margin-bottom:.25rem;line-height:1.45}
+.pill{display:inline-block;font-family:var(--ff-mono);font-size:.68rem;font-weight:700;border-radius:3px;padding:.1rem .4rem;margin:.1rem}
+.pill.banned{background:var(--tier-banned-bg);color:var(--tier-banned)}.pill.high{background:var(--tier-high-bg);color:var(--tier-high)}.pill.limited{background:var(--tier-limited-bg);color:var(--tier-limited)}.pill.minimal{background:var(--tier-minimal-bg);color:var(--tier-minimal)}.pill.eu{background:var(--eu-blue-xlt);color:var(--eu-blue)}.pill.ok{background:var(--success-bg);color:var(--success)}
+
+/* ── DECISION TREE ───────────────────────────────────── */
+.dtree-container{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:1.5rem 0;box-shadow:var(--shadow-md)}
+.dtree-header{background:var(--eu-blue);color:#fff;padding:.8rem 1.2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.dtree-title{font-family:var(--ff-mono);font-size:.8rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+.dtree-body{padding:1.4rem}
+.dtree-step{display:none}.dtree-step.active{display:block}
+.dt-q{font-family:var(--ff-serif);font-size:1.1rem;font-weight:700;color:var(--eu-blue);margin-bottom:.3rem;line-height:1.3}
+.dt-context{font-size:.88rem;color:var(--ink-muted);margin-bottom:1rem;line-height:1.5}
+.dt-options{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1rem}
+.dt-option{background:var(--parchment);border:2px solid var(--border);border-radius:4px;padding:.65rem 1rem;font-size:.9rem;color:var(--ink-soft);cursor:pointer;text-align:left;transition:all .15s;font-family:var(--ff-sans);font-weight:600}
+.dt-option:hover{border-color:var(--eu-blue);color:var(--eu-blue);background:var(--eu-blue-xlt)}
+.dtree-result{border-radius:var(--radius);padding:1.2rem 1.4rem;display:none}
+.dtree-result.show{display:block}
+.dtree-result.banned{background:var(--tier-banned-bg);border:2px solid var(--tier-banned)}
+.dtree-result.high{background:var(--tier-high-bg);border:2px solid var(--tier-high)}
+.dtree-result.limited{background:var(--tier-limited-bg);border:2px solid var(--tier-limited)}
+.dtree-result.minimal{background:var(--tier-minimal-bg);border:2px solid var(--tier-minimal)}
+.result-tier{font-family:var(--ff-serif);font-size:1.15rem;font-weight:700;margin-bottom:.4rem}
+.result-tier.banned{color:var(--tier-banned)}.result-tier.high{color:var(--tier-high)}.result-tier.limited{color:var(--tier-limited)}.result-tier.minimal{color:var(--tier-minimal)}
+.result-body{font-size:.9rem;color:var(--ink-soft);line-height:1.6;margin-bottom:.7rem}
+.result-obligations{font-size:.85rem;color:var(--ink-soft)}
+.result-obligations strong{color:var(--ink)}
+.dtree-nav{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1rem;align-items:center}
+.dt-breadcrumb{font-family:var(--ff-mono);font-size:.75rem;color:var(--ink-muted);padding:.6rem 0;flex:1}
+
+/* ── TABLES ──────────────────────────────────────────── */
+.table-wrap{overflow-x:auto;margin:1.5rem 0}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);font-size:.87rem}
+thead tr{background:var(--eu-blue);color:#fff}
+thead th{padding:.7rem 1rem;text-align:left;font-family:var(--ff-mono);font-size:.73rem;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+tbody tr{border-bottom:1px solid var(--border-lt)}.tbody tr:last-child{border-bottom:none}
+tbody td{padding:.65rem 1rem;color:var(--ink-soft);vertical-align:top;line-height:1.5}
+tbody td:first-child{font-weight:600;color:var(--ink)}
+tbody tr:hover{background:var(--parchment)}
+.cell-banned{color:var(--tier-banned);font-weight:700}.cell-high{color:var(--tier-high);font-weight:700}.cell-limited{color:var(--tier-limited);font-weight:700}.cell-minimal{color:var(--tier-minimal);font-weight:700}
+.cell-yes{background:var(--success-bg)!important;color:var(--success);font-weight:700;text-align:center}.cell-no{background:var(--error-bg)!important;color:var(--error);text-align:center}.cell-partial{background:#fff8e1!important;color:var(--tier-high);text-align:center}
+
+/* ── ROLE IDENTIFIER ACTIVITY ────────────────────────── */
+.role-activity{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:1.5rem 0;box-shadow:var(--shadow-md)}
+.ra-header{background:#2d3a6b;color:#fff;padding:.8rem 1.2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.ra-title{font-family:var(--ff-mono);font-size:.8rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+.ra-score{font-family:var(--ff-mono);font-size:.82rem;color:var(--eu-gold)}
+.ra-body{padding:1.3rem 1.5rem}
+.ra-body>p{color:var(--ink-soft);font-size:.92rem;margin-bottom:1rem}
+.ra-scenarios{display:flex;flex-direction:column;gap:1rem}
+.ra-scenario{background:var(--parchment);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.2rem}
+.ra-sc-num{font-family:var(--ff-mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.07em;color:#2d3a6b;font-weight:700;margin-bottom:.3rem}
+.ra-sc-text{font-size:.9rem;color:var(--ink-soft);line-height:1.55;margin-bottom:.8rem}
+.ra-role-options{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.6rem}
+.ra-btn{font-family:var(--ff-sans);font-size:.83rem;font-weight:600;padding:.4rem .9rem;border:2px solid var(--border);border-radius:4px;background:#fff;color:var(--ink-soft);cursor:pointer;transition:all .15s}
+.ra-btn:hover{border-color:#2d3a6b;color:#2d3a6b;background:#eef0fa}
+.ra-btn.selected{border-color:#2d3a6b;background:#eef0fa;color:#2d3a6b}
+.ra-btn.correct-reveal{border-color:var(--success);background:var(--success-bg);color:var(--success);font-weight:700}
+.ra-btn.wrong-reveal{border-color:var(--error);background:var(--error-bg);color:var(--error)}
+.ra-feedback{font-size:.85rem;line-height:1.55;padding:.6rem .8rem;border-radius:4px;display:none}
+.ra-feedback.show{display:block}
+.ra-feedback.ok{background:var(--success-bg);border:1px solid #a8d4b0;color:var(--success)}
+.ra-feedback.bad{background:var(--error-bg);border:1px solid #e8b4b4;color:var(--error)}
+
+/* ── SCENARIO MATCH ACTIVITY ─────────────────────────── */
+.scenario-match{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:1.5rem 0;box-shadow:var(--shadow-md)}
+.sm-header{background:var(--eu-blue);color:#fff;padding:.8rem 1.2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.sm-title{font-family:var(--ff-mono);font-size:.8rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+.sm-score{font-family:var(--ff-mono);font-size:.82rem;color:var(--eu-gold)}
+.sm-body{padding:1.3rem 1.5rem}
+.sm-body>p{color:var(--ink-soft);font-size:.92rem;margin-bottom:.8rem}
+.sm-scenario-list{display:flex;flex-direction:column;gap:.6rem;margin-bottom:1rem}
+.sm-sc{background:var(--parchment);border:1px solid var(--border);border-left:4px solid var(--eu-blue);border-radius:var(--radius);padding:.8rem 1rem;display:flex;align-items:flex-start;gap:.8rem;flex-wrap:wrap}
+.sm-sc-num{font-family:var(--ff-mono);font-size:.72rem;font-weight:700;color:var(--eu-blue);flex-shrink:0;margin-top:.1rem}
+.sm-sc-text{font-size:.88rem;color:var(--ink-soft);flex:1;line-height:1.5;min-width:200px}
+.sm-select{font-family:var(--ff-sans);font-size:.85rem;border:1px solid var(--border);border-radius:4px;padding:.35rem .6rem;background:#fff;color:var(--ink);cursor:pointer;flex-shrink:0}
+.sm-select:focus{outline:2px solid var(--eu-blue)}
+.sm-check-results{margin-top:.8rem;display:none}
+.sm-check-results.show{display:block}
+.sm-result-row{display:flex;align-items:flex-start;gap:.6rem;font-size:.85rem;margin-bottom:.4rem;line-height:1.45}
+
+/* ── QUIZ ─────────────────────────────────────────────── */
+.quiz-block{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:1.5rem 0;box-shadow:var(--shadow-sm)}
+.quiz-head{background:var(--eu-blue-dk);color:#fff;padding:.7rem 1.2rem;font-family:var(--ff-mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;display:flex;align-items:center;justify-content:space-between}
+.quiz-score{color:var(--eu-gold)}
+.quiz-q{padding:1.2rem 1.5rem;border-bottom:1px solid var(--border-lt)}.quiz-q:last-child{border-bottom:none}
+.q-prompt{font-weight:600;color:var(--ink);font-size:.95rem;margin-bottom:.9rem;line-height:1.5}
+.q-num{font-family:var(--ff-mono);font-size:.72rem;color:var(--eu-blue);font-weight:700;margin-right:.4rem}
+.q-opts{list-style:none}
+.q-opts li{margin-bottom:.45rem}
+.q-opts label{display:flex;align-items:flex-start;gap:.7rem;cursor:pointer;padding:.5rem .8rem;border:1px solid var(--border-lt);border-radius:4px;font-size:.88rem;color:var(--ink-soft);background:var(--cream);transition:background .12s}
+.q-opts label:hover{background:var(--parchment);border-color:var(--border)}
+.q-opts input[type=radio]{flex-shrink:0;margin-top:.2rem;accent-color:var(--eu-blue)}
+.q-fb{margin-top:.7rem;padding:.7rem .9rem;border-radius:4px;font-size:.86rem;display:none;line-height:1.5}
+.q-fb.ok{background:var(--success-bg);border:1px solid #a8d4b0;color:var(--success)}
+.q-fb.bad{background:var(--error-bg);border:1px solid #e8b4b4;color:var(--error)}
+.q-fb.show{display:block}
+.quiz-actions{padding:1rem 1.5rem;border-top:1px solid var(--border-lt);display:flex;gap:.7rem;flex-wrap:wrap;align-items:center}
+.btn{font-family:var(--ff-sans);font-weight:700;font-size:.88rem;padding:.55rem 1.2rem;border:none;border-radius:var(--radius);cursor:pointer;transition:background .15s,transform .1s}
+.btn:active{transform:scale(.97)}
+.btn-eu{background:var(--eu-blue);color:#fff}.btn-eu:hover{background:var(--eu-blue-lt)}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--ink-soft)}.btn-ghost:hover{background:var(--parchment)}
+.btn-banned{background:var(--tier-banned);color:#fff}.btn-high{background:var(--tier-high);color:#fff}
+.quiz-msg{font-size:.88rem;color:var(--ink-muted);font-family:var(--ff-mono)}
+
+/* ── Artifact ─────────────────────────────────────────── */
+.artifact-block{background:var(--parchment);border:1px solid var(--border);border-left:5px solid var(--oxblood);border-radius:var(--radius);padding:1.2rem 1.5rem;margin:1.5rem 0}
+.artifact-label{font-family:var(--ff-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--oxblood);font-weight:700;margin-bottom:.4rem}
+.artifact-block h4{font-family:var(--ff-serif);font-size:1rem;font-weight:700;margin-bottom:.5rem;color:var(--ink)}
+.artifact-block p{font-size:.9rem;color:var(--ink-soft);margin-bottom:.5rem}.artifact-block p:last-child{margin-bottom:0}
+.artifact-block ul{margin:.4rem 0 .5rem 1.2rem}.artifact-block li{font-size:.9rem;color:var(--ink-soft);margin-bottom:.3rem}
+
+/* ── Footer ──────────────────────────────────────────── */
+.lesson-nav-footer{max-width:1080px;margin:0 auto;display:flex;justify-content:space-between;padding:1rem 1.5rem;border-top:1px solid var(--border);flex-wrap:wrap;gap:.5rem}
+.lesson-nav-footer a{font-size:.88rem;font-weight:700;color:var(--oxblood)}
+footer{background:var(--eu-blue-dk);color:rgba(255,255,255,.55);text-align:center;font-size:.8rem;padding:1.5rem 1rem;font-family:var(--ff-mono);letter-spacing:.03em}
+footer strong{color:rgba(255,255,255,.8)}
+
+@media(max-width:640px){.site-header{padding:2rem 1rem 1.6rem}.topbar{padding:.4rem 1rem}.flip-grid{grid-template-columns:1fr 1fr}}
+@media print{.lesson-nav,.topbar,.sidebar{display:none}.page-body{grid-template-columns:1fr}body{background:#fff}}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<div class="topbar">
+  <a href="index.html">← AI-103 Course Home</a>
+  <span class="topbar-sep">·</span>
+  <span>MVCC · Dept. of Engineering &amp; Technology</span>
+  <span class="topbar-sep">·</span>
+  <span>Dr. John L. Sands</span>
+</div>
+
+<header class="site-header">
+  <div class="eu-stars">★★★★★★★★★★★★</div>
+  <div class="header-inner">
+    <div class="lesson-eyebrow">
+      <span>AI-103: AI Cybersecurity Foundations</span>
+      <span class="sep">·</span><span>Day 5 of 15</span>
+      <span class="sep">·</span><span>4 Contact Hours</span>
+    </div>
+    <h1>EU AI Act — Risk Tiers &amp; Obligations</h1>
+    <p class="tagline">The world's first binding AI law. Four risk tiers, nine high-risk requirements, four stakeholder roles, and fines that can exceed $1 billion. How to classify, comply, and stay out of court.</p>
+    <div class="header-meta">
+      <span>⚖️ <strong>Regulation (EU) 2024/1689</strong></span>
+      <span>⏱ <strong>4 hours · 6 modules + 3 activities</strong></span>
+      <span>🎯 <strong>Learning Objectives 4 &amp; 8</strong></span>
+      <span>📝 <strong>Classification worksheet due end of class</strong></span>
+    </div>
+  </div>
+</header>
+
+<nav class="lesson-nav">
+  <div class="lesson-nav-inner">
+    <a href="#overview" class="active">Overview</a>
+    <a href="#m1">1 · Why Binding Matters</a>
+    <a href="#m2">2 · Timeline</a>
+    <a href="#m3">3 · Four Tiers</a>
+    <a href="#m4">4 · High-Risk Obligations</a>
+    <a href="#m5">5 · Roles &amp; Value Chain</a>
+    <a href="#m6">6 · GPAI Models</a>
+    <a href="#activity-tree">Activity: Classify It</a>
+    <a href="#activity-roles">Activity: Role Identifier</a>
+    <a href="#activity-match">Activity: Scenario Match</a>
+    <a href="#artifact">Assessment</a>
+    <a href="#quiz">Quiz</a>
+  </div>
+</nav>
+
+<div class="page-body">
+<main id="main">
+
+<!-- ── OVERVIEW ─────────────────────────────────────────────── -->
+<section id="overview" class="lesson-section">
+  <h2 class="section-title"><span>🧭</span> Lesson Overview <span class="section-meta">Day 5 · 4 hours</span></h2>
+  <div class="prose">
+    <p>Day 2 introduced the EU AI Act as one of four frameworks in the governance landscape. Today you go deep. The EU AI Act (Regulation 2024/1689) is not a framework, a guideline, or a voluntary code of conduct. <strong>It is binding law</strong> — directly applicable in all 27 EU member states, with extraterritorial reach, escalating penalties, and a compliance clock that is already running for most organizations.</p>
+    <p>The central skill this lesson builds is <strong>classification</strong>: given a real AI system, determine which of the four risk tiers applies, which obligations follow from that classification, and which organizational role — provider, deployer, importer, or distributor — determines your specific compliance burden. Classification errors have legal consequences.</p>
+  </div>
+  <div class="analogy-box">
+    <div class="analogy-label">🎓 Anchoring Analogy: The Pharmaceutical Approval System</div>
+    <p>The EU AI Act's risk-tiered approach mirrors pharmaceutical regulation. <strong>Over-the-counter aspirin</strong> requires minimal oversight — a label and basic safety data. <strong>Prescription medications</strong> require clinical trials, physician authorization, and post-market surveillance. <strong>Experimental treatments</strong> require compassionate use protocols, specialized facilities, and intensive monitoring. Some drugs are <strong>banned outright</strong> regardless of claimed benefit.</p>
+    <p>The EU AI Act works identically: most AI (aspirin) needs minimal oversight. AI in high-stakes contexts (prescription drugs) needs rigorous pre-market evaluation and human oversight. Some AI practices (banned substances) are prohibited entirely, no exceptions. The same molecule — the same model — can be OTC or prescription depending on its <em>use case</em>. <strong>Classification in the EU AI Act is use-case driven, not technology driven.</strong></p>
+  </div>
+  <h3>Day 5 Learning Objectives</h3>
+  <ol style="margin-left:1.3rem;color:var(--ink-soft);font-size:.92rem">
+    <li style="margin-bottom:.4rem">Explain the EU AI Act's legal structure, extraterritorial scope, and why "binding" matters differently from voluntary frameworks.</li>
+    <li style="margin-bottom:.4rem">Classify AI systems into the four EU AI Act risk tiers and identify what triggers each classification.</li>
+    <li style="margin-bottom:.4rem">List the nine high-risk AI system requirements (Articles 9–15) and explain what each demands in practice.</li>
+    <li style="margin-bottom:.4rem">Distinguish the obligations of providers, deployers, importers, and distributors — including the Article 25 "accidental provider" trap.</li>
+    <li style="margin-bottom:.4rem">Explain GPAI model obligations (Articles 53 and 55) and the systemic risk threshold.</li>
+    <li style="margin-bottom:.4rem">Apply the enforcement timeline to determine which obligations are already in force vs. pending.</li>
+    <li style="margin-bottom:.4rem">Classify a real-world AI scenario into the correct tier and role, with supporting rationale.</li>
+  </ol>
+</section>
+
+<!-- ── M1: WHY BINDING MATTERS ──────────────────────────────── -->
+<section id="m1" class="lesson-section">
+  <h2 class="section-title"><span>⚖️</span> Module 1 · Why "Binding" Changes Everything <span class="section-meta">20 min</span></h2>
+  <div class="prose">
+    <p>Every other AI framework you have studied in this course — NIST AI RMF, ISO/IEC 42001, OWASP LLM Top 10 — is voluntary. The EU AI Act is not. Understanding this distinction is not semantic hair-splitting; it changes how compliance works, who is liable, and what the consequences of failure are.</p>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Dimension</th><th>Voluntary Framework (NIST AI RMF)</th><th>Binding Regulation (EU AI Act)</th></tr></thead>
+      <tbody>
+        <tr><td>Legal force</td><td>Guidance. Non-compliance has no direct legal consequence.</td><td>Law. Non-compliance triggers enforceable penalties.</td></tr>
+        <tr><td>Who enforces</td><td>Nobody — market forces, procurement requirements, reputational pressure.</td><td>EU AI Office (GPAI) + national market surveillance authorities (high-risk) + data protection authorities.</td></tr>
+        <tr><td>Penalties</td><td>None directly. Risk: audit failure, lost contracts, reputational harm.</td><td>Up to €35M or 7% of global annual turnover — whichever is higher. For GPAI: €15M or 3%.</td></tr>
+        <tr><td>Extraterritorial reach</td><td>No. Applies where organizations choose to adopt it.</td><td>Yes. Applies to any AI output that reaches EU users — regardless of where the provider is headquartered.</td></tr>
+        <tr><td>Timeline</td><td>No deadlines. Organizations adopt at their own pace.</td><td>Staggered mandatory dates: Feb 2025, Aug 2025, Aug 2026, Aug 2027. Already partially in force.</td></tr>
+        <tr><td>Role-specific duties</td><td>Flexible. Organizations self-select responsibilities.</td><td>Precise. Provider, deployer, importer, distributor have legally defined, non-negotiable duties.</td></tr>
+        <tr><td>Certification</td><td>ISO 42001 is certifiable (optional market signal).</td><td>CE marking + EU database registration is mandatory for high-risk systems before market placement.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout callout-eu">
+    <div class="callout-label">🌍 Extraterritorial Scope — The GDPR Parallel</div>
+    Like GDPR, the EU AI Act applies to organizations outside the EU if their AI system's outputs reach EU users. A US community college deploying an AI advising tool used by EU-based exchange students, a SaaS company selling AI-powered HR tools to EU employers, a global retailer using AI recommendation engines — all are in scope. "We're not headquartered in the EU" is not a defense. The question is: <strong>does your AI system's output reach anyone in the EU?</strong>
+  </div>
+  <div class="callout callout-danger">
+    <div class="callout-label">💰 Penalty Scale — Context Matters</div>
+    7% of Alphabet's 2024 global annual revenue would exceed <strong>$21 billion</strong>. Even for a mid-size enterprise with $500M in annual revenue, 7% = $35M. The penalty structure is designed to be material at any organization size — unlike many regulatory fines that large companies treat as a cost of doing business. <strong>Prohibited practices: up to €35M or 7% of global turnover. High-risk violations: up to €15M or 3%. GPAI violations: up to €15M or 3%. Providing false information to authorities: up to €7.5M or 1%.</strong>
+  </div>
+</section>
+
+<!-- ── M2: TIMELINE ─────────────────────────────────────────── -->
+<section id="m2" class="lesson-section">
+  <h2 class="section-title"><span>📅</span> Module 2 · Enforcement Timeline — Where We Are Now <span class="section-meta">15 min</span></h2>
+  <div class="prose">
+    <p>The EU AI Act uses a phased rollout across three years. The critical insight for compliance planning: <strong>as of May 2026, most organizations subject to the Act are already non-compliant on at least some obligations</strong> — prohibited practices and GPAI model rules have been in force for months. The August 2026 high-risk deadline is 9 weeks away.</p>
+  </div>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot d-banned">✓</div>
+      <div class="tl-content">
+        <div class="tl-status past">Already in Force</div>
+        <div class="tl-date banned">August 1, 2024</div>
+        <div class="tl-title">EU AI Act Enters Into Force</div>
+        <div class="tl-detail">Regulation (EU) 2024/1689 published in the Official Journal. 24-month main implementation clock starts. AI governance programs should have been launched at this point.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot d-banned">✓</div>
+      <div class="tl-content">
+        <div class="tl-status past">Already in Force</div>
+        <div class="tl-date banned">February 2, 2025</div>
+        <div class="tl-title">Prohibited AI Practices Banned — Article 5 Enforceable</div>
+        <div class="tl-detail">All eight prohibited AI practices are illegal. Also: Article 4 AI literacy obligations apply. Organizations using prohibited AI practices have been in violation since this date. Penalties: up to €35M or 7% global turnover.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot d-gpai">✓</div>
+      <div class="tl-content">
+        <div class="tl-status past">Already in Force</div>
+        <div class="tl-date gpai">August 2, 2025</div>
+        <div class="tl-title">GPAI Model Obligations — Articles 53 &amp; 55 Apply</div>
+        <div class="tl-detail">All GPAI model providers must meet transparency and copyright obligations (Article 53). Models with systemic risk (>10²⁵ FLOPs) face additional safety requirements (Article 55). EU AI Office and national competent authorities operational. GPAI Code of Practice published July 10, 2025.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot d-high">⚠️</div>
+      <div class="tl-content">
+        <div class="tl-status now">⏰ 9 Weeks Away — August 2, 2026</div>
+        <div class="tl-date high">August 2, 2026</div>
+        <div class="tl-title">High-Risk AI System Obligations — Full Enforcement</div>
+        <div class="tl-detail">All Annex III high-risk AI systems must comply with Articles 9–15 (risk management, data governance, technical documentation, logging, transparency, human oversight, accuracy/robustness/security). Conformity assessment, CE marking, and EU database registration required before market placement. Article 50 transparency obligations for limited-risk systems also begin. Penalties: €15M or 3% for violations.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot d-legacy">→</div>
+      <div class="tl-content">
+        <div class="tl-status coming">Upcoming — Aug 2, 2027</div>
+        <div class="tl-date legacy">August 2, 2027</div>
+        <div class="tl-title">Legacy Embedded High-Risk Systems</div>
+        <div class="tl-detail">High-risk AI already embedded in Annex II products (medical devices, machinery, toys, aviation components) governed by existing EU safety legislation must comply. Also: transitional period ends for GPAI models already on market before August 2025.</div>
+      </div>
+    </div>
+  </div>
+  <div class="callout callout-danger">
+    <div class="callout-label">⚠️ Conformity Assessment Lead Time — You Are Already Late</div>
+    EU AI Act conformity assessment for high-risk systems typically takes 12–18 months when done properly: risk management system build-out (3–4 months), technical documentation (2–3 months), data governance review (2 months), human oversight design and testing (2–3 months), internal audit, then external conformity body review (2–4 months). With August 2, 2026 nine weeks away, organizations that have not started are not "almost ready" — they need an emergency compliance plan and a risk-acceptance decision for the interim period.
+  </div>
+</section>
+
+<!-- ── M3: FOUR TIERS ───────────────────────────────────────── -->
+<section id="m3" class="lesson-section">
+  <h2 class="section-title"><span>🔺</span> Module 3 · The Four Risk Tiers — Classification Logic <span class="section-meta">30 min</span></h2>
+  <div class="prose">
+    <p>The EU AI Act uses a risk-based approach: obligations scale with the potential for harm. Classification happens once per system per deployment context — and it determines your entire compliance burden. The critical rule: <strong>classification is use-case specific, not model specific</strong>. The same underlying model can be minimal-risk in one application and high-risk in another.</p>
+  </div>
+
+  <div class="tier-grid">
+    <div class="tier-card">
+      <div class="tier-card-head banned">
+        <div class="tier-badge">Article 5</div>
+        <div class="tier-name">🚫 Unacceptable Risk — Prohibited</div>
+        <div class="tier-penalty">Penalty: €35M or 7% global turnover</div>
+      </div>
+      <div class="tier-card-body">
+        <p>AI practices considered fundamentally incompatible with EU values and fundamental rights. <strong>Banned since February 2, 2025.</strong> No business justification, technical sophistication, or societal benefit argument creates an exception.</p>
+        <div class="tier-examples">
+          <span class="ex-chip">Social scoring by governments</span><span class="ex-chip">Real-time biometric ID in public</span><span class="ex-chip">Emotion recognition at work/school</span><span class="ex-chip">Subliminal manipulation</span><span class="ex-chip">Exploiting vulnerabilities of groups</span><span class="ex-chip">Predictive policing by profiling</span><span class="ex-chip">Biometric categorization by protected characteristics</span><span class="ex-chip">Facial image scraping from internet/CCTV</span>
+        </div>
+      </div>
+    </div>
+    <div class="tier-card">
+      <div class="tier-card-head high">
+        <div class="tier-badge">Articles 6–27 + Annex III</div>
+        <div class="tier-name">⚠️ High Risk</div>
+        <div class="tier-penalty">Penalty: €15M or 3% global turnover</div>
+      </div>
+      <div class="tier-card-body">
+        <p>Permitted but heavily regulated. Must meet nine mandatory requirements before market placement. Requires conformity assessment, CE marking, and EU database registration. <strong>Full enforcement: August 2, 2026.</strong></p>
+        <div class="tier-examples">
+          <span class="ex-chip">Employment &amp; HR decisions</span><span class="ex-chip">Credit scoring</span><span class="ex-chip">Student admissions</span><span class="ex-chip">Law enforcement risk assessment</span><span class="ex-chip">Border control</span><span class="ex-chip">Critical infrastructure safety</span><span class="ex-chip">Medical device AI</span><span class="ex-chip">Judicial decision support</span>
+        </div>
+      </div>
+    </div>
+    <div class="tier-card">
+      <div class="tier-card-head limited">
+        <div class="tier-badge">Article 50</div>
+        <div class="tier-name">ℹ️ Limited Risk — Transparency</div>
+        <div class="tier-penalty">Transparency obligations only</div>
+      </div>
+      <div class="tier-card-body">
+        <p>Permitted with disclosure obligations under Article 50. Users must know they are interacting with AI, or that content is AI-generated. <strong>Enforcement begins August 2, 2026.</strong></p>
+        <div class="tier-examples">
+          <span class="ex-chip">Chatbots &amp; virtual assistants</span><span class="ex-chip">Deepfake disclosure</span><span class="ex-chip">AI-generated text labeling</span><span class="ex-chip">Emotion recognition (non-prohibited contexts)</span><span class="ex-chip">Synthetic media marking</span>
+        </div>
+      </div>
+    </div>
+    <div class="tier-card">
+      <div class="tier-card-head minimal">
+        <div class="tier-badge">No Specific Obligations</div>
+        <div class="tier-name">✅ Minimal Risk</div>
+        <div class="tier-penalty">AI literacy (Article 4) only</div>
+      </div>
+      <div class="tier-card-body">
+        <p>Vast majority of AI applications. No Act-specific mandatory obligations beyond Article 4 AI literacy. Voluntary codes of conduct encouraged. <strong>Internal governance (NIST AI RMF, ISO 42001) still applies.</strong></p>
+        <div class="tier-examples">
+          <span class="ex-chip">Spam filters</span><span class="ex-chip">AI video games</span><span class="ex-chip">Basic recommendation engines</span><span class="ex-chip">Grammar checkers</span><span class="ex-chip">Productivity AI (scheduling, summarization)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout-eu">
+    <div class="callout-label">🔑 The Classification Rule: Use-Case First, Not Model First</div>
+    An LLM used as a general-purpose writing assistant = minimal risk. The same LLM integrated into a hiring screening tool that influences employment decisions = high-risk (Annex III, employment use case). The same LLM used by a law enforcement agency to assess crime risk = high-risk (law enforcement use case). <strong>You classify the deployment context, not the underlying model.</strong> This is why classification analysis must precede any AI deployment decision — the risk tier determines the entire compliance architecture.
+  </div>
+
+  <h3>Flip Cards: Prohibited Practices — Know All Eight</h3>
+  <p style="font-size:.9rem;color:var(--ink-soft);margin-bottom:.5rem">All eight prohibited AI practices under Article 5 have been enforceable since February 2, 2025. Click each card to see the exact prohibition and a practical boundary example.</p>
+  <div class="flip-grid" id="banned-flip-grid" role="list" aria-label="Article 5 prohibited AI practices flip cards"></div>
+
+  <h3 style="margin-top:2rem">High-Risk Use Cases — Annex III Categories</h3>
+  <p style="font-size:.9rem;color:var(--ink-soft);margin-bottom:1rem">Annex III lists eight specific use-case categories where AI systems are classified as high-risk. Click each card to see the full scope of that category and key classification considerations.</p>
+  <div class="flip-grid" id="highrisk-flip-grid" role="list" aria-label="Annex III high-risk use case flip cards"></div>
+</section>
+
+<!-- ── M4: HIGH-RISK OBLIGATIONS ────────────────────────────── -->
+<section id="m4" class="lesson-section">
+  <h2 class="section-title"><span>📋</span> Module 4 · High-Risk System Requirements — Articles 9–15 <span class="section-meta">35 min</span></h2>
+  <div class="prose">
+    <p>High-risk AI systems must meet nine mandatory requirements before being placed on the EU market or put into service. These are not post-deployment obligations — they are <em>pre-market requirements</em>. A system that does not meet them cannot legally be deployed to EU users. Click each requirement to expand the full detail.</p>
+  </div>
+  <div class="analogy-box">
+    <div class="analogy-label">💡 The Aviation Type Certification Analogy</div>
+    <p>A new aircraft design cannot carry passengers until it achieves type certification — a rigorous pre-market process covering structural integrity, systems redundancy, emergency procedures, and pilot training. Certification is not a checklist you complete on day one of operation; it's a comprehensive pre-deployment evaluation that must pass before a single passenger boards.</p>
+    <p><strong>Articles 9–15 are the EU AI Act's type certification for high-risk AI systems.</strong> Risk management, data governance, technical documentation, logging, transparency, human oversight, and accuracy/robustness/cybersecurity must all be in place and verified before the system is placed on the market — not after incidents occur.</p>
+  </div>
+  <div class="expand-section" id="high-risk-expand"></div>
+  <div class="table-wrap">
+    <table>
+      <thead class="ox-head"><tr><th>Article</th><th>Requirement</th><th>Who Bears It</th><th>Key Deliverable</th></tr></thead>
+      <tbody>
+        <tr><td>Art. 9</td><td>Risk Management System</td><td>Provider</td><td>Documented, iterative, lifecycle-spanning risk management system</td></tr>
+        <tr><td>Art. 10</td><td>Data and Data Governance</td><td>Provider</td><td>Training/validation/test dataset quality plan; bias evaluation; data lineage records</td></tr>
+        <tr><td>Art. 11</td><td>Technical Documentation</td><td>Provider</td><td>Complete technical file per Annex IV — must be available to authorities on request</td></tr>
+        <tr><td>Art. 12</td><td>Record-Keeping / Logging</td><td>Provider (design); Deployer (retention)</td><td>Automatic logs of operation; deployer retains logs ≥ 6 months</td></tr>
+        <tr><td>Art. 13</td><td>Transparency &amp; Instructions for Use</td><td>Provider</td><td>Instructions for use covering capabilities, limitations, known failure modes</td></tr>
+        <tr><td>Art. 14</td><td>Human Oversight</td><td>Provider (design); Deployer (implementation)</td><td>Ability to understand, monitor, override, suspend — designed into the system</td></tr>
+        <tr><td>Art. 15</td><td>Accuracy, Robustness &amp; Cybersecurity</td><td>Provider</td><td>Accuracy metrics, robustness against adversarial inputs, cybersecurity measures</td></tr>
+        <tr><td>Art. 16–17</td><td>Quality Management System</td><td>Provider</td><td>Documented QMS proportionate to provider size; includes all Art. 9–15 implementations</td></tr>
+        <tr><td>Art. 27</td><td>Fundamental Rights Impact Assessment</td><td>Deployer (public bodies + certain private deployers)</td><td>FRIA documenting impacts on fundamental rights before deployment</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ── M5: ROLES AND VALUE CHAIN ────────────────────────────── -->
+<section id="m5" class="lesson-section">
+  <h2 class="section-title"><span>👥</span> Module 5 · Roles &amp; the AI Value Chain — Who Owes What <span class="section-meta">30 min</span></h2>
+  <div class="prose">
+    <p>The EU AI Act assigns compliance obligations to specific actors in the AI value chain. The most consequential distinction is <strong>provider vs. deployer</strong> — but the Act's definitions are precise and sometimes counterintuitive. Getting your role wrong is a classification error with legal consequences.</p>
+  </div>
+
+  <h3>The Four Statutory Roles — Article 3 Definitions</h3>
+  <div class="flip-grid" id="roles-flip-grid" role="list" aria-label="EU AI Act stakeholder role flip cards"></div>
+
+  <h3 style="margin-top:1.5rem">Role Obligations Comparison</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Obligation</th><th>Provider (Art. 16)</th><th>Deployer (Art. 26)</th><th>Importer (Art. 23)</th><th>Distributor (Art. 24)</th></tr></thead>
+      <tbody>
+        <tr><td>Art. 9–15 Technical Requirements</td><td class="cell-yes">✅ Full</td><td class="cell-no">✗</td><td class="cell-partial">〜 Verify</td><td class="cell-partial">〜 Verify</td></tr>
+        <tr><td>Conformity Assessment + CE Marking</td><td class="cell-yes">✅ Must obtain</td><td class="cell-no">✗</td><td class="cell-partial">〜 Must not import non-compliant</td><td class="cell-no">✗</td></tr>
+        <tr><td>EU Database Registration (Art. 71)</td><td class="cell-yes">✅ Required</td><td class="cell-partial">〜 Some sectors</td><td class="cell-no">✗</td><td class="cell-no">✗</td></tr>
+        <tr><td>Quality Management System (Art. 17)</td><td class="cell-yes">✅ Required</td><td class="cell-no">✗</td><td class="cell-no">✗</td><td class="cell-no">✗</td></tr>
+        <tr><td>Use System per Instructions</td><td class="cell-no">✗</td><td class="cell-yes">✅ Required</td><td class="cell-no">✗</td><td class="cell-no">✗</td></tr>
+        <tr><td>Human Oversight (implement)</td><td class="cell-partial">〜 Design-in</td><td class="cell-yes">✅ Implement &amp; maintain</td><td class="cell-no">✗</td><td class="cell-no">✗</td></tr>
+        <tr><td>Retain Logs ≥ 6 Months</td><td class="cell-no">✗</td><td class="cell-yes">✅ Required</td><td class="cell-no">✗</td><td class="cell-no">✗</td></tr>
+        <tr><td>Fundamental Rights Impact Assessment</td><td class="cell-no">✗</td><td class="cell-yes">✅ Public + certain private</td><td class="cell-no">✗</td><td class="cell-no">✗</td></tr>
+        <tr><td>Post-Market Monitoring (Art. 72)</td><td class="cell-yes">✅ Plan + execute</td><td class="cell-partial">〜 Report incidents</td><td class="cell-no">✗</td><td class="cell-no">✗</td></tr>
+        <tr><td>Serious Incident Reporting (Art. 73)</td><td class="cell-yes">✅ To authority</td><td class="cell-yes">✅ To provider + authority</td><td class="cell-partial">〜 If health/safety risk</td><td class="cell-partial">〜 If health/safety risk</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Article 25 — The "Accidental Provider" Trap</h3>
+  <div class="expand-section" id="art25-expand"></div>
+
+  <div class="callout callout-eu">
+    <div class="callout-label">🪤 The Most Common Compliance Mistake</div>
+    Organizations that fine-tune a foundation model for their own deployment, or integrate a general-purpose AI system into an application they then sell or license, frequently classify themselves as "deployers" — believing their smaller role in the AI lifecycle means lighter obligations. Under Article 25, <strong>substantial modification triggers provider status</strong> with the full provider obligation set. The test is not "did we build the base model?" — it's "did we substantially modify the system or change its intended purpose?" Most enterprise AI integrations answer yes to that question.
+  </div>
+</section>
+
+<!-- ── M6: GPAI MODELS ──────────────────────────────────────── -->
+<section id="m6" class="lesson-section">
+  <h2 class="section-title"><span>🤖</span> Module 6 · GPAI Models — Chapter V Obligations <span class="section-meta">20 min</span></h2>
+  <div class="prose">
+    <p>General-Purpose AI (GPAI) models — foundation models like GPT, Claude, Gemini, Llama, and Mistral that can be adapted for many tasks — are governed by Chapter V of the EU AI Act (Articles 51–56). GPAI obligations have been in force since <strong>August 2, 2025</strong>, and create a separate regulatory track from the risk-tier system.</p>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Tier</th><th>Threshold</th><th>Key Obligations (Articles 53 &amp; 55)</th><th>Enforcement</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>All GPAI Models</td>
+          <td>>10²³ FLOPs training compute + placed on EU market</td>
+          <td>Technical documentation to downstream providers (Annex XII); EU copyright law compliance; public summary of training content; cooperation with AI Office</td>
+          <td>EU AI Office (centralized)</td>
+        </tr>
+        <tr>
+          <td>GPAI with Systemic Risk</td>
+          <td>>10²⁵ FLOPs training compute (or AI Office designation)</td>
+          <td><strong>All Tier 1 obligations PLUS:</strong> Model evaluations using standard protocols; adversarial testing; systemic risk assessment and mitigation; serious incident reporting to AI Office; cybersecurity protection for model and physical infrastructure</td>
+          <td>EU AI Office (centralized); Fines up to €15M or 3% global turnover</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout callout-eu">
+    <div class="callout-label">📋 GPAI Code of Practice — July 10, 2025</div>
+    The EU AI Office published the GPAI Code of Practice on July 10, 2025 — a voluntary compliance tool covering transparency, copyright, and (for systemic-risk models) safety and security commitments. The European Commission and AI Board assessed it as adequate. Signing the Code is not legally required but demonstrates compliance intent and reduces enforcement risk during the period before harmonized EU standards are developed (expected 2027–2028).
+  </div>
+  <div class="analogy-box">
+    <div class="analogy-label">💡 The Ingredient Supplier Analogy</div>
+    <p>Think of GPAI models as ingredient suppliers to the food industry. A flour producer (GPAI provider) must meet baseline food safety standards for all flour (Art. 53 — all GPAI). If they produce a specialty high-risk additive (systemic-risk GPAI), they face additional safety evaluation, incident reporting, and stricter documentation. The restaurant that uses the flour to make bread (high-risk AI deployer) has separate obligations — it cannot hide behind "it's the flour supplier's fault if the bread harms someone." Both the ingredient supplier and the manufacturer carry obligations appropriate to their role in the chain.</p>
+  </div>
+</section>
+
+<!-- ── ACTIVITY: DECISION TREE ──────────────────────────────── -->
+<div class="part-banner lab">
+  <div class="pb-num">▶</div>
+  <div class="pb-title">Lab Activities — Classify, Identify, and Apply</div>
+  <div class="pb-time">⏱ ~75 min</div>
+</div>
+
+<section id="activity-tree" class="lesson-section">
+  <h2 class="section-title"><span>🔀</span> Activity A · Interactive Classification Decision Tree <span class="section-meta">25 min</span></h2>
+  <div class="dtree-container">
+    <div class="dtree-header">
+      <span class="dtree-title">EU AI Act Risk Tier Classifier</span>
+      <span id="dtree-step-indicator" style="font-family:var(--ff-mono);font-size:.78rem;color:var(--eu-gold)">Step 1 of 5</span>
+    </div>
+    <div class="dtree-body">
+      <div id="dtree-steps"></div>
+      <div id="dtree-result" class="dtree-result"></div>
+      <div class="dtree-nav">
+        <span class="dt-breadcrumb" id="dt-breadcrumb">Answer each question to classify your AI system.</span>
+        <button class="btn btn-ghost" onclick="resetDtree()">Start Over</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY: ROLE IDENTIFIER ────────────────────────────── -->
+<section id="activity-roles" class="lesson-section">
+  <h2 class="section-title"><span>👤</span> Activity B · Role Identifier — Provider, Deployer, Importer, or Distributor? <span class="section-meta">20 min</span></h2>
+  <div class="role-activity">
+    <div class="ra-header">
+      <span class="ra-title">Identify the Correct Role for Each Scenario</span>
+      <span class="ra-score" id="ra-score">0 / 8 correct</span>
+    </div>
+    <div class="ra-body">
+      <p>For each scenario, click the role that applies under the EU AI Act's Article 3 definitions. Some organizations hold multiple roles simultaneously — select the <em>primary or most onerous</em> role unless the scenario specifies multiple. Immediate feedback explains the rationale.</p>
+      <div class="ra-scenarios" id="ra-scenarios-container"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY: SCENARIO MATCH ─────────────────────────────── -->
+<section id="activity-match" class="lesson-section">
+  <h2 class="section-title"><span>🎯</span> Activity C · Scenario Tier Match — Classify 10 AI Systems <span class="section-meta">30 min</span></h2>
+  <div class="scenario-match">
+    <div class="sm-header">
+      <span class="sm-title">Match Each AI Deployment to Its EU AI Act Risk Tier</span>
+      <span class="sm-score" id="sm-score">0 / 10 correct</span>
+    </div>
+    <div class="sm-body">
+      <p>For each AI deployment scenario below, select the correct EU AI Act risk tier from the dropdown. Remember: classify the <em>use case and deployment context</em>, not just the underlying technology. When you've made all selections, click "Check All" to see results with explanations.</p>
+      <div class="sm-scenario-list" id="sm-scenario-list"></div>
+      <div style="display:flex;gap:.7rem;flex-wrap:wrap;margin-top:.5rem">
+        <button class="btn btn-eu" onclick="checkAllScenarios()">Check All Answers</button>
+        <button class="btn btn-ghost" onclick="resetScenarios()">Reset</button>
+      </div>
+      <div class="sm-check-results" id="sm-results"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ARTIFACT ──────────────────────────────────────────────── -->
+<section id="artifact" class="lesson-section">
+  <h2 class="section-title"><span>📝</span> Assessment Artifact <span class="section-meta">Due: End of Class</span></h2>
+  <div class="artifact-block">
+    <div class="artifact-label">📋 Day 5 Assessment Artifact</div>
+    <h4>AI System Classification Worksheet — In-Class Submission</h4>
+    <p>Complete a classification worksheet for the MVCC at-risk student predictor (from Days 3–4). Your worksheet must address:</p>
+    <ul>
+      <li><strong>Tier classification</strong>: Is this system prohibited, high-risk, limited-risk, or minimal-risk under the EU AI Act? Justify using Annex III categories and the use-case-first classification rule. Consider: does MVCC having EU exchange students matter?</li>
+      <li><strong>Role identification</strong>: If MVCC built the system in-house using an open-source foundation model, what role do they hold? What if they purchased and fine-tuned a commercial model and deployed it themselves?</li>
+      <li><strong>Applicable obligations</strong>: If high-risk, list the Articles 9–15 requirements that apply and indicate which are the MVCC CISO's primary concern from a cybersecurity standpoint.</li>
+      <li><strong>Timeline question</strong>: If MVCC determined in September 2026 that this system is high-risk, what is their compliance posture under the Act as of that date?</li>
+    </ul>
+    <p><strong>Format:</strong> One page (400–500 words) plus a one-row classification table (Tier | Role | Primary Obligations | Timeline Status).</p>
+    <p><strong>Grading:</strong> Daily assignment (25% of course grade). Evaluated on accuracy of tier classification, role identification including Article 25 analysis, specificity of obligation identification, and timeline reasoning.</p>
+  </div>
+</section>
+
+<!-- ── QUIZ ──────────────────────────────────────────────────── -->
+<section id="quiz" class="lesson-section">
+  <h2 class="section-title"><span>❓</span> Day 5 Knowledge Check <span class="section-meta">10 Questions</span></h2>
+  <div class="quiz-block">
+    <div class="quiz-head">
+      <span>Day 5 Knowledge Check — 10 Questions</span>
+      <span class="quiz-score" id="quiz-score-display">Score: 0 / 10</span>
+    </div>
+    <div id="quiz-body"></div>
+    <div class="quiz-actions">
+      <button class="btn btn-eu" onclick="gradeQuiz()">Grade My Quiz</button>
+      <button class="btn btn-ghost" onclick="resetQuiz()">Reset</button>
+      <span class="quiz-msg" id="quiz-msg"></span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ── SIDEBAR ─────────────────────────────────────────────────── -->
+<aside class="sidebar">
+  <div class="sidebar-card">
+    <div class="sc-head">On This Page</div>
+    <div class="sc-body">
+      <ul class="sidebar-toc">
+        <li><a href="#overview"><span class="toc-num">→</span>Overview</a></li>
+        <li><a href="#m1"><span class="toc-num">1</span>Why Binding Matters</a></li>
+        <li><a href="#m2"><span class="toc-num">2</span>Enforcement Timeline</a></li>
+        <li><a href="#m3"><span class="toc-num">3</span>Four Risk Tiers</a></li>
+        <li><a href="#m4"><span class="toc-num">4</span>High-Risk Obligations</a></li>
+        <li><a href="#m5"><span class="toc-num">5</span>Roles &amp; Value Chain</a></li>
+        <li><a href="#m6"><span class="toc-num">6</span>GPAI Models</a></li>
+        <li><a href="#activity-tree"><span class="toc-num">A</span>Activity: Classify It</a></li>
+        <li><a href="#activity-roles"><span class="toc-num">B</span>Activity: Role ID</a></li>
+        <li><a href="#activity-match"><span class="toc-num">C</span>Activity: Match Tiers</a></li>
+        <li><a href="#artifact"><span class="toc-num">✏</span>Assessment</a></li>
+        <li><a href="#quiz"><span class="toc-num">?</span>Knowledge Check</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="sidebar-card">
+    <div class="sc-head">Objectives Progress</div>
+    <div class="sc-body">
+      <div class="progress-wrap"><div class="progress-fill" id="progress-fill"></div></div>
+      <div class="progress-label" id="progress-label">0 of 7 completed</div>
+      <ul class="lo-list" style="margin-top:.7rem">
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>Explain binding vs. voluntary — EU AI Act scope and penalties.</span></li>
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>Classify AI systems into the four risk tiers.</span></li>
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>List the nine high-risk requirements (Articles 9–15).</span></li>
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>Distinguish provider, deployer, importer, distributor.</span></li>
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>Explain GPAI obligations and systemic risk threshold.</span></li>
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>Apply the enforcement timeline to a compliance scenario.</span></li>
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>Classify a real AI system with role identification.</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="sidebar-card">
+    <div class="sc-head">Quick Reference</div>
+    <div class="sc-body">
+      <ul class="sidebar-toc">
+        <li><a href="#m3" style="font-size:.8rem"><strong style="color:var(--tier-banned)">🚫 Prohibited</strong> — Art. 5 · since Feb 2025</a></li>
+        <li><a href="#m3" style="font-size:.8rem"><strong style="color:var(--tier-high)">⚠️ High Risk</strong> — Art. 6+ Annex III · Aug 2026</a></li>
+        <li><a href="#m3" style="font-size:.8rem"><strong style="color:var(--tier-limited)">ℹ️ Limited</strong> — Art. 50 · Aug 2026</a></li>
+        <li><a href="#m3" style="font-size:.8rem"><strong style="color:var(--tier-minimal)">✅ Minimal</strong> — Art. 4 only</a></li>
+        <li><a href="#m5" style="font-size:.8rem"><strong style="color:#2d3a6b">Provider</strong> — develops + places on market</a></li>
+        <li><a href="#m5" style="font-size:.8rem"><strong style="color:#2d3a6b">Deployer</strong> — uses under own authority</a></li>
+        <li><a href="#m5" style="font-size:.8rem"><strong style="color:#2d3a6b">Importer</strong> — EU entity placing non-EU system</a></li>
+        <li><a href="#m5" style="font-size:.8rem"><strong style="color:#2d3a6b">Distributor</strong> — makes available on EU market</a></li>
+        <li><a href="#m6" style="font-size:.8rem"><strong style="color:var(--eu-blue)">GPAI</strong> — >10²³ FLOPs · Art. 53</a></li>
+        <li><a href="#m6" style="font-size:.8rem"><strong style="color:var(--eu-blue)">Systemic Risk</strong> — >10²⁵ FLOPs · Art. 55</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="sidebar-card">
+    <div class="sc-head">Lesson Navigation</div>
+    <div class="sc-body" style="display:flex;flex-direction:column;gap:.5rem">
+      <a href="lesson04.html" style="font-size:.85rem;font-weight:600;color:var(--oxblood)">← Day 4: MEASURE &amp; MANAGE</a>
+      <span style="font-size:.85rem;font-weight:600;color:var(--ink-muted)">Day 5 — Current</span>
+      <a href="index.html#lessons" style="font-size:.85rem;font-weight:600;color:var(--ink-muted)">Day 6 — Coming Soon →</a>
+    </div>
+  </div>
+</aside>
+</div>
+
+<div class="lesson-nav-footer">
+  <a href="lesson04.html">← Day 4: NIST AI RMF Measure &amp; Manage</a>
+  <a href="index.html">Course Home</a>
+</div>
+<footer>
+  <strong>AI-103: AI Cybersecurity Foundations · Day 5</strong> · Moraine Valley Community College · Dr. John L. Sands · 2026<br><br>
+  Day 6 covers AI Risk Categories &amp; Shadow AI — model risk, data risk, operational risk, ethical risk, and governance responses.
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════════════════════════ */
+
+/* Prohibited practices flip cards */
+const bannedFlips=[
+  {icon:'🏛️',art:'Art. 5(1)(a)',title:'Social Scoring by Governments',back:'Public authorities cannot operate AI systems that evaluate people\'s trustworthiness based on social behavior or personal characteristics — producing scores used to restrict benefits, access, or rights. No "opt-in" exception.',boundary:'Private credit scoring is NOT prohibited here — it may be high-risk (Annex III). The ban targets government-operated citizen scoring.'},
+  {icon:'🧒',art:'Art. 5(1)(b)',title:'Exploiting Vulnerabilities of Specific Groups',back:'AI that deliberately exploits vulnerabilities — age (children), disability, socioeconomic disadvantage — to distort behavior in ways likely to cause harm to that person or others. The harm must be foreseeable from design.',boundary:'Age-appropriate content filtering for children is not prohibited. The ban targets exploitation, not protection.'},
+  {icon:'📷',art:'Art. 5(1)(d)',title:'Real-Time Remote Biometric ID in Public Spaces',back:'Law enforcement cannot use real-time biometric identification systems in publicly accessible spaces. Three narrow exceptions: terrorism, missing persons (children/victims), serious crime (6-year+ sentence).',boundary:'Post-hoc biometric ID from stored footage (not real-time) may be high-risk, not prohibited. Prior judicial authorization required even for the exceptions.'},
+  {icon:'😡',art:'Art. 5(1)(f)',title:'Emotion Recognition at Work &amp; School',back:'AI systems that infer emotional states from biometric data (facial expressions, voice, body language) in workplace and educational institution contexts. Banned regardless of claimed HR or educational benefit.',boundary:'Emotion recognition for safety (monitoring driver alertness) may be high-risk depending on context. The ban is specific to workplace and educational institutions.'},
+  {icon:'🗃️',art:'Art. 5(1)(e)',title:'Facial Image Scraping (Untargeted)',back:'Building or expanding facial recognition databases by untargeted scraping of facial images from the internet or CCTV footage. Applies to training data collection — not just deployment.',boundary:'Targeted law enforcement image retrieval with judicial authorization under existing criminal law frameworks may retain narrow exceptions.'},
+  {icon:'🧠',art:'Art. 5(1)(c)',title:'Subliminal Manipulation Below Consciousness',back:'AI that influences people through techniques operating below conscious perception — subliminal messaging, micro-targeted psychological manipulation — in ways likely to cause harm.',boundary:'Personalized advertising (above conscious threshold) is not prohibited here, though it may face GDPR and other regulation.'},
+  {icon:'📊',art:'Art. 5(1)(g)',title:'Predictive Policing — Profiling Only',back:'AI that predicts crimes or criminal intent based solely on profiling or personality assessment, without individual-specific factual basis or objective verifiable facts linked to criminal activity.',boundary:'AI that analyzes crime patterns based on objective historical data (not individual profiling) may be high-risk rather than prohibited.'},
+  {icon:'🔍',art:'Art. 5(1)(h)',title:'Biometric Categorization by Protected Characteristics',back:'AI that categorizes people based on biometric data to infer race, political opinions, religious beliefs, trade union membership, sexual orientation, or health status.',boundary:'Biometric verification (confirming identity) is distinct from categorization (inferring characteristics). Verification systems may be high-risk, not prohibited.'},
+];
+
+/* Annex III high-risk categories flip cards */
+const highRiskFlips=[
+  {icon:'🏗️',art:'Annex III §1',title:'Biometrics',back:'Remote biometric identification systems, biometric categorization systems, emotion recognition systems. Includes real-time and post-hoc identification — not just the prohibited real-time version.',boundary:'A facial recognition system for contactless security access = high-risk. The same technology used for law enforcement crime detection at the prohibited-practices line.'},
+  {icon:'⚡',art:'Annex III §2',title:'Critical Infrastructure',back:'AI in safety components of critical infrastructure: water, gas, heating, electricity, road traffic, railways. "Safety component" means failure of the AI could cause physical harm or service disruption.',boundary:'A utility billing AI is not high-risk. An AI controlling grid load-balancing decisions that could cause blackouts = high-risk.'},
+  {icon:'🎓',art:'Annex III §3',title:'Education &amp; Vocational Training',back:'AI that determines access, grades, or evaluates learning outcomes — including: student admissions decisions, exam proctoring used for decisions, assessment of learning progress for advancement.',boundary:'An AI tutoring chatbot = minimal risk. An AI system that makes or substantially influences admission decisions = high-risk.'},
+  {icon:'💼',art:'Annex III §4',title:'Employment &amp; HR',back:'Recruitment and selection (CV screening, interview ranking), employment decisions (termination, promotion, monitoring), task allocation in gig-economy platforms, performance and behavior monitoring.',boundary:'A scheduling app that assigns shifts based on availability = not high-risk. An AI system that evaluates employee performance affecting termination risk = high-risk.'},
+  {icon:'🏥',art:'Annex III §5',title:'Essential Private Services',back:'Credit scoring, insurance risk assessment, benefits eligibility evaluation for essential services (health insurance, mortgages, life insurance). Also: AI in life/health insurance benefit determination.',boundary:'A product recommendation engine at a retailer = not high-risk. An AI credit scoring system used for mortgage approval = high-risk.'},
+  {icon:'🚨',art:'Annex III §6',title:'Law Enforcement',back:'Polygraph-style reliability assessment, crime analytics for individual risk profiling, evidence reliability evaluation, profiling in criminal investigations, crime prediction for individuals.',boundary:'General pattern analysis of public crime data without individual profiling = may not be high-risk. AI risk scoring individual defendants for sentencing = high-risk.'},
+  {icon:'✈️',art:'Annex III §7',title:'Migration &amp; Border Control',back:'Security risk assessment of individuals, examination of asylum applications, visa and residence permit decisions, document authenticity verification for immigration purposes.',boundary:'General immigration statistics tools = not high-risk. AI used in automated screening of asylum seekers = high-risk.'},
+  {icon:'⚖️',art:'Annex III §8',title:'Administration of Justice &amp; Democracy',back:'AI assisting in researching and interpreting facts and law for judicial decisions, alternative dispute resolution, electoral or voting processes, campaign targeting in elections.',boundary:'A legal research database with no individual-case decision influence = not high-risk. AI that scores legal arguments to assist judicial rulings = high-risk.'},
+];
+
+/* Roles flip cards */
+const rolesFlips=[
+  {icon:'🏭',art:'Art. 3(3) — Provider',title:'Provider',back:'Develops an AI system (or has it developed) AND places it on the EU market or puts it into service under their own name or trademark. Bears the heaviest compliance burden — Articles 9–17.',boundary:'A tech company selling an AI hiring tool to EU employers. MVCC if they develop and deploy their own at-risk predictor in-house.'},
+  {icon:'🏢',art:'Art. 3(4) — Deployer',title:'Deployer',back:'Uses an AI system under their own authority in a professional context (not purely personal use). Receives the system from a provider. Responsible for implementing human oversight, retaining logs, and conducting the FRIA.',boundary:'A hospital using a purchased AI diagnostic tool. MVCC using a purchased at-risk predictor from an EdTech vendor.'},
+  {icon:'📦',art:'Art. 3(6) — Importer',title:'Importer',back:'EU-based entity that places on the EU market an AI system bearing the name/trademark of a non-EU organization. Must verify compliance before placing on market; cannot import non-compliant systems.',boundary:'A European distributor importing an AI hiring tool from a US vendor under the US vendor\'s brand. Must verify the provider has met Articles 9–15.'},
+  {icon:'🛒',art:'Art. 3(7) — Distributor',title:'Distributor',back:'In the supply chain, other than provider or importer, that makes an AI system available on the EU market without substantial modification. Lightest obligations — primarily verify compliance is documented.',boundary:'A software reseller selling a compliant AI tool from a compliant EU provider to EU customers, without modification.'},
+  {icon:'⚠️',art:'Art. 25 — Accidental Provider',title:'Article 25 Trap',back:'A deployer or distributor becomes a provider — with full provider obligations — if they: (1) make a substantial modification to a high-risk system, OR (2) put the system on the market under their own name, OR (3) change the intended purpose of a system to a high-risk use case.',boundary:'MVCC fine-tunes a commercial LLM for academic advising decisions = likely provider. MVCC uses the same LLM without modification via API = deployer.'},
+  {icon:'🤖',art:'Art. 51–55 — GPAI',title:'GPAI Model Provider',back:'Providers of general-purpose AI models (foundation models, LLMs) have a separate obligation track. Article 53: all GPAI providers. Article 55: models with systemic risk (>10²⁵ FLOPs). Enforced by EU AI Office, not national authorities.',boundary:'OpenAI, Anthropic, Google DeepMind, Meta (Llama), Mistral — all GPAI providers subject to Chapter V regardless of where they are headquartered.'},
+];
+
+/* High-risk obligations expand data */
+const highRiskObligations=[
+  {code:'Art. 9',badgeColor:'high',badgeLabel:'Provider',title:'Risk Management System',quote:'A risk management system shall be established, implemented, documented and maintained in relation to high-risk AI systems. It shall run throughout the entire lifecycle of a high-risk AI system.',impl:'<p>Not a point-in-time assessment — a continuously operating documented system. Includes: identification and analysis of known and reasonably foreseeable risks; estimation and evaluation of risks that may emerge in use; adoption of risk management measures; residual risk evaluation after controls; testing procedures to validate that risks have been managed.</p><p>NIST AI RMF Govern + Map + Measure + Manage = the content of this system. ISO 42001 = the management system structure that houses it. Article 9 is where NIST AI RMF implementation directly satisfies EU AI Act high-risk requirements.</p>',example:'<p><strong>MVCC at-risk predictor:</strong> Article 9 requires a documented system covering: demographic bias risk identification, performance degradation scenarios, misuse scenarios (advisors over-relying on flags), and residual risk documentation for the ±3% demographic gap remaining after controls.</p>',failure:'A one-time risk assessment done at deployment. Article 9 requires continuous operation and updating — the risk management system must reflect changes to the system, its context, and new knowledge about risks.'},
+  {code:'Art. 10',badgeColor:'high',badgeLabel:'Provider',title:'Data and Data Governance',quote:'Training, validation and testing data sets shall be subject to appropriate data governance and management practices. They shall be relevant, sufficiently representative, and to the best extent possible, free of errors and complete.',impl:'<p>Data quality requirements at every stage: training, validation, and testing datasets must have: documented selection criteria, documented data preparation and labeling processes, identification of known data limitations, bias evaluation across relevant demographic characteristics, and data lineage records.</p><p>The instruction to be "to the best extent possible, free of errors" acknowledges practical limits — but requires systematic effort and documentation of known gaps.</p>',example:'<p>MVCC at-risk predictor: training data documentation must include: source (LMS, attendance, grades), collection period, demographic composition of training cohort, known gaps (first-generation students underrepresented in Years 1–2), and labeling methodology for the "at-risk" outcome variable.</p>',failure:'Training data documentation is informal or absent. Under EU AI Act, inadequate data governance is itself a grounds for non-compliance, independent of the model\'s actual performance.'},
+  {code:'Art. 11',badgeColor:'high',badgeLabel:'Provider',title:'Technical Documentation',quote:'Technical documentation shall be drawn up before the high-risk AI system is placed on the market and shall be kept up to date. It shall contain the information necessary to assess the compliance of the AI system with the requirements set out in this Section.',impl:'<p>Annex IV specifies the minimum content of the technical file. It is extensive: general description; intended purpose; accuracy and robustness metrics; training methodology; test procedures; data governance; risk management records; human oversight mechanisms; and any relevant standards applied. Must be available to authorities on request — immediately.</p><p>This is the "CE marking technical file" equivalent for AI. An organization that cannot produce this on request is presumptively non-compliant.</p>',example:'<p>MVCC at-risk predictor technical file must include: model architecture description, training methodology (features, labeling, split ratios), fairness evaluation results (demographic parity ratios by subgroup), accuracy metrics with confidence intervals, known limitations, and the human oversight protocol for advisors.</p>',failure:'Technical documentation prepared after a regulatory inquiry. Article 11 requires documentation BEFORE market placement. After-the-fact documentation does not cure pre-placement non-compliance.'},
+  {code:'Art. 14',badgeColor:'high',badgeLabel:'Both',title:'Human Oversight — The Most Technically Demanding',quote:'High-risk AI systems shall be designed and developed in such a way, including with appropriate human-machine interface tools, that they can be effectively overseen by natural persons during the period in which the AI system is in use.',impl:'<p>Human oversight must be <em>designed into the system</em> — not added as a procedural afterthought. The system must enable humans to: (1) fully understand capabilities and limitations, (2) monitor operations for anomalies, (3) interpret outputs correctly, (4) disregard, override, or reverse outputs, (5) intervene or suspend with a "stop button" capability.</p><p>The oversight must be effective given the human\'s competence and the system\'s actual operation speed. An override button that takes 72 hours to implement is not effective human oversight.</p><p><strong>This is where NIST AI RMF MANAGE 2.4 (kill-switch) and MS-2.6 (safety evaluation) connect directly to EU AI Act requirements.</strong></p>',example:'<p>MVCC at-risk predictor: advisors must be able to (1) see the model\'s confidence score and key features driving the flag, (2) override the flag in the system with a documented reason, (3) suspend the system for their advisees pending human review. The UI must make all three actions accessible without technical training.</p>',failure:'Human oversight exists as policy ("advisors should exercise judgment") but is not designed into the system interface. An advisor who receives only a binary flag with no explanation cannot exercise effective oversight. Policy ≠ design.'},
+  {code:'Art. 15',badgeColor:'high',badgeLabel:'Provider',title:'Accuracy, Robustness &amp; Cybersecurity',quote:'High-risk AI systems shall be designed and developed in such a way that they achieve an appropriate level of accuracy, robustness and cybersecurity, and perform consistently in those respects throughout their lifecycle.',impl:'<p>Three dimensions: (1) <strong>Accuracy</strong> — documented metrics; system performs consistently for intended purpose; disaggregated across relevant subgroups. (2) <strong>Robustness</strong> — resilient to errors, faults, inconsistencies in data; graceful degradation when pushed outside validated operating range. (3) <strong>Cybersecurity</strong> — designed to resist adversarial attacks relevant to the deployment context: adversarial inputs, data poisoning, model manipulation, prompt injection for LLM-based systems.</p><p>This is the primary EU AI Act hook for AI cybersecurity professionals. OWASP LLM Top 10 provides the threat taxonomy for satisfying this requirement.</p>',example:'<p>MVCC at-risk predictor cybersecurity: the system must be evaluated for adversarial inputs — can a student or external actor manipulate LMS engagement data to evade or trigger the flag? Adversarial robustness testing (NIST AI RMF MS-2.7) documents what Article 15 requires for cybersecurity compliance.</p>',failure:'Security testing covers the application layer (authentication, authorization) but not the model layer (adversarial inputs, data poisoning). Article 15 explicitly covers attacks on the AI\'s functioning — not just the application wrapper around it.'},
+];
+
+/* Article 25 expand */
+const art25Data=[
+  {code:'Art. 25',badgeColor:'roles',badgeLabel:'Critical',title:'Accidental Provider — Triggers and Consequences',quote:'Distributors, importers, deployers or any other third-party shall be considered to be providers of a high-risk AI system for the purposes of this Regulation in cases where they: (a) place a high-risk AI system on the market or put it into service under their name or trademark; (b) make a substantial modification to a high-risk AI system.',impl:'<p><strong>Three triggers that convert a deployer/distributor into a provider:</strong></p><ul><li>Placing the system on the EU market under their own name/trademark (even if they didn\'t build it)</li><li>Making a substantial modification to a high-risk system — this is the most common trap</li><li>Changing the intended purpose from non-high-risk to high-risk</li></ul><p><strong>"Substantial modification"</strong> is defined as a change that affects compliance — new training, new data, significant behavior change. Fine-tuning a foundation model for a specific high-risk use case (HR screening, credit scoring) almost certainly qualifies.</p><p>Under Art. 25, the new provider takes on all Articles 9–17 obligations. The original provider is relieved of those duties but must cooperate with the new provider\'s compliance work.</p>',example:'<p><strong>Scenario A:</strong> MVCC purchases a general-purpose LLM from OpenAI and fine-tunes it on MVCC student data to create an advising decision tool. MVCC = provider of a high-risk system (education use case, Annex III §3). OpenAI = original provider of the base model, relieved of MVCC deployment obligations but must cooperate.</p><p><strong>Scenario B:</strong> MVCC uses OpenAI\'s API without modification, with OpenAI\'s model making the advising recommendations under MVCC\'s instructions. MVCC = deployer. OpenAI = provider. Different obligation set for each.</p>',failure:'Company purchases an LLM, builds a custom interface, fine-tunes for their specific use case, and classifies themselves as "deployer" because they didn\'t train the foundation model. They are likely a provider under Art. 25 and face the full provider obligation set — including Article 17 Quality Management System and conformity assessment — that they haven\'t built.'},
+];
+
+/* Decision tree data */
+const dtreeSteps=[
+  {q:'Does this AI system fall within any of the eight Article 5 PROHIBITED practices?',ctx:'Check: social scoring by governments, exploiting vulnerable groups, real-time biometric ID in public spaces for law enforcement, emotion recognition at workplaces/schools, facial image scraping, subliminal manipulation, predictive policing by profiling, biometric categorization by protected characteristics.',opts:[{label:'Yes — it matches one of the prohibited practices',next:'banned'},{label:'No — it does not match any prohibited practice',next:1}]},
+  {q:'Is this AI system a General-Purpose AI Model (GPAI) placed on the EU market?',ctx:'GPAI = a foundation model trained on broad data that can perform a wide range of tasks and may be integrated into downstream systems (e.g., LLMs, text-to-image models). If yes, separate GPAI obligations apply in addition to any system-tier classification.',opts:[{label:'Yes — it is a GPAI model (provider/developer)',next:'gpai'},{label:'No — it is an application, not a foundation model',next:2}]},
+  {q:'Is this AI system listed in Annex III or embedded in an Annex II regulated product?',ctx:'Annex III includes: biometrics, critical infrastructure safety, education access/grading, employment/HR decisions, essential services (credit, insurance), law enforcement, migration/border control, administration of justice. Annex II: medical devices, machinery, toys, aviation.',opts:[{label:'Yes — it falls within an Annex III or Annex II category',next:3},{label:'No — it does not match any Annex category',next:4}]},
+  {q:'Does the deploying organization use this system to make or substantially influence decisions that significantly affect people\'s access to opportunities, rights, or essential services?',ctx:'High-risk classification requires both: (1) Annex III/II category AND (2) actual decision influence. A grading AI that merely suggests and a human always makes the final call may have a different profile than one that directly determines grades.',opts:[{label:'Yes — the system substantially influences consequential decisions',next:'high'},{label:'No — it supports but does not substantially influence such decisions',next:4}]},
+  {q:'Does this AI system interact with natural persons OR generate synthetic content (text, images, audio, video, code)?',ctx:'Article 50 transparency obligations apply to: chatbots and virtual assistants (users must know they\'re talking to AI), emotion recognition systems (users must be informed), systems that generate/manipulate content (deepfake disclosure), AI-generated text used for public information.',opts:[{label:'Yes — it interacts with people or generates synthetic content',next:'limited'},{label:'No — it is fully automated without direct human interaction or content generation',next:'minimal'}]},
+];
+const dtreeResults={
+  banned:{tier:'banned',label:'🚫 UNACCEPTABLE RISK — PROHIBITED',detail:'This AI practice is banned under Article 5. It has been illegal since February 2, 2025. There is no compliance pathway — the practice must be discontinued immediately. Penalty: up to €35 million or 7% of global annual turnover, whichever is higher.',obligations:'• Stop all operations of this AI system immediately\n• Conduct a legal review with EU regulatory counsel\n• Document the discontinuation decision and timeline\n• Notify any affected deployers or downstream parties\n• Do not restart without explicit legal clearance'},
+  gpai:{tier:'high',label:'🤖 GPAI MODEL — Chapter V Obligations Apply',detail:'This is a GPAI model subject to Articles 53–55. Basic transparency and copyright obligations apply to all GPAI providers. If training compute exceeds 10²⁵ FLOPs, systemic risk obligations (Article 55) also apply. Note: if this GPAI model is also deployed in a high-risk application, Annex III classification applies to that deployment separately.',obligations:'• Article 53: Technical documentation (Annex XII), copyright policy, training data summary\n• Register with EU AI Office\n• If systemic risk: model evaluations, adversarial testing, incident reporting, cybersecurity\n• Consider signing the GPAI Code of Practice (July 2025) for compliance guidance\n• Effective since August 2, 2025'},
+  high:{tier:'high',label:'⚠️ HIGH RISK — Articles 9–27 Apply',detail:'This AI system is high-risk under Annex III. Full compliance with Articles 9–15 required before market placement. Conformity assessment, CE marking, and EU database registration required. Provider and deployer each have specific obligations. Enforcement begins August 2, 2026. If you have not started your compliance program, you need an emergency plan.',obligations:'• Art. 9: Risk management system (continuous)\n• Art. 10: Data governance documentation\n• Art. 11: Technical documentation (Annex IV)\n• Art. 12: Automatic logging capability\n• Art. 13: Instructions for use to deployers\n• Art. 14: Human oversight design\n• Art. 15: Accuracy, robustness, cybersecurity\n• Art. 16–17: QMS and conformity assessment\n• Art. 71: EU database registration\n• Art. 27 (deployer): Fundamental Rights Impact Assessment'},
+  limited:{tier:'limited',label:'ℹ️ LIMITED RISK — Article 50 Transparency Obligations',detail:'This system must inform users that they are interacting with AI (if not obvious), or that content is AI-generated. Transparency obligations under Article 50 take effect August 2, 2026. Voluntary codes of conduct for AI quality are encouraged. Your organization\'s internal AI governance (NIST AI RMF, ISO 42001) still applies.',obligations:'• Article 50(1): Notify users they are interacting with AI\n• Article 50(2): Mark AI-generated synthetic content as artificially produced\n• Article 50(3): Inform users of emotion recognition use\n• Voluntary: adopt codes of conduct per Article 95\n• Still apply internal governance frameworks (NIST AI RMF, AI AUP)'},
+  minimal:{tier:'minimal',label:'✅ MINIMAL RISK — Article 4 AI Literacy Only',detail:'No specific EU AI Act obligations beyond Article 4 AI literacy requirements. Voluntary codes of conduct encouraged. Your internal AI governance frameworks (NIST AI RMF, ISO 42001, organizational AI AUP) still apply — minimal EU AI Act risk does not mean zero governance.',obligations:'• Article 4: Ensure sufficient AI literacy for staff using or developing AI\n• Voluntary: codes of conduct, internal AI governance\n• Consider NIST AI RMF MAP/MEASURE even for minimal-risk systems\n• Maintain AI Use Case Register entry (internal governance)\n• If EU operations exist: document classification rationale for audit readiness'},
+};
+
+/* Role Activity scenarios */
+const raScenarios=[
+  {num:'Scenario 1',text:'Anthropic develops Claude and makes it available via API to EU businesses under the "Claude" brand name.',correct:'Provider',opts:['Provider','Deployer','Importer','Distributor'],exp:'Anthropic develops the model AND places it on the EU market under its own name — meeting both elements of the Article 3(3) provider definition. As a GPAI model provider, Anthropic is subject to Chapter V GPAI obligations (Art. 53 since Aug 2025).'},
+  {num:'Scenario 2',text:'MVCC purchases a commercial AI student advising tool from an EdTech vendor. MVCC uses it as-is, following the vendor\'s instructions for use, to support academic advising decisions.',correct:'Deployer',opts:['Provider','Deployer','Importer','Distributor'],exp:'MVCC uses the AI system under its own authority in a professional context without modification — the precise definition of deployer under Article 3(4). MVCC is responsible for implementing human oversight, retaining logs ≥ 6 months, and conducting the Fundamental Rights Impact Assessment if required.'},
+  {num:'Scenario 3',text:'A European software reseller imports and distributes an AI hiring screening tool built by a US company, under the US company\'s brand name, to EU employers.',correct:'Importer',opts:['Provider','Deployer','Importer','Distributor'],exp:'The European reseller is an EU entity placing on the EU market a system bearing a non-EU organization\'s trademark — the definition of importer under Article 3(6). The importer must verify the US provider has met all Articles 9–15 requirements before importing. Cannot import non-compliant systems.'},
+  {num:'Scenario 4',text:'MVCC purchases a commercial LLM via API, builds a custom interface, and fine-tunes it on MVCC student data to create an AI system that scores student academic risk and influences advising decisions. MVCC deploys this under the "MVCC AI Advisor" branding.',correct:'Provider',opts:['Provider','Deployer','Importer','Distributor'],exp:'Article 25 "accidental provider" trap: MVCC fine-tuned the system (substantial modification) AND deployed it under its own name/trademark. Both trigger provider status under Art. 25. MVCC now bears full Articles 9–17 obligations — including conformity assessment and EU database registration — for this high-risk (Annex III §3, education) system.'},
+  {num:'Scenario 5',text:'A French software company resells an AI recruitment tool built and certified by a German provider, without any modifications, to French employers.',correct:'Distributor',opts:['Provider','Deployer','Importer','Distributor'],exp:'The French company is in the supply chain, other than provider or importer, making a compliant AI system available on the EU market without modification — the definition of distributor under Article 3(7). As a distributor, their primary obligation is verifying that the provider\'s compliance documentation exists and is current.'},
+  {num:'Scenario 6',text:'A US university deploys an AI application that uses student data to make course enrollment recommendations for its EU study-abroad students.',correct:'Deployer',opts:['Provider','Deployer','Importer','Distributor'],exp:'The US university uses an AI system under its own authority in a professional context. Even though headquartered outside the EU, the system\'s output reaches EU students (extraterritorial scope). The university is a deployer — and if the AI system was purchased from a separate provider, the university must use it per the instructions for use and implement human oversight.'},
+  {num:'Scenario 7',text:'Google releases Gemini as a general-purpose foundation model available via API to EU developers.',correct:'Provider',opts:['Provider','Deployer','Importer (GPAI)','Distributor'],exp:'Google develops and places a GPAI model on the EU market under its own name — meeting the provider definition AND triggering Chapter V GPAI obligations. Gemini\'s training compute likely exceeds the 10²⁵ FLOP threshold for systemic risk, triggering Article 55 obligations (model evaluations, incident reporting, cybersecurity) in addition to the baseline Article 53 obligations.'},
+  {num:'Scenario 8',text:'A hospital purchases an AI diagnostic imaging tool from a US medical device company. The hospital uses it to assist radiologists in detecting tumors in CT scans.',correct:'Deployer',opts:['Provider','Deployer','Importer','Distributor'],exp:'The hospital uses the AI system under its own clinical authority without modification — deployer. The medical imaging tool is a high-risk system (Annex II, medical devices). The hospital must implement human oversight (radiologist must review all AI findings), retain operation logs for ≥ 6 months, and conduct a Fundamental Rights Impact Assessment. The US medical device company = provider, subject to full Art. 9–17 obligations.'},
+];
+
+/* Scenario match data */
+const smScenarios=[
+  {num:'1',text:'A municipal government operates an AI system that scores all city residents\' likelihood of committing future social benefit fraud, restricting those with low scores from applying for housing assistance.',correct:'Prohibited',exp:'Article 5(1)(a) — government-operated social scoring system that evaluates citizens and restricts access to public services. Banned since February 2, 2025.'},
+  {num:'2',text:'A bank uses an AI model to assess creditworthiness and determine mortgage eligibility for EU customers.',correct:'High Risk',exp:'Annex III §5 — essential private services include credit scoring and evaluation of creditworthiness. Full Articles 9–15 compliance, conformity assessment, and EU database registration required.'},
+  {num:'3',text:'A customer service chatbot on an e-commerce site answers product questions. The site does not disclose the bot is AI.',correct:'Limited Risk',exp:'Article 50(1) — limited-risk transparency obligation. Users must be informed they are interacting with an AI system. The chatbot itself is not high-risk, but the non-disclosure creates a transparency violation under Article 50.'},
+  {num:'4',text:'A spam filter in a corporate email system automatically routes suspected junk mail to a spam folder.',correct:'Minimal Risk',exp:'Spam filters are explicitly listed as minimal-risk examples in the EU AI Act. No Act-specific obligations beyond Article 4 AI literacy. Internal governance still applies.'},
+  {num:'5',text:'An EU university uses an AI system to automatically rank graduate school applications and send acceptance or rejection decisions without human review.',correct:'High Risk',exp:'Annex III §3 — education and vocational training, specifically AI used to determine access to educational institutions. Without human review, the system substantially determines admission outcomes. Full high-risk obligations apply.'},
+  {num:'6',text:'A police department uses an AI tool to identify faces in real-time from body camera feeds during a street patrol, without judicial authorization.',correct:'Prohibited',exp:'Article 5(1)(d) — real-time remote biometric identification in publicly accessible spaces for law enforcement without judicial authorization. The narrow exceptions (terrorism, missing persons, serious crime >6 years) require prior judicial or equivalent authorization. Banned since February 2025.'},
+  {num:'7',text:'A company uses AI to generate marketing copy that is clearly labeled "AI-generated content" in the footer of all emails.',correct:'Minimal Risk',exp:'The system generates synthetic text, which would normally create a limited-risk transparency obligation under Art. 50. However, the company already discloses AI generation — the transparency obligation is satisfied. With disclosure in place, no additional Act obligations apply beyond Art. 4. Note: some would argue this is limited-risk (the disclosure obligation exists, and it\'s being met), but the practical compliance burden is minimal.'},
+  {num:'8',text:'An AI tool monitors employee productivity and generates performance scores used by HR managers as a key input in promotion decisions.',correct:'High Risk',exp:'Annex III §4 — employment and HR, specifically systems that evaluate employees in ways affecting their working conditions, including promotion decisions. The AI substantially influences consequential employment decisions. High-risk obligations apply.'},
+  {num:'9',text:'OpenAI\'s GPT-4 model, trained with >10²⁵ FLOPs, is made available via API to EU developers.',correct:'GPAI Systemic Risk',exp:'Chapter V, Article 55 — GPAI model with systemic risk (>10²⁵ FLOPs). All Article 53 baseline GPAI obligations PLUS: model evaluations, adversarial testing, systemic risk assessment, incident reporting to EU AI Office, cybersecurity requirements. Effective since August 2, 2025.'},
+  {num:'10',text:'A traffic management AI optimizes signal timing across a city\'s road network to reduce congestion. It has no control over emergency vehicle priority and cannot override traffic rules.',correct:'High Risk',exp:'Annex III §2 — critical infrastructure, specifically safety components in road traffic management systems. Even if the primary use is congestion optimization, road traffic management falls within the Annex III category. The lack of emergency override capability is itself a human oversight design concern under Article 14.'},
+];
+
+const smTierOptions=['— Select tier —','Prohibited','High Risk','Limited Risk','Minimal Risk','GPAI Systemic Risk'];
+
+/* Quiz data */
+const quizData=[
+  {q:'The EU AI Act has extraterritorial scope. Which scenario correctly identifies an out-of-EU organization that is in scope?',opts:['A US university with no EU campuses operates a purely US domestic AI hiring tool.','A Canadian company\'s AI recommendation engine provides product suggestions to EU customers through its EU-facing website.','A Japanese manufacturer uses AI for quality control in a Japan-based factory with no EU exports.','A Brazilian government agency uses AI for tax collection from Brazilian citizens only.'],correct:1,exp:'The EU AI Act\'s extraterritorial scope applies when an AI system\'s outputs reach EU users — regardless of provider location. The Canadian company\'s EU-facing recommendation engine reaches EU customers, bringing it in scope. The other three scenarios have no EU-output connection.'},
+  {q:'Which of the following correctly states the classification rule for EU AI Act risk tiers?',opts:['Classification is based on the underlying AI model type (LLM, computer vision, etc.).','Classification is based on the deployment use case and context — the same model can be minimal-risk in one application and high-risk in another.','Classification is based on the provider\'s headquarters location.','Classification is based on the size of the organization deploying the AI.'],correct:1,exp:'EU AI Act classification is use-case driven, not technology driven. An LLM used as a writing assistant = minimal risk. The same LLM integrated into a hiring screening tool = high-risk (Annex III §4). Classification requires analyzing what the system does, for whom, and with what consequences — not what technology underlies it.'},
+  {q:'Article 5 prohibited AI practices have been enforceable since:',opts:['August 1, 2024 (Act entry into force)','February 2, 2025','August 2, 2025','August 2, 2026'],correct:1,exp:'Article 5 prohibited practices took effect on February 2, 2025 — six months after the Act entered into force on August 1, 2024. Organizations using any Article 5 prohibited AI practice since that date are in current violation and face penalties up to €35M or 7% of global turnover.'},
+  {q:'A company purchases an LLM from a US provider, significantly fine-tunes it on their proprietary customer data, adds a custom interface, and deploys it as "Our Company AI" for HR screening decisions. Under the EU AI Act, this company is most accurately classified as:',opts:['Deployer — they didn\'t train the original model.','Distributor — they are making the US provider\'s system available to their HR team.','Provider — Article 25: substantial modification + own name/trademark + high-risk use case all trigger provider status.','Importer — they brought a non-EU model into EU use.'],correct:2,exp:'Article 25 "accidental provider" analysis: (1) substantial modification (fine-tuning on proprietary data), (2) deployment under own name/trademark ("Our Company AI"), (3) high-risk use case (HR screening = Annex III §4). All three triggers are present. The company is a provider with full Articles 9–17 obligations — including conformity assessment and EU database registration.'},
+  {q:'Which Article 14 human oversight requirement goes beyond "having a human review AI outputs" as a procedure?',opts:['The system must be monitored by a dedicated AI officer at all times.','Human oversight must be designed into the system — enabling humans to understand, monitor, override, and suspend the AI — not just added as a procedural policy.','"Human in the loop" means a human must make every decision alongside the AI.','Article 14 applies only to law enforcement AI systems.'],correct:1,exp:'Article 14 requires human oversight to be designed into the system\'s interface and architecture — enabling humans to fully understand capabilities, monitor operations for anomalies, interpret outputs correctly, disregard or override outputs, and suspend or stop the system. A policy saying "advisors should exercise judgment" without designing override capability into the system does not satisfy Article 14.'},
+  {q:'GPAI model obligations under Articles 53 and 55 apply from:',opts:['February 2, 2025 (same as prohibited practices)','August 2, 2025','August 2, 2026 (same as high-risk AI systems)','August 2, 2027'],correct:1,exp:'GPAI obligations took effect on August 2, 2025 — 12 months after the Act entered into force, and earlier than the August 2026 high-risk AI deadline. This reflects the urgency of addressing foundation model risks. Organizations providing GPAI models to EU users that did not comply by August 2025 are currently in violation.'},
+  {q:'A hospital uses a certified AI diagnostic imaging tool from a compliant EU provider to assist radiologists — without modification. Under Article 26, the hospital as deployer must:',opts:['Only use the system as directed by provider instructions, with no additional obligations.','Use the system per instructions, ensure staff are trained, retain operation logs for at least 6 months, implement human oversight (radiologist review), inform workers, and report serious incidents to the provider and market surveillance authority.','Complete a full Articles 9–15 compliance assessment.','Obtain CE marking for their use of the system.'],correct:1,exp:'Article 26 deployer obligations for high-risk AI systems include: use per instructions, assign and enable human oversight, ensure relevant data inputs, monitor operation, retain logs ≥ 6 months, inform workers, not use if EU database registration is absent, comply with data protection, cooperate with authorities, and report serious incidents. CE marking and Articles 9–15 compliance are provider obligations.'},
+  {q:'Which EU AI Act tier applies to a chatbot on a retail website that answers customer product questions, where the website does not disclose the bot is AI?',opts:['Minimal risk — chatbots are low-risk by nature.','Prohibited — chatbots that deceive users are banned.','Limited risk — Article 50 transparency obligation applies; the non-disclosure is a violation.','High risk — AI systems interacting with consumers are automatically high-risk.'],correct:2,exp:'Chatbots are limited-risk under Article 50 — they interact with natural persons and must inform users that they are talking to AI (unless obvious from context). The chatbot itself is not high-risk. The non-disclosure does not make it prohibited — but it does create a transparency violation once Article 50 becomes enforceable (August 2, 2026). The appropriate response is adding a disclosure, not shutting down the chatbot.'},
+  {q:'An EU-based distributor is offered an AI system from a US provider who claims their product is compliant with the EU AI Act. What must the distributor do before making the system available on the EU market?',opts:['Nothing — compliance is the US provider\'s responsibility entirely.','Verify that the provider has performed the conformity assessment, affixed CE marking, drawn up the declaration of conformity, and that the instructions for use are in a language easily understood by deployers in the relevant member states.','Complete their own conformity assessment independent of the provider\'s.','Register the system in the EU AI database on the provider\'s behalf.'],correct:1,exp:'Article 24 distributor obligations require verification that: the provider has performed the conformity assessment and affixed CE marking, the system is accompanied by the required documentation (instructions for use, declaration of conformity, technical documentation access), and instructions are in an accessible language. A distributor that places a non-compliant system on the market cannot hide behind the provider\'s claims — they have a verification duty.'},
+  {q:'Article 15 requires high-risk AI systems to meet cybersecurity requirements. Which OWASP LLM Top 10 (2025) category is most directly relevant to satisfying Article 15 cybersecurity obligations for a deployed LLM-based high-risk system?',opts:['LLM09:2025 — Misinformation (accuracy obligations under Art. 15 cover this)','LLM01:2025 — Prompt Injection (adversarial attacks on LLM functioning are the core Article 15 cybersecurity concern for AI systems)','LLM06:2025 — Excessive Agency (human oversight under Art. 14, not cybersecurity)','LLM10:2025 — Unbounded Consumption (API cost controls, not Article 15 cybersecurity)'],correct:1,exp:'Article 15 cybersecurity requirements cover the AI system\'s resilience to adversarial attacks attempting to alter its behavior, compromise its integrity, or manipulate its outputs. For LLM-based high-risk systems, prompt injection (LLM01) — where adversarial inputs manipulate the model\'s behavior — is the most direct Article 15 cybersecurity concern. Testing against and mitigating prompt injection is an Article 15 compliance requirement for LLM-based high-risk AI systems.'},
+];
+
+/* ═══════════════════════════════════════════════════════════════
+   RENDERING
+═══════════════════════════════════════════════════════════════ */
+
+function buildFlips(data,containerId,colorClass){
+  const grid=document.getElementById(containerId);
+  data.forEach((item,i)=>{
+    const card=document.createElement('div');
+    card.className='flip-card';card.setAttribute('role','listitem');
+    card.setAttribute('tabindex','0');
+    const label=item.art+': '+item.title+' — click to flip';
+    card.setAttribute('aria-label',label);
+    const boundary=item.boundary?`<div style="margin-top:.4rem;font-size:.72rem;opacity:.8;border-top:1px solid rgba(255,255,255,.25);padding-top:.4rem">${item.boundary}</div>`:'';
+    card.innerHTML=`<div class="flip-inner">
+      <div class="flip-front">
+        <div class="flip-icon">${item.icon}</div>
+        <div class="flip-article ${colorClass}">${item.art}</div>
+        <div class="flip-title">${item.title}</div>
+        <div class="flip-hint">Click to flip →</div>
+      </div>
+      <div class="flip-back ${colorClass}">
+        <div class="flip-back-title">${item.title}</div>
+        <div class="flip-body">${item.back}${boundary}</div>
+      </div>
+    </div>`;
+    card.addEventListener('click',()=>card.classList.toggle('flipped'));
+    card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();card.classList.toggle('flipped')}});
+    grid.appendChild(card);
+  });
+}
+
+function buildExpand(data,containerId){
+  const container=document.getElementById(containerId);
+  data.forEach(item=>{
+    const div=document.createElement('div');div.className='expand-item';
+    const bc=item.badgeColor;
+    div.innerHTML=`
+      <button class="expand-trigger" onclick="toggleExp(this)" aria-expanded="false">
+        <span class="expand-code ${bc}">${item.code}</span>
+        <span>${item.title}</span>
+        <span class="expand-badge ${bc}">${item.badgeLabel}</span>
+        <span class="expand-chevron">▼</span>
+      </button>
+      <div class="expand-body">
+        <div class="expand-col">
+          <div class="expand-col-label ${bc}">EU AI Act Requirement &amp; Implementation</div>
+          <div class="eu-quote ${bc==='banned'?'banned-quote':''}">${item.quote}</div>
+          ${item.impl}
+        </div>
+        <div class="expand-col">
+          <div class="expand-col-label neutral">MVCC Example &amp; Failure Mode to Avoid</div>
+          <div class="expand-col-label ${bc}" style="margin-top:.7rem">Practical Example</div>
+          ${item.example}
+          <div class="expand-col-label" style="color:var(--oxblood);margin-top:.7rem">⚠️ Common Failure Mode</div>
+          <p style="font-style:italic;color:var(--oxblood);font-size:.86rem">${item.failure}</p>
+        </div>
+      </div>`;
+    container.appendChild(div);
+  });
+}
+
+function toggleExp(btn){
+  const body=btn.nextElementSibling;
+  const open=body.classList.contains('show');
+  btn.classList.toggle('open',!open);btn.setAttribute('aria-expanded',(!open).toString());
+  body.classList.toggle('show',!open);
+}
+
+/* Decision tree */
+let dtreePath=[];
+function buildDtree(){
+  const container=document.getElementById('dtree-steps');
+  dtreeSteps.forEach((step,i)=>{
+    const div=document.createElement('div');
+    div.className='dtree-step'+(i===0?' active':'');
+    div.id='dtree-s'+i;
+    let optsHtml=step.opts.map(opt=>`<button class="dt-option" onclick="dtreeChoice(${JSON.stringify(opt.next)}, this)">${opt.label}</button>`).join('');
+    div.innerHTML=`<div class="dt-q">${step.q}</div><div class="dt-context">${step.ctx}</div><div class="dt-options">${optsHtml}</div>`;
+    container.appendChild(div);
+  });
+}
+function dtreeChoice(next,btn){
+  dtreePath.push(btn.textContent.trim());
+  document.getElementById('dt-breadcrumb').textContent='Path: '+dtreePath.join(' → ').substring(0,100)+(dtreePath.join(' → ').length>100?'…':'');
+  document.querySelectorAll('.dtree-step').forEach(s=>s.classList.remove('active'));
+  if(typeof next==='string'){
+    showDtreeResult(next);
+  } else {
+    const nextStep=document.getElementById('dtree-s'+next);
+    if(nextStep){nextStep.classList.add('active');document.getElementById('dtree-step-indicator').textContent='Step '+(next+1)+' of '+dtreeSteps.length;}
+  }
+}
+function showDtreeResult(key){
+  const r=dtreeResults[key];
+  const result=document.getElementById('dtree-result');
+  result.className='dtree-result show '+r.tier;
+  result.innerHTML=`<div class="result-tier ${r.tier}">${r.label}</div>
+    <div class="result-body">${r.detail}</div>
+    <div class="result-obligations"><strong>Required actions:</strong><br><pre style="font-family:var(--ff-mono);font-size:.78rem;white-space:pre-wrap;margin-top:.3rem;color:var(--ink-soft)">${r.obligations}</pre></div>`;
+  document.getElementById('dtree-step-indicator').textContent='Classification Complete';
+}
+function resetDtree(){
+  dtreePath=[];
+  document.querySelectorAll('.dtree-step').forEach((s,i)=>s.classList.toggle('active',i===0));
+  document.getElementById('dtree-result').className='dtree-result';
+  document.getElementById('dtree-result').innerHTML='';
+  document.getElementById('dt-breadcrumb').textContent='Answer each question to classify your AI system.';
+  document.getElementById('dtree-step-indicator').textContent='Step 1 of '+dtreeSteps.length;
+}
+
+/* Role activity */
+let raCorrect=0;
+function buildRoleActivity(){
+  const container=document.getElementById('ra-scenarios-container');
+  raScenarios.forEach((sc,i)=>{
+    const div=document.createElement('div');div.className='ra-scenario';
+    const btnHtml=sc.opts.map(opt=>`<button class="ra-btn" onclick="checkRole(this,'${opt}','${sc.correct}',${i})" data-role="${opt}">${opt}</button>`).join('');
+    div.innerHTML=`<div class="ra-sc-num">${sc.num}</div>
+      <div class="ra-sc-text">${sc.text}</div>
+      <div class="ra-role-options" id="ra-opts-${i}">${btnHtml}</div>
+      <div class="ra-feedback" id="ra-fb-${i}"></div>`;
+    container.appendChild(div);
+  });
+}
+function checkRole(btn,selected,correct,idx){
+  if(btn.parentElement.querySelector('.correct-reveal'))return;
+  const btns=btn.parentElement.querySelectorAll('.ra-btn');
+  btns.forEach(b=>{
+    if(b.dataset.role===correct)b.classList.add('correct-reveal');
+    else if(b===btn&&selected!==correct)b.classList.add('wrong-reveal');
+  });
+  const fb=document.getElementById('ra-fb-'+idx);
+  const ok=selected===correct;
+  fb.className=`ra-feedback show ${ok?'ok':'bad'}`;
+  fb.innerHTML=`${ok?'✅ Correct! ':'❌ Incorrect. '}${raScenarios[idx].exp}`;
+  if(ok){raCorrect++;document.getElementById('ra-score').textContent=raCorrect+' / '+raScenarios.length+' correct'}
+}
+
+/* Scenario match */
+function buildScenarioMatch(){
+  const container=document.getElementById('sm-scenario-list');
+  smScenarios.forEach((sc,i)=>{
+    const div=document.createElement('div');div.className='sm-sc';
+    const opts=smTierOptions.map(o=>`<option value="${o}">${o}</option>`).join('');
+    div.innerHTML=`<span class="sm-sc-num">${sc.num}</span>
+      <span class="sm-sc-text">${sc.text}</span>
+      <select class="sm-select" id="sm-sel-${i}" aria-label="Tier for scenario ${sc.num}">${opts}</select>`;
+    container.appendChild(div);
+  });
+}
+function checkAllScenarios(){
+  let correct=0;
+  const results=document.getElementById('sm-results');
+  let html='';
+  smScenarios.forEach((sc,i)=>{
+    const sel=document.getElementById('sm-sel-'+i);
+    const chosen=sel?.value;
+    const ok=chosen===sc.correct;
+    if(ok)correct++;
+    const icon=ok?'✅':'❌';
+    const color=ok?'var(--success)':'var(--error)';
+    html+=`<div class="sm-result-row"><span style="font-size:1rem;flex-shrink:0">${icon}</span><span><strong>Scenario ${sc.num}:</strong> <span style="color:${color}">${chosen||'Not answered'}</span> — Correct: <strong>${sc.correct}</strong><br><span style="color:var(--ink-muted);font-size:.82rem">${sc.exp}</span></span></div>`;
+  });
+  html=`<div style="font-family:var(--ff-mono);font-size:.88rem;font-weight:700;color:var(--eu-blue);margin-bottom:.7rem">Score: ${correct} / ${smScenarios.length}</div>`+html;
+  document.getElementById('sm-score').textContent=correct+' / '+smScenarios.length+' correct';
+  results.innerHTML=html;results.classList.add('show');results.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function resetScenarios(){
+  smScenarios.forEach((_,i)=>{const s=document.getElementById('sm-sel-'+i);if(s)s.value=''});
+  const r=document.getElementById('sm-results');r.classList.remove('show');r.innerHTML='';
+  document.getElementById('sm-score').textContent='0 / 10 correct';
+}
+
+/* Sticky nav */
+const navLinks=document.querySelectorAll('.lesson-nav a');
+const navObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){navLinks.forEach(l=>l.classList.remove('active'));const lnk=document.querySelector(`.lesson-nav a[href="#${e.target.id}"]`);if(lnk)lnk.classList.add('active')}})},{rootMargin:'-25% 0px -65% 0px'});
+document.querySelectorAll('section[id]').forEach(s=>navObs.observe(s));
+
+/* Progress */
+function toggleLO(el){el.classList.toggle('checked');el.setAttribute('aria-checked',el.classList.contains('checked').toString());const all=document.querySelectorAll('.lo-check');const done=document.querySelectorAll('.lo-check.checked').length;document.getElementById('progress-fill').style.width=Math.round(done/all.length*100)+'%';document.getElementById('progress-label').textContent=`${done} of ${all.length} completed`}
+
+/* Quiz */
+function buildQuiz(){
+  const body=document.getElementById('quiz-body');
+  quizData.forEach((q,i)=>{
+    const sec=document.createElement('div');sec.className='quiz-q';
+    sec.innerHTML=`<div class="q-prompt"><span class="q-num">Q${i+1}.</span>${q.q}</div><ul class="q-opts">${q.opts.map((o,j)=>`<li><label><input type="radio" name="q${i}" value="${j}"> ${o}</label></li>`).join('')}</ul><div class="q-fb" id="qf${i}"></div>`;
+    body.appendChild(sec);
+  });
+}
+function gradeQuiz(){
+  let score=0;
+  quizData.forEach((q,i)=>{
+    const sel=document.querySelector(`input[name="q${i}"]:checked`);
+    const fb=document.getElementById(`qf${i}`);fb.classList.add('show');
+    if(sel&&parseInt(sel.value)===q.correct){score++;fb.className='q-fb ok show';fb.innerHTML=`✅ <strong>Correct!</strong> ${q.exp}`}
+    else{fb.className='q-fb bad show';fb.innerHTML=`❌ <strong>${sel?'Incorrect.':'No answer.'}</strong> ${q.exp}`}
+  });
+  document.getElementById('quiz-score-display').textContent=`Score: ${score} / ${quizData.length}`;
+  const msgs=['Keep reviewing — EU AI Act detail is essential.','Good effort — review the classification questions.','Solid foundation.','Strong work!','Excellent EU AI Act mastery!','Perfect score!'];
+  document.getElementById('quiz-msg').textContent=msgs[Math.min(5,Math.floor(score/2))];
+}
+function resetQuiz(){
+  document.querySelectorAll('#quiz-body input[type=radio]').forEach(r=>r.checked=false);
+  document.querySelectorAll('.q-fb').forEach(f=>{f.className='q-fb';f.innerHTML=''});
+  document.getElementById('quiz-score-display').textContent=`Score: 0 / ${quizData.length}`;
+  document.getElementById('quiz-msg').textContent='';
+}
+
+/* Init */
+buildFlips(bannedFlips,'banned-flip-grid','banned');
+buildFlips(highRiskFlips,'highrisk-flip-grid','high');
+buildFlips(rolesFlips,'roles-flip-grid','roles');
+buildExpand(highRiskObligations,'high-risk-expand');
+buildExpand(art25Data,'art25-expand');
+buildDtree();
+buildRoleActivity();
+buildScenarioMatch();
+buildQuiz();
+</script>
+</body>
+</html>
