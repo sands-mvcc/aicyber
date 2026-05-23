@@ -1,0 +1,1914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI-103 Lesson 1 — Expanding Cybersecurity Principles for AI. Why traditional infosec is insufficient for AI-enabled enterprises, and where AAISM extends it.">
+<title>AI-103 · Day 1: Expanding Cybersecurity Principles for AI</title>
+<style>
+  /* ── Design Tokens ─────────────────────────────────────────────── */
+  :root {
+    --oxblood:   #6b1a1a;
+    --oxblood-dk:#4a1010;
+    --oxblood-lt:#8c2a2a;
+    --gold:      #c8960c;
+    --gold-lt:   #e8b830;
+    --cream:     #faf8f4;
+    --parchment: #f2ede3;
+    --ink:       #1a1a1a;
+    --ink-soft:  #3a3a3a;
+    --ink-muted: #6b6b6b;
+    --border:    #d4cdbf;
+    --border-lt: #e8e2d8;
+    --white:     #ffffff;
+    --success:   #1a6b2a;
+    --success-bg:#e8f5eb;
+    --error:     #6b1a1a;
+    --error-bg:  #fdeaea;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,.08);
+    --shadow-md: 0 4px 16px rgba(0,0,0,.10);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,.13);
+    --radius:    6px;
+    --ff-serif:  'Fraunces', 'Georgia', serif;
+    --ff-sans:   'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+    --ff-mono:   'IBM Plex Mono', 'Courier New', monospace;
+  }
+
+  /* ── Reset ─────────────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--ff-sans);
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--ink);
+    background: var(--cream);
+  }
+  a { color: var(--oxblood); }
+  a:hover { text-decoration: underline; }
+
+  /* ── Skip link ─────────────────────────────────────────────────── */
+  .skip-link {
+    position: absolute; top: -40px; left: 1rem;
+    background: var(--oxblood); color: var(--white);
+    padding: .4rem .8rem; border-radius: var(--radius);
+    font-size: .85rem; font-weight: 600;
+    transition: top .2s; z-index: 9999;
+  }
+  .skip-link:focus { top: .5rem; }
+
+  /* ── Top bar ───────────────────────────────────────────────────── */
+  .topbar {
+    background: var(--oxblood-dk);
+    color: rgba(255,255,255,.7);
+    font-size: .78rem;
+    font-family: var(--ff-mono);
+    letter-spacing: .04em;
+    padding: .45rem 2rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .3rem .7rem;
+  }
+  .topbar a { color: rgba(255,255,255,.8); text-decoration: none; }
+  .topbar a:hover { color: var(--white); }
+  .topbar-sep { opacity: .4; }
+
+  /* ── Header ────────────────────────────────────────────────────── */
+  .site-header {
+    background: var(--oxblood);
+    color: var(--white);
+    padding: 2.8rem 2rem 2.2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .site-header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      135deg, transparent, transparent 40px,
+      rgba(255,255,255,.025) 40px, rgba(255,255,255,.025) 41px
+    );
+    pointer-events: none;
+  }
+  .header-inner { max-width: 1080px; margin: 0 auto; position: relative; }
+  .lesson-eyebrow {
+    font-family: var(--ff-mono);
+    font-size: .78rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--gold-lt);
+    margin-bottom: .5rem;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    flex-wrap: wrap;
+  }
+  .lesson-eyebrow .sep { opacity: .5; }
+  .site-header h1 {
+    font-family: var(--ff-serif);
+    font-size: clamp(1.7rem, 3.5vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: .5rem;
+  }
+  .site-header .tagline {
+    font-size: .97rem;
+    color: rgba(255,255,255,.72);
+    max-width: 680px;
+    margin-bottom: 1.4rem;
+  }
+  .header-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem 1.2rem;
+    font-size: .82rem;
+    color: rgba(255,255,255,.62);
+  }
+  .header-meta strong { color: rgba(255,255,255,.9); }
+
+  /* ── Lesson nav ────────────────────────────────────────────────── */
+  .lesson-nav {
+    background: var(--oxblood-lt);
+    border-bottom: 2px solid var(--gold);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .lesson-nav-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .lesson-nav-inner::-webkit-scrollbar { display: none; }
+  .lesson-nav a {
+    color: rgba(255,255,255,.72);
+    font-size: .78rem;
+    font-weight: 600;
+    letter-spacing: .04em;
+    white-space: nowrap;
+    padding: .6rem 1rem;
+    border-bottom: 3px solid transparent;
+    transition: color .15s, border-color .15s, background .15s;
+    text-decoration: none;
+  }
+  .lesson-nav a:hover,
+  .lesson-nav a.active {
+    color: var(--white);
+    border-bottom-color: var(--gold-lt);
+    background: rgba(255,255,255,.07);
+  }
+
+  /* ── Layout ────────────────────────────────────────────────────── */
+  .page-body {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 5rem;
+    display: grid;
+    grid-template-columns: 1fr 260px;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  @media (max-width: 820px) {
+    .page-body { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+  }
+  main { min-width: 0; }
+
+  /* ── Sidebar ───────────────────────────────────────────────────── */
+  .sidebar { position: sticky; top: 56px; }
+  .sidebar-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow-sm);
+  }
+  .sidebar-card-header {
+    background: var(--oxblood);
+    color: var(--white);
+    padding: .65rem 1rem;
+    font-size: .78rem;
+    font-family: var(--ff-mono);
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .sidebar-card-body { padding: .9rem 1rem; }
+  .sidebar-toc { list-style: none; }
+  .sidebar-toc li { border-bottom: 1px solid var(--border-lt); }
+  .sidebar-toc li:last-child { border-bottom: none; }
+  .sidebar-toc a {
+    display: block;
+    padding: .45rem 0;
+    font-size: .82rem;
+    color: var(--ink-soft);
+    text-decoration: none;
+    transition: color .15s;
+  }
+  .sidebar-toc a:hover { color: var(--oxblood); }
+  .sidebar-toc .toc-num {
+    font-family: var(--ff-mono);
+    font-size: .72rem;
+    color: var(--oxblood);
+    margin-right: .4rem;
+  }
+  .lo-list { list-style: none; }
+  .lo-list li {
+    font-size: .82rem;
+    color: var(--ink-soft);
+    padding: .35rem 0;
+    border-bottom: 1px solid var(--border-lt);
+    display: flex;
+    gap: .5rem;
+    align-items: flex-start;
+    line-height: 1.45;
+  }
+  .lo-list li:last-child { border-bottom: none; }
+  .lo-check {
+    width: 1.1rem;
+    height: 1.1rem;
+    border: 2px solid var(--oxblood);
+    border-radius: 3px;
+    flex-shrink: 0;
+    margin-top: .15rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .65rem;
+    color: var(--white);
+    background: transparent;
+    transition: background .15s;
+  }
+  .lo-check.checked { background: var(--oxblood); }
+  .lo-check.checked::after { content: '✓'; }
+  .sidebar-progress {
+    height: 6px;
+    background: var(--border-lt);
+    border-radius: 3px;
+    margin: .7rem 0 .4rem;
+    overflow: hidden;
+  }
+  .progress-bar {
+    height: 100%;
+    background: var(--oxblood);
+    border-radius: 3px;
+    width: 0%;
+    transition: width .3s;
+  }
+  .progress-label {
+    font-size: .75rem;
+    color: var(--ink-muted);
+    font-family: var(--ff-mono);
+  }
+
+  /* ── Section headings ──────────────────────────────────────────── */
+  .lesson-section { margin-bottom: 3rem; }
+  .section-title {
+    font-family: var(--ff-serif);
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--oxblood);
+    margin-bottom: .3rem;
+    padding-bottom: .45rem;
+    border-bottom: 2px solid var(--border);
+    display: flex;
+    align-items: baseline;
+    gap: .6rem;
+    flex-wrap: wrap;
+  }
+  .section-meta {
+    font-family: var(--ff-mono);
+    font-size: .72rem;
+    letter-spacing: .06em;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    font-weight: normal;
+  }
+  h3 {
+    font-family: var(--ff-sans);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 1.5rem 0 .6rem;
+  }
+
+  /* ── Prose ─────────────────────────────────────────────────────── */
+  .prose p { margin-bottom: 1rem; color: var(--ink-soft); }
+  .prose p:last-child { margin-bottom: 0; }
+  .prose strong { color: var(--ink); }
+  .prose em { font-style: italic; }
+
+  /* ── Analogy box ───────────────────────────────────────────────── */
+  .analogy-box {
+    background: var(--parchment);
+    border: 1px solid var(--border);
+    border-left: 5px solid var(--gold);
+    border-radius: var(--radius);
+    padding: 1.2rem 1.5rem;
+    margin: 1.5rem 0;
+  }
+  .analogy-box .analogy-label {
+    font-family: var(--ff-mono);
+    font-size: .72rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: .4rem;
+  }
+  .analogy-box p { color: var(--ink-soft); font-size: .95rem; margin-bottom: .5rem; }
+  .analogy-box p:last-child { margin-bottom: 0; }
+
+  /* ── Callout / caution ─────────────────────────────────────────── */
+  .callout {
+    background: #fef9ec;
+    border: 1px solid #e8c84a;
+    border-left: 5px solid var(--gold);
+    border-radius: var(--radius);
+    padding: 1rem 1.3rem;
+    margin: 1.2rem 0;
+    font-size: .92rem;
+    color: var(--ink-soft);
+  }
+  .callout .callout-label {
+    font-weight: 700;
+    color: var(--ink);
+    font-family: var(--ff-mono);
+    font-size: .78rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    margin-bottom: .3rem;
+  }
+
+  /* ── Two-column domain compare ─────────────────────────────────── */
+  .domain-compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  @media (max-width: 600px) { .domain-compare { grid-template-columns: 1fr; } }
+  .domain-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+  .domain-card-header {
+    padding: .7rem 1rem;
+    font-family: var(--ff-mono);
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+  .domain-card-header.cism { background: #3a5a8c; }
+  .domain-card-header.aaism { background: var(--oxblood); }
+  .domain-card ul { list-style: none; padding: .8rem 1rem; }
+  .domain-card li {
+    padding: .4rem 0;
+    border-bottom: 1px solid var(--border-lt);
+    font-size: .88rem;
+    color: var(--ink-soft);
+    display: flex;
+    gap: .6rem;
+    align-items: flex-start;
+  }
+  .domain-card li:last-child { border-bottom: none; }
+  .domain-card li .li-icon { font-size: .9rem; flex-shrink: 0; margin-top: .1rem; }
+  .assumption-tag {
+    font-size: .8rem;
+    font-family: var(--ff-mono);
+    font-weight: 600;
+    background: var(--parchment);
+    border: 1px solid var(--border);
+    color: var(--ink-muted);
+    border-radius: 3px;
+    padding: .15rem .5rem;
+    margin-top: .6rem;
+    display: inline-block;
+  }
+  .assumption-tag.new {
+    background: #fdeaea;
+    border-color: #e8c4c4;
+    color: var(--oxblood);
+  }
+
+  /* ── Flip cards ────────────────────────────────────────────────── */
+  .flip-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  .flip-card {
+    height: 180px;
+    cursor: pointer;
+    perspective: 800px;
+  }
+  .flip-card-inner {
+    width: 100%; height: 100%;
+    transition: transform .5s;
+    transform-style: preserve-3d;
+    position: relative;
+  }
+  .flip-card.flipped .flip-card-inner {
+    transform: rotateY(180deg);
+  }
+  .flip-front, .flip-back {
+    position: absolute; inset: 0;
+    backface-visibility: hidden;
+    border-radius: var(--radius);
+    padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+  }
+  .flip-front {
+    background: var(--white);
+    border: 1px solid var(--border);
+  }
+  .flip-back {
+    background: var(--oxblood);
+    color: var(--white);
+    transform: rotateY(180deg);
+    border: 1px solid var(--oxblood-dk);
+  }
+  .flip-front .flip-icon { font-size: 2rem; margin-bottom: .5rem; }
+  .flip-front .flip-title {
+    font-family: var(--ff-sans);
+    font-weight: 700;
+    font-size: .92rem;
+    color: var(--ink);
+    margin-bottom: .3rem;
+  }
+  .flip-front .flip-hint {
+    font-size: .72rem;
+    color: var(--ink-muted);
+    font-family: var(--ff-mono);
+    letter-spacing: .04em;
+  }
+  .flip-back .flip-back-title {
+    font-weight: 700;
+    font-size: .88rem;
+    margin-bottom: .5rem;
+    color: var(--gold-lt);
+  }
+  .flip-back .flip-body {
+    font-size: .82rem;
+    line-height: 1.5;
+    color: rgba(255,255,255,.88);
+  }
+
+  /* ── Comparison table ──────────────────────────────────────────── */
+  .comp-table-wrap {
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    font-size: .88rem;
+  }
+  thead tr { background: var(--oxblood); color: var(--white); }
+  thead th {
+    padding: .7rem 1rem;
+    text-align: left;
+    font-family: var(--ff-mono);
+    font-size: .75rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  tbody tr { border-bottom: 1px solid var(--border-lt); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody td { padding: .65rem 1rem; color: var(--ink-soft); vertical-align: top; }
+  tbody td:first-child { font-weight: 600; color: var(--ink); }
+  tbody tr:hover { background: var(--parchment); }
+
+  /* ── Activity block ────────────────────────────────────────────── */
+  .activity-block {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin: 1.5rem 0;
+    box-shadow: var(--shadow-sm);
+  }
+  .activity-header {
+    background: #1e3a5f;
+    color: var(--white);
+    padding: .7rem 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+  }
+  .activity-header .act-label {
+    font-family: var(--ff-mono);
+    font-size: .75rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.7);
+  }
+  .activity-header .act-title {
+    font-weight: 700;
+    font-size: .92rem;
+  }
+  .activity-header .act-time {
+    margin-left: auto;
+    font-family: var(--ff-mono);
+    font-size: .75rem;
+    color: rgba(255,255,255,.6);
+    white-space: nowrap;
+  }
+  .activity-body { padding: 1.2rem 1.5rem; }
+  .activity-body p { color: var(--ink-soft); font-size: .92rem; margin-bottom: .8rem; }
+  .activity-body .instructions {
+    background: var(--parchment);
+    border: 1px solid var(--border-lt);
+    border-radius: 4px;
+    padding: .8rem 1rem;
+    font-size: .88rem;
+    color: var(--ink-soft);
+  }
+  .activity-body .instructions ol,
+  .activity-body .instructions ul {
+    margin: .5rem 0 .5rem 1.2rem;
+  }
+  .activity-body .instructions li { margin-bottom: .3rem; }
+
+  /* ── Mapping exercise table ────────────────────────────────────── */
+  .mapping-table-wrap { overflow-x: auto; margin: 1rem 0; }
+  .mapping-table td select {
+    width: 100%;
+    font-family: var(--ff-sans);
+    font-size: .82rem;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: .3rem .5rem;
+    background: var(--white);
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .mapping-table td select:focus { outline: 2px solid var(--oxblood); }
+
+  /* ── Quiz / MCQ ────────────────────────────────────────────────── */
+  .quiz-block {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin: 1.5rem 0;
+    box-shadow: var(--shadow-sm);
+  }
+  .quiz-block .quiz-header {
+    background: var(--oxblood-dk);
+    color: var(--white);
+    padding: .7rem 1.2rem;
+    font-family: var(--ff-mono);
+    font-size: .78rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .quiz-block .quiz-score { color: var(--gold-lt); }
+  .quiz-body { padding: 0; }
+  .quiz-question { padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border-lt); }
+  .quiz-question:last-child { border-bottom: none; }
+  .q-prompt {
+    font-weight: 600;
+    color: var(--ink);
+    font-size: .95rem;
+    margin-bottom: .9rem;
+    line-height: 1.5;
+  }
+  .q-num {
+    font-family: var(--ff-mono);
+    font-size: .72rem;
+    color: var(--oxblood);
+    font-weight: 700;
+    margin-right: .4rem;
+  }
+  .q-options { list-style: none; }
+  .q-options li {
+    margin-bottom: .45rem;
+  }
+  .q-options label {
+    display: flex;
+    align-items: flex-start;
+    gap: .7rem;
+    cursor: pointer;
+    padding: .5rem .8rem;
+    border: 1px solid var(--border-lt);
+    border-radius: 4px;
+    font-size: .88rem;
+    color: var(--ink-soft);
+    background: var(--cream);
+    transition: background .12s, border-color .12s;
+  }
+  .q-options label:hover { background: var(--parchment); border-color: var(--border); }
+  .q-options input[type="radio"] { flex-shrink: 0; margin-top: .2rem; accent-color: var(--oxblood); }
+  .q-feedback {
+    margin-top: .7rem;
+    padding: .7rem .9rem;
+    border-radius: 4px;
+    font-size: .86rem;
+    display: none;
+    line-height: 1.5;
+  }
+  .q-feedback.correct { background: var(--success-bg); border: 1px solid #a8d4b0; color: var(--success); }
+  .q-feedback.incorrect { background: var(--error-bg); border: 1px solid #e8b4b4; color: var(--error); }
+  .q-feedback.show { display: block; }
+  .quiz-actions {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--border-lt);
+    display: flex;
+    gap: .7rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .btn {
+    font-family: var(--ff-sans);
+    font-weight: 700;
+    font-size: .88rem;
+    padding: .55rem 1.2rem;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: background .15s, transform .1s;
+  }
+  .btn:active { transform: scale(.97); }
+  .btn-primary { background: var(--oxblood); color: var(--white); }
+  .btn-primary:hover { background: var(--oxblood-lt); }
+  .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--ink-soft); }
+  .btn-ghost:hover { background: var(--parchment); border-color: var(--border); }
+  .quiz-result-msg {
+    font-size: .88rem;
+    color: var(--ink-muted);
+    font-family: var(--ff-mono);
+  }
+
+  /* ── Assessment artifact ───────────────────────────────────────── */
+  .artifact-block {
+    background: var(--parchment);
+    border: 1px solid var(--border);
+    border-left: 5px solid var(--oxblood);
+    border-radius: var(--radius);
+    padding: 1.2rem 1.5rem;
+    margin: 1.5rem 0;
+  }
+  .artifact-block .artifact-label {
+    font-family: var(--ff-mono);
+    font-size: .72rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--oxblood);
+    font-weight: 700;
+    margin-bottom: .4rem;
+  }
+  .artifact-block h4 {
+    font-family: var(--ff-serif);
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: .5rem;
+    color: var(--ink);
+  }
+  .artifact-block p { font-size: .9rem; color: var(--ink-soft); margin-bottom: .5rem; }
+  .artifact-block p:last-child { margin-bottom: 0; }
+  .artifact-block ul { margin: .5rem 0 .5rem 1.2rem; }
+  .artifact-block li { font-size: .9rem; color: var(--ink-soft); margin-bottom: .3rem; }
+
+  /* ── Course map diagram (text-based) ───────────────────────────── */
+  .course-map-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: .75rem;
+    margin: 1.5rem 0;
+  }
+  .map-node {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--oxblood);
+    border-radius: var(--radius);
+    padding: .9rem;
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+  }
+  .map-node .node-icon { font-size: 1.5rem; margin-bottom: .35rem; }
+  .map-node .node-title {
+    font-weight: 700;
+    font-size: .82rem;
+    color: var(--ink);
+    margin-bottom: .25rem;
+    line-height: 1.3;
+  }
+  .map-node .node-desc {
+    font-size: .74rem;
+    color: var(--ink-muted);
+    line-height: 1.45;
+  }
+  .map-node.highlight { border-top-color: var(--gold); }
+
+  /* ── Part label banner ─────────────────────────────────────────── */
+  .part-banner {
+    background: var(--oxblood);
+    color: var(--white);
+    border-radius: var(--radius);
+    padding: .8rem 1.2rem;
+    margin: 2.5rem 0 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .part-banner .part-num {
+    font-family: var(--ff-mono);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--gold-lt);
+    line-height: 1;
+  }
+  .part-banner .part-title {
+    font-family: var(--ff-serif);
+    font-size: 1.05rem;
+    font-weight: 700;
+  }
+  .part-banner .part-time {
+    margin-left: auto;
+    font-family: var(--ff-mono);
+    font-size: .75rem;
+    color: rgba(255,255,255,.6);
+    white-space: nowrap;
+  }
+
+  /* ── Credential table ──────────────────────────────────────────── */
+  .credential-row { display: flex; flex-direction: column; gap: 0; }
+
+  /* ── Footer ────────────────────────────────────────────────────── */
+  footer {
+    background: var(--oxblood-dk);
+    color: rgba(255,255,255,.55);
+    text-align: center;
+    font-size: .8rem;
+    padding: 1.5rem 1rem;
+    font-family: var(--ff-mono);
+    letter-spacing: .03em;
+  }
+  footer strong { color: rgba(255,255,255,.8); }
+  .lesson-nav-footer {
+    max-width: 1080px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: .5rem;
+  }
+  .lesson-nav-footer a {
+    font-size: .88rem;
+    font-weight: 700;
+    color: var(--oxblood);
+    display: flex;
+    align-items: center;
+    gap: .3rem;
+  }
+
+  /* ── Responsive ────────────────────────────────────────────────── */
+  @media (max-width: 640px) {
+    .site-header { padding: 2rem 1rem 1.6rem; }
+    .topbar { padding: .4rem 1rem; }
+    .flip-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ── Print ─────────────────────────────────────────────────────── */
+  @media print {
+    .lesson-nav, .topbar, .sidebar { display: none; }
+    .page-body { grid-template-columns: 1fr; }
+    body { background: white; }
+  }
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<!-- Top bar -->
+<div class="topbar" role="banner">
+  <a href="index.html">← AI-103 Course Home</a>
+  <span class="topbar-sep">·</span>
+  <span>MVCC · Dept. of Engineering &amp; Technology</span>
+  <span class="topbar-sep">·</span>
+  <span>Dr. John L. Sands</span>
+</div>
+
+<!-- Header -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="lesson-eyebrow">
+      <span>AI-103: AI Cybersecurity Foundations</span>
+      <span class="sep">·</span>
+      <span>Day 1 of 15</span>
+      <span class="sep">·</span>
+      <span>4 Contact Hours</span>
+    </div>
+    <h1>Expanding Cybersecurity Principles for AI</h1>
+    <p class="tagline">
+      Why traditional information security is insufficient for AI-enabled enterprises —
+      and where AAISM extends the CISM foundation you already know.
+    </p>
+    <div class="header-meta">
+      <span>📚 <strong>Intermediate</strong></span>
+      <span>⏱ <strong>4 instructional hours · 2 modules + activities</strong></span>
+      <span>🎯 <strong>Learning Objective 1</strong></span>
+      <span>📝 <strong>Reflection artifact due end of class</strong></span>
+    </div>
+  </div>
+</header>
+
+<!-- Lesson nav -->
+<nav class="lesson-nav" aria-label="Lesson section navigation">
+  <div class="lesson-nav-inner">
+    <a href="#overview" class="active">Overview</a>
+    <a href="#m1">1 · Why CISM Isn't Enough</a>
+    <a href="#m2">2 · Six New Assumptions</a>
+    <a href="#m3">3 · Course Map</a>
+    <a href="#activity-a">Activity A</a>
+    <a href="#m4">4 · AAISM Domains</a>
+    <a href="#activity-b">Activity B</a>
+    <a href="#artifact">Assessment</a>
+    <a href="#quiz">Quiz</a>
+  </div>
+</nav>
+
+<!-- Page body -->
+<div class="page-body">
+
+  <!-- Main content -->
+  <main id="main">
+
+    <!-- Overview -->
+    <section id="overview" class="lesson-section" aria-labelledby="overview-h">
+      <h2 class="section-title" id="overview-h">
+        <span>🧭</span> Lesson Overview
+        <span class="section-meta">Day 1 · 4 hours</span>
+      </h2>
+
+      <div class="prose">
+        <p>
+          If you have studied for or hold a security credential — Security+, CISM, CISSP —
+          you already know how to govern, assess risk, build a security program, and manage incidents.
+          <strong>That knowledge is not wrong. It is incomplete.</strong>
+        </p>
+        <p>
+          The systems now entering enterprise environments do not behave like traditional software.
+          They learn from data. They produce probabilistic outputs. They can be manipulated through
+          their inputs in ways that have no parallel in SQL injection or buffer overflows. They drift
+          in production even when nobody changes a line of code. They can take autonomous actions with
+          real-world consequences. And the regulatory landscape around them is entirely new.
+        </p>
+        <p>
+          Today we establish the conceptual bridge: what CISM covers, what it stops short of,
+          and exactly where AI cybersecurity must extend it. By the end of this lesson you will
+          be able to explain — to an executive, a regulator, or a skeptical peer — why traditional
+          infosec principles alone are insufficient for AI-enabled enterprises, and what AAISM
+          adds on top.
+        </p>
+      </div>
+
+      <div class="analogy-box">
+        <div class="analogy-label">🎓 Anchoring Analogy: The Pilot's Type Rating</div>
+        <p>
+          An airline pilot earns an Airline Transport Pilot License (ATPL) — the top-level
+          certification that proves they can fly. But every new aircraft type requires a separate
+          "type rating" because each aircraft has its own avionics, its own failure modes, its own
+          emergency procedures. The pilot does not unlearn how to fly; they extend their qualifications
+          to a new platform.
+        </p>
+        <p>
+          <strong>CISM is the ATPL. AAISM is the type rating for AI.</strong>
+          The foundational skills — governance, risk management, program development, incident response —
+          transfer completely. What changes is the aircraft.
+        </p>
+      </div>
+
+      <h3>Day 1 Learning Objectives</h3>
+      <p style="font-size:.9rem;color:var(--ink-soft);margin-bottom:.8rem;">
+        By the end of this lesson you will be able to:
+      </p>
+      <ol style="margin-left:1.3rem;color:var(--ink-soft);font-size:.92rem;">
+        <li style="margin-bottom:.4rem;">Explain why CISM alone is insufficient for AI-enabled enterprises and where AAISM extends it.</li>
+        <li style="margin-bottom:.4rem;">List the six implicit assumptions in traditional security that AI breaks.</li>
+        <li style="margin-bottom:.4rem;">Name the three AAISM domains and their percentage weights on the AAISM exam.</li>
+        <li style="margin-bottom:.4rem;">Describe the course map — AI as target vs. AI as weapon — and the four major frameworks covered.</li>
+        <li style="margin-bottom:.4rem;">Articulate at least three ways AI systems change the information security threat model.</li>
+      </ol>
+
+    </section>
+
+    <!-- ── PART A ─────────────────────────────────────────────────── -->
+    <div class="part-banner">
+      <div class="part-num">A</div>
+      <div class="part-title">Lecture &amp; Structured Exploration — The Conceptual Bridge</div>
+      <div class="part-time">⏱ ~2 hours</div>
+    </div>
+
+    <!-- Module 1 -->
+    <section id="m1" class="lesson-section" aria-labelledby="m1-h">
+      <h2 class="section-title" id="m1-h">
+        <span>🏛️</span> Module 1 · Why CISM Alone Isn't Enough
+        <span class="section-meta">45 min</span>
+      </h2>
+
+      <div class="prose">
+        <p>
+          The CISM body of knowledge was built around four enduring domains: information security
+          governance, information risk management, information security program development, and
+          incident management. These domains remain correct. They are also incomplete when the
+          assets being governed include systems that <em>learn from data, generate novel outputs,
+          and can be manipulated through their inputs in ways that have no parallel in traditional
+          software</em>.
+        </p>
+      </div>
+
+      <h3>The CISM Foundation — and Its Boundaries</h3>
+
+      <div class="domain-compare">
+        <div class="domain-card">
+          <div class="domain-card-header cism">🏛️ CISM — Four Domains</div>
+          <ul>
+            <li><span class="li-icon">📋</span><div><strong>D1 Governance</strong> — strategy, policy, roles, stakeholder alignment</div></li>
+            <li><span class="li-icon">⚖️</span><div><strong>D2 Risk Management</strong> — assess, treat, monitor information security risk</div></li>
+            <li><span class="li-icon">🔧</span><div><strong>D3 Program Development</strong> — design, implement, manage the security program</div></li>
+            <li><span class="li-icon">🚨</span><div><strong>D4 Incident Management</strong> — prepare, detect, respond, recover, learn</div></li>
+          </ul>
+          <div style="padding:.5rem 1rem .8rem;">
+            <span class="assumption-tag">Implicit assumption: deterministic systems, stable inputs/outputs, knowable asset inventory, code-centric threats</span>
+          </div>
+        </div>
+
+        <div class="domain-card">
+          <div class="domain-card-header aaism">🤖 AAISM — Three Domains</div>
+          <ul>
+            <li><span class="li-icon">🏛️</span><div><strong>D1 AI Governance &amp; Program Management</strong> (31%) — AI-specific policy, data and model lifecycle, AI incident response</div></li>
+            <li><span class="li-icon">⚠️</span><div><strong>D2 AI Risk Management</strong> (31%) — AI-specific threats, vulnerabilities, vendor and supply chain</div></li>
+            <li><span class="li-icon">🔬</span><div><strong>D3 AI Technologies &amp; Controls</strong> (38%) — security architecture, lifecycle controls, monitoring, ethics &amp; trust</div></li>
+          </ul>
+          <div style="padding:.5rem 1rem .8rem;">
+            <span class="assumption-tag new">New assumptions: probabilistic behavior, adversarial inputs, training data as attack surface, continuous model change</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <div class="callout-label">⚠️ Eligibility Note</div>
+        AAISM is <strong>available only to CISM or CISSP holders</strong>. ISACA designed it as a
+        stackable specialization, not a standalone credential. The implicit message: you cannot
+        competently govern AI security without first understanding how to govern security in general.
+        This course prepares you for that foundation.
+      </div>
+
+      <h3>The Three ISACA AI Credentials — Knowing Which One Fits</h3>
+      <p style="color:var(--ink-soft);font-size:.92rem;margin-bottom:1rem;">
+        AAISM is one of three new ISACA "Advanced in AI" credentials, each aimed at a different
+        professional role. Understanding the distinctions helps security professionals make the
+        right next-credential decision.
+      </p>
+
+      <div class="comp-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Credential</th>
+              <th>Audience</th>
+              <th>Prerequisite</th>
+              <th>Focus</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>AAISM</strong> — Advanced in AI Security Management</td>
+              <td>Security managers, CISOs, security architects</td>
+              <td>CISM or CISSP</td>
+              <td>Governing and securing enterprise AI</td>
+            </tr>
+            <tr>
+              <td><strong>AAIA</strong> — Advanced in AI Audit</td>
+              <td>Auditors, assurance professionals</td>
+              <td>CISA or equivalent</td>
+              <td>Auditing AI systems and controls</td>
+            </tr>
+            <tr>
+              <td><strong>AAIR</strong> — Advanced in AI Risk</td>
+              <td>Risk and compliance professionals</td>
+              <td>CRISC or equivalent</td>
+              <td>Enterprise AI risk management</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="analogy-box">
+        <div class="analogy-label">💡 Bridge Concept</div>
+        <p>
+          For a CISM, the natural extension is AAISM. The credential explicitly assumes CISM-level
+          expertise in governance, risk, program development, and incident management — and adds the
+          AI-specific layer on top. Think of CISM as the operating system and AAISM as the AI-security
+          application layer that runs on top of it.
+        </p>
+      </div>
+
+    </section>
+
+    <!-- Module 2 — Six New Assumptions -->
+    <section id="m2" class="lesson-section" aria-labelledby="m2-h">
+      <h2 class="section-title" id="m2-h">
+        <span>⚡</span> Module 2 · Six Things That Are Genuinely New in AI
+        <span class="section-meta">45 min</span>
+      </h2>
+
+      <div class="prose">
+        <p>
+          Security professionals often assume they can extend existing mental models to cover AI.
+          In many cases they can — but in six specific dimensions, AI systems behave in ways that
+          require genuinely new thinking. Click each card to flip it and see the security implication.
+        </p>
+      </div>
+
+      <div class="flip-grid" role="list" aria-label="Six new AI security assumptions — click each card to reveal security implications">
+
+        <div class="flip-card" role="listitem" tabindex="0" aria-label="Non-determinism — click to flip">
+          <div class="flip-card-inner">
+            <div class="flip-front">
+              <div class="flip-icon">🎲</div>
+              <div class="flip-title">Non-determinism</div>
+              <div class="flip-hint">Click to flip</div>
+            </div>
+            <div class="flip-back">
+              <div class="flip-back-title">Security Implication</div>
+              <div class="flip-body">
+                <strong>The same input can produce different outputs.</strong>
+                Traditional testing assumes repeatability. AI systems break that assumption.
+                Validation, monitoring, and incident triage all need new approaches. You cannot
+                "test to completion."
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card" role="listitem" tabindex="0" aria-label="Data as code — click to flip">
+          <div class="flip-card-inner">
+            <div class="flip-front">
+              <div class="flip-icon">📊</div>
+              <div class="flip-title">Data as Code</div>
+              <div class="flip-hint">Click to flip</div>
+            </div>
+            <div class="flip-back">
+              <div class="flip-back-title">Security Implication</div>
+              <div class="flip-body">
+                <strong>Training data <em>becomes</em> the system's behavior.</strong>
+                Poisoned data is not just a confidentiality issue — it is a control-plane attack.
+                Data lineage and provenance become security requirements, not nice-to-haves.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card" role="listitem" tabindex="0" aria-label="Prompts as attack surface — click to flip">
+          <div class="flip-card-inner">
+            <div class="flip-front">
+              <div class="flip-icon">💬</div>
+              <div class="flip-title">Prompts as Attack Surface</div>
+              <div class="flip-hint">Click to flip</div>
+            </div>
+            <div class="flip-back">
+              <div class="flip-back-title">Security Implication</div>
+              <div class="flip-body">
+                <strong>Natural language is now a control plane.</strong>
+                Instructions and data flow through the same channel — the model can't always
+                distinguish them. Prompt injection is genuinely novel and has no clean
+                traditional analogue.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card" role="listitem" tabindex="0" aria-label="Model drift — click to flip">
+          <div class="flip-card-inner">
+            <div class="flip-front">
+              <div class="flip-icon">🌊</div>
+              <div class="flip-title">Model Drift</div>
+              <div class="flip-hint">Click to flip</div>
+            </div>
+            <div class="flip-back">
+              <div class="flip-back-title">Security Implication</div>
+              <div class="flip-body">
+                <strong>Systems degrade silently over time.</strong>
+                Production data shifts; model performance decays even when nothing in the code
+                changed. Continuous monitoring of model <em>behavior</em> — not just availability
+                — is required.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card" role="listitem" tabindex="0" aria-label="Agentic action — click to flip">
+          <div class="flip-card-inner">
+            <div class="flip-front">
+              <div class="flip-icon">🤖</div>
+              <div class="flip-title">Agentic Action</div>
+              <div class="flip-hint">Click to flip</div>
+            </div>
+            <div class="flip-back">
+              <div class="flip-back-title">Security Implication</div>
+              <div class="flip-body">
+                <strong>Models can now take action, not just answer.</strong>
+                When an AI agent has tool access — email, code execution, payments — the blast
+                radius of a single compromised prompt expands dramatically.
+                Excessive agency is a top OWASP LLM risk.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card" role="listitem" tabindex="0" aria-label="Regulatory novelty — click to flip">
+          <div class="flip-card-inner">
+            <div class="flip-front">
+              <div class="flip-icon">⚖️</div>
+              <div class="flip-title">Regulatory Novelty</div>
+              <div class="flip-hint">Click to flip</div>
+            </div>
+            <div class="flip-back">
+              <div class="flip-back-title">Security Implication</div>
+              <div class="flip-body">
+                <strong>New regulators, new categories, new fines.</strong>
+                EU AI Act, state-level US laws, sector regulators, and emerging frameworks impose
+                obligations that don't map cleanly to GDPR or HIPAA. Provider vs. deployer is a new
+                distinction with legal teeth.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="callout">
+        <div class="callout-label">🔍 Why This Matters for Governance</div>
+        Each of these six dimensions requires policy language, risk assessment methods, or
+        control types that simply do not exist in a traditional infosec program. The goal of
+        AI-103 is to build those policy constructs, risk frameworks, and controls — layer by
+        layer — over the 15 days of this course.
+      </div>
+
+    </section>
+
+    <!-- Module 3 — Course Map -->
+    <section id="m3" class="lesson-section" aria-labelledby="m3-h">
+      <h2 class="section-title" id="m3-h">
+        <span>🗺️</span> Module 3 · Course Map — AI as Target &amp; AI as Weapon
+        <span class="section-meta">20 min</span>
+      </h2>
+
+      <div class="prose">
+        <p>
+          AI-103 approaches AI cybersecurity from two angles that together cover the full scope of
+          what a security professional must understand: <strong>AI as a target</strong> (how
+          adversaries attack AI systems you build or deploy) and <strong>AI as a weapon</strong>
+          (how adversaries weaponize AI to attack your organization). Both are real, both are
+          growing, and the controls for each are partially — but not completely — overlapping.
+        </p>
+      </div>
+
+      <div class="course-map-grid">
+        <div class="map-node">
+          <div class="node-icon">🛡️</div>
+          <div class="node-title">NIST AI RMF</div>
+          <div class="node-desc">Risk management framework. Govern, Map, Measure, Manage. Days 1–4.</div>
+        </div>
+        <div class="map-node">
+          <div class="node-icon">🏛️</div>
+          <div class="node-title">ISO/IEC 42001</div>
+          <div class="node-desc">Certifiable AI management system. AIMS analogue to ISO 27001. Days 2–5.</div>
+        </div>
+        <div class="map-node highlight">
+          <div class="node-icon">⚖️</div>
+          <div class="node-title">EU AI Act</div>
+          <div class="node-desc">Binding regulation. Risk tiers, fines, extraterritorial reach. Day 5.</div>
+        </div>
+        <div class="map-node">
+          <div class="node-icon">🔓</div>
+          <div class="node-title">OWASP LLM Top 10</div>
+          <div class="node-desc">Practitioner threat reference. 2025 edition. Days 7–8.</div>
+        </div>
+        <div class="map-node">
+          <div class="node-icon">🎯</div>
+          <div class="node-title">AI as Target</div>
+          <div class="node-desc">Attacks on models and data. Poisoning, evasion, extraction. Days 7–9.</div>
+        </div>
+        <div class="map-node highlight">
+          <div class="node-icon">⚔️</div>
+          <div class="node-title">AI as Weapon</div>
+          <div class="node-desc">Deepfakes, AI phishing, malware, influence operations. Day 10.</div>
+        </div>
+        <div class="map-node">
+          <div class="node-icon">🔧</div>
+          <div class="node-title">Secure Architecture</div>
+          <div class="node-desc">Defense in depth, AIBOM, model cards, lifecycle controls. Day 11.</div>
+        </div>
+        <div class="map-node">
+          <div class="node-icon">🚨</div>
+          <div class="node-title">AI Incident Response</div>
+          <div class="node-desc">NIST SP 800-61 adapted for AI. Red teams, tabletops. Days 14–15.</div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Activity A -->
+    <section id="activity-a" class="lesson-section" aria-labelledby="acta-h">
+      <h2 class="section-title" id="acta-h">
+        <span>✏️</span> Activity A · Objective Mapping Exercise
+        <span class="section-meta">Part A · 30 min</span>
+      </h2>
+
+      <div class="activity-block">
+        <div class="activity-header">
+          <span class="act-label">Activity</span>
+          <span class="act-title">Map Course Objectives to Traditional Cybersecurity Principles</span>
+          <span class="act-time">⏱ 25 min individual + 5 min share-out</span>
+        </div>
+        <div class="activity-body">
+          <p>
+            For each course learning objective below, use the dropdown to select which traditional
+            CISM domain it maps to <em>most closely</em>, then decide whether it represents something
+            CISM already covers fully, partially covers, or doesn't cover at all. This exercise
+            surfaces exactly where the AI extension is needed.
+          </p>
+          <div class="mapping-table-wrap">
+            <table class="mapping-table">
+              <thead>
+                <tr>
+                  <th style="width:40%">Course Learning Objective</th>
+                  <th>Closest CISM Domain</th>
+                  <th>CISM Coverage</th>
+                </tr>
+              </thead>
+              <tbody id="mapping-rows">
+                <!-- Populated by JS -->
+              </tbody>
+            </table>
+          </div>
+          <div style="margin-top:1rem;display:flex;gap:.7rem;flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="checkMapping()">Check My Mapping</button>
+            <button class="btn btn-ghost" onclick="resetMapping()">Reset</button>
+          </div>
+          <div id="mapping-feedback" style="margin-top:1rem;display:none;" class="callout"></div>
+          <div class="instructions" style="margin-top:1rem;">
+            <strong>Share-Out Prompt (5 min):</strong> Which objective was hardest to map?
+            Which CISM domain gets the most AI extensions? What does that tell you about
+            where AI changes security practice most?
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ── PART B ─────────────────────────────────────────────────── -->
+    <div class="part-banner">
+      <div class="part-num">B</div>
+      <div class="part-title">Deep Dive &amp; Lab — AAISM Domains and the Security Gap</div>
+      <div class="part-time">⏱ ~2 hours</div>
+    </div>
+
+    <!-- Module 4 — AAISM Domains in Depth -->
+    <section id="m4" class="lesson-section" aria-labelledby="m4-h">
+      <h2 class="section-title" id="m4-h">
+        <span>🤖</span> Module 4 · AAISM Domains — The AI Security Extension
+        <span class="section-meta">60 min</span>
+      </h2>
+
+      <div class="prose">
+        <p>
+          AAISM organizes AI security management into three domains. Understanding these domains
+          serves two purposes: it maps to the AAISM exam content outline, and — more importantly
+          for this course — it provides a conceptual architecture for everything we will build
+          over the next 15 days.
+        </p>
+      </div>
+
+      <h3>Domain 1 — AI Governance &amp; Program Management (31%)</h3>
+      <p style="color:var(--ink-soft);font-size:.92rem;margin-bottom:1rem;">
+        This domain covers everything required to establish, operate, and maintain a formal
+        AI security program within an enterprise. It is the closest AAISM domain to CISM's
+        D1 (Governance) and D3 (Program Development) — but with AI-specific requirements that
+        those domains do not address.
+      </p>
+
+      <div class="comp-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>AAISM D1 Topic</th>
+              <th>What It Covers</th>
+              <th>CISM Parallel / Gap</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>AI Steering Committee &amp; Charter</td>
+              <td>Cross-functional governance body with defined authority, cadence, escalation paths for AI-specific decisions</td>
+              <td>CISM D1 covers security governance structures — AI committee is an extension, not a replacement</td>
+            </tr>
+            <tr>
+              <td>AI Acceptable Use Policy</td>
+              <td>Data classification rules for AI inputs, prohibited use cases, approval pathways, shadow AI handling</td>
+              <td>CISM D3 covers AUP development — but AI AUP requires entirely new clauses CISM never anticipated</td>
+            </tr>
+            <tr>
+              <td>AI Use Case Register</td>
+              <td>Inventory of all approved AI deployments with owner, risk tier, review date — the "asset inventory" for AI</td>
+              <td>CISM D2 covers asset inventories — AI requires a new register format tied to behavioral risk, not just presence</td>
+            </tr>
+            <tr>
+              <td>Data &amp; Model Lifecycle Governance</td>
+              <td>Provenance, lineage, AIBOM, model cards — governance of the full lifecycle from training to retirement</td>
+              <td>CISM D3 covers data classification — lifecycle governance of training data is new and requires AI-specific controls</td>
+            </tr>
+            <tr>
+              <td>AI Incident Response Annex</td>
+              <td>Extension of NIST SP 800-61 IR lifecycle to cover AI-specific incidents: hallucinations, prompt injection, model poisoning</td>
+              <td>CISM D4 covers IR — but AI incidents have novel detection, analysis, and remediation steps</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Domain 2 — AI Risk Management (31%)</h3>
+      <p style="color:var(--ink-soft);font-size:.92rem;margin-bottom:1rem;">
+        This domain covers the identification, assessment, and treatment of AI-specific risks.
+        CISM D2 (Risk Management) is the closest parallel — but AI introduces risk categories
+        that do not map onto CIA-triad thinking.
+      </p>
+
+      <div class="comp-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>AI Risk Category</th>
+              <th>Definition</th>
+              <th>Traditional Analogue?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Model Risk</td>
+              <td>The model itself behaves incorrectly — hallucinates, drifts, fails on edge cases, performs worse on subpopulations</td>
+              <td>Partial — software defects are analogous, but non-determinism makes model risk fundamentally different</td>
+            </tr>
+            <tr>
+              <td>Data Risk</td>
+              <td>Training, fine-tuning, or query data creates problems — poisoned, biased, leaking, copyrighted, or regulated</td>
+              <td>Partial — data security exists, but data-as-control-plane is new</td>
+            </tr>
+            <tr>
+              <td>Adversarial Risk</td>
+              <td>Deliberate attacks targeting the AI system — prompt injection, evasion, extraction, inversion, poisoning</td>
+              <td>Partial — adversarial attacks exist in traditional security, but the mechanisms are entirely different</td>
+            </tr>
+            <tr>
+              <td>Third-Party / Supply Chain Risk</td>
+              <td>Dependencies on models, data, or services you don't control; inherited vulnerabilities from the AI supply chain</td>
+              <td>Partial — supply chain risk exists, but the AI supply chain has unique opacity and layering</td>
+            </tr>
+            <tr>
+              <td>Ethical &amp; Societal Risk</td>
+              <td>System causes harm even when functioning as designed — discrimination, displacement, deception</td>
+              <td>Minimal — traditional infosec rarely addresses designed-in harm; AI governance requires it</td>
+            </tr>
+            <tr>
+              <td>Regulatory &amp; Legal Risk</td>
+              <td>Deployment violates binding rule — EU AI Act, sector regulation, IP law, consumer protection</td>
+              <td>Partial — regulatory risk is known; AI-specific regulation is new and rapidly evolving</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Domain 3 — AI Technologies &amp; Controls (38%)</h3>
+      <p style="color:var(--ink-soft);font-size:.92rem;margin-bottom:.8rem;">
+        The largest AAISM domain covers the technical architecture and operational controls
+        required to secure AI systems. This is where threat landscape knowledge (OWASP, ATLAS),
+        architecture design (defense in depth for AI), and operational monitoring intersect.
+        Day 11 builds the architecture; Days 7–9 build the threat model. For today, we establish
+        the vocabulary.
+      </p>
+
+      <div class="course-map-grid">
+        <div class="map-node">
+          <div class="node-icon">🔬</div>
+          <div class="node-title">Security Architecture</div>
+          <div class="node-desc">Defense in depth across network, data, application, and model layers for AI systems.</div>
+        </div>
+        <div class="map-node">
+          <div class="node-icon">📋</div>
+          <div class="node-title">Lifecycle Controls</div>
+          <div class="node-desc">Controls from data collection through training, deployment, monitoring, and retirement.</div>
+        </div>
+        <div class="map-node">
+          <div class="node-icon">📡</div>
+          <div class="node-title">Behavioral Monitoring</div>
+          <div class="node-desc">Monitoring model behavior — not just availability — for drift, anomalies, and adversarial signals.</div>
+        </div>
+        <div class="map-node highlight">
+          <div class="node-icon">⚖️</div>
+          <div class="node-title">Ethics &amp; Trust</div>
+          <div class="node-desc">Fairness, explainability, and accountability controls aligned to NIST AI RMF trustworthiness characteristics.</div>
+        </div>
+        <div class="map-node">
+          <div class="node-icon">🔓</div>
+          <div class="node-title">Threat Controls</div>
+          <div class="node-desc">Input/output filtering, system prompt hardening, least privilege for agents, content filters.</div>
+        </div>
+        <div class="map-node">
+          <div class="node-icon">🔍</div>
+          <div class="node-title">Red Team &amp; Testing</div>
+          <div class="node-desc">Adversarial testing — prompt injection, jailbreaks, poisoning, extraction — appropriate to system risk.</div>
+        </div>
+      </div>
+
+      <div class="analogy-box">
+        <div class="analogy-label">🔑 Key Insight: Why 38%?</div>
+        <p>
+          Domain 3 carries the largest exam weight because technical controls are where AI security
+          fails most visibly — and because the skills do not transfer cleanly from traditional security.
+          A CISM who can design a firewall ruleset does not automatically know how to design
+          a prompt injection defense, an AI model isolation architecture, or an MLOps monitoring
+          pipeline. These are genuinely new skills.
+        </p>
+      </div>
+
+    </section>
+
+    <!-- Activity B -->
+    <section id="activity-b" class="lesson-section" aria-labelledby="actb-h">
+      <h2 class="section-title" id="actb-h">
+        <span>🔬</span> Activity B · Think-Pair-Share: Where Does the Gap Live?
+        <span class="section-meta">Part B · 30 min</span>
+      </h2>
+
+      <div class="activity-block">
+        <div class="activity-header">
+          <span class="act-label">Think-Pair-Share</span>
+          <span class="act-title">AI Security Gap Analysis — Community College Context</span>
+          <span class="act-time">⏱ 30 min</span>
+        </div>
+        <div class="activity-body">
+          <p>
+            Moraine Valley Community College is deploying three AI systems this semester:
+          </p>
+          <ol style="margin:.5rem 0 1rem 1.3rem;color:var(--ink-soft);font-size:.92rem;">
+            <li style="margin-bottom:.4rem;"><strong>AI tutoring chatbot</strong> for developmental math students — trained on MVCC course materials, deployed on the student portal.</li>
+            <li style="margin-bottom:.4rem;"><strong>AI-assisted grading tool</strong> — helps faculty evaluate written assignments, surfaces suggested scores and feedback.</li>
+            <li style="margin-bottom:.4rem;"><strong>Predictive analytics dashboard</strong> — flags at-risk students for advising intervention based on attendance, LMS engagement, and grade data.</li>
+          </ol>
+          <div class="instructions">
+            <strong>Instructions:</strong>
+            <ol style="margin:.4rem 0 0 1.2rem;">
+              <li style="margin-bottom:.3rem;"><strong>Think (5 min):</strong> For each system, identify one traditional cybersecurity control that applies and one challenge that is genuinely new (not covered by traditional infosec). Write your answers individually.</li>
+              <li style="margin-bottom:.3rem;"><strong>Pair (10 min):</strong> Compare with a partner. Where did you agree? Where did you reach different conclusions?</li>
+              <li style="margin-bottom:.3rem;"><strong>Share (10 min):</strong> Class share-out. Instructor captures on whiteboard: traditional controls column vs. new AI challenges column.</li>
+              <li style="margin-bottom:.3rem;"><strong>Debrief (5 min):</strong> Which of the six "genuinely new" assumptions from Module 2 appear most in your analysis?</li>
+            </ol>
+          </div>
+          <p style="margin-top:1rem;font-size:.88rem;color:var(--ink-muted);">
+            <strong>Instructor note:</strong> The predictive analytics dashboard is designed to
+            surface the ethical/societal risk dimension — at-risk student flagging has real
+            equity implications that traditional CIA triad thinking doesn't capture.
+          </p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Assessment Artifact -->
+    <section id="artifact" class="lesson-section" aria-labelledby="artifact-h">
+      <h2 class="section-title" id="artifact-h">
+        <span>📝</span> Assessment Artifact
+        <span class="section-meta">Due: End of Class</span>
+      </h2>
+
+      <div class="artifact-block">
+        <div class="artifact-label">📋 Day 1 Assessment Artifact</div>
+        <h4>One-Page Reflection: "Three Ways AI Breaks Traditional InfoSec Assumptions"</h4>
+        <p>
+          Write a focused one-page (400–500 word) reflection addressed to a hypothetical
+          CISO colleague who holds a CISM and is skeptical that AI requires new governance
+          structures: <em>"We've governed new technologies before. Why is AI different?"</em>
+        </p>
+        <p><strong>Your reflection must address:</strong></p>
+        <ul>
+          <li><strong>Three specific ways</strong> AI systems break implicit assumptions in traditional information security — choose from the six covered in Module 2, but go deeper than the card text. Use a concrete example for each.</li>
+          <li><strong>One AAISM domain</strong> that you believe addresses the most critical gap — and why you chose it over the other two.</li>
+          <li><strong>One analogy of your own</strong> (not the pilot/type rating analogy from the lesson) that explains the CISM-to-AAISM relationship to a non-technical stakeholder.</li>
+        </ul>
+        <p>
+          <strong>Format:</strong> Plain prose, no bullet lists (write it as a professional memo,
+          not lecture notes). You will use this reflection as a reference point on Day 15
+          when you build your capstone AI Security Program.
+        </p>
+        <p>
+          <strong>Grading:</strong> Daily assignment category (25% of course grade).
+          Evaluated on specificity of AI security gap identification, accuracy of AAISM domain
+          characterization, and quality of original analogy.
+        </p>
+      </div>
+
+    </section>
+
+    <!-- Final Quiz -->
+    <section id="quiz" class="lesson-section" aria-labelledby="quiz-h">
+      <h2 class="section-title" id="quiz-h">
+        <span>❓</span> Day 1 Knowledge Check
+        <span class="section-meta">5 Questions · Instant Feedback</span>
+      </h2>
+
+      <p style="color:var(--ink-soft);font-size:.92rem;margin-bottom:1rem;">
+        Test your mastery of Day 1 content. Each question provides immediate feedback with an
+        explanation. This is formative — it does not affect your grade, but it predicts how well
+        you will do on the Week 1 quiz.
+      </p>
+
+      <div class="quiz-block">
+        <div class="quiz-header">
+          <span>Day 1 Knowledge Check — 5 Questions</span>
+          <span class="quiz-score" id="quiz-score-display">Score: 0 / 5</span>
+        </div>
+        <div class="quiz-body" id="quiz-body">
+
+          <!-- Q1 -->
+          <div class="quiz-question" data-q="1">
+            <div class="q-prompt"><span class="q-num">Q1.</span>
+              A CISM-certified security manager says: "We already govern technology risk — just add an
+              'AI' section to the existing risk register." Which response BEST explains why this is insufficient?
+            </div>
+            <ul class="q-options">
+              <li><label><input type="radio" name="q1" value="a"> AI is a new technology, so it needs a new section but the same assessment methods.</label></li>
+              <li><label><input type="radio" name="q1" value="b"> AI introduces risk categories — model risk, adversarial risk, ethical risk — that don't map onto CIA-triad thinking, and requires new assessment methods such as adversarial testing and behavioral monitoring that traditional risk registers weren't designed to capture.</label></li>
+              <li><label><input type="radio" name="q1" value="c"> The EU AI Act requires a separate AI risk register, so it's a compliance issue, not a capability issue.</label></li>
+              <li><label><input type="radio" name="q1" value="d"> AI risk is mostly vendor risk, which the existing third-party risk program already covers.</label></li>
+            </ul>
+            <div class="q-feedback" id="q1-feedback"></div>
+          </div>
+
+          <!-- Q2 -->
+          <div class="quiz-question" data-q="2">
+            <div class="q-prompt"><span class="q-num">Q2.</span>
+              Which of the following BEST describes why "training data as attack surface" is a
+              genuinely new security concept?
+            </div>
+            <ul class="q-options">
+              <li><label><input type="radio" name="q2" value="a"> Training data can contain confidential information, which is a data classification issue already covered by CISM.</label></li>
+              <li><label><input type="radio" name="q2" value="b"> Training data defines model behavior — poisoning it is a control-plane attack, not merely a data confidentiality issue. The attack modifies what the system does, not just what information it holds.</label></li>
+              <li><label><input type="radio" name="q2" value="c"> Training data can be stolen by competitors, which is an intellectual property issue handled by legal.</label></li>
+              <li><label><input type="radio" name="q2" value="d"> Training data is usually stored in cloud storage, which introduces standard cloud security risks.</label></li>
+            </ul>
+            <div class="q-feedback" id="q2-feedback"></div>
+          </div>
+
+          <!-- Q3 -->
+          <div class="quiz-question" data-q="3">
+            <div class="q-prompt"><span class="q-num">Q3.</span>
+              AAISM's Domain 3 (AI Technologies &amp; Controls) carries the highest exam weight at 38%.
+              Which explanation BEST justifies this weighting?
+            </div>
+            <ul class="q-options">
+              <li><label><input type="radio" name="q3" value="a"> Technical controls are where most auditors focus, so ISACA weighted them highest to match audit practice.</label></li>
+              <li><label><input type="radio" name="q3" value="b"> Technical controls for AI — prompt injection defense, behavioral monitoring, MLOps security — are the skills that transfer least from traditional security, requiring the most new learning.</label></li>
+              <li><label><input type="radio" name="q3" value="c"> ISACA determined that governance and risk are already covered by CISM, so only the technical domain needed new content.</label></li>
+              <li><label><input type="radio" name="q3" value="d"> Domain 3 covers the EU AI Act's technical requirements, which are the most complex regulatory obligation.</label></li>
+            </ul>
+            <div class="q-feedback" id="q3-feedback"></div>
+          </div>
+
+          <!-- Q4 -->
+          <div class="quiz-question" data-q="4">
+            <div class="q-prompt"><span class="q-num">Q4.</span>
+              A security architect discovers that a recently deployed customer-service chatbot has
+              begun producing different answers to the same question depending on how the question
+              is phrased — even when the correct answer should be identical. Which "genuinely new
+              AI assumption" does this BEST illustrate?
+            </div>
+            <ul class="q-options">
+              <li><label><input type="radio" name="q4" value="a"> Agentic action</label></li>
+              <li><label><input type="radio" name="q4" value="b"> Regulatory novelty</label></li>
+              <li><label><input type="radio" name="q4" value="c"> Non-determinism</label></li>
+              <li><label><input type="radio" name="q4" value="d"> Data as code</label></li>
+            </ul>
+            <div class="q-feedback" id="q4-feedback"></div>
+          </div>
+
+          <!-- Q5 -->
+          <div class="quiz-question" data-q="5">
+            <div class="q-prompt"><span class="q-num">Q5.</span>
+              Which statement MOST accurately describes the relationship between CISM and AAISM?
+            </div>
+            <ul class="q-options">
+              <li><label><input type="radio" name="q5" value="a"> AAISM replaces CISM for professionals working in AI-enabled organizations.</label></li>
+              <li><label><input type="radio" name="q5" value="b"> AAISM is a standalone AI credential that can be earned without prior security management experience.</label></li>
+              <li><label><input type="radio" name="q5" value="c"> AAISM is a stackable specialization that assumes CISM-level foundational knowledge and adds AI-specific governance, risk, and technical control domains on top of it.</label></li>
+              <li><label><input type="radio" name="q5" value="d"> CISM and AAISM cover the same domains but AAISM provides more detail on technical controls.</label></li>
+            </ul>
+            <div class="q-feedback" id="q5-feedback"></div>
+          </div>
+
+        </div>
+        <div class="quiz-actions">
+          <button class="btn btn-primary" onclick="gradeQuiz()">Grade My Quiz</button>
+          <button class="btn btn-ghost" onclick="resetQuiz()">Reset</button>
+          <span class="quiz-result-msg" id="quiz-result-msg"></span>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" aria-label="Lesson sidebar">
+
+    <!-- Table of contents -->
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">On This Page</div>
+      <div class="sidebar-card-body">
+        <ul class="sidebar-toc">
+          <li><a href="#overview"><span class="toc-num">→</span>Lesson Overview</a></li>
+          <li><a href="#m1"><span class="toc-num">1</span>Why CISM Isn't Enough</a></li>
+          <li><a href="#m2"><span class="toc-num">2</span>Six New Assumptions</a></li>
+          <li><a href="#m3"><span class="toc-num">3</span>Course Map</a></li>
+          <li><a href="#activity-a"><span class="toc-num">A</span>Activity A: Mapping</a></li>
+          <li><a href="#m4"><span class="toc-num">4</span>AAISM Domains</a></li>
+          <li><a href="#activity-b"><span class="toc-num">B</span>Activity B: Think-Pair</a></li>
+          <li><a href="#artifact"><span class="toc-num">✏</span>Assessment Artifact</a></li>
+          <li><a href="#quiz"><span class="toc-num">?</span>Knowledge Check</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Progress tracker -->
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">Objectives Progress</div>
+      <div class="sidebar-card-body">
+        <div class="sidebar-progress">
+          <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <div class="progress-label" id="progress-label">0 of 5 completed</div>
+        <ul class="lo-list" style="margin-top:.7rem;">
+          <li>
+            <div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)" aria-label="Mark objective 1 complete"></div>
+            <span>Explain why CISM alone is insufficient for AI enterprises.</span>
+          </li>
+          <li>
+            <div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)" aria-label="Mark objective 2 complete"></div>
+            <span>List the six implicit assumptions AI breaks.</span>
+          </li>
+          <li>
+            <div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)" aria-label="Mark objective 3 complete"></div>
+            <span>Name the three AAISM domains and exam weights.</span>
+          </li>
+          <li>
+            <div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)" aria-label="Mark objective 4 complete"></div>
+            <span>Describe the course map: AI as target vs. AI as weapon.</span>
+          </li>
+          <li>
+            <div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter')||event.key===' ')toggleLO(this)" aria-label="Mark objective 5 complete"></div>
+            <span>Articulate three ways AI changes the threat model.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Key terms -->
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">Key Terms — Day 1</div>
+      <div class="sidebar-card-body">
+        <ul class="sidebar-toc">
+          <li><a href="#m1" style="font-size:.8rem;"><strong>AAISM</strong> — Advanced in AI Security Management</a></li>
+          <li><a href="#m2" style="font-size:.8rem;"><strong>Non-determinism</strong> — Same input → variable output</a></li>
+          <li><a href="#m2" style="font-size:.8rem;"><strong>Data as code</strong> — Training data defines behavior</a></li>
+          <li><a href="#m2" style="font-size:.8rem;"><strong>Prompt injection</strong> — Adversarial natural-language input</a></li>
+          <li><a href="#m2" style="font-size:.8rem;"><strong>Model drift</strong> — Silent performance degradation</a></li>
+          <li><a href="#m4" style="font-size:.8rem;"><strong>AI Use Case Register</strong> — AI asset inventory</a></li>
+          <li><a href="#m4" style="font-size:.8rem;"><strong>AIBOM</strong> — AI Bill of Materials</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Lesson nav -->
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">Lesson Navigation</div>
+      <div class="sidebar-card-body" style="display:flex;flex-direction:column;gap:.5rem;">
+        <a href="index.html" style="font-size:.85rem;font-weight:600;color:var(--oxblood);">← Course Home</a>
+        <span style="font-size:.85rem;font-weight:600;color:var(--ink-muted);">Day 1 — Current</span>
+        <a href="#" style="font-size:.85rem;font-weight:600;color:var(--ink-muted);cursor:not-allowed;">Day 2 — Coming Soon →</a>
+      </div>
+    </div>
+
+  </aside>
+
+</div><!-- end page-body -->
+
+<!-- Lesson footer nav -->
+<div class="lesson-nav-footer">
+  <a href="index.html">← Course Home</a>
+  <a href="#" style="color:var(--ink-muted);pointer-events:none;">Day 2 Coming Soon →</a>
+</div>
+
+<footer>
+  <strong>AI-103: AI Cybersecurity Foundations · Day 1</strong> ·
+  Moraine Valley Community College · Department of Engineering &amp; Technology ·
+  Dr. John L. Sands · 2026
+  <br><br>
+  Day 2 covers AI governance foundations and the full framework landscape: NIST AI RMF, ISO/IEC 42001, EU AI Act, and OWASP Top 10 for LLMs.
+</footer>
+
+<script>
+/* ── Flip cards ───────────────────────────────────────────────── */
+document.querySelectorAll('.flip-card').forEach(card => {
+  card.addEventListener('click', () => card.classList.toggle('flipped'));
+  card.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      card.classList.toggle('flipped');
+    }
+  });
+});
+
+/* ── Sticky nav active link ──────────────────────────────────── */
+const sections = document.querySelectorAll('section[id], div[id^="activity"]');
+const navLinks = document.querySelectorAll('.lesson-nav a');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(l => l.classList.remove('active'));
+      const link = document.querySelector(`.lesson-nav a[href="#${e.target.id}"]`);
+      if (link) link.classList.add('active');
+    }
+  });
+}, { rootMargin: '-25% 0px -65% 0px' });
+document.querySelectorAll('section[id]').forEach(s => observer.observe(s));
+
+/* ── Progress tracker ────────────────────────────────────────── */
+function toggleLO(el) {
+  el.classList.toggle('checked');
+  const checked = el.getAttribute('aria-checked') === 'true';
+  el.setAttribute('aria-checked', (!checked).toString());
+  updateProgress();
+}
+function updateProgress() {
+  const all = document.querySelectorAll('.lo-check');
+  const done = document.querySelectorAll('.lo-check.checked').length;
+  const pct = Math.round((done / all.length) * 100);
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = `${done} of ${all.length} completed`;
+}
+
+/* ── Mapping exercise ────────────────────────────────────────── */
+const mappingData = [
+  { obj: "Explain why CISM alone is insufficient for AI-enabled enterprises.", bestDomain: "D1 Governance", bestCoverage: "Partially covered" },
+  { obj: "Identify the major AI governance frameworks (NIST AI RMF, ISO 42001, EU AI Act).", bestDomain: "D1 Governance", bestCoverage: "Not covered" },
+  { obj: "Apply the four NIST AI RMF functions to enterprise AI deployment.", bestDomain: "D2 Risk Management", bestCoverage: "Partially covered" },
+  { obj: "Classify AI systems under the EU AI Act's four risk tiers.", bestDomain: "D2 Risk Management", bestCoverage: "Not covered" },
+  { obj: "Differentiate AI risk categories: model risk, data risk, operational risk.", bestDomain: "D2 Risk Management", bestCoverage: "Partially covered" },
+  { obj: "Recognize shadow AI patterns and apply governance responses.", bestDomain: "D3 Program Development", bestCoverage: "Not covered" },
+  { obj: "Conduct vendor and supply-chain risk assessments for AI solutions.", bestDomain: "D2 Risk Management", bestCoverage: "Partially covered" },
+  { obj: "Design a defense-in-depth architecture for an AI-enabled application.", bestDomain: "D3 Program Development", bestCoverage: "Partially covered" },
+  { obj: "Adapt NIST SP 800-61 incident response lifecycle for AI-specific incidents.", bestDomain: "D4 Incident Management", bestCoverage: "Partially covered" },
+];
+
+const domains = ["D1 Governance", "D2 Risk Management", "D3 Program Development", "D4 Incident Management"];
+const coverages = ["Fully covered", "Partially covered", "Not covered"];
+
+const tbody = document.getElementById('mapping-rows');
+if (tbody) {
+  mappingData.forEach((row, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td style="font-size:.84rem;line-height:1.4;">${row.obj}</td>
+      <td>
+        <select id="map-domain-${i}" aria-label="CISM domain for objective ${i+1}">
+          <option value="">— Select —</option>
+          ${domains.map(d => `<option value="${d}">${d}</option>`).join('')}
+        </select>
+      </td>
+      <td>
+        <select id="map-coverage-${i}" aria-label="Coverage level for objective ${i+1}">
+          <option value="">— Select —</option>
+          ${coverages.map(c => `<option value="${c}">${c}</option>`).join('')}
+        </select>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function checkMapping() {
+  let correct = 0, total = 0;
+  mappingData.forEach((row, i) => {
+    const d = document.getElementById(`map-domain-${i}`)?.value;
+    const c = document.getElementById(`map-coverage-${i}`)?.value;
+    if (d && c) {
+      total++;
+      if (d === row.bestDomain && c === row.bestCoverage) correct++;
+    }
+  });
+  const fb = document.getElementById('mapping-feedback');
+  if (fb) {
+    fb.style.display = 'block';
+    if (total === 0) {
+      fb.innerHTML = '<strong>Complete the table first!</strong> Select a domain and coverage level for each objective.';
+    } else {
+      fb.innerHTML = `<strong>You matched ${correct} of ${total} correctly.</strong> Remember: some objectives can reasonably map to more than one domain — what matters is your reasoning. Discuss disagreements in the share-out.`;
+    }
+  }
+}
+
+function resetMapping() {
+  mappingData.forEach((_, i) => {
+    const d = document.getElementById(`map-domain-${i}`);
+    const c = document.getElementById(`map-coverage-${i}`);
+    if (d) d.value = '';
+    if (c) c.value = '';
+  });
+  const fb = document.getElementById('mapping-feedback');
+  if (fb) fb.style.display = 'none';
+}
+
+/* ── Quiz ────────────────────────────────────────────────────── */
+const answers = {
+  q1: { correct: 'b', explanation: 'Correct. AI introduces risk categories (model risk, adversarial risk, ethical risk) that have no clean CIA-triad analogue. Traditional risk registers also lack the assessment methods needed for AI — adversarial testing, behavioral monitoring, subpopulation performance analysis.' },
+  q2: { correct: 'b', explanation: 'Correct. The key insight is that training data defines behavior — it is a control plane, not merely stored information. Poisoning it modifies what the system does, making it fundamentally different from traditional data confidentiality risks.' },
+  q3: { correct: 'b', explanation: 'Correct. Domain 3 carries the highest weight precisely because these controls — prompt injection defense, behavioral monitoring, MLOps security — transfer least from traditional security. They require genuinely new skills, not extensions of existing ones.' },
+  q4: { correct: 'c', explanation: 'Correct. Non-determinism is the assumption that the same input can produce different outputs. This breaks traditional testing and validation approaches that assume repeatability.' },
+  q5: { correct: 'c', explanation: 'Correct. AAISM is explicitly designed as a stackable specialization — it requires CISM or CISSP as a prerequisite because it assumes foundational security management expertise and adds AI-specific domains on top.' },
+};
+
+let quizScore = 0;
+
+function gradeQuiz() {
+  quizScore = 0;
+  Object.keys(answers).forEach(q => {
+    const selected = document.querySelector(`input[name="${q}"]:checked`);
+    const fb = document.getElementById(`${q}-feedback`);
+    const { correct, explanation } = answers[q];
+    if (selected) {
+      fb.classList.add('show');
+      if (selected.value === correct) {
+        quizScore++;
+        fb.className = 'q-feedback correct show';
+        fb.innerHTML = `✅ <strong>Correct!</strong> ${explanation}`;
+      } else {
+        fb.className = 'q-feedback incorrect show';
+        fb.innerHTML = `❌ <strong>Incorrect.</strong> ${explanation}`;
+      }
+    } else {
+      fb.className = 'q-feedback incorrect show';
+      fb.innerHTML = `⚠️ <strong>No answer selected.</strong> ${explanation}`;
+    }
+  });
+  document.getElementById('quiz-score-display').textContent = `Score: ${quizScore} / 5`;
+  const msgs = ['Keep reviewing the material and try again.','Good start — review the explanations and retake.','Solid — you have the core concepts.','Strong performance!','Perfect score — excellent mastery of Day 1!'];
+  document.getElementById('quiz-result-msg').textContent = msgs[quizScore];
+}
+
+function resetQuiz() {
+  document.querySelectorAll('.quiz-block input[type="radio"]').forEach(r => r.checked = false);
+  document.querySelectorAll('.q-feedback').forEach(f => { f.classList.remove('show','correct','incorrect'); f.innerHTML = ''; });
+  document.getElementById('quiz-score-display').textContent = 'Score: 0 / 5';
+  document.getElementById('quiz-result-msg').textContent = '';
+  quizScore = 0;
+}
+</script>
+
+</body>
+</html>
