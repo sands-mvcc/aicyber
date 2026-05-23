@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI-103 Lesson 3 — NIST AI RMF in Depth: Govern and Map. All six GOVERN categories, all five MAP categories, and hands-on implementation activities.">
+<title>AI-103 · Day 3: NIST AI RMF in Depth — Govern &amp; Map</title>
+<style>
+:root {
+  --oxblood:#6b1a1a; --oxblood-dk:#4a1010; --oxblood-lt:#8c2a2a;
+  --gold:#c8960c; --gold-lt:#e8b830;
+  --cream:#faf8f4; --parchment:#f2ede3;
+  --ink:#1a1a1a; --ink-soft:#3a3a3a; --ink-muted:#6b6b6b;
+  --border:#d4cdbf; --border-lt:#e8e2d8; --white:#ffffff;
+  --nist:#1e3a5f; --nist-lt:#2a4f82; --nist-xlt:#eef3fa;
+  --gov-col:#1e3a5f; --map-col:#1a5f3a;
+  --success:#1a6b2a; --success-bg:#e8f5eb;
+  --error:#6b1a1a; --error-bg:#fdeaea;
+  --warn-bg:#fff8e1; --warn-border:#e8c84a;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.08);
+  --shadow-md:0 4px 16px rgba(0,0,0,.10);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.13);
+  --radius:6px;
+  --ff-serif:'Fraunces','Georgia',serif;
+  --ff-sans:'IBM Plex Sans','Segoe UI',system-ui,sans-serif;
+  --ff-mono:'IBM Plex Mono','Courier New',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff-sans);font-size:16px;line-height:1.7;color:var(--ink);background:var(--cream)}
+a{color:var(--oxblood)}
+a:hover{text-decoration:underline}
+
+.skip-link{position:absolute;top:-40px;left:1rem;background:var(--oxblood);color:var(--white);padding:.4rem .8rem;border-radius:var(--radius);font-size:.85rem;font-weight:600;transition:top .2s;z-index:9999}
+.skip-link:focus{top:.5rem}
+
+/* Topbar */
+.topbar{background:var(--oxblood-dk);color:rgba(255,255,255,.7);font-size:.78rem;font-family:var(--ff-mono);letter-spacing:.04em;padding:.45rem 2rem;display:flex;align-items:center;flex-wrap:wrap;gap:.3rem .7rem}
+.topbar a{color:rgba(255,255,255,.8);text-decoration:none}
+.topbar a:hover{color:var(--white)}
+.topbar-sep{opacity:.4}
+
+/* Header */
+.site-header{background:var(--nist);color:var(--white);padding:2.8rem 2rem 2.2rem;position:relative;overflow:hidden}
+.site-header::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent,transparent 40px,rgba(255,255,255,.025) 40px,rgba(255,255,255,.025) 41px);pointer-events:none}
+.header-inner{max-width:1080px;margin:0 auto;position:relative}
+.lesson-eyebrow{font-family:var(--ff-mono);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-lt);margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.lesson-eyebrow .sep{opacity:.5}
+.site-header h1{font-family:var(--ff-serif);font-size:clamp(1.7rem,3.5vw,2.5rem);font-weight:700;line-height:1.15;margin-bottom:.5rem}
+.site-header .tagline{font-size:.97rem;color:rgba(255,255,255,.75);max-width:680px;margin-bottom:1.4rem}
+.header-meta{display:flex;flex-wrap:wrap;gap:.5rem 1.2rem;font-size:.82rem;color:rgba(255,255,255,.62)}
+.header-meta strong{color:rgba(255,255,255,.9)}
+
+/* Lesson nav */
+.lesson-nav{background:var(--nist-lt);border-bottom:2px solid var(--gold);position:sticky;top:0;z-index:100}
+.lesson-nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.lesson-nav-inner::-webkit-scrollbar{display:none}
+.lesson-nav a{color:rgba(255,255,255,.72);font-size:.78rem;font-weight:600;letter-spacing:.04em;white-space:nowrap;padding:.6rem 1rem;border-bottom:3px solid transparent;transition:color .15s,border-color .15s,background .15s;text-decoration:none}
+.lesson-nav a:hover,.lesson-nav a.active{color:var(--white);border-bottom-color:var(--gold-lt);background:rgba(255,255,255,.07)}
+
+/* Layout */
+.page-body{max-width:1080px;margin:0 auto;padding:2.5rem 1.5rem 5rem;display:grid;grid-template-columns:1fr 260px;gap:2.5rem;align-items:start}
+@media(max-width:820px){.page-body{grid-template-columns:1fr}.sidebar{display:none}}
+main{min-width:0}
+
+/* Sidebar */
+.sidebar{position:sticky;top:56px}
+.sidebar-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:1rem;box-shadow:var(--shadow-sm)}
+.sidebar-card-header{background:var(--nist);color:var(--white);padding:.65rem 1rem;font-size:.78rem;font-family:var(--ff-mono);letter-spacing:.07em;text-transform:uppercase;font-weight:600}
+.sidebar-card-body{padding:.9rem 1rem}
+.sidebar-toc{list-style:none}
+.sidebar-toc li{border-bottom:1px solid var(--border-lt)}
+.sidebar-toc li:last-child{border-bottom:none}
+.sidebar-toc a{display:block;padding:.45rem 0;font-size:.82rem;color:var(--ink-soft);text-decoration:none;transition:color .15s}
+.sidebar-toc a:hover{color:var(--oxblood)}
+.toc-num{font-family:var(--ff-mono);font-size:.72rem;color:var(--oxblood);margin-right:.4rem}
+.lo-list{list-style:none}
+.lo-list li{font-size:.82rem;color:var(--ink-soft);padding:.35rem 0;border-bottom:1px solid var(--border-lt);display:flex;gap:.5rem;align-items:flex-start;line-height:1.45}
+.lo-list li:last-child{border-bottom:none}
+.lo-check{width:1.1rem;height:1.1rem;border:2px solid var(--oxblood);border-radius:3px;flex-shrink:0;margin-top:.15rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.65rem;color:var(--white);background:transparent;transition:background .15s}
+.lo-check.checked{background:var(--oxblood)}
+.lo-check.checked::after{content:'✓'}
+.sidebar-progress{height:6px;background:var(--border-lt);border-radius:3px;margin:.7rem 0 .4rem;overflow:hidden}
+.progress-bar{height:100%;background:var(--oxblood);border-radius:3px;width:0%;transition:width .3s}
+.progress-label{font-size:.75rem;color:var(--ink-muted);font-family:var(--ff-mono)}
+
+/* Headings */
+.lesson-section{margin-bottom:3rem}
+.section-title{font-family:var(--ff-serif);font-size:1.45rem;font-weight:700;color:var(--oxblood);margin-bottom:.3rem;padding-bottom:.45rem;border-bottom:2px solid var(--border);display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap}
+.section-title.gov-accent{color:var(--gov-col);border-bottom-color:#c0d4e8}
+.section-title.map-accent{color:var(--map-col);border-bottom-color:#b0d4c0}
+.section-meta{font-family:var(--ff-mono);font-size:.72rem;letter-spacing:.06em;color:var(--ink-muted);text-transform:uppercase;font-weight:normal}
+h3{font-family:var(--ff-sans);font-size:1.05rem;font-weight:700;color:var(--ink);margin:1.5rem 0 .6rem}
+h4{font-family:var(--ff-sans);font-size:.95rem;font-weight:700;color:var(--ink-soft);margin:.8rem 0 .3rem}
+
+/* Prose */
+.prose p{margin-bottom:1rem;color:var(--ink-soft)}
+.prose p:last-child{margin-bottom:0}
+.prose strong{color:var(--ink)}
+
+/* Part banner */
+.part-banner{border-radius:var(--radius);padding:.8rem 1.2rem;margin:2.5rem 0 1.5rem;display:flex;align-items:center;gap:1rem}
+.part-banner.gov{background:var(--gov-col)}
+.part-banner.map{background:var(--map-col)}
+.part-banner.lab{background:var(--oxblood)}
+.part-num{font-family:var(--ff-mono);font-size:1.3rem;font-weight:700;color:var(--gold-lt);line-height:1}
+.part-title{font-family:var(--ff-serif);font-size:1.05rem;font-weight:700;color:var(--white)}
+.part-time{margin-left:auto;font-family:var(--ff-mono);font-size:.75rem;color:rgba(255,255,255,.6);white-space:nowrap}
+
+/* Analogy box */
+.analogy-box{background:var(--parchment);border:1px solid var(--border);border-left:5px solid var(--gold);border-radius:var(--radius);padding:1.2rem 1.5rem;margin:1.5rem 0}
+.analogy-box .analogy-label{font-family:var(--ff-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:.4rem}
+.analogy-box p{color:var(--ink-soft);font-size:.95rem;margin-bottom:.5rem}
+.analogy-box p:last-child{margin-bottom:0}
+
+/* Callout */
+.callout{background:var(--warn-bg);border:1px solid var(--warn-border);border-left:5px solid var(--gold);border-radius:var(--radius);padding:1rem 1.3rem;margin:1.2rem 0;font-size:.92rem;color:var(--ink-soft)}
+.callout .callout-label{font-weight:700;color:var(--ink);font-family:var(--ff-mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.3rem}
+.callout-info{background:var(--nist-xlt);border-color:#b0c8e8;border-left-color:var(--nist)}
+
+/* Category card — GOVERN */
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem;margin:1.5rem 0}
+.cat-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);display:flex;flex-direction:column}
+.cat-card-header{padding:.7rem 1rem .6rem;display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem}
+.cat-card-header.gov{background:var(--gov-col);color:var(--white)}
+.cat-card-header.map{background:var(--map-col);color:var(--white)}
+.cat-card-code{font-family:var(--ff-mono);font-size:.75rem;font-weight:700;letter-spacing:.08em;opacity:.85}
+.cat-card-title{font-size:.9rem;font-weight:700;line-height:1.3}
+.cat-card-body{padding:.9rem 1rem;flex:1}
+.cat-card-body p{font-size:.88rem;color:var(--ink-soft);line-height:1.5;margin-bottom:.6rem}
+.cat-card-body p:last-child{margin-bottom:0}
+.sub-list{list-style:none;margin-top:.5rem}
+.sub-list li{font-size:.82rem;color:var(--ink-soft);padding:.3rem 0;border-bottom:1px solid var(--border-lt);display:flex;gap:.5rem;line-height:1.45}
+.sub-list li:last-child{border-bottom:none}
+.sub-code{font-family:var(--ff-mono);font-size:.7rem;font-weight:700;color:var(--oxblood);flex-shrink:0;margin-top:.1rem}
+.sub-code.map{color:var(--map-col)}
+
+/* Tabs */
+.tab-container{margin:1.5rem 0}
+.tab-buttons{display:flex;flex-wrap:wrap;gap:.3rem;border-bottom:2px solid var(--border)}
+.tab-btn{padding:.6rem 1.1rem;border:1px solid var(--border);border-bottom:none;border-radius:4px 4px 0 0;background:var(--parchment);color:var(--ink-muted);font-size:.85rem;font-weight:600;cursor:pointer;font-family:var(--ff-sans);transition:all .15s;margin-bottom:-2px}
+.tab-btn:hover{background:var(--white);color:var(--ink)}
+.tab-btn.active{background:var(--white);border-color:var(--border);border-bottom-color:var(--white);z-index:1}
+.tab-btn.gov-tab.active{border-top:3px solid var(--gov-col);color:var(--gov-col)}
+.tab-btn.map-tab.active{border-top:3px solid var(--map-col);color:var(--map-col)}
+.tab-panel{display:none;background:var(--white);border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:1.4rem}
+.tab-panel.active{display:block}
+
+/* Tables */
+.comp-table-wrap{overflow-x:auto;margin:1.5rem 0}
+table{width:100%;border-collapse:collapse;background:var(--white);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);font-size:.87rem}
+thead tr{background:var(--nist);color:var(--white)}
+thead.gov-head tr{background:var(--gov-col)}
+thead.map-head tr{background:var(--map-col)}
+thead th{padding:.7rem 1rem;text-align:left;font-family:var(--ff-mono);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+tbody tr{border-bottom:1px solid var(--border-lt)}
+tbody tr:last-child{border-bottom:none}
+tbody td{padding:.65rem 1rem;color:var(--ink-soft);vertical-align:top;line-height:1.5}
+tbody td:first-child{font-weight:600;color:var(--ink);font-family:var(--ff-mono);font-size:.82rem}
+tbody tr:hover{background:var(--parchment)}
+
+/* Accordion */
+.accordion{margin:1.2rem 0}
+.accordion-item{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:.5rem;overflow:hidden;box-shadow:var(--shadow-sm)}
+.accordion-trigger{width:100%;background:var(--white);border:none;padding:.85rem 1.1rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:var(--ff-sans);font-size:.92rem;font-weight:700;color:var(--ink);text-align:left;transition:background .15s}
+.accordion-trigger:hover,.accordion-trigger.open{background:var(--parchment)}
+.acc-sub{font-family:var(--ff-mono);font-size:.72rem;font-weight:700;margin-right:.6rem}
+.acc-sub.gov{color:var(--gov-col)}
+.acc-sub.map{color:var(--map-col)}
+.accordion-icon{font-size:.85rem;transition:transform .25s;flex-shrink:0;margin-left:.5rem}
+.accordion-trigger.open .accordion-icon{transform:rotate(180deg)}
+.accordion-body{display:none;padding:0 1.1rem 1rem;background:var(--white);border-top:1px solid var(--border-lt)}
+.accordion-body.show{display:block}
+.accordion-body .nist-quote{background:var(--nist-xlt);border-left:4px solid var(--nist);padding:.7rem 1rem;margin:.8rem 0;font-size:.88rem;color:var(--nist);font-style:italic;border-radius:0 4px 4px 0}
+.accordion-body p{color:var(--ink-soft);font-size:.9rem;margin:.6rem 0 .3rem}
+.accordion-body ul{margin:.3rem 0 .5rem 1.2rem}
+.accordion-body li{color:var(--ink-soft);font-size:.88rem;margin-bottom:.25rem}
+.accordion-body .impl-label{font-family:var(--ff-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;margin-top:.7rem;margin-bottom:.2rem}
+.accordion-body .impl-label.gov{color:var(--gov-col)}
+.accordion-body .impl-label.map{color:var(--map-col)}
+
+/* Activity block */
+.activity-block{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:1.5rem 0;box-shadow:var(--shadow-sm)}
+.activity-header{background:var(--oxblood);color:var(--white);padding:.7rem 1.2rem;display:flex;align-items:center;gap:.6rem}
+.act-label{font-family:var(--ff-mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.7)}
+.act-title{font-weight:700;font-size:.92rem}
+.act-time{margin-left:auto;font-family:var(--ff-mono);font-size:.75rem;color:rgba(255,255,255,.6);white-space:nowrap}
+.activity-body{padding:1.2rem 1.5rem}
+.activity-body p{color:var(--ink-soft);font-size:.92rem;margin-bottom:.8rem}
+.instructions{background:var(--parchment);border:1px solid var(--border-lt);border-radius:4px;padding:.8rem 1rem;font-size:.88rem;color:var(--ink-soft)}
+.instructions ol,.instructions ul{margin:.5rem 0 .5rem 1.2rem}
+.instructions li{margin-bottom:.3rem}
+
+/* ── MAP WORKSHEET interactive ───────────────────────────────── */
+.worksheet-container{margin:1.5rem 0}
+.ws-header{background:var(--map-col);color:var(--white);padding:.8rem 1.2rem;border-radius:var(--radius) var(--radius) 0 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.ws-title{font-family:var(--ff-mono);font-size:.82rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.ws-scenario-select{font-family:var(--ff-sans);font-size:.85rem;border:none;border-radius:4px;padding:.3rem .7rem;background:rgba(255,255,255,.2);color:var(--white);cursor:pointer}
+.ws-scenario-select option{background:var(--ink);color:var(--white)}
+.ws-body{background:var(--white);border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:1.3rem}
+.ws-scenario-box{background:var(--parchment);border:1px solid var(--border);border-left:4px solid var(--map-col);border-radius:var(--radius);padding:1rem 1.2rem;margin-bottom:1.2rem}
+.ws-scenario-box .sc-label{font-family:var(--ff-mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--map-col);font-weight:700;margin-bottom:.3rem}
+.ws-scenario-box p{font-size:.92rem;color:var(--ink-soft);line-height:1.55}
+.ws-fields{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin-bottom:1rem}
+.ws-field label{display:block;font-family:var(--ff-mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--map-col);font-weight:700;margin-bottom:.3rem}
+.ws-field textarea,.ws-field select,.ws-field input{width:100%;font-family:var(--ff-sans);font-size:.88rem;border:1px solid var(--border);border-radius:4px;padding:.5rem .7rem;background:var(--white);color:var(--ink);resize:vertical;line-height:1.5}
+.ws-field textarea{min-height:70px}
+.ws-field textarea:focus,.ws-field select:focus,.ws-field input:focus{outline:2px solid var(--map-col);border-color:var(--map-col)}
+.ws-actions{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:.5rem}
+.ws-feedback{margin-top:1rem;background:var(--success-bg);border:1px solid #a8d4b0;border-radius:var(--radius);padding:1rem 1.2rem;display:none}
+.ws-feedback.show{display:block}
+.ws-feedback h4{color:var(--success);font-size:.92rem;margin-bottom:.5rem}
+.ws-feedback ul{margin:.3rem 0 0 1.2rem}
+.ws-feedback li{font-size:.88rem;color:var(--ink-soft);margin-bottom:.25rem}
+
+/* ── GOVERN vs MAP sorter ────────────────────────────────────── */
+.sorter-container{margin:1.5rem 0}
+.sorter-header{background:var(--oxblood);color:var(--white);padding:.75rem 1.2rem;border-radius:var(--radius) var(--radius) 0 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.sorter-title{font-family:var(--ff-mono);font-size:.8rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.sorter-score{font-family:var(--ff-mono);font-size:.82rem;color:var(--gold-lt)}
+.sorter-body{background:var(--white);border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:1.3rem}
+.sorter-cols{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.2rem}
+@media(max-width:600px){.sorter-cols{grid-template-columns:1fr}}
+.sorter-col-header{padding:.55rem .9rem;border-radius:4px 4px 0 0;font-family:var(--ff-mono);font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--white);margin-bottom:0}
+.sorter-col-header.gov{background:var(--gov-col)}
+.sorter-col-header.map{background:var(--map-col)}
+.sorter-col-body{border:2px dashed var(--border);border-top:none;border-radius:0 0 4px 4px;min-height:120px;padding:.5rem;display:flex;flex-direction:column;gap:.4rem;transition:border-color .15s}
+.sorter-col-body.gov-drop{border-color:#90b4d4}
+.sorter-col-body.map-drop{border-color:#90c4a4}
+.sorter-card-pool{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;padding:.8rem;background:var(--parchment);border:1px solid var(--border);border-radius:var(--radius)}
+.sorter-card{background:var(--white);border:1px solid var(--border);border-radius:4px;padding:.45rem .8rem;font-size:.83rem;color:var(--ink-soft);cursor:pointer;transition:all .15s;user-select:none}
+.sorter-card:hover{border-color:var(--oxblood);color:var(--ink);box-shadow:var(--shadow-sm)}
+.sorter-card.placed-gov{background:#e8f0fb;border-color:var(--gov-col);color:var(--gov-col);font-weight:600}
+.sorter-card.placed-map{background:#e8f8ef;border-color:var(--map-col);color:var(--map-col);font-weight:600}
+.sorter-card.correct{background:var(--success-bg);border-color:var(--success);color:var(--success);font-weight:700}
+.sorter-card.wrong{background:var(--error-bg);border-color:var(--oxblood);color:var(--oxblood)}
+.sorter-placed{background:var(--white);border:1px solid var(--border);border-radius:4px;padding:.35rem .7rem;font-size:.82rem;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+.sorter-placed .remove-btn{font-size:.75rem;color:var(--ink-muted);background:none;border:none;cursor:pointer;padding:0 .2rem;line-height:1}
+.sorter-placed .remove-btn:hover{color:var(--oxblood)}
+.sorter-feedback{margin-top:.8rem;padding:.8rem 1rem;border-radius:var(--radius);font-size:.88rem;display:none}
+.sorter-feedback.show{display:block}
+.sorter-feedback.ok{background:var(--success-bg);border:1px solid #a8d4b0;color:var(--success)}
+.sorter-feedback.not-ok{background:var(--error-bg);border:1px solid #e8b4b4;color:var(--error)}
+
+/* ── GOVERN Charter Builder ─────────────────────────────────── */
+.charter-builder{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:1.5rem 0;box-shadow:var(--shadow-sm)}
+.charter-builder-header{background:var(--gov-col);color:var(--white);padding:.75rem 1.2rem;display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+.charter-builder-header .cb-title{font-family:var(--ff-mono);font-size:.8rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.charter-builder-body{padding:1.2rem 1.5rem}
+.charter-builder-body p{color:var(--ink-soft);font-size:.9rem;margin-bottom:.8rem}
+.cb-section{margin-bottom:1.2rem}
+.cb-section label{display:block;font-family:var(--ff-mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--gov-col);font-weight:700;margin-bottom:.3rem}
+.cb-section textarea,.cb-section select,.cb-section input{width:100%;font-family:var(--ff-sans);font-size:.88rem;border:1px solid var(--border);border-radius:4px;padding:.5rem .7rem;background:var(--white);color:var(--ink);resize:vertical}
+.cb-section textarea{min-height:56px}
+.cb-section textarea:focus,.cb-section select:focus,.cb-section input:focus{outline:2px solid var(--gov-col);border-color:var(--gov-col)}
+.cb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.8rem}
+.charter-output{background:var(--parchment);border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem 1.5rem;margin-top:1rem;display:none;font-size:.88rem;line-height:1.7;color:var(--ink-soft)}
+.charter-output.show{display:block}
+.charter-output h4{font-family:var(--ff-serif);font-size:1rem;font-weight:700;color:var(--gov-col);margin-bottom:.5rem}
+.charter-output .co-section{margin-bottom:.8rem}
+.charter-output .co-label{font-family:var(--ff-mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.07em;color:var(--gov-col);font-weight:700;margin-bottom:.15rem}
+.charter-output .co-value{color:var(--ink-soft);padding-left:.5rem;border-left:3px solid var(--gold)}
+
+/* Artifact block */
+.artifact-block{background:var(--parchment);border:1px solid var(--border);border-left:5px solid var(--oxblood);border-radius:var(--radius);padding:1.2rem 1.5rem;margin:1.5rem 0}
+.artifact-label{font-family:var(--ff-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--oxblood);font-weight:700;margin-bottom:.4rem}
+.artifact-block h4{font-family:var(--ff-serif);font-size:1rem;font-weight:700;margin-bottom:.5rem;color:var(--ink)}
+.artifact-block p{font-size:.9rem;color:var(--ink-soft);margin-bottom:.5rem}
+.artifact-block ul{margin:.4rem 0 .5rem 1.2rem}
+.artifact-block li{font-size:.9rem;color:var(--ink-soft);margin-bottom:.3rem}
+
+/* Quiz */
+.quiz-block{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:1.5rem 0;box-shadow:var(--shadow-sm)}
+.quiz-header{background:var(--oxblood-dk);color:var(--white);padding:.7rem 1.2rem;font-family:var(--ff-mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;display:flex;align-items:center;justify-content:space-between}
+.quiz-score-disp{color:var(--gold-lt)}
+.quiz-question{padding:1.2rem 1.5rem;border-bottom:1px solid var(--border-lt)}
+.quiz-question:last-child{border-bottom:none}
+.q-prompt{font-weight:600;color:var(--ink);font-size:.95rem;margin-bottom:.9rem;line-height:1.5}
+.q-num{font-family:var(--ff-mono);font-size:.72rem;color:var(--oxblood);font-weight:700;margin-right:.4rem}
+.q-options{list-style:none}
+.q-options li{margin-bottom:.45rem}
+.q-options label{display:flex;align-items:flex-start;gap:.7rem;cursor:pointer;padding:.5rem .8rem;border:1px solid var(--border-lt);border-radius:4px;font-size:.88rem;color:var(--ink-soft);background:var(--cream);transition:background .12s,border-color .12s}
+.q-options label:hover{background:var(--parchment);border-color:var(--border)}
+.q-options input[type="radio"]{flex-shrink:0;margin-top:.2rem;accent-color:var(--oxblood)}
+.q-feedback{margin-top:.7rem;padding:.7rem .9rem;border-radius:4px;font-size:.86rem;display:none;line-height:1.5}
+.q-feedback.correct{background:var(--success-bg);border:1px solid #a8d4b0;color:var(--success)}
+.q-feedback.incorrect{background:var(--error-bg);border:1px solid #e8b4b4;color:var(--error)}
+.q-feedback.show{display:block}
+.quiz-actions{padding:1rem 1.5rem;border-top:1px solid var(--border-lt);display:flex;gap:.7rem;flex-wrap:wrap;align-items:center}
+.btn{font-family:var(--ff-sans);font-weight:700;font-size:.88rem;padding:.55rem 1.2rem;border:none;border-radius:var(--radius);cursor:pointer;transition:background .15s,transform .1s}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--oxblood);color:var(--white)}
+.btn-primary:hover{background:var(--oxblood-lt)}
+.btn-gov{background:var(--gov-col);color:var(--white)}
+.btn-gov:hover{background:var(--nist-lt)}
+.btn-map{background:var(--map-col);color:var(--white)}
+.btn-map:hover{background:#1a7a46}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--ink-soft)}
+.btn-ghost:hover{background:var(--parchment)}
+.quiz-result-msg{font-size:.88rem;color:var(--ink-muted);font-family:var(--ff-mono)}
+
+/* Lesson footer */
+.lesson-nav-footer{max-width:1080px;margin:0 auto;display:flex;justify-content:space-between;padding:1rem 1.5rem;border-top:1px solid var(--border);flex-wrap:wrap;gap:.5rem}
+.lesson-nav-footer a{font-size:.88rem;font-weight:700;color:var(--oxblood)}
+footer{background:var(--oxblood-dk);color:rgba(255,255,255,.55);text-align:center;font-size:.8rem;padding:1.5rem 1rem;font-family:var(--ff-mono);letter-spacing:.03em}
+footer strong{color:rgba(255,255,255,.8)}
+
+@media(max-width:640px){.site-header{padding:2rem 1rem 1.6rem}.topbar{padding:.4rem 1rem}.cat-grid{grid-template-columns:1fr}.sorter-cols{grid-template-columns:1fr}}
+@media print{.lesson-nav,.topbar,.sidebar{display:none}.page-body{grid-template-columns:1fr}body{background:white}}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<div class="topbar" role="banner">
+  <a href="index.html">← AI-103 Course Home</a>
+  <span class="topbar-sep">·</span>
+  <span>MVCC · Dept. of Engineering &amp; Technology</span>
+  <span class="topbar-sep">·</span>
+  <span>Dr. John L. Sands</span>
+</div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="lesson-eyebrow">
+      <span>AI-103: AI Cybersecurity Foundations</span>
+      <span class="sep">·</span><span>Day 3 of 15</span>
+      <span class="sep">·</span><span>4 Contact Hours</span>
+    </div>
+    <h1>NIST AI RMF in Depth — Govern &amp; Map</h1>
+    <p class="tagline">
+      Every category. Every subcategory. Real implementation — not just definitions.
+      How to build a Govern structure and execute a MAP worksheet for any AI deployment.
+    </p>
+    <div class="header-meta">
+      <span>📚 <strong>Intermediate–Advanced</strong></span>
+      <span>⏱ <strong>4 hours · 6 modules + 3 activities</strong></span>
+      <span>🎯 <strong>Learning Objective 3</strong></span>
+      <span>📝 <strong>MAP worksheet + charter snippet due end of class</strong></span>
+    </div>
+  </div>
+</header>
+
+<nav class="lesson-nav" aria-label="Lesson section navigation">
+  <div class="lesson-nav-inner">
+    <a href="#overview" class="active">Overview</a>
+    <a href="#m1">1 · RMF Architecture</a>
+    <a href="#m2">2 · GOVERN Deep Dive</a>
+    <a href="#m3">3 · GOVERN Sub-Categories</a>
+    <a href="#activity-charter">Activity: Charter</a>
+    <a href="#m4">4 · MAP Deep Dive</a>
+    <a href="#m5">5 · MAP Sub-Categories</a>
+    <a href="#activity-worksheet">Activity: MAP Worksheet</a>
+    <a href="#activity-sorter">Activity: Sort It</a>
+    <a href="#artifact">Assessment</a>
+    <a href="#quiz">Quiz</a>
+  </div>
+</nav>
+
+<div class="page-body">
+<main id="main">
+
+<!-- ── OVERVIEW ───────────────────────────────────────────────── -->
+<section id="overview" class="lesson-section" aria-labelledby="ov-h">
+  <h2 class="section-title" id="ov-h"><span>🧭</span> Lesson Overview <span class="section-meta">Day 3 · 4 hours</span></h2>
+  <div class="prose">
+    <p>Day 2 gave you the framework landscape — four frameworks, their roles, and how they layer. Today you go deep on the first two functions of the one you will use the most: <strong>NIST AI RMF 1.0</strong>. Govern and Map are where every AI governance program starts, and where most get it wrong.</p>
+    <p><strong>GOVERN</strong> sets the organizational conditions — culture, policy, accountability, and authority — that make the other three functions actually work. <strong>MAP</strong> is the due-diligence function — for each specific AI system, it captures what the system is, who it affects, what it's for, and what can go wrong. You cannot Measure or Manage what you haven't Mapped.</p>
+    <p>By the end of this lesson you will have worked through all six GOVERN categories, all five MAP categories, their 37 combined subcategories, and applied them to a real AI deployment scenario in the MAP Worksheet activity.</p>
+  </div>
+  <div class="analogy-box">
+    <div class="analogy-label">🎓 Anchoring Analogy: The Building Code &amp; the Site Survey</div>
+    <p><strong>GOVERN is the building code</strong> — it applies to every structure the organization builds. It doesn't care which specific building is going up today; it defines the standards, the inspectors, the approval process, and the liability structure that apply to all construction. You establish it once; every project inherits it.</p>
+    <p><strong>MAP is the site survey</strong> — for this specific building, on this specific plot, with this specific use case. Before the engineer calculates loads (Measure) or a contractor starts work (Manage), someone has to walk the site: What's the soil composition? What utilities cross here? Who lives next door? What zoning applies? MAP answers those questions for your AI system.</p>
+  </div>
+  <h3>Day 3 Learning Objectives</h3>
+  <ol style="margin-left:1.3rem;color:var(--ink-soft);font-size:.92rem;">
+    <li style="margin-bottom:.4rem;">Explain the structural difference between GOVERN (organization-layer) and MAP (system-layer) in the NIST AI RMF.</li>
+    <li style="margin-bottom:.4rem;">Identify all six GOVERN categories and all 19 subcategories by code and purpose.</li>
+    <li style="margin-bottom:.4rem;">Identify all five MAP categories and all 18 subcategories by code and purpose.</li>
+    <li style="margin-bottom:.4rem;">Draft a GOVERN 1–2 charter snippet for a specific organizational context.</li>
+    <li style="margin-bottom:.4rem;">Complete a MAP worksheet for a specified AI system, covering intended purpose, stakeholders, foreseeable misuse, affected populations, and potential harms.</li>
+    <li style="margin-bottom:.4rem;">Distinguish which activities belong in GOVERN versus MAP for a given scenario.</li>
+  </ol>
+</section>
+
+<!-- ── PART A ─────────────────────────────────────────────────── -->
+<div class="part-banner gov">
+  <div class="part-num">A</div>
+  <div class="part-title">GOVERN — The Organization-Layer Foundation</div>
+  <div class="part-time">⏱ ~1.5 hours</div>
+</div>
+
+<!-- ── M1: RMF Architecture ──────────────────────────────────── -->
+<section id="m1" class="lesson-section" aria-labelledby="m1-h">
+  <h2 class="section-title gov-accent" id="m1-h"><span>🏗️</span> Module 1 · The RMF Architecture — Why Two Layers? <span class="section-meta">20 min</span></h2>
+  <div class="prose">
+    <p>The NIST AI RMF is deliberately organized into two layers that operate at different scopes and cadences. Understanding this architecture is the key to using the framework correctly — most organizations that "implement NIST AI RMF" actually only do the system layer, and skip the organizational layer entirely. That's the most common and most consequential implementation failure.</p>
+  </div>
+  <div class="comp-table-wrap">
+    <table>
+      <thead><tr><th>Dimension</th><th>GOVERN</th><th>MAP / MEASURE / MANAGE</th></tr></thead>
+      <tbody>
+        <tr><td>Scope</td><td>Organization-wide — applies to all AI systems</td><td>AI system-specific — scoped to one deployment</td></tr>
+        <tr><td>Who owns it</td><td>AI Governance Lead, CISO, Legal, Board</td><td>AI Risk Owner, Model Owner, Product Team</td></tr>
+        <tr><td>Cadence</td><td>Established once; reviewed annually or when strategy changes</td><td>Per system; revisited when system, context, or users change</td></tr>
+        <tr><td>Output artifact</td><td>AI Policy, AI Governance Charter, AI AUP, Risk Tolerance Statement</td><td>MAP Worksheet, Risk Register, AI System Card, Incident Report</td></tr>
+        <tr><td>Failure mode</td><td>Skipping it means system-layer work produces outputs nobody acts on</td><td>Skipping it means you are managing risk you haven't defined</td></tr>
+        <tr><td>ISO 42001 parallel</td><td>Clauses 4–7 (context, leadership, planning, support)</td><td>Clause 8 (operation) and Annex A lifecycle controls</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout callout-info">
+    <div class="callout-label">🔑 NIST's Own Words</div>
+    NIST describes GOVERN as "a cross-cutting function that informs and is infused throughout the other three functions." Govern outcomes are typically defined once and inherited across many AI system projects. MAP, MEASURE, and MANAGE outcomes are scoped to each AI system and revisited whenever the system, its context, or its users change.
+  </div>
+</section>
+
+<!-- ── M2: GOVERN Deep Dive ───────────────────────────────────── -->
+<section id="m2" class="lesson-section" aria-labelledby="m2-h">
+  <h2 class="section-title gov-accent" id="m2-h"><span>🏛️</span> Module 2 · GOVERN — Six Categories at a Glance <span class="section-meta">25 min</span></h2>
+  <div class="prose">
+    <p>GOVERN is organized into <strong>six categories</strong> covering <strong>19 subcategories</strong>. Together they define the full organizational infrastructure for AI risk management — from legal obligation tracking to third-party risk governance. Each category is cross-cutting: it applies to all AI systems in the organization simultaneously.</p>
+  </div>
+  <div class="cat-grid">
+    <div class="cat-card">
+      <div class="cat-card-header gov">
+        <div><div class="cat-card-code">GOVERN 1</div><div class="cat-card-title">Policies, Processes &amp; Practices</div></div>
+        <span style="font-size:.75rem;opacity:.75">7 subcategories</span>
+      </div>
+      <div class="cat-card-body">
+        <p>The foundational category. Establishes that the organization <em>has</em> a documented AI risk management program — and that it reflects legal obligations, trustworthy AI principles, explicit risk tolerance, a system inventory, and a decommissioning process.</p>
+        <ul class="sub-list">
+          <li><span class="sub-code">GV-1.1</span> Legal &amp; regulatory requirements</li>
+          <li><span class="sub-code">GV-1.2</span> Trustworthy AI in policy</li>
+          <li><span class="sub-code">GV-1.3</span> Risk tolerance &amp; management depth</li>
+          <li><span class="sub-code">GV-1.4</span> Organizational teams and risk management</li>
+          <li><span class="sub-code">GV-1.5</span> AI system inventory</li>
+          <li><span class="sub-code">GV-1.6</span> Policies for safe decommissioning</li>
+          <li><span class="sub-code">GV-1.7</span> Processes for AI risk identification</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cat-card">
+      <div class="cat-card-header gov">
+        <div><div class="cat-card-code">GOVERN 2</div><div class="cat-card-title">Accountability Structures</div></div>
+        <span style="font-size:.75rem;opacity:.75">3 subcategories</span>
+      </div>
+      <div class="cat-card-body">
+        <p>Who is responsible for what. Without named accountability, AI risk outputs (MAP worksheets, risk registers) sit in a folder and get acted on by nobody. GOVERN 2 assigns the humans.</p>
+        <ul class="sub-list">
+          <li><span class="sub-code">GV-2.1</span> Roles, responsibilities, and authorities</li>
+          <li><span class="sub-code">GV-2.2</span> Team training and competency</li>
+          <li><span class="sub-code">GV-2.3</span> Executive AI risk oversight</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cat-card">
+      <div class="cat-card-header gov">
+        <div><div class="cat-card-code">GOVERN 3</div><div class="cat-card-title">Workforce Diversity, Equity &amp; Inclusion</div></div>
+        <span style="font-size:.75rem;opacity:.75">2 subcategories</span>
+      </div>
+      <div class="cat-card-body">
+        <p>AI systems encode the perspectives of the people who build them. Homogeneous teams produce systems that work well for some users and poorly for others — often without the team noticing, because nobody on the team represents the affected groups.</p>
+        <ul class="sub-list">
+          <li><span class="sub-code">GV-3.1</span> DEI&amp;A in AI risk management teams</li>
+          <li><span class="sub-code">GV-3.2</span> Processes to surface and address bias</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cat-card">
+      <div class="cat-card-header gov">
+        <div><div class="cat-card-code">GOVERN 4</div><div class="cat-card-title">Organizational Culture</div></div>
+        <span style="font-size:.75rem;opacity:.75">3 subcategories</span>
+      </div>
+      <div class="cat-card-body">
+        <p>Policy without culture is theater. GOVERN 4 asks: do teams actually talk about AI risk? Is raising concerns safe? Is the speed-to-ship incentive structure compatible with the risk tolerance you wrote in GOVERN 1?</p>
+        <ul class="sub-list">
+          <li><span class="sub-code">GV-4.1</span> Psychological safety to raise AI concerns</li>
+          <li><span class="sub-code">GV-4.2</span> Organizational AI risk culture</li>
+          <li><span class="sub-code">GV-4.3</span> Incentive alignment with risk tolerance</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cat-card">
+      <div class="cat-card-header gov">
+        <div><div class="cat-card-code">GOVERN 5</div><div class="cat-card-title">Stakeholder Engagement</div></div>
+        <span style="font-size:.75rem;opacity:.75">2 subcategories</span>
+      </div>
+      <div class="cat-card-body">
+        <p>AI systems affect people outside the organization — customers, patients, students, citizens. GOVERN 5 requires systematic engagement with external stakeholders, not just internal teams. The affected community has knowledge the build team doesn't.</p>
+        <ul class="sub-list">
+          <li><span class="sub-code">GV-5.1</span> External stakeholder engagement processes</li>
+          <li><span class="sub-code">GV-5.2</span> Engagement with affected communities</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cat-card">
+      <div class="cat-card-header gov">
+        <div><div class="cat-card-code">GOVERN 6</div><div class="cat-card-title">Third-Party &amp; Supply Chain Risk</div></div>
+        <span style="font-size:.75rem;opacity:.75">2 subcategories</span>
+      </div>
+      <div class="cat-card-body">
+        <p>Most enterprise AI systems are assemblies of third-party components — foundation models, training data, APIs, plugins. GOVERN 6 establishes the policies for managing that supply chain at the organizational level — before any specific vendor appears.</p>
+        <ul class="sub-list">
+          <li><span class="sub-code">GV-6.1</span> Policies for third-party AI risks</li>
+          <li><span class="sub-code">GV-6.2</span> Contingency processes for supply chain failures</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="analogy-box">
+    <div class="analogy-label">💡 The City Zoning Analogy</div>
+    <p>Think of GOVERN as a city's zoning ordinance and building code. The code applies to every building in the city, not just the one going up today. It defines: what types of buildings are allowed (risk tolerance), who is licensed to build (accountability), what inspections are required (oversight), and what happens if a building is condemned (decommissioning). No individual builder invents their own rules — they inherit the city's. <strong>Every AI system your organization deploys inherits GOVERN outcomes.</strong></p>
+  </div>
+</section>
+
+<!-- ── M3: GOVERN Subcategories ───────────────────────────────── -->
+<section id="m3" class="lesson-section" aria-labelledby="m3-h">
+  <h2 class="section-title gov-accent" id="m3-h"><span>🔬</span> Module 3 · GOVERN Sub-Categories — Every Outcome, Implementation Notes <span class="section-meta">30 min</span></h2>
+  <div class="prose">
+    <p>Expand each subcategory to see the official NIST statement, what it means in practice, and what evidence an auditor or regulator would expect. This is the level of detail required to actually <em>implement</em> GOVERN — not just describe it.</p>
+  </div>
+
+  <h3 style="color:var(--gov-col)">GOVERN 1 — Policies, Processes &amp; Practices</h3>
+  <div class="accordion">
+    <div class="accordion-item">
+      <button class="accordion-trigger" onclick="toggleAcc(this)"><span><span class="acc-sub gov">GV-1.1</span>Legal &amp; Regulatory Requirements</span><span class="accordion-icon">▼</span></button>
+      <div class="accordion-body">
+        <div class="nist-quote">"Legal and regulatory requirements involving AI are understood, managed, and documented."</div>
+        <div class="impl-label gov">In practice:</div>
+        <p>Maintain an obligation register that links each AI system to every law and regulation that touches it — EU AI Act risk tier, GDPR status, sector rules (HIPAA, FERPA, DORA), state privacy laws. Assign an owner and a review cadence tied to regulatory change velocity. For the EU AI Act, this includes documenting whether the system is prohibited, high-risk, limited-risk, or minimal-risk — and which provider or deployer obligations apply.</p>
+        <div class="impl-label gov">Evidence for audit:</div>
+        <ul><li>Obligation register with regulation name, applicability determination, owner, and last-reviewed date</li><li>Sign-off from Legal on each AI system's classification</li><li>Process for updating when new regulations take effect</li></ul>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" onclick="toggleAcc(this)"><span><span class="acc-sub gov">GV-1.2</span>Trustworthy AI Characteristics in Policy</span><span class="accordion-icon">▼</span></button>
+      <div class="accordion-body">
+        <div class="nist-quote">"The characteristics of trustworthy AI are integrated into organizational policies, processes, and procedures."</div>
+        <div class="impl-label gov">In practice:</div>
+        <p>The seven NIST trustworthiness characteristics (valid &amp; reliable, safe, secure &amp; resilient, accountable &amp; transparent, explainable &amp; interpretable, privacy-enhanced, fair) must appear in your AI policy — not just as listed values, but as design constraints. For example: the AI AUP clause prohibiting black-box models for consequential individual decisions implements the "explainable" characteristic. The bias-testing requirement in the development checklist implements "fair."</p>
+        <div class="impl-label gov">Evidence for audit:</div>
+        <ul><li>AI policy document that references each trustworthiness characteristic with operational definition</li><li>Development checklist items traceable to specific characteristics</li><li>Documented tradeoffs where characteristics conflict (e.g., explainability vs. accuracy)</li></ul>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" onclick="toggleAcc(this)"><span><span class="acc-sub gov">GV-1.3</span>Risk Tolerance &amp; Management Depth</span><span class="accordion-icon">▼</span></button>
+      <div class="accordion-body">
+        <div class="nist-quote">"Processes and procedures are in place to determine the needed level of risk management activities based on the organization's risk tolerance."</div>
+        <div class="impl-label gov">In practice:</div>
+        <p>Risk tolerance is not a feeling — it is a documented, board-approved statement that drives tiering decisions. Higher-impact AI systems get deeper MAP, MEASURE, and MANAGE work; lower-impact systems use a lighter process. Without a risk tolerance statement, every system gets either too much scrutiny (inefficient) or too little (dangerous). The tolerance statement should define at minimum: what constitutes "high risk" for this organization, what governance controls apply at each tier, and who can approve exceptions.</p>
+        <div class="impl-label gov">MVCC Community College Example:</div>
+        <p>Risk tolerance: "AI systems that influence student academic outcomes or employment decisions are High Tier. AI systems used for administrative productivity are Low Tier. High-Tier systems require MAP worksheet, bias testing, and Governance Board approval. Low-Tier systems require self-registration and annual review."</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" onclick="toggleAcc(this)"><span><span class="acc-sub gov">GV-1.4</span>Organizational Teams &amp; Risk Management</span><span class="accordion-icon">▼</span></button>
+      <div class="accordion-body">
+        <div class="nist-quote">"Organizational teams are committed to and responsible for AI risk management across the organization."</div>
+        <div class="impl-label gov">In practice:</div>
+        <p>Each team that builds, deploys, or uses AI must understand their specific risk management responsibilities. This is not the same as having a central AI governance team — it means every relevant team (IT, HR, Finance, Academic Affairs) has named individuals who own AI risk for their scope. The central governance function sets the standard; business units execute it.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" onclick="toggleAcc(this)"><span><span class="acc-sub gov">GV-1.5</span>AI System Inventory</span><span class="accordion-icon">▼</span></button>
+      <div class="accordion-body">
+        <div class="nist-quote">"Organizational risk policies that include AI are established, communicated, and enforced."</div>
+        <div class="impl-label gov">In practice:</div>
+        <p>The AI Use Case Register (AI system inventory) is the operational artifact here. Every approved AI deployment is recorded with: system name, owner, intended purpose, data inputs, EU AI Act risk tier (where applicable), human oversight model, deployment date, and next-review date. This register is the "asset inventory" for AI — you cannot manage what you haven't counted. <strong>Shadow AI detection becomes a gap analysis against this register.</strong></p>
+        <div class="impl-label gov">Register fields (minimum viable):</div>
+        <ul><li>System name and version</li><li>Business owner and technical owner</li><li>Intended purpose (one sentence)</li><li>Data inputs (classification level)</li><li>EU AI Act tier / organizational risk tier</li><li>Human oversight model (HITL / HOTL / HOOL)</li><li>Deployment date and next review date</li></ul>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" onclick="toggleAcc(this)"><span><span class="acc-sub gov">GV-1.6</span>Policies for Safe Decommissioning</span><span class="accordion-icon">▼</span></button>
+      <div class="accordion-body">
+        <div class="nist-quote">"Policies and procedures are in place to address AI risks and benefits arising from third-party software and data and other supply chain issues."</div>
+        <div class="impl-label gov">In practice:</div>
+        <p>AI systems cannot simply be "turned off" — they must be retired safely. Data must be deleted or archived appropriately; users must be notified; dependent downstream systems must be migrated. Decommissioning policies prevent the scenario where a deprecated model continues running in production because nobody knows it's there or how to stop it. Required elements: notification lead time, data disposition procedure, downstream system inventory, and user communication plan.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" onclick="toggleAcc(this)"><span><span class="acc-sub gov">GV-1.7</span>Processes for AI Risk Identification</span><span class="accordion-icon">▼</span></button>
+      <div class="accordion-body">
+        <div class="nist-quote">"Processes for identifying AI risks and benefits are established across the AI lifecycle."</div>
+        <div class="impl-label gov">In practice:</div>
+        <p>The organization defines <em>how</em> risks are identified — not for a specific system, but as a repeatable methodology. This includes: intake process for new AI proposals, red-team and adversarial evaluation standards, bias testing requirements, and triggers for re-evaluation (significant model update, change in deployment scope, new regulatory requirement, incident). GV-1.7 is the policy; MAP is the execution.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="color:var(--gov-col);margin-top:1.8rem">GOVERN 2 — Accountability Structures</h3>
+  <div class="accordion">
+    <div class="accordion-item">
+      <button class="accordion-trigger" onclick="toggleAcc(this)"><span><span class="acc-sub gov">GV-2.1</span>Roles, Responsibilities &amp; Authorities</span><span class="accordion-icon">▼</span></button>
+      <div class="accordion-body">
+        <div class="nist-quote">"Roles and responsibilities and organizational accountability structures are in place so that the appropriate teams and individuals are empowered, responsible, and trained for mapping, measuring, and managing AI risks."</div>
+        <div class="impl-label gov">In practice:</div>
+        <p>Define and document at minimum: <strong>AI Governance Lead</strong> (chairs the steering committee, owns the use-case register), <strong>AI Risk Owner</strong> (assesses and treats AI risk per the taxonomy), <strong>AI Security Lead</strong> (owns technical controls and threat response), <strong>Model Owner</strong> (accountable for a specific AI system's behavior), <strong>Data Steward for AI</strong> (data provenance and quality). Larger organizations may add a Responsible AI Officer. Each role needs a written description, a named person, and a backup.</p>
+        <div class="impl-label gov">Common failure:</div>
+        <p>Calling the CISO "the AI risk owner" with no additional resources or authority — then wondering why AI governance doesn't happen. The CISO is already accountable for everything else. AI governance requires dedicated roles or dedicated allocation of existing capacity.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" onclick="toggleAcc(this)"><span><span class="acc-sub gov">GV-2.2</span>Team Training &amp; Competency</span><span class="accordion-icon">▼</span></button>
+      <div class="accordion-body">
+        <div class="nist-quote">"The organization's personnel and partners receive AI risk management training to enable them to perform their duties and responsibilities consistent with related policies, procedures, and agreements."</div>
+        <div class="impl-label gov">In practice:</div>
+        <p>Training is role-differentiated — not everyone needs the same depth. Three tiers: <strong>Awareness</strong> (all staff — what is AI risk, what's in the AUP, what to report), <strong>Practitioner</strong> (AI product teams, business analysts — MAP worksheet completion, bias evaluation, prompt engineering security), <strong>Expert</strong> (AI Governance Lead, Risk Owner — full NIST AI RMF, EU AI Act compliance, red-teaming, advanced risk assessment). EU AI Act Article 4 mandates AI literacy for all staff involved in AI — this is no longer optional.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" onclick="toggleAcc(this)"><span><span class="acc-sub gov">GV-2.3</span>Executive AI Risk Oversight</span><span class="accordion-icon">▼</span></button>
+      <div class="accordion-body">
+        <div class="nist-quote">"Executive leadership of the organization takes responsibility for decisions about risks associated with AI system development and deployment."</div>
+        <div class="impl-label gov">In practice:</div>
+        <p>AI risk that exceeds defined thresholds must escalate to executive leadership — not just as an FYI but as a decision requiring executive action. This means: the AI Steering Committee has a defined executive sponsor, escalation thresholds are documented, and board-level AI risk reporting is on the agenda at least annually. GV-2.3 is the safeguard against "the governance team flagged the problem but leadership didn't know" failure scenarios.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="color:var(--gov-col);margin-top:1.8rem">GOVERN 3–6 — Culture, Stakeholders &amp; Supply Chain</h3>
+  <div class="accordion">
+    <div class="accordion-item">
+      <button class="accordion-trigger" onclick="toggleAcc(this)"><span><span class="acc-sub gov">GV-3</span>Workforce Diversity, Equity, Inclusion &amp; Accessibility</span><span class="accordion-icon">▼</span></button>
+      <div class="accordion-body">
+        <div class="nist-quote">"Organizational teams involved in the development, deployment, and use of AI systems are committed to a culture that is inclusive and equitable."</div>
+        <div class="impl-label gov">Why this is a security issue, not just an HR issue:</div>
+        <p>Homogeneous teams produce AI systems that fail on demographic groups the team didn't represent. A facial recognition system built by a team with no women performs worse on women. A medical AI trained primarily on male patient data misdiagnoses conditions in female patients. <strong>These are security and liability failures, not just fairness concerns.</strong> GV-3 requires diversity in the teams doing risk work — MAP stakeholder identification, bias evaluation, and harm assessment — not just in the teams building the product.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" onclick="toggleAcc(this)"><span><span class="acc-sub gov">GV-4</span>Organizational Culture</span><span class="accordion-icon">▼</span></button>
+      <div class="accordion-body">
+        <div class="nist-quote">"Organizational teams are committed to a culture that considers and communicates AI risk."</div>
+        <div class="impl-label gov">The culture test:</div>
+        <p>Ask any engineer on the team: "If you discovered that this AI system was producing biased outputs for a protected demographic group, what would you do?" If the answer is anything other than "I'd raise it immediately through [named process]" — and if they don't know the named process — GV-4 is not implemented. Culture is not a mission statement. It's the answer to that question. GV-4.3 is especially critical: incentive structures (ship fast, hit metrics) must be compatible with the risk management behaviors the governance program requires. They often aren't, and the incentive wins.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" onclick="toggleAcc(this)"><span><span class="acc-sub gov">GV-5</span>Stakeholder Engagement Processes</span><span class="accordion-icon">▼</span></button>
+      <div class="accordion-body">
+        <div class="nist-quote">"Organizational teams prioritize and document processes for robust engagement with relevant AI actors."</div>
+        <div class="impl-label gov">In practice:</div>
+        <p>NIST's definition of "AI actors" is broad — it includes not just the build team but operators, users, affected third parties, and the broader public where relevant. GV-5 requires the organization to have systematic processes for hearing from these groups — not just an email address. Examples: student advisory panel for EdTech AI, patient advocates for healthcare AI, community review for AI in public-sector decisions. GV-5 often feels like governance overhead; in practice it catches harms the build team cannot see from inside the organization.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" onclick="toggleAcc(this)"><span><span class="acc-sub gov">GV-6</span>Third-Party &amp; Supply Chain Risk</span><span class="accordion-icon">▼</span></button>
+      <div class="accordion-body">
+        <div class="nist-quote">"AI risks and benefits arising from third-party software, data, and other supply chain issues are addressed through well-planned policies and procedures."</div>
+        <div class="impl-label gov">The two subcategories:</div>
+        <ul>
+          <li><strong>GV-6.1</strong> — Policies for third-party AI risk: vendor assessment requirements, contractual AI obligations, data-handling standards for inputs to external AI services</li>
+          <li><strong>GV-6.2</strong> — Contingency processes for supply chain failures: what happens if a foundation model provider changes their API, deprecates the model, or raises prices 4×? Who owns that decision? What's the fallback?</li>
+        </ul>
+        <div class="impl-label gov">Why this sits in GOVERN, not MAP:</div>
+        <p>GV-6 establishes the organizational policy and contingency process that apply to <em>all</em> third-party AI use. The specific vendor assessment for a specific system happens at MAP. You define the standard once (GOVERN) and apply it many times (MAP).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY: CHARTER BUILDER ─────────────────────────────── -->
+<section id="activity-charter" class="lesson-section" aria-labelledby="ac-h">
+  <h2 class="section-title gov-accent" id="ac-h"><span>✏️</span> Activity A · AI Governance Charter Builder <span class="section-meta">30 min</span></h2>
+  <div class="activity-block">
+    <div class="activity-header">
+      <span class="act-label">Lab Activity</span>
+      <span class="act-title">Draft a GOVERN 1–2 Charter Snippet for MVCC</span>
+      <span class="act-time">⏱ 25 min + 5 min peer review</span>
+    </div>
+    <div class="activity-body">
+      <p>Using the GOVERN 1 and GOVERN 2 subcategories as your structure, draft the core sections of an AI Governance Charter for Moraine Valley Community College. This is the document that would go to the President's Cabinet for approval. Fill in each field — the preview button generates a formatted charter snippet you can screenshot or copy.</p>
+    </div>
+  </div>
+  <div class="charter-builder">
+    <div class="charter-builder-header">
+      <span class="cb-title">AI Governance Charter — GOVERN 1 &amp; 2 Builder</span>
+      <span style="font-size:.78rem;color:rgba(255,255,255,.7)">MVCC · AI-103 Lab</span>
+    </div>
+    <div class="charter-builder-body">
+      <p>Complete each section. Fields map directly to GOVERN 1–2 subcategories. Brief responses are fine — this is a draft, not a finished policy.</p>
+      <div class="cb-grid">
+        <div class="cb-section">
+          <label>GV-1.1 · Key regulatory obligations (list 2–3)</label>
+          <textarea id="cb-regs" placeholder="e.g., FERPA (student data), EU AI Act (if EU students), state AI transparency laws..."></textarea>
+        </div>
+        <div class="cb-section">
+          <label>GV-1.3 · Risk tolerance statement</label>
+          <textarea id="cb-risk" placeholder="e.g., High Tier: AI influencing student grades/admissions. Low Tier: AI for administrative productivity..."></textarea>
+        </div>
+        <div class="cb-section">
+          <label>GV-1.5 · AI inventory approach</label>
+          <textarea id="cb-inv" placeholder="e.g., All AI systems must be registered in the AI Use Case Register within 30 days of deployment..."></textarea>
+        </div>
+        <div class="cb-section">
+          <label>GV-2.1 · AI Governance Lead (name a role, not a person)</label>
+          <input id="cb-lead" type="text" placeholder="e.g., VP of Academic Affairs, CISO, Director of Institutional Research...">
+        </div>
+        <div class="cb-section">
+          <label>GV-2.1 · AI Risk Owner role</label>
+          <input id="cb-risk-owner" type="text" placeholder="e.g., Director of Information Technology, Dean of Instruction...">
+        </div>
+        <div class="cb-section">
+          <label>GV-2.2 · Training requirement (who gets what)</label>
+          <textarea id="cb-training" placeholder="e.g., All faculty: annual AI literacy awareness. IT and academic affairs: annual practitioner training..."></textarea>
+        </div>
+        <div class="cb-section">
+          <label>GV-2.3 · Executive oversight body</label>
+          <input id="cb-exec" type="text" placeholder="e.g., President's Cabinet, IT Steering Committee, Board of Trustees...">
+        </div>
+        <div class="cb-section">
+          <label>GV-5 · Stakeholder engagement approach</label>
+          <textarea id="cb-stakeholders" placeholder="e.g., Student Advisory Panel reviews AI systems affecting academic outcomes annually..."></textarea>
+        </div>
+      </div>
+      <div class="ws-actions">
+        <button class="btn btn-gov" onclick="generateCharter()">Generate Charter Preview</button>
+        <button class="btn btn-ghost" onclick="clearCharter()">Clear</button>
+      </div>
+      <div class="charter-output" id="charter-output">
+        <h4>MVCC AI Governance Charter — Draft Excerpt</h4>
+        <div class="co-section"><div class="co-label">1. Regulatory Obligations (GOVERN 1.1)</div><div class="co-value" id="co-regs"></div></div>
+        <div class="co-section"><div class="co-label">2. Risk Tolerance (GOVERN 1.3)</div><div class="co-value" id="co-risk"></div></div>
+        <div class="co-section"><div class="co-label">3. AI System Inventory Requirement (GOVERN 1.5)</div><div class="co-value" id="co-inv"></div></div>
+        <div class="co-section"><div class="co-label">4. AI Governance Lead (GOVERN 2.1)</div><div class="co-value" id="co-lead"></div></div>
+        <div class="co-section"><div class="co-label">5. AI Risk Owner (GOVERN 2.1)</div><div class="co-value" id="co-risk-owner"></div></div>
+        <div class="co-section"><div class="co-label">6. Training Requirements (GOVERN 2.2)</div><div class="co-value" id="co-training"></div></div>
+        <div class="co-section"><div class="co-label">7. Executive Oversight (GOVERN 2.3)</div><div class="co-value" id="co-exec"></div></div>
+        <div class="co-section"><div class="co-label">8. Stakeholder Engagement (GOVERN 5)</div><div class="co-value" id="co-stakeholders"></div></div>
+        <p style="margin-top:1rem;font-size:.82rem;color:var(--ink-muted);font-family:var(--ff-mono)">Generated by AI-103 Lab · Day 3 · GOVERN 1–2 subcategories</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PART B ─────────────────────────────────────────────────── -->
+<div class="part-banner map">
+  <div class="part-num">B</div>
+  <div class="part-title">MAP — The System-Layer Due-Diligence Function</div>
+  <div class="part-time">⏱ ~1.5 hours</div>
+</div>
+
+<!-- ── M4: MAP Deep Dive ──────────────────────────────────────── -->
+<section id="m4" class="lesson-section" aria-labelledby="m4-h">
+  <h2 class="section-title map-accent" id="m4-h"><span>🗺️</span> Module 4 · MAP — Five Categories at a Glance <span class="section-meta">20 min</span></h2>
+  <div class="prose">
+    <p>Where GOVERN establishes the organizational framework, MAP applies it to a specific AI system. MAP produces the documented context that enables Measure and Manage — without it, you are measuring and managing risk you haven't defined. MAP has <strong>five categories</strong> covering <strong>18 subcategories</strong>.</p>
+    <p>The output of MAP is a completed system context document — sometimes called a MAP Worksheet, AI System Card, or AI Impact Assessment. This document becomes the foundation for every subsequent risk management decision about that system.</p>
+  </div>
+  <div class="cat-grid">
+    <div class="cat-card">
+      <div class="cat-card-header map">
+        <div><div class="cat-card-code">MAP 1</div><div class="cat-card-title">Context is Established and Understood</div></div>
+        <span style="font-size:.75rem;opacity:.75">6 subcategories</span>
+      </div>
+      <div class="cat-card-body">
+        <p>The most critical MAP category — and the one most often shortcut. Before anything else, define <em>what this system is for, in what context, for whom, and under what constraints</em>. Every subsequent analysis depends on getting this right.</p>
+        <ul class="sub-list">
+          <li><span class="sub-code map">MP-1.1</span> Intended purpose, beneficial uses, legal context</li>
+          <li><span class="sub-code map">MP-1.2</span> Interdisciplinary team diversity for context work</li>
+          <li><span class="sub-code map">MP-1.3</span> Mission alignment</li>
+          <li><span class="sub-code map">MP-1.4</span> Business value hypothesis</li>
+          <li><span class="sub-code map">MP-1.5</span> Organizational risk tolerance (inherited from GV-1.3)</li>
+          <li><span class="sub-code map">MP-1.6</span> System requirements (functional + socio-technical)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cat-card">
+      <div class="cat-card-header map">
+        <div><div class="cat-card-code">MAP 2</div><div class="cat-card-title">Categorization of the AI System</div></div>
+        <span style="font-size:.75rem;opacity:.75">3 subcategories</span>
+      </div>
+      <div class="cat-card-body">
+        <p>What <em>type</em> of AI system is this, technically? Classification here isn't about EU AI Act risk tiers — it's about the system's technical characteristics: what it does, what it knows, and what evaluation methods apply.</p>
+        <ul class="sub-list">
+          <li><span class="sub-code map">MP-2.1</span> Task and method definition</li>
+          <li><span class="sub-code map">MP-2.2</span> Scientific and technical knowledge limitations</li>
+          <li><span class="sub-code map">MP-2.3</span> Scientific integrity and rigor of evaluation</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cat-card">
+      <div class="cat-card-header map">
+        <div><div class="cat-card-code">MAP 3</div><div class="cat-card-title">Capabilities, Goals, Benefits &amp; Costs</div></div>
+        <span style="font-size:.75rem;opacity:.75">5 subcategories</span>
+      </div>
+      <div class="cat-card-body">
+        <p>What can this system actually do — and what are the realistic benefits and costs? MAP 3 requires honest assessment of capabilities against benchmarks, not marketing claims. It also surfaces the foreseeable misuses that practitioners miss by focusing only on intended use.</p>
+        <ul class="sub-list">
+          <li><span class="sub-code map">MP-3.1</span> Impact on individuals and communities</li>
+          <li><span class="sub-code map">MP-3.2</span> Scientific and societal AI use risks</li>
+          <li><span class="sub-code map">MP-3.3</span> TEVV practices and documentation</li>
+          <li><span class="sub-code map">MP-3.4</span> Benefits, costs, and risk comparisons to benchmarks</li>
+          <li><span class="sub-code map">MP-3.5</span> Likelihood and magnitude of potential harms</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cat-card">
+      <div class="cat-card-header map">
+        <div><div class="cat-card-code">MAP 4</div><div class="cat-card-title">Risks for All Components, Including Third-Party</div></div>
+        <span style="font-size:.75rem;opacity:.75">2 subcategories</span>
+      </div>
+      <div class="cat-card-body">
+        <p>Your AI system is a stack — foundation model, fine-tuning layer, application, integrations, third-party data. MAP 4 requires mapping risks for the whole stack, not just the part your team built. Supply chain risks belong here.</p>
+        <ul class="sub-list">
+          <li><span class="sub-code map">MP-4.1</span> Risks of AI system components and dependencies</li>
+          <li><span class="sub-code map">MP-4.2</span> Data collection and use risks</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cat-card">
+      <div class="cat-card-header map">
+        <div><div class="cat-card-code">MAP 5</div><div class="cat-card-title">Impacts on Individuals, Groups &amp; Society</div></div>
+        <span style="font-size:.75rem;opacity:.75">2 subcategories</span>
+      </div>
+      <div class="cat-card-body">
+        <p>The hardest MAP category and the one most often skipped entirely. Who does this system affect who <em>isn't</em> in the room? MAP 5 requires explicit identification of affected communities — not just direct users — and an honest assessment of potential harms at the societal level.</p>
+        <ul class="sub-list">
+          <li><span class="sub-code map">MP-5.1</span> Likelihood and severity of impacts on individuals and groups</li>
+          <li><span class="sub-code map">MP-5.2</span> Practices for addressing negative impacts before deployment</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="analogy-box">
+    <div class="analogy-label">💡 The Air Traffic Controller Analogy</div>
+    <p>An air traffic controller doesn't just know the plane in front of them — they know every plane in the airspace, the weather, the runways, the staffing, the nearby airports. MAP is that situational awareness for an AI system: <strong>you must understand the full context — not just what the system does, but who else is in the airspace.</strong> The student who doesn't get the financial aid because of an AI decision is in that airspace. The employee who isn't hired because of the resume screener is in that airspace. MAP names them explicitly.</p>
+  </div>
+</section>
+
+<!-- ── M5: MAP Subcategories ──────────────────────────────────── -->
+<section id="m5" class="lesson-section" aria-labelledby="m5-h">
+  <h2 class="section-title map-accent" id="m5-h"><span>🔬</span> Module 5 · MAP Sub-Categories — Depth &amp; Implementation <span class="section-meta">20 min</span></h2>
+
+  <h3 style="color:var(--map-col)">MAP 1 — Context Is Established and Understood</h3>
+  <div class="accordion">
+    <div class="accordion-item">
+      <button class="accordion-trigger" onclick="toggleAcc(this)"><span><span class="acc-sub map">MP-1.1</span>Intended Purpose, Legal Context &amp; Deployment Setting</span><span class="accordion-icon">▼</span></button>
+      <div class="accordion-body">
+        <div class="nist-quote">"Intended purposes, potentially beneficial uses, context-specific laws, norms and expectations, and prospective settings in which the AI system will be deployed are understood and documented."</div>
+        <div class="impl-label map">The three-sentence test:</div>
+        <p>If you can't write three clear sentences — what the system does, who uses it, and what context it operates in — MAP 1.1 is not complete. This statement anchors everything: the EU AI Act classification, the trustworthiness characteristics that apply, the stakeholder identification in MAP 1.2, and the harm scenarios in MAP 5. A weak intended-purpose statement produces a weak MAP and a weak risk register.</p>
+        <div class="impl-label map">Common failure:</div>
+        <p>"AI chatbot for customer service." Not specific enough. Better: "A generative AI assistant that answers questions about enrollment, financial aid, and course scheduling for prospective and current MVCC students, accessed through the public website and the student portal, operating under FERPA and MVCC's data governance policy, with no access to live student records in its first deployment phase."</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" onclick="toggleAcc(this)"><span><span class="acc-sub map">MP-1.2</span>Interdisciplinary Team Diversity for Context Work</span><span class="accordion-icon">▼</span></button>
+      <div class="accordion-body">
+        <div class="nist-quote">"Interdisciplinary AI actors, competencies, skills, and capacities for establishing context reflect demographic diversity and broad domain and user experience expertise."</div>
+        <div class="impl-label map">In practice:</div>
+        <p>The MAP 1 context-setting exercise should not be done by the AI product team alone. Include: domain SME (academic affairs, finance, HR — whoever owns the business process), user representative (a student, a faculty member, a patient — someone who actually uses the system), legal/privacy (FERPA, GDPR, AUP compliance), and security (threat model for this specific deployment). Document who was in the room. Homogeneous context-setting produces blind spots that become liability later.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" onclick="toggleAcc(this)"><span><span class="acc-sub map">MP-1.5</span>Organizational Risk Tolerance (Inheritance)</span><span class="accordion-icon">▼</span></button>
+      <div class="accordion-body">
+        <div class="nist-quote">"Organizational risk tolerances are determined and documented."</div>
+        <div class="impl-label map">The inheritance mechanism:</div>
+        <p>This subcategory is where MAP connects to GOVERN. The risk tolerance defined at the organizational level (GV-1.3) is applied to this specific system in MAP 1.5. The question answered here is: given this system's intended purpose and deployment context, what organizational risk tier does it fall into — and therefore, what depth of Measure and Manage work is required? This is the gate that determines whether a system gets a full red-team exercise or a lighter evaluation process.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="color:var(--map-col);margin-top:1.8rem">MAP 3 — Capabilities, Goals, Benefits &amp; Costs</h3>
+  <div class="accordion">
+    <div class="accordion-item">
+      <button class="accordion-trigger" onclick="toggleAcc(this)"><span><span class="acc-sub map">MP-3.1</span>Impact on Individuals and Communities</span><span class="accordion-icon">▼</span></button>
+      <div class="accordion-body">
+        <div class="nist-quote">"Potential positive and negative impacts of the AI system to individuals, communities, organizations, society, and the planet are identified and documented."</div>
+        <div class="impl-label map">The four-quadrant exercise:</div>
+        <p>For each stakeholder group identified in MAP 1, map: (1) intended positive impact, (2) unintended positive impact, (3) intended risk (accepted and managed), (4) unintended negative impact. The fourth quadrant is where AI harm lives — and it's the one teams most consistently fail to populate, because it requires imagining outcomes the team doesn't want to see. Forcing teams to complete MP-3.1 systematically surfaces assumptions that would otherwise remain implicit until they become incidents.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" onclick="toggleAcc(this)"><span><span class="acc-sub map">MP-3.5</span>Likelihood and Magnitude of Potential Harms</span><span class="accordion-icon">▼</span></button>
+      <div class="accordion-body">
+        <div class="nist-quote">"Likelihood and magnitude of each identified impact (both potentially beneficial and harmful) is assessed and documented."</div>
+        <div class="impl-label map">The heavy-tail problem:</div>
+        <p>Traditional likelihood × impact math assumes normal distributions. AI risks often have heavy tails: the model works correctly 99% of the time, and the 1% failure is catastrophic. MP-3.5 requires documentation of these tail risks — not just the expected-value risks. A hiring AI that is biased in 2% of cases produces a manageable expected-value harm but a class-action lawsuit risk that is extreme. Both numbers belong in the document.</p>
+        <div class="impl-label map">Minimum fields for MP-3.5:</div>
+        <ul><li>Harm scenario description</li><li>Affected population</li><li>Estimated frequency (with confidence interval)</li><li>Severity rating (1–5, with definition of each level)</li><li>Detectability (how quickly would we know?)</li><li>Existing mitigations</li><li>Residual risk determination</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="color:var(--map-col);margin-top:1.8rem">MAP 5 — Impacts on Individuals, Groups &amp; Society</h3>
+  <div class="accordion">
+    <div class="accordion-item">
+      <button class="accordion-trigger" onclick="toggleAcc(this)"><span><span class="acc-sub map">MP-5.1</span>Likelihood and Severity of Impacts</span><span class="accordion-icon">▼</span></button>
+      <div class="accordion-body">
+        <div class="nist-quote">"Likelihood and severity of each identified impact (both potentially beneficial and harmful) based on impacts to data subjects and affected groups are assessed and prioritized, with special attention to marginalized groups."</div>
+        <div class="impl-label map">The "who is not in the room" test:</div>
+        <p>MAP 5.1 requires explicitly naming marginalized or vulnerable groups who may be disproportionately affected by the AI system. For a community college: first-generation students, English language learners, students with disabilities, students from low-income backgrounds. For a healthcare AI: elderly patients, patients with limited English proficiency, patients in rural areas with limited follow-up access. This is not soft ethics — disproportionate impact is precisely what the EU AI Act's FRIA (Fundamental Rights Impact Assessment) examines for high-risk systems.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" onclick="toggleAcc(this)"><span><span class="acc-sub map">MP-5.2</span>Practices for Addressing Negative Impacts</span><span class="accordion-icon">▼</span></button>
+      <div class="accordion-body">
+        <div class="nist-quote">"Practices and personnel for supporting AI risk documentation, mitigation, and transparency are established prior to deployment."</div>
+        <div class="impl-label map">The "before deployment" requirement:</div>
+        <p>MP-5.2 is a pre-deployment gate: the practices, personnel, and transparency measures for addressing negative impacts must be <em>in place</em> before the system goes live — not planned for later. This means: the escalation path for bias reports is defined, the affected-population notification procedure is written, the redress mechanism for impacted individuals exists, and the transparency disclosure is prepared. MAP 5.2 is what converts a well-documented risk into an actually managed one.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY: MAP WORKSHEET ────────────────────────────────── -->
+<section id="activity-worksheet" class="lesson-section" aria-labelledby="aws-h">
+  <h2 class="section-title map-accent" id="aws-h"><span>📋</span> Activity B · MAP Worksheet — MVCC AI Enrollment Assistant <span class="section-meta">35 min</span></h2>
+  <div class="activity-block">
+    <div class="activity-header">
+      <span class="act-label">Lab Activity</span>
+      <span class="act-title">Complete a MAP 1, 3, 5 Worksheet for a Real Scenario</span>
+      <span class="act-time">⏱ 30 min + 5 min class discussion</span>
+    </div>
+    <div class="activity-body">
+      <p>Select a scenario from the dropdown. Complete the MAP worksheet fields for that AI system. Click "Review Worksheet" to see model answers and coaching feedback for each field.</p>
+    </div>
+  </div>
+
+  <div class="worksheet-container">
+    <div class="ws-header">
+      <span class="ws-title">MAP Worksheet — NIST AI RMF 1.0</span>
+      <select class="ws-scenario-select" id="ws-scenario" onchange="loadWSScenario(this.value)">
+        <option value="">— Choose a scenario —</option>
+        <option value="chatbot">MVCC Enrollment Chatbot</option>
+        <option value="grading">AI-Assisted Grading Tool</option>
+        <option value="atRisk">At-Risk Student Predictor</option>
+      </select>
+    </div>
+    <div class="ws-body">
+      <div class="ws-scenario-box" id="ws-scenario-box" style="display:none">
+        <div class="sc-label">Scenario Description</div>
+        <p id="ws-scenario-desc"></p>
+      </div>
+      <div id="ws-fields-area" style="display:none">
+        <div class="ws-fields">
+          <div class="ws-field">
+            <label>MP-1.1 · Intended purpose (2–3 sentences)</label>
+            <textarea id="ws-purpose" placeholder="What does this system do, for whom, in what context, under what legal framework?"></textarea>
+          </div>
+          <div class="ws-field">
+            <label>MP-1.1 · Foreseeable misuse (at least 2)</label>
+            <textarea id="ws-misuse" placeholder="How might this system be used in ways not intended? What inputs might adversaries or users try?"></textarea>
+          </div>
+          <div class="ws-field">
+            <label>MP-1.2 · Stakeholders (list all groups)</label>
+            <textarea id="ws-stakeholders" placeholder="Who are the operators, users, affected third parties, and affected communities?"></textarea>
+          </div>
+          <div class="ws-field">
+            <label>MP-1.6 · Key socio-technical requirements</label>
+            <textarea id="ws-reqs" placeholder="e.g., System must provide human override, must not access live student records, must support screen readers..."></textarea>
+          </div>
+          <div class="ws-field">
+            <label>MP-3.5 · Top 3 potential harms (with affected population)</label>
+            <textarea id="ws-harms" placeholder="Harm 1: [description] → affects [population]&#10;Harm 2: ...&#10;Harm 3: ..."></textarea>
+          </div>
+          <div class="ws-field">
+            <label>MP-5.1 · Vulnerable/marginalized groups affected</label>
+            <textarea id="ws-vuln" placeholder="Which groups may be disproportionately harmed? Why?"></textarea>
+          </div>
+          <div class="ws-field">
+            <label>MP-5.2 · Pre-deployment safeguards needed</label>
+            <textarea id="ws-safeguards" placeholder="What redress mechanism, transparency disclosure, or oversight must be in place BEFORE launch?"></textarea>
+          </div>
+          <div class="ws-field">
+            <label>MAP Risk Tier (GV-1.3 inheritance)</label>
+            <select id="ws-tier">
+              <option value="">— Select tier —</option>
+              <option value="high">High Tier — consequential decisions, regulated data</option>
+              <option value="med">Medium Tier — moderate impact, general data</option>
+              <option value="low">Low Tier — administrative, low stakes</option>
+            </select>
+          </div>
+        </div>
+        <div class="ws-actions">
+          <button class="btn btn-map" onclick="reviewWorksheet()">Review Worksheet</button>
+          <button class="btn btn-ghost" onclick="clearWorksheet()">Clear</button>
+        </div>
+        <div class="ws-feedback" id="ws-feedback"></div>
+      </div>
+      <p id="ws-placeholder" style="color:var(--ink-muted);font-size:.9rem;text-align:center;padding:1.5rem 0">Select a scenario above to load the MAP worksheet.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── ACTIVITY: SORTER ───────────────────────────────────────── -->
+<section id="activity-sorter" class="lesson-section" aria-labelledby="asr-h">
+  <h2 class="section-title" id="asr-h"><span>🎯</span> Activity C · GOVERN vs MAP Sorter <span class="section-meta">20 min</span></h2>
+  <div class="activity-block">
+    <div class="activity-header">
+      <span class="act-label">Concept Activity</span>
+      <span class="act-title">Sort 14 AI Governance Actions into GOVERN or MAP</span>
+      <span class="act-time">⏱ 15 min + 5 min debrief</span>
+    </div>
+    <div class="activity-body">
+      <p>Each card below describes a governance action. Click a card to select it, then click "Place in GOVERN" or "Place in MAP" to sort it. Click "Check Answers" when done. Some items are nuanced — the explanation will tell you why.</p>
+    </div>
+  </div>
+  <div class="sorter-container">
+    <div class="sorter-header">
+      <span class="sorter-title">GOVERN vs MAP Sorter</span>
+      <span class="sorter-score" id="sorter-score">0 / 14 correct</span>
+    </div>
+    <div class="sorter-body">
+      <div id="sorter-pool" class="sorter-card-pool" aria-label="Cards to sort"></div>
+      <div class="sorter-cols">
+        <div>
+          <div class="sorter-col-header gov">🏛️ GOVERN (Organization-Layer)</div>
+          <div class="sorter-col-body" id="gov-drop" aria-label="GOVERN column"></div>
+        </div>
+        <div>
+          <div class="sorter-col-header map">🗺️ MAP (System-Layer)</div>
+          <div class="sorter-col-body" id="map-drop" aria-label="MAP column"></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:.7rem;flex-wrap:wrap;margin-bottom:.5rem">
+        <button class="btn btn-gov" onclick="placeSelected('gov')">Place in GOVERN</button>
+        <button class="btn btn-map" onclick="placeSelected('map')">Place in MAP</button>
+        <button class="btn btn-primary" onclick="checkSorter()">Check Answers</button>
+        <button class="btn btn-ghost" onclick="resetSorter()">Reset</button>
+      </div>
+      <div class="sorter-feedback" id="sorter-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ARTIFACT ───────────────────────────────────────────────── -->
+<section id="artifact" class="lesson-section" aria-labelledby="art-h">
+  <h2 class="section-title" id="art-h"><span>📝</span> Assessment Artifact <span class="section-meta">Due: End of Class</span></h2>
+  <div class="artifact-block">
+    <div class="artifact-label">📋 Day 3 Assessment Artifact</div>
+    <h4>MAP Worksheet + GOVERN Charter Snippet — Submitted Pair</h4>
+    <p>Submit both artifacts completed in today's activities as your Day 3 assessment:</p>
+    <ul>
+      <li><strong>MAP Worksheet</strong> (Activity B): Complete all seven fields for your chosen scenario. Must include: intended purpose statement, at least 2 foreseeable misuses, all stakeholder groups, 3 potential harms with affected populations, identified vulnerable groups, pre-deployment safeguards, and risk tier justification.</li>
+      <li><strong>GOVERN Charter Snippet</strong> (Activity A): All eight charter fields completed. The charter snippet will be used again on Day 13 (AI Policies &amp; AUPs) — you're building toward the final capstone program.</li>
+    </ul>
+    <p><strong>Grading:</strong> Daily assignment (25% of course grade). Evaluated on specificity (no generic answers), accuracy of MAP category application, and coherence between the charter risk tolerance and the MAP risk tier determination.</p>
+    <p><strong>Connection forward:</strong> Your MAP worksheet for today's scenario becomes the risk register seed for Day 4's Measure and Manage lab. Keep your work.</p>
+  </div>
+</section>
+
+<!-- ── QUIZ ───────────────────────────────────────────────────── -->
+<section id="quiz" class="lesson-section" aria-labelledby="quiz-h">
+  <h2 class="section-title" id="quiz-h"><span>❓</span> Day 3 Knowledge Check <span class="section-meta">10 Questions · Instant Feedback</span></h2>
+  <div class="quiz-block">
+    <div class="quiz-header">
+      <span>Day 3 Knowledge Check — 10 Questions</span>
+      <span class="quiz-score-disp" id="quiz-score-display">Score: 0 / 10</span>
+    </div>
+    <div id="quiz-body"></div>
+    <div class="quiz-actions">
+      <button class="btn btn-primary" onclick="gradeQuiz()">Grade My Quiz</button>
+      <button class="btn btn-ghost" onclick="resetQuiz()">Reset</button>
+      <span class="quiz-result-msg" id="quiz-result-msg"></span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ── SIDEBAR ────────────────────────────────────────────────── -->
+<aside class="sidebar">
+  <div class="sidebar-card">
+    <div class="sidebar-card-header">On This Page</div>
+    <div class="sidebar-card-body">
+      <ul class="sidebar-toc">
+        <li><a href="#overview"><span class="toc-num">→</span>Overview</a></li>
+        <li><a href="#m1"><span class="toc-num">1</span>RMF Architecture</a></li>
+        <li><a href="#m2"><span class="toc-num">2</span>GOVERN Categories</a></li>
+        <li><a href="#m3"><span class="toc-num">3</span>GOVERN Subcategories</a></li>
+        <li><a href="#activity-charter"><span class="toc-num">A</span>Activity: Charter</a></li>
+        <li><a href="#m4"><span class="toc-num">4</span>MAP Categories</a></li>
+        <li><a href="#m5"><span class="toc-num">5</span>MAP Subcategories</a></li>
+        <li><a href="#activity-worksheet"><span class="toc-num">B</span>Activity: MAP Worksheet</a></li>
+        <li><a href="#activity-sorter"><span class="toc-num">C</span>Activity: Sort It</a></li>
+        <li><a href="#artifact"><span class="toc-num">✏</span>Assessment</a></li>
+        <li><a href="#quiz"><span class="toc-num">?</span>Knowledge Check</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="sidebar-card">
+    <div class="sidebar-card-header">Objectives Progress</div>
+    <div class="sidebar-card-body">
+      <div class="sidebar-progress"><div class="progress-bar" id="progress-bar"></div></div>
+      <div class="progress-label" id="progress-label">0 of 6 completed</div>
+      <ul class="lo-list" style="margin-top:.7rem">
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>Explain GOVERN (org-layer) vs MAP (system-layer).</span></li>
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>Identify all 6 GOVERN categories and 19 subcategories.</span></li>
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>Identify all 5 MAP categories and 18 subcategories.</span></li>
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>Draft a GOVERN 1–2 charter snippet.</span></li>
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>Complete a MAP worksheet for a specified AI system.</span></li>
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>Distinguish GOVERN vs MAP activities for a scenario.</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="sidebar-card">
+    <div class="sidebar-card-header">Quick Reference</div>
+    <div class="sidebar-card-body">
+      <ul class="sidebar-toc">
+        <li><a href="#m2" style="font-size:.8rem"><strong style="color:var(--gov-col)">GOVERN 1</strong> — Policies &amp; Practices (7)</a></li>
+        <li><a href="#m2" style="font-size:.8rem"><strong style="color:var(--gov-col)">GOVERN 2</strong> — Accountability (3)</a></li>
+        <li><a href="#m2" style="font-size:.8rem"><strong style="color:var(--gov-col)">GOVERN 3</strong> — DEI&amp;A (2)</a></li>
+        <li><a href="#m2" style="font-size:.8rem"><strong style="color:var(--gov-col)">GOVERN 4</strong> — Culture (3)</a></li>
+        <li><a href="#m2" style="font-size:.8rem"><strong style="color:var(--gov-col)">GOVERN 5</strong> — Stakeholders (2)</a></li>
+        <li><a href="#m2" style="font-size:.8rem"><strong style="color:var(--gov-col)">GOVERN 6</strong> — Supply Chain (2)</a></li>
+        <li><a href="#m4" style="font-size:.8rem"><strong style="color:var(--map-col)">MAP 1</strong> — Context (6)</a></li>
+        <li><a href="#m4" style="font-size:.8rem"><strong style="color:var(--map-col)">MAP 2</strong> — Categorization (3)</a></li>
+        <li><a href="#m4" style="font-size:.8rem"><strong style="color:var(--map-col)">MAP 3</strong> — Capabilities (5)</a></li>
+        <li><a href="#m4" style="font-size:.8rem"><strong style="color:var(--map-col)">MAP 4</strong> — Component Risks (2)</a></li>
+        <li><a href="#m4" style="font-size:.8rem"><strong style="color:var(--map-col)">MAP 5</strong> — Societal Impacts (2)</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="sidebar-card">
+    <div class="sidebar-card-header">Lesson Navigation</div>
+    <div class="sidebar-card-body" style="display:flex;flex-direction:column;gap:.5rem">
+      <a href="lesson02.html" style="font-size:.85rem;font-weight:600;color:var(--oxblood)">← Day 2: Framework Landscape</a>
+      <span style="font-size:.85rem;font-weight:600;color:var(--ink-muted)">Day 3 — Current</span>
+      <a href="index.html#lessons" style="font-size:.85rem;font-weight:600;color:var(--ink-muted)">Day 4 — Coming Soon →</a>
+    </div>
+  </div>
+</aside>
+</div>
+
+<div class="lesson-nav-footer">
+  <a href="lesson02.html">← Day 2: Framework Landscape</a>
+  <a href="index.html">Course Home</a>
+</div>
+
+<footer>
+  <strong>AI-103: AI Cybersecurity Foundations · Day 3</strong> ·
+  Moraine Valley Community College · Department of Engineering &amp; Technology ·
+  Dr. John L. Sands · 2026<br><br>
+  Day 4 covers NIST AI RMF Measure and Manage — operationalizing AI risk with metrics, controls, and incident response.
+</footer>
+
+<script>
+/* ── Accordion ─────────────────────────────────────────────── */
+function toggleAcc(btn){const b=btn.nextElementSibling;const o=b.classList.contains('show');btn.classList.toggle('open',!o);btn.setAttribute('aria-expanded',(!o).toString());b.classList.toggle('show',!o)}
+
+/* ── Sticky nav ────────────────────────────────────────────── */
+const navLinks=document.querySelectorAll('.lesson-nav a');
+const navObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){navLinks.forEach(l=>l.classList.remove('active'));const lnk=document.querySelector(`.lesson-nav a[href="#${e.target.id}"]`);if(lnk)lnk.classList.add('active')}})},{rootMargin:'-25% 0px -65% 0px'});
+document.querySelectorAll('section[id]').forEach(s=>navObs.observe(s));
+
+/* ── Progress tracker ──────────────────────────────────────── */
+function toggleLO(el){el.classList.toggle('checked');el.setAttribute('aria-checked',el.classList.contains('checked').toString());const all=document.querySelectorAll('.lo-check');const done=document.querySelectorAll('.lo-check.checked').length;document.getElementById('progress-bar').style.width=Math.round(done/all.length*100)+'%';document.getElementById('progress-label').textContent=`${done} of ${all.length} completed`}
+
+/* ── Charter Builder ───────────────────────────────────────── */
+function generateCharter(){
+  const fields={regs:'cb-regs',risk:'cb-risk',inv:'cb-inv',lead:'cb-lead','risk-owner':'cb-risk-owner',training:'cb-training',exec:'cb-exec',stakeholders:'cb-stakeholders'};
+  let allFilled=true;
+  Object.entries(fields).forEach(([k,id])=>{const v=document.getElementById(id).value.trim()||'[Not completed]';document.getElementById('co-'+k).textContent=v;if(v==='[Not completed]')allFilled=false});
+  document.getElementById('charter-output').classList.add('show');
+  document.getElementById('charter-output').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function clearCharter(){['cb-regs','cb-risk','cb-inv','cb-lead','cb-risk-owner','cb-training','cb-exec','cb-stakeholders'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=''});document.getElementById('charter-output').classList.remove('show')}
+
+/* ── MAP Worksheet ─────────────────────────────────────────── */
+const wsScenarios={
+  chatbot:{
+    desc:'MVCC is deploying a generative AI chatbot on the public website and student portal to answer questions about admissions, financial aid deadlines, course schedules, and general college services. The chatbot will use a RAG pipeline pulling from approved MVCC policy documents. It will have no access to live student records in Phase 1.',
+    feedback:{
+      purpose:'Strong answer includes: generative AI assistant, specific question types (enrollment, financial aid, schedule), public website + student portal, RAG from approved documents, no live student record access, FERPA compliance required.',
+      misuse:'Expected misuse scenarios: (1) Students submitting personal/financial information into chat prompts. (2) Adversarial prompt injection via document retrieval pipeline. (3) Staff using chatbot to make authoritative policy decisions without verification. (4) Phishing attacks mimicking the chatbot interface.',
+      stakeholders:'All of: prospective students, current students, parents/guardians, financial aid staff, admissions staff, IT team, Disability Services (accessibility), Legal/Compliance, student body as affected community.',
+      reqs:'Critical requirements: human override for escalated issues, WCAG 2.1 AA accessibility, FERPA-compliant prompt handling, no PII storage in prompts, output citations for all policy claims, visible AI disclosure banner.',
+      harms:'Top harms: (1) Hallucinated financial aid deadlines → student misses aid → financial harm → disproportionately affects low-income students. (2) Prompt injection via RAG → incorrect policy outputs → institutional liability. (3) Overreliance on chatbot for enrollment decisions → enrollment errors at scale.',
+      vuln:'First-generation college students (may not independently verify AI output). Students with limited English proficiency (may misinterpret ambiguous chatbot language). Low-income students (financial aid errors have severe consequences).',
+      safeguards:'Pre-deployment: human escalation path defined and tested; RAG output citation required for all policy claims; AI disclosure banner live; FERPA data handling review completed; accessibility audit passed; bias testing on multilingual inputs completed.',
+      tier:'High Tier: financial aid and enrollment decisions have consequential outcomes for students; involves FERPA-regulated context; first-generation and low-income students particularly vulnerable to errors.'
+    }
+  },
+  grading:{
+    desc:'MVCC faculty are trialing an AI-assisted grading tool that analyzes submitted written assignments and provides suggested scores and feedback comments. Faculty review every suggestion before applying it. The tool is trained on a corpus of previously graded MVCC assignments.',
+    feedback:{
+      purpose:'Should specify: AI-assisted (not automated) grading, written assignments only, faculty review of every suggestion, trained on MVCC historical data, intended purpose to reduce faculty grading time and improve feedback consistency.',
+      misuse:'Expected: (1) Faculty applying AI scores without meaningful review (rubber-stamping). (2) Students gaming the system by identifying scoring patterns. (3) Training data containing personal student information that may be surfaced in outputs. (4) Faculty using tool for assessment types it wasn\'t trained on.',
+      stakeholders:'Students (primary affected), faculty (operators), department chairs, Dean of Instruction, Registrar, Disability Services (accommodations affect grading), Legal/FERPA compliance.',
+      reqs:'Human-in-the-loop required for every grade applied; faculty must document when they override AI suggestion; FERPA compliance for training data; academic integrity policy alignment; accommodation-aware (extended time, assistive technology).',
+      harms:'(1) Systematic bias against non-native English writers → grade deflation → disproportionate impact on ESL students. (2) Training data memorization → student PII surfaced in feedback → FERPA violation. (3) Faculty over-reliance → reduced pedagogical engagement → degraded educational outcomes.',
+      vuln:'English language learners (writing style bias in AI scoring). Students with learning disabilities (different writing patterns may score lower). Students from underrepresented cultural backgrounds (cultural writing norms may not match training corpus).',
+      safeguards:'Pre-deployment: bias audit across language/demographic groups; FERPA review of training data; faculty training on appropriate use and override obligation; student disclosure policy; appeal process defined.',
+      tier:'High Tier: directly influences academic outcomes; involves student records; potential for disparate impact on protected groups; requires faculty review protocol.'
+    }
+  },
+  atRisk:{
+    desc:'MVCC is deploying a predictive analytics dashboard that flags students as "at-risk" for academic failure or dropout based on attendance, LMS engagement, grade trends, and demographic variables. Advisors receive a weekly report and are expected to proactively reach out to flagged students.',
+    feedback:{
+      purpose:'Predictive analytics system, inputs: attendance + LMS engagement + grades + demographic variables, output: weekly at-risk flag list to advisors, purpose: proactive advising intervention, FERPA applies to all student data inputs.',
+      misuse:'(1) Advisors treating the flag as a definitive diagnosis rather than a conversation starter. (2) System used to make retention-related financial decisions rather than purely for advising. (3) Demographic variables creating proxy discrimination. (4) Students discovering they are flagged and experiencing stigma.',
+      stakeholders:'At-risk students, all students (potential to be flagged), academic advisors, faculty, Department of Education (Title IV), Dean of Students, Equity and Inclusion office, Financial Aid (if retention incentives apply).',
+      reqs:'Demographic variables must be tested for proxy discrimination; advisors must receive training on flag interpretation; students have right to know they were flagged and right to dispute; model performance must be disaggregated by demographic group; system cannot be used for financial aid eligibility decisions.',
+      harms:'(1) False positives → advising stigma → student disengagement → worsens outcome for students who were not actually at risk. (2) Demographic proxy bias → disproportionate surveillance of students of color or low-income students → EU AI Act high-risk territory. (3) Under-flagging high-need students → intervention gap → disparate failure rates.',
+      vuln:'Students of color (demographic variables may function as proxies). First-generation students (higher base risk rates may trigger more flags, creating labeling effects). Students with undiagnosed mental health conditions (attendance patterns may be misread as disengagement).',
+      safeguards:'Pre-deployment: fairness audit across racial and socioeconomic subgroups; advisor training and certification; student notification and dispute process; explicit prohibition on using flags for financial decisions; IRB review for research use of outputs.',
+      tier:'High Tier: consequential for student outcomes; uses demographic data; potential for disparate impact; involves advising decisions that affect enrollment and financial aid outcomes.'
+    }
+  }
+};
+let currentWSScenario=null;
+function loadWSScenario(key){
+  if(!key){document.getElementById('ws-placeholder').style.display='block';document.getElementById('ws-scenario-box').style.display='none';document.getElementById('ws-fields-area').style.display='none';return}
+  currentWSScenario=key;const s=wsScenarios[key];
+  document.getElementById('ws-scenario-desc').textContent=s.desc;
+  document.getElementById('ws-scenario-box').style.display='block';
+  document.getElementById('ws-fields-area').style.display='block';
+  document.getElementById('ws-placeholder').style.display='none';
+  clearWorksheet();
+}
+function reviewWorksheet(){
+  if(!currentWSScenario)return;
+  const s=wsScenarios[currentWSScenario];const f=s.feedback;
+  let html=`<h4>📋 Model Answer Coaching — ${currentWSScenario==='chatbot'?'Enrollment Chatbot':currentWSScenario==='grading'?'AI Grading Tool':'At-Risk Predictor'}</h4><ul>`;
+  const checks=[
+    ['MP-1.1 Intended Purpose',document.getElementById('ws-purpose').value,f.purpose],
+    ['MP-1.1 Foreseeable Misuse',document.getElementById('ws-misuse').value,f.misuse],
+    ['MP-1.2 Stakeholders',document.getElementById('ws-stakeholders').value,f.stakeholders],
+    ['MP-1.6 Socio-Technical Requirements',document.getElementById('ws-reqs').value,f.reqs],
+    ['MP-3.5 Top Harms',document.getElementById('ws-harms').value,f.harms],
+    ['MP-5.1 Vulnerable Groups',document.getElementById('ws-vuln').value,f.vuln],
+    ['MP-5.2 Pre-Deployment Safeguards',document.getElementById('ws-safeguards').value,f.safeguards],
+    ['Risk Tier',document.getElementById('ws-tier').value,f.tier]
+  ];
+  checks.forEach(([label,val,coaching])=>{
+    const filled=val&&val.trim().length>10;
+    html+=`<li style="margin-bottom:.7rem"><strong style="color:var(--map-col)">${label}:</strong> ${filled?'✅ Completed':'⚠️ Incomplete or too brief'}<br><span style="font-size:.83rem;color:var(--ink-soft);display:block;margin-top:.2rem"><em>Model answer includes:</em> ${coaching}</span></li>`;
+  });
+  html+='</ul>';
+  const fb=document.getElementById('ws-feedback');fb.innerHTML=html;fb.classList.add('show');fb.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function clearWorksheet(){['ws-purpose','ws-misuse','ws-stakeholders','ws-reqs','ws-harms','ws-vuln','ws-safeguards'].forEach(id=>document.getElementById(id).value='');document.getElementById('ws-tier').value='';const fb=document.getElementById('ws-feedback');fb.classList.remove('show');fb.innerHTML=''}
+
+/* ── GOVERN vs MAP Sorter ──────────────────────────────────── */
+const sorterItems=[
+  {id:'s1',text:'Publish an AI Acceptable Use Policy for all staff',correct:'gov'},
+  {id:'s2',text:'Document the intended purpose of the enrollment chatbot',correct:'map'},
+  {id:'s3',text:'Define the organization\'s AI risk tolerance tiers',correct:'gov'},
+  {id:'s4',text:'Identify all stakeholders affected by the at-risk predictor',correct:'map'},
+  {id:'s5',text:'Assign the AI Governance Lead role to the VP of IT',correct:'gov'},
+  {id:'s6',text:'List foreseeable misuses of the grading AI tool',correct:'map'},
+  {id:'s7',text:'Establish a vendor AI security questionnaire standard',correct:'gov'},
+  {id:'s8',text:'Assess which demographic groups are disproportionately affected by the chatbot',correct:'map'},
+  {id:'s9',text:'Require all AI systems to be registered in the AI Use Case Register',correct:'gov'},
+  {id:'s10',text:'Map the technical components and third-party dependencies of a specific LLM deployment',correct:'map'},
+  {id:'s11',text:'Define AI literacy training requirements for all faculty and staff',correct:'gov'},
+  {id:'s12',text:'Document the EU AI Act risk tier for the at-risk student predictor',correct:'map'},
+  {id:'s13',text:'Establish the policy for safe AI system decommissioning',correct:'gov'},
+  {id:'s14',text:'Specify human oversight requirements for the AI grading tool',correct:'map'},
+];
+let selectedSorterCard=null;const sorterPlacements={};
+function buildSorter(){
+  const pool=document.getElementById('sorter-pool');
+  sorterItems.forEach(item=>{
+    const c=document.createElement('div');c.className='sorter-card';c.id='sc-'+item.id;c.textContent=item.text;
+    c.addEventListener('click',()=>{document.querySelectorAll('.sorter-card').forEach(x=>x.style.outline='');c.style.outline='2px solid var(--oxblood)';selectedSorterCard=item.id});
+    pool.appendChild(c);
+  });
+}
+function placeSelected(col){
+  if(!selectedSorterCard)return;
+  const card=document.getElementById('sc-'+selectedSorterCard);
+  if(!card)return;
+  if(sorterPlacements[selectedSorterCard]){
+    const oldCol=document.getElementById(sorterPlacements[selectedSorterCard]+'-drop');
+    const existing=oldCol.querySelector('[data-id="'+selectedSorterCard+'"]');
+    if(existing)oldCol.removeChild(existing);
+  }
+  sorterPlacements[selectedSorterCard]=col;
+  card.style.display='none';
+  const placed=document.createElement('div');placed.className='sorter-placed';placed.setAttribute('data-id',selectedSorterCard);
+  placed.innerHTML=`<span style="font-size:.82rem">${sorterItems.find(i=>i.id===selectedSorterCard).text}</span><button class="remove-btn" onclick="removePlaced('${selectedSorterCard}')" aria-label="Remove">✕</button>`;
+  document.getElementById(col+'-drop').appendChild(placed);
+  selectedSorterCard=null;
+  document.querySelectorAll('.sorter-card').forEach(x=>x.style.outline='');
+}
+function removePlaced(id){
+  const placed=document.querySelector(`[data-id="${id}"]`);if(placed)placed.remove();
+  delete sorterPlacements[id];
+  const card=document.getElementById('sc-'+id);if(card){card.style.display='';card.className='sorter-card';card.style.outline=''}
+}
+function checkSorter(){
+  let correct=0;
+  sorterItems.forEach(item=>{
+    const placement=sorterPlacements[item.id];
+    const card=document.getElementById('sc-'+item.id);
+    const placed=document.querySelector(`[data-id="${item.id}"]`);
+    if(placement){
+      const isRight=placement===item.correct;
+      if(isRight)correct++;
+      if(placed){placed.style.background=isRight?'var(--success-bg)':'var(--error-bg)';placed.style.borderColor=isRight?'var(--success)':'var(--oxblood)';placed.style.color=isRight?'var(--success)':'var(--oxblood)'}
+    }
+  });
+  document.getElementById('sorter-score').textContent=`${correct} / ${sorterItems.length} correct`;
+  const fb=document.getElementById('sorter-feedback');
+  fb.className=`sorter-feedback show ${correct>=12?'ok':'not-ok'}`;
+  const explanations=['The key distinction: GOVERN outcomes apply to ALL AI systems in the organization; MAP outcomes are scoped to ONE specific system. Actions that set policy, assign roles, or define organizational standards → GOVERN. Actions that document, assess, or analyze a specific deployed system → MAP.','Some nuances: GV-1.5 (inventory requirement) is GOVERN; the act of adding a specific system to that inventory is MAP. GV-6.1 (vendor policy) is GOVERN; the vendor assessment for a specific system is MAP.'];
+  fb.innerHTML=`<strong>${correct>=12?'✅ Excellent':'❌ Review needed'} — ${correct}/${sorterItems.length} correct.</strong><br><br>${explanations.join('<br><br>')}`;
+}
+function resetSorter(){
+  Object.keys(sorterPlacements).forEach(id=>delete sorterPlacements[id]);
+  document.getElementById('gov-drop').innerHTML='';document.getElementById('map-drop').innerHTML='';
+  document.querySelectorAll('.sorter-card').forEach(c=>{c.style.display='';c.className='sorter-card';c.style.outline=''});
+  document.getElementById('sorter-score').textContent='0 / 14 correct';
+  document.getElementById('sorter-feedback').className='sorter-feedback';
+  document.getElementById('sorter-feedback').innerHTML='';
+  selectedSorterCard=null;
+}
+
+/* ── Quiz ──────────────────────────────────────────────────── */
+const quizData=[
+  {q:'GOVERN is described by NIST as "cross-cutting." What does this mean in practice?',opts:['GOVERN applies only to high-risk AI systems that cross organizational boundaries.','GOVERN outcomes are defined at the organization level and inherited by every AI system — they span across all MAP, MEASURE, and MANAGE work.','GOVERN is completed first, then handed off to the MAP team, which completes it independently.','GOVERN and MAP are interchangeable names for the same function.'],correct:1,exp:'GOVERN is cross-cutting because it operates at the organizational layer — establishing policy, accountability, and culture that apply to every AI system simultaneously. MAP, MEASURE, and MANAGE are system-specific and inherit GOVERN outcomes.'},
+  {q:'An organization has published an AI risk tolerance statement that classifies AI systems influencing hiring decisions as "High Tier" requiring a full MAP worksheet and red-team evaluation. Which GOVERN subcategory does this directly implement?',opts:['GOVERN 1.1 — Legal and regulatory requirements','GOVERN 1.3 — Risk tolerance and management depth','GOVERN 2.1 — Roles and responsibilities','GOVERN 5.1 — External stakeholder engagement'],correct:1,exp:'GOVERN 1.3 requires documented processes for determining the depth of risk management activity based on organizational risk tolerance. A tiered system that drives MAP/MEASURE/MANAGE depth is exactly the implementation of GV-1.3.'},
+  {q:'A security team discovers that an AI model deployed 18 months ago was quietly deprecated by the vendor — but is still running in production because no decommissioning process exists. Which GOVERN gap does this illustrate?',opts:['GOVERN 2.3 — Executive oversight failure','GOVERN 1.6 — Lack of decommissioning policies','GOVERN 5.2 — Failure to engage affected communities','GOVERN 4.1 — Psychological safety failure'],correct:1,exp:'GOVERN 1.6 requires policies and procedures for safe decommissioning. The absence of a decommissioning process — including inventory tracking, notification, and shutdown procedures — is exactly this gap. A model "zombieing" in production is a direct GV-1.6 failure.'},
+  {q:'MAP 1.1 requires documenting the "intended purpose" of an AI system. Which statement is a well-formed MAP 1.1 response?',opts:['"An AI system for customer support."','"A generative AI assistant that answers MVCC enrollment and financial aid questions for current and prospective students via the public website, using a RAG pipeline from approved policy documents, with no live student record access, subject to FERPA compliance."','"The system will use large language model technology to assist users."','"AI chatbot — Phase 1 deployment — fall semester."'],correct:1,exp:'MAP 1.1 requires: what the system does, who uses it, in what context, under what legal framework, and with what constraints. The detailed response includes all of these. The others are too vague to anchor subsequent MAP, MEASURE, or MANAGE work.'},
+  {q:'MAP 5.1 requires special attention to marginalized groups. Why is this categorized as a security/governance issue rather than only an ethics issue?',opts:['It isn\'t — MAP 5.1 is purely an ethics requirement with no security implications.','Disproportionate impact on marginalized groups triggers EU AI Act FRIA requirements for high-risk systems and creates regulatory liability — making it a compliance and legal risk.','Marginalized groups are more likely to conduct cyberattacks against AI systems.','MAP 5.1 is required only for government AI deployments, not commercial ones.'],correct:1,exp:'MAP 5.1\'s disproportionate-impact analysis is required by the EU AI Act\'s Fundamental Rights Impact Assessment for high-risk systems. Failure to identify and address disparate impact creates direct regulatory liability and legal exposure — making it a compliance and governance risk, not merely an ethical aspiration.'},
+  {q:'Which MAP category specifically requires analyzing risks from third-party components, vendor dependencies, and data supply chain issues?',opts:['MAP 1 — Context establishment','MAP 2 — System categorization','MAP 3 — Capabilities and costs','MAP 4 — Component and third-party risks'],correct:3,exp:'MAP 4 explicitly covers risks for all components of the AI system, including third-party dependencies. This is where supply-chain risk for a specific system is documented — vendor model risks, data provenance risks, API dependency risks.'},
+  {q:'An AI governance team completes detailed MAP worksheets for three AI systems but has never documented an organizational risk tolerance, defined AI governance roles, or established a vendor questionnaire standard. Which assessment is correct?',opts:['The team is compliant — MAP work is the most important function.','The team has completed system-layer work without the organizational-layer foundation. GOVERN gaps mean MAP outputs may not drive consistent action across the organization.','This is acceptable for organizations in the early stages of AI governance.','GOVERN is only required for high-risk systems under the EU AI Act.'],correct:1,exp:'Without GOVERN establishing risk tolerance, accountability, and vendor standards, MAP outputs have no organizational infrastructure to act on. Each team may make different decisions about the same risk level. GOVERN is the prerequisite, not the optional add-on.'},
+  {q:'A community college asks: "Should the AI system that recommends tutoring resources to students based on their quiz performance require a MAP worksheet?" How should you answer?',opts:['No — tutoring recommendations are low-stakes and do not require MAP.','Yes — any system that produces recommendations affecting student academic outcomes requires MAP, at whatever depth the organization\'s GV-1.3 risk tolerance requires for that tier.','MAP worksheets are only required for EU AI Act high-risk systems.','MAP is only required for systems using sensitive personal data.'],correct:1,exp:'MAP is required for all AI systems — not just high-risk ones. The GV-1.3 risk tolerance determines the DEPTH of the MAP work required (full worksheet for high-tier, abbreviated for low-tier), but MAP itself applies to every deployed AI system.'},
+  {q:'GOVERN 3 (Workforce Diversity, Equity, Inclusion, and Accessibility) is sometimes dismissed as an HR concern unrelated to cybersecurity. Which argument BEST refutes this?',opts:['GOVERN 3 is indeed primarily an HR concern — it should be owned by the HR department, not the security team.','Homogeneous AI development teams produce systems with blind spots that become technical failures: facial recognition with demographic performance gaps, medical AI with biased training data, hiring algorithms with disparate impact. These are security and liability failures, not just ethical ones.','GOVERN 3 is only relevant for government agencies subject to civil rights law.','GOVERN 3 applies only to the hiring practices of the AI development team, not to the AI systems they produce.'],correct:1,exp:'GOVERN 3 is a technical quality and liability issue. Homogeneous teams produce systems that fail on demographic groups not represented in the development process — producing security, accuracy, and legal failures that are discovered later as incidents or litigation.'},
+  {q:'Which of the following actions belongs in MAP rather than GOVERN?',opts:['Establishing the organization\'s AI risk tolerance tiers (High, Medium, Low)','Publishing the organization\'s AI Acceptable Use Policy','Documenting that the at-risk student predictor disproportionately flags first-generation students','Requiring all AI systems to be registered within 30 days of deployment'],correct:2,exp:'Documenting disproportionate impact on first-generation students is MAP 5.1 — it applies to a specific system\'s specific impact on a specific population. The other three are organizational policies (GOVERN 1.3, GOVERN policy, and GOVERN 1.5) that apply to all AI systems.'},
+];
+function buildQuiz(){
+  const body=document.getElementById('quiz-body');
+  quizData.forEach((q,i)=>{
+    const sec=document.createElement('div');sec.className='quiz-question';
+    sec.innerHTML=`<div class="q-prompt"><span class="q-num">Q${i+1}.</span>${q.q}</div><ul class="q-options">${q.opts.map((o,j)=>`<li><label><input type="radio" name="q${i}" value="${j}"> ${o}</label></li>`).join('')}</ul><div class="q-feedback" id="qf${i}"></div>`;
+    body.appendChild(sec);
+  });
+}
+function gradeQuiz(){
+  let score=0;
+  quizData.forEach((q,i)=>{
+    const sel=document.querySelector(`input[name="q${i}"]:checked`);
+    const fb=document.getElementById(`qf${i}`);fb.classList.add('show');
+    if(sel&&parseInt(sel.value)===q.correct){score++;fb.className='q-feedback correct show';fb.innerHTML=`✅ <strong>Correct!</strong> ${q.exp}`}
+    else{fb.className='q-feedback incorrect show';fb.innerHTML=`❌ <strong>${sel?'Incorrect.':'No answer selected.'}</strong> ${q.exp}`}
+  });
+  document.getElementById('quiz-score-display').textContent=`Score: ${score} / ${quizData.length}`;
+  const msgs=['Keep reviewing — the subcategory detail takes time.','Good start — review the missed items carefully.','Solid — revisit the GOVERN/MAP distinction questions.','Strong work!','Excellent command of the material!','Perfect score — outstanding!'];
+  document.getElementById('quiz-result-msg').textContent=msgs[Math.floor(score/2)];
+}
+function resetQuiz(){
+  document.querySelectorAll('#quiz-body input[type="radio"]').forEach(r=>r.checked=false);
+  document.querySelectorAll('.q-feedback').forEach(f=>{f.className='q-feedback';f.innerHTML=''});
+  document.getElementById('quiz-score-display').textContent=`Score: 0 / ${quizData.length}`;
+  document.getElementById('quiz-result-msg').textContent='';
+}
+
+/* ── Init ──────────────────────────────────────────────────── */
+buildSorter();
+buildQuiz();
+</script>
+</body>
+</html>
