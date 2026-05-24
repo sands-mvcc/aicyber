@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI-103 Lesson 6 — AI Risk Categories & Shadow AI. Five AI risk categories, the three forces creating the governance gap, shadow AI patterns and statistics, detection methods, and governance responses — with flip cards, interactive risk radar, shadow AI scenario lab, and detection checklist.">
+<title>AI-103 · Day 6: AI Risk Categories &amp; Shadow AI</title>
+<style>
+:root{
+  --oxblood:#6b1a1a;--oxblood-dk:#4a1010;--oxblood-lt:#8c2a2a;
+  --gold:#c8960c;--gold-lt:#e8b830;
+  --cream:#faf8f4;--parchment:#f2ede3;
+  --ink:#1a1a1a;--ink-soft:#3a3a3a;--ink-muted:#6b6b6b;
+  --border:#d4cdbf;--border-lt:#e8e2d8;--white:#ffffff;
+  /* Risk category colors */
+  --model:#6b1a6b;--model-lt:#8c2a8c;--model-bg:#faf0fa;
+  --data:#1a3a6b;--data-lt:#2a4f8c;--data-bg:#f0f4fa;
+  --ops:#6b3a1a;--ops-lt:#8c4f2a;--ops-bg:#faf4f0;
+  --ethical:#1a6b3a;--ethical-lt:#2a8c4f;--ethical-bg:#f0faf4;
+  --tparty:#3a1a6b;--tparty-lt:#4f2a8c;--tparty-bg:#f4f0fa;
+  /* Shadow AI */
+  --shadow:#1a1a3a;--shadow-lt:#2a2a5a;--shadow-bg:#f0f0f8;
+  --danger:#8a0000;--danger-bg:#fff0f0;
+  --warn:#c8960c;--warn-bg:#fff8e1;
+  --success:#1a6b2a;--success-bg:#e8f5eb;
+  --error:#6b1a1a;--error-bg:#fdeaea;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.08);
+  --shadow-md:0 4px 16px rgba(0,0,0,.12);
+  --shadow-lg:0 8px 36px rgba(0,0,0,.16);
+  --radius:6px;
+  --ff-serif:'Fraunces','Georgia',serif;
+  --ff-sans:'IBM Plex Sans','Segoe UI',system-ui,sans-serif;
+  --ff-mono:'IBM Plex Mono','Courier New',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff-sans);font-size:16px;line-height:1.7;color:var(--ink);background:var(--cream)}
+a{color:var(--oxblood)}a:hover{text-decoration:underline}
+
+.skip-link{position:absolute;top:-40px;left:1rem;background:var(--oxblood);color:#fff;padding:.4rem .8rem;border-radius:var(--radius);font-size:.85rem;font-weight:600;transition:top .2s;z-index:9999}
+.skip-link:focus{top:.5rem}
+
+/* Topbar */
+.topbar{background:var(--oxblood-dk);color:rgba(255,255,255,.7);font-size:.78rem;font-family:var(--ff-mono);letter-spacing:.04em;padding:.45rem 2rem;display:flex;align-items:center;flex-wrap:wrap;gap:.3rem .7rem}
+.topbar a{color:rgba(255,255,255,.8);text-decoration:none}.topbar a:hover{color:#fff}
+.topbar-sep{opacity:.4}
+
+/* Header — dark gradient with risk-category accent */
+.site-header{color:#fff;padding:2.8rem 2rem 2.2rem;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#1a0a2a 0%,#2a1a0a 40%,#0a1a2a 100%)}
+.site-header::before{content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(45deg,transparent,transparent 30px,rgba(255,255,255,.015) 30px,rgba(255,255,255,.015) 31px);
+  pointer-events:none}
+.header-inner{max-width:1080px;margin:0 auto;position:relative}
+.lesson-eyebrow{font-family:var(--ff-mono);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-lt);margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.lesson-eyebrow .sep{opacity:.4}
+.site-header h1{font-family:var(--ff-serif);font-size:clamp(1.7rem,3.5vw,2.5rem);font-weight:700;line-height:1.15;margin-bottom:.5rem}
+.site-header .tagline{font-size:.97rem;color:rgba(255,255,255,.75);max-width:700px;margin-bottom:1.4rem}
+.header-meta{display:flex;flex-wrap:wrap;gap:.5rem 1.2rem;font-size:.82rem;color:rgba(255,255,255,.62)}
+.header-meta strong{color:rgba(255,255,255,.9)}
+
+/* Sticky nav */
+.lesson-nav{background:#1a0a2a;border-bottom:2px solid var(--gold);position:sticky;top:0;z-index:100}
+.lesson-nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;overflow-x:auto;scrollbar-width:none}
+.lesson-nav-inner::-webkit-scrollbar{display:none}
+.lesson-nav a{color:rgba(255,255,255,.72);font-size:.78rem;font-weight:600;letter-spacing:.04em;white-space:nowrap;padding:.6rem 1rem;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .15s;text-decoration:none}
+.lesson-nav a:hover,.lesson-nav a.active{color:#fff;border-bottom-color:var(--gold-lt);background:rgba(255,255,255,.07)}
+
+/* Layout */
+.page-body{max-width:1080px;margin:0 auto;padding:2.5rem 1.5rem 5rem;display:grid;grid-template-columns:1fr 260px;gap:2.5rem;align-items:start}
+@media(max-width:820px){.page-body{grid-template-columns:1fr}.sidebar{display:none}}
+main{min-width:0}
+
+/* Sidebar */
+.sidebar{position:sticky;top:56px}
+.sidebar-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:1rem;box-shadow:var(--shadow-sm)}
+.sc-head{background:var(--shadow);color:#fff;padding:.65rem 1rem;font-size:.78rem;font-family:var(--ff-mono);letter-spacing:.07em;text-transform:uppercase;font-weight:600}
+.sc-body{padding:.9rem 1rem}
+.sidebar-toc{list-style:none}
+.sidebar-toc li{border-bottom:1px solid var(--border-lt)}.sidebar-toc li:last-child{border-bottom:none}
+.sidebar-toc a{display:block;padding:.45rem 0;font-size:.82rem;color:var(--ink-soft);text-decoration:none;transition:color .15s}
+.sidebar-toc a:hover{color:var(--oxblood)}
+.toc-num{font-family:var(--ff-mono);font-size:.72rem;color:var(--oxblood);margin-right:.4rem}
+.lo-list{list-style:none}
+.lo-list li{font-size:.82rem;color:var(--ink-soft);padding:.35rem 0;border-bottom:1px solid var(--border-lt);display:flex;gap:.5rem;align-items:flex-start;line-height:1.45}
+.lo-list li:last-child{border-bottom:none}
+.lo-check{width:1.1rem;height:1.1rem;border:2px solid var(--oxblood);border-radius:3px;flex-shrink:0;margin-top:.15rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.65rem;color:#fff;background:transparent;transition:background .15s}
+.lo-check.checked{background:var(--oxblood)}.lo-check.checked::after{content:'✓'}
+.progress-wrap{height:6px;background:var(--border-lt);border-radius:3px;margin:.7rem 0 .4rem;overflow:hidden}
+.progress-fill{height:100%;background:var(--oxblood);border-radius:3px;width:0%;transition:width .3s}
+.progress-label{font-size:.75rem;color:var(--ink-muted);font-family:var(--ff-mono)}
+
+/* Section structure */
+.lesson-section{margin-bottom:3rem}
+.section-title{font-family:var(--ff-serif);font-size:1.45rem;font-weight:700;color:var(--oxblood);margin-bottom:.3rem;padding-bottom:.45rem;border-bottom:2px solid var(--border);display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap}
+.section-meta{font-family:var(--ff-mono);font-size:.72rem;letter-spacing:.06em;color:var(--ink-muted);text-transform:uppercase;font-weight:normal}
+h3{font-family:var(--ff-sans);font-size:1.05rem;font-weight:700;color:var(--ink);margin:1.5rem 0 .6rem}
+.prose p{margin-bottom:1rem;color:var(--ink-soft)}.prose p:last-child{margin-bottom:0}.prose strong{color:var(--ink)}
+
+/* Part banner */
+.part-banner{border-radius:var(--radius);padding:.85rem 1.3rem;margin:2.5rem 0 1.8rem;display:flex;align-items:center;gap:1rem;color:#fff}
+.part-banner.risk{background:var(--oxblood)}
+.part-banner.shadow-b{background:var(--shadow)}
+.part-banner.lab{background:#2d3a1a}
+.pb-num{font-family:var(--ff-mono);font-size:1.3rem;font-weight:700;color:var(--gold-lt);line-height:1}
+.pb-title{font-family:var(--ff-serif);font-size:1.05rem;font-weight:700}
+.pb-time{margin-left:auto;font-family:var(--ff-mono);font-size:.75rem;color:rgba(255,255,255,.6);white-space:nowrap}
+
+/* Analogy box */
+.analogy-box{background:var(--parchment);border:1px solid var(--border);border-left:5px solid var(--gold);border-radius:var(--radius);padding:1.2rem 1.5rem;margin:1.5rem 0}
+.analogy-label{font-family:var(--ff-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:.4rem}
+.analogy-box p{color:var(--ink-soft);font-size:.95rem;margin-bottom:.5rem}.analogy-box p:last-child{margin-bottom:0}
+
+/* Callout */
+.callout{background:var(--warn-bg);border:1px solid #e8c84a;border-left:5px solid var(--gold);border-radius:var(--radius);padding:1rem 1.3rem;margin:1.2rem 0;font-size:.92rem;color:var(--ink-soft)}
+.callout-label{font-weight:700;color:var(--ink);font-family:var(--ff-mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.3rem}
+.callout-danger{background:var(--danger-bg);border-color:#e8a4a4;border-left-color:var(--danger)}
+.callout-shadow{background:var(--shadow-bg);border-color:#a4a4d4;border-left-color:var(--shadow)}
+.callout-success{background:var(--success-bg);border-color:#a8d4b0;border-left-color:var(--success)}
+
+/* ── STAT CARDS ─────────────────────────────────────── */
+.stat-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:.9rem;margin:1.5rem 0}
+.stat-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem;text-align:center;box-shadow:var(--shadow-sm)}
+.stat-num{font-family:var(--ff-serif);font-size:2rem;font-weight:700;line-height:1;margin-bottom:.25rem}
+.stat-num.danger{color:var(--danger)}.stat-num.shadow-c{color:var(--shadow)}.stat-num.warn{color:var(--warn)}.stat-num.ok{color:var(--success)}
+.stat-label{font-size:.78rem;color:var(--ink-muted);line-height:1.4}
+.stat-source{font-family:var(--ff-mono);font-size:.65rem;color:var(--ink-muted);margin-top:.3rem}
+
+/* ── RISK CATEGORY CARDS ────────────────────────────── */
+.risk-cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem;margin:1.5rem 0}
+.risk-cat-card{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-md);transition:transform .15s,box-shadow .15s}
+.risk-cat-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.rcc-head{padding:.85rem 1.1rem;color:#fff;display:flex;align-items:center;gap:.7rem}
+.rcc-head.model{background:var(--model)}.rcc-head.data{background:var(--data)}
+.rcc-head.ops{background:var(--ops)}.rcc-head.ethical{background:var(--ethical)}
+.rcc-head.tparty{background:var(--tparty)}
+.rcc-icon{font-size:1.6rem;flex-shrink:0}
+.rcc-title{font-family:var(--ff-serif);font-size:1rem;font-weight:700;line-height:1.2}
+.rcc-subtitle{font-size:.78rem;opacity:.8}
+.rcc-body{padding:.9rem 1.1rem;background:#fff;border:1px solid var(--border);border-top:none}
+.rcc-body p{font-size:.88rem;color:var(--ink-soft);line-height:1.55;margin-bottom:.5rem}
+.rcc-body p:last-child{margin-bottom:0}
+.rcc-chips{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.6rem}
+.rcc-chip{font-size:.72rem;border-radius:3px;padding:.1rem .45rem;font-weight:600}
+.rcc-chip.model{background:var(--model-bg);color:var(--model)}.rcc-chip.data{background:var(--data-bg);color:var(--data)}
+.rcc-chip.ops{background:var(--ops-bg);color:var(--ops)}.rcc-chip.ethical{background:var(--ethical-bg);color:var(--ethical)}
+.rcc-chip.tparty{background:var(--tparty-bg);color:var(--tparty)}
+
+/* ── FLIP CARDS ─────────────────────────────────────── */
+.flip-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:1rem;margin:1.5rem 0}
+.flip-card{height:210px;cursor:pointer;perspective:900px}
+.flip-inner{width:100%;height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;position:relative}
+.flip-card.flipped .flip-inner{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--radius);padding:1.1rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:var(--shadow-sm)}
+.flip-front{background:#fff;border:1px solid var(--border)}
+.flip-back{transform:rotateY(180deg)}
+.flip-back.model{background:var(--model);color:#fff}.flip-back.data{background:var(--data);color:#fff}
+.flip-back.ops{background:var(--ops);color:#fff}.flip-back.ethical{background:var(--ethical);color:#fff}
+.flip-back.tparty{background:var(--tparty);color:#fff}.flip-back.shadow-b{background:var(--shadow);color:#fff}
+.flip-back.danger{background:var(--danger);color:#fff}.flip-back.detection{background:#1a3a1a;color:#fff}
+.flip-icon{font-size:2rem;margin-bottom:.5rem}
+.flip-code{font-family:var(--ff-mono);font-size:.7rem;font-weight:700;letter-spacing:.06em;margin-bottom:.25rem}
+.flip-code.model{color:var(--model)}.flip-code.data{color:var(--data)}.flip-code.ops{color:var(--ops)}
+.flip-code.ethical{color:var(--ethical)}.flip-code.tparty{color:var(--tparty)}.flip-code.shadow-b{color:var(--shadow)}
+.flip-title{font-weight:700;font-size:.9rem;color:var(--ink);line-height:1.3;margin-bottom:.25rem}
+.flip-hint{font-size:.7rem;color:var(--ink-muted);font-family:var(--ff-mono)}
+.flip-back-title{font-weight:700;font-size:.85rem;margin-bottom:.4rem;color:rgba(255,215,0,.9)}
+.flip-body{font-size:.8rem;line-height:1.5;color:rgba(255,255,255,.92)}
+.flip-tag{font-family:var(--ff-mono);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.2);border-radius:3px;padding:.1rem .4rem;margin-top:.5rem;display:inline-block}
+
+/* ── EXPANDABLE DROPDOWNS ────────────────────────────── */
+.expand-section{margin:1.2rem 0}
+.expand-item{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:.5rem;overflow:hidden;box-shadow:var(--shadow-sm);transition:box-shadow .15s}
+.expand-item:hover{box-shadow:var(--shadow-md)}
+.expand-trigger{width:100%;background:#fff;border:none;padding:.9rem 1.1rem;display:flex;align-items:center;gap:.7rem;cursor:pointer;font-family:var(--ff-sans);font-size:.92rem;font-weight:700;color:var(--ink);text-align:left;transition:background .15s}
+.expand-trigger:hover,.expand-trigger.open{background:var(--parchment)}
+.exp-badge{font-family:var(--ff-mono);font-size:.7rem;font-weight:800;border-radius:3px;padding:.15rem .5rem;color:#fff;flex-shrink:0}
+.exp-badge.model{background:var(--model)}.exp-badge.data{background:var(--data)}.exp-badge.ops{background:var(--ops)}
+.exp-badge.ethical{background:var(--ethical)}.exp-badge.tparty{background:var(--tparty)}
+.exp-badge.shadow-b{background:var(--shadow)}.exp-badge.danger{background:var(--danger)}
+.exp-badge.detection{background:#1a3a1a}
+.exp-tag{font-family:var(--ff-mono);font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:.1rem .45rem;border-radius:3px;margin-left:auto;flex-shrink:0}
+.exp-tag.model{background:var(--model-bg);color:var(--model)}.exp-tag.data{background:var(--data-bg);color:var(--data)}
+.exp-tag.ops{background:var(--ops-bg);color:var(--ops)}.exp-tag.ethical{background:var(--ethical-bg);color:var(--ethical)}
+.exp-tag.tparty{background:var(--tparty-bg);color:var(--tparty)}.exp-tag.shadow-b{background:var(--shadow-bg);color:var(--shadow)}
+.expand-chevron{font-size:.8rem;transition:transform .25s;flex-shrink:0;margin-left:.3rem;color:var(--ink-muted)}
+.expand-trigger.open .expand-chevron{transform:rotate(180deg)}
+.expand-body{display:none;background:#fff;border-top:1px solid var(--border-lt)}
+.expand-body.show{display:grid;grid-template-columns:1fr 1fr;gap:0}
+@media(max-width:640px){.expand-body.show{grid-template-columns:1fr}}
+.expand-col{padding:1rem 1.2rem}.expand-col+.expand-col{border-left:1px solid var(--border-lt)}
+.exp-col-label{font-family:var(--ff-mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:.5rem}
+.exp-col-label.model{color:var(--model)}.exp-col-label.data{color:var(--data)}.exp-col-label.ops{color:var(--ops)}
+.exp-col-label.ethical{color:var(--ethical)}.exp-col-label.tparty{color:var(--tparty)}
+.exp-col-label.shadow-b{color:var(--shadow)}.exp-col-label.neutral{color:var(--oxblood)}
+.exp-quote{border-left:4px solid;padding:.65rem .9rem;font-size:.84rem;font-style:italic;border-radius:0 4px 4px 0;margin-bottom:.7rem;line-height:1.5}
+.exp-quote.model{background:var(--model-bg);border-left-color:var(--model);color:var(--model)}
+.exp-quote.data{background:var(--data-bg);border-left-color:var(--data);color:var(--data)}
+.exp-quote.ops{background:var(--ops-bg);border-left-color:var(--ops);color:var(--ops)}
+.exp-quote.ethical{background:var(--ethical-bg);border-left-color:var(--ethical);color:var(--ethical)}
+.exp-quote.tparty{background:var(--tparty-bg);border-left-color:var(--tparty);color:var(--tparty)}
+.exp-quote.shadow-b{background:var(--shadow-bg);border-left-color:var(--shadow);color:var(--shadow)}
+.expand-col p{font-size:.88rem;color:var(--ink-soft);line-height:1.55;margin-bottom:.5rem}
+.expand-col p:last-child{margin-bottom:0}
+.expand-col ul{margin:.3rem 0 .5rem 1.1rem}
+.expand-col li{font-size:.85rem;color:var(--ink-soft);margin-bottom:.25rem;line-height:1.45}
+
+/* ── THREE FORCES VISUAL ─────────────────────────────── */
+.forces-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1.5rem 0}
+@media(max-width:600px){.forces-grid{grid-template-columns:1fr}}
+.force-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm)}
+.force-head{padding:.8rem 1rem;color:#fff;text-align:center}
+.force-head.velocity{background:var(--danger)}.force-head.pervasive{background:var(--shadow)}.force-head.personal{background:var(--model)}
+.force-icon{font-size:2rem;margin-bottom:.3rem}
+.force-name{font-family:var(--ff-serif);font-size:1rem;font-weight:700}
+.force-body{padding:.9rem 1rem}
+.force-body p{font-size:.86rem;color:var(--ink-soft);line-height:1.55;margin-bottom:.5rem}
+.force-body p:last-child{margin-bottom:0}
+.force-example{font-family:var(--ff-mono);font-size:.72rem;color:var(--oxblood);background:var(--parchment);border-radius:3px;padding:.4rem .6rem;margin-top:.5rem;line-height:1.45}
+
+/* ── SHADOW AI EXPOSURE CHAIN ─────────────────────────── */
+.exposure-chain{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.5rem 0;align-items:center}
+.chain-step{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:.6rem .9rem;font-size:.82rem;color:var(--ink-soft);display:flex;align-items:center;gap:.4rem;box-shadow:var(--shadow-sm)}
+.chain-step .step-icon{font-size:1.1rem;flex-shrink:0}
+.chain-arrow{color:var(--danger);font-size:1.2rem;font-weight:700}
+.chain-step.danger-step{border-color:var(--danger);color:var(--danger);font-weight:600}
+
+/* ── SHADOW AI PATTERN TILES ──────────────────────────── */
+.shadow-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.75rem;margin:1.5rem 0}
+.shadow-tile{background:#fff;border:1px solid var(--border);border-left:4px solid var(--shadow);border-radius:var(--radius);padding:.9rem 1rem;box-shadow:var(--shadow-sm);cursor:pointer;transition:all .15s}
+.shadow-tile:hover,.shadow-tile.expanded{border-left-color:var(--danger);box-shadow:var(--shadow-md)}
+.st-icon{font-size:1.5rem;margin-bottom:.3rem}
+.st-title{font-weight:700;font-size:.88rem;color:var(--ink);margin-bottom:.25rem}
+.st-dept{font-family:var(--ff-mono);font-size:.68rem;color:var(--shadow);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.3rem}
+.st-desc{font-size:.82rem;color:var(--ink-soft);line-height:1.45;display:none}
+.shadow-tile.expanded .st-desc{display:block}
+.st-risk{font-family:var(--ff-mono);font-size:.72rem;color:var(--danger);font-weight:700;margin-top:.4rem;display:none}
+.shadow-tile.expanded .st-risk{display:block}
+
+/* ── DETECTION CHECKLIST ──────────────────────────────── */
+.checklist-container{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:1.5rem 0;box-shadow:var(--shadow-md)}
+.cl-header{background:var(--shadow);color:#fff;padding:.8rem 1.2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.cl-title{font-family:var(--ff-mono);font-size:.8rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+.cl-score{font-family:var(--ff-mono);font-size:.85rem;color:var(--gold-lt)}
+.cl-body{padding:1.2rem 1.5rem}
+.cl-section-label{font-family:var(--ff-mono);font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--shadow);margin:1rem 0 .5rem;display:flex;align-items:center;gap:.4rem}
+.cl-section-label:first-child{margin-top:0}
+.cl-item{display:flex;align-items:flex-start;gap:.7rem;padding:.45rem 0;border-bottom:1px solid var(--border-lt);cursor:pointer;transition:background .12s}
+.cl-item:last-child{border-bottom:none}
+.cl-item:hover{background:var(--parchment)}
+.cl-checkbox{width:1.1rem;height:1.1rem;border:2px solid var(--shadow);border-radius:3px;flex-shrink:0;margin-top:.2rem;display:flex;align-items:center;justify-content:center;font-size:.65rem;color:#fff;background:transparent;transition:background .15s;cursor:pointer}
+.cl-checkbox.checked{background:var(--shadow)}.cl-checkbox.checked::after{content:'✓'}
+.cl-item-text{flex:1;font-size:.88rem;color:var(--ink-soft);line-height:1.5;user-select:none}
+.cl-item-text.checked-text{text-decoration:line-through;color:var(--ink-muted)}
+.cl-maturity{margin-top:1rem;background:var(--parchment);border:1px solid var(--border);border-radius:var(--radius);padding:.8rem 1rem;font-size:.88rem;color:var(--ink-soft)}
+.cl-maturity strong{color:var(--ink)}
+
+/* ── GOVERNANCE RESPONSE MATRIX ──────────────────────── */
+.gov-matrix{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:1.5rem 0;box-shadow:var(--shadow-md)}
+.gm-header{background:var(--oxblood);color:#fff;padding:.8rem 1.2rem}
+.gm-title{font-family:var(--ff-mono);font-size:.8rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+.gm-body{overflow-x:auto}
+.gm-table{width:100%;border-collapse:collapse;font-size:.86rem}
+.gm-table th{padding:.7rem .9rem;background:var(--parchment);color:var(--ink);font-weight:700;border:1px solid var(--border);text-align:center;font-size:.82rem}
+.gm-table th:first-child{text-align:left;background:var(--shadow);color:#fff;font-family:var(--ff-mono);font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+.gm-table td{padding:.6rem .9rem;border:1px solid var(--border-lt);color:var(--ink-soft);vertical-align:top;line-height:1.45}
+.gm-table td:first-child{font-weight:700;color:var(--ink);background:var(--parchment);font-size:.82rem}
+.gm-table tr:hover td{background:#faf5ee}.gm-table tr:hover td:first-child{background:#ede6d6}
+.response-badge{display:inline-block;font-family:var(--ff-mono);font-size:.68rem;font-weight:700;border-radius:3px;padding:.1rem .4rem}
+.rb-block{background:#fdeaea;color:var(--danger)}.rb-channel{background:var(--success-bg);color:var(--success)}
+.rb-register{background:var(--data-bg);color:var(--data)}.rb-monitor{background:var(--warn-bg);color:var(--warn)}
+
+/* ── SCENARIO LAB ─────────────────────────────────────── */
+.scenario-lab{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:1.5rem 0;box-shadow:var(--shadow-md)}
+.sl-header{background:#2d3a1a;color:#fff;padding:.8rem 1.2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.sl-title{font-family:var(--ff-mono);font-size:.8rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+.sl-score{font-family:var(--ff-mono);font-size:.82rem;color:var(--gold-lt)}
+.sl-body{padding:1.3rem 1.5rem}
+.sl-selector{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin-bottom:1rem}
+.sl-selector label{font-weight:600;font-size:.88rem;color:var(--ink-soft)}
+.sl-selector select{font-family:var(--ff-sans);font-size:.88rem;border:1px solid var(--border);border-radius:4px;padding:.4rem .7rem;background:#fff;color:var(--ink);cursor:pointer}
+.sc-card{background:var(--parchment);border:1px solid var(--border);border-left:4px solid #2d3a1a;border-radius:var(--radius);padding:1rem 1.2rem;margin-bottom:1rem;display:none}
+.sc-card.show{display:block}
+.sc-num{font-family:var(--ff-mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.07em;color:#2d3a1a;font-weight:700;margin-bottom:.3rem}
+.sc-question{font-size:.95rem;font-weight:600;color:var(--ink);margin-bottom:.8rem;line-height:1.5}
+.sc-options{display:flex;flex-direction:column;gap:.4rem;margin-bottom:.7rem}
+.sc-opt{background:#fff;border:1px solid var(--border-lt);border-radius:4px;padding:.55rem .9rem;font-size:.88rem;color:var(--ink-soft);cursor:pointer;text-align:left;transition:all .15s;font-family:var(--ff-sans);font-weight:500}
+.sc-opt:hover{border-color:#2d3a1a;background:#f0f5e8;color:var(--ink)}
+.sc-opt.selected{border-color:#2d3a1a;background:#f0f5e8;font-weight:600;color:#2d3a1a}
+.sc-opt.correct-r{border-color:var(--success);background:var(--success-bg);color:var(--success);font-weight:700}
+.sc-opt.wrong-r{border-color:var(--error);background:var(--error-bg);color:var(--error)}
+.sc-feedback{border-radius:4px;padding:.7rem .9rem;font-size:.86rem;line-height:1.55;display:none;margin-top:.5rem}
+.sc-feedback.show{display:block}
+.sc-feedback.ok{background:var(--success-bg);border:1px solid #a8d4b0;color:var(--success)}
+.sc-feedback.bad{background:var(--error-bg);border:1px solid #e8b4b4;color:var(--error)}
+.sc-nav{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:.8rem;align-items:center}
+.sc-progress{font-family:var(--ff-mono);font-size:.8rem;color:var(--ink-muted);margin-left:auto}
+
+/* Tables */
+.table-wrap{overflow-x:auto;margin:1.5rem 0}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);font-size:.87rem}
+thead tr{background:var(--shadow);color:#fff}
+thead th{padding:.7rem 1rem;text-align:left;font-family:var(--ff-mono);font-size:.73rem;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+tbody tr{border-bottom:1px solid var(--border-lt)}.tbody tr:last-child{border-bottom:none}
+tbody td{padding:.65rem 1rem;color:var(--ink-soft);vertical-align:top;line-height:1.5}
+tbody td:first-child{font-weight:600;color:var(--ink)}
+tbody tr:hover{background:var(--parchment)}
+
+/* Buttons */
+.btn{font-family:var(--ff-sans);font-weight:700;font-size:.88rem;padding:.55rem 1.2rem;border:none;border-radius:var(--radius);cursor:pointer;transition:background .15s,transform .1s}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--oxblood);color:#fff}.btn-primary:hover{background:var(--oxblood-lt)}
+.btn-shadow{background:var(--shadow);color:#fff}.btn-shadow:hover{background:var(--shadow-lt)}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--ink-soft)}.btn-ghost:hover{background:var(--parchment)}
+.btn-lab{background:#2d3a1a;color:#fff}.btn-lab:hover{background:#3a4f22}
+
+/* Quiz */
+.quiz-block{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:1.5rem 0;box-shadow:var(--shadow-sm)}
+.quiz-head{background:var(--oxblood-dk);color:#fff;padding:.7rem 1.2rem;font-family:var(--ff-mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;display:flex;align-items:center;justify-content:space-between}
+.quiz-score{color:var(--gold-lt)}
+.quiz-q{padding:1.2rem 1.5rem;border-bottom:1px solid var(--border-lt)}.quiz-q:last-child{border-bottom:none}
+.q-prompt{font-weight:600;color:var(--ink);font-size:.95rem;margin-bottom:.9rem;line-height:1.5}
+.q-num{font-family:var(--ff-mono);font-size:.72rem;color:var(--oxblood);font-weight:700;margin-right:.4rem}
+.q-opts{list-style:none}
+.q-opts li{margin-bottom:.45rem}
+.q-opts label{display:flex;align-items:flex-start;gap:.7rem;cursor:pointer;padding:.5rem .8rem;border:1px solid var(--border-lt);border-radius:4px;font-size:.88rem;color:var(--ink-soft);background:var(--cream);transition:background .12s}
+.q-opts label:hover{background:var(--parchment);border-color:var(--border)}
+.q-opts input[type=radio]{flex-shrink:0;margin-top:.2rem;accent-color:var(--oxblood)}
+.q-fb{margin-top:.7rem;padding:.7rem .9rem;border-radius:4px;font-size:.86rem;display:none;line-height:1.5}
+.q-fb.ok{background:var(--success-bg);border:1px solid #a8d4b0;color:var(--success)}
+.q-fb.bad{background:var(--error-bg);border:1px solid #e8b4b4;color:var(--error)}
+.q-fb.show{display:block}
+.quiz-actions{padding:1rem 1.5rem;border-top:1px solid var(--border-lt);display:flex;gap:.7rem;flex-wrap:wrap;align-items:center}
+.quiz-msg{font-size:.88rem;color:var(--ink-muted);font-family:var(--ff-mono)}
+
+/* Artifact */
+.artifact-block{background:var(--parchment);border:1px solid var(--border);border-left:5px solid var(--oxblood);border-radius:var(--radius);padding:1.2rem 1.5rem;margin:1.5rem 0}
+.artifact-label{font-family:var(--ff-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--oxblood);font-weight:700;margin-bottom:.4rem}
+.artifact-block h4{font-family:var(--ff-serif);font-size:1rem;font-weight:700;margin-bottom:.5rem;color:var(--ink)}
+.artifact-block p{font-size:.9rem;color:var(--ink-soft);margin-bottom:.5rem}.artifact-block p:last-child{margin-bottom:0}
+.artifact-block ul{margin:.4rem 0 .5rem 1.2rem}.artifact-block li{font-size:.9rem;color:var(--ink-soft);margin-bottom:.3rem}
+
+/* Footer */
+.lesson-nav-footer{max-width:1080px;margin:0 auto;display:flex;justify-content:space-between;padding:1rem 1.5rem;border-top:1px solid var(--border);flex-wrap:wrap;gap:.5rem}
+.lesson-nav-footer a{font-size:.88rem;font-weight:700;color:var(--oxblood)}
+footer{background:var(--oxblood-dk);color:rgba(255,255,255,.55);text-align:center;font-size:.8rem;padding:1.5rem 1rem;font-family:var(--ff-mono);letter-spacing:.03em}
+footer strong{color:rgba(255,255,255,.8)}
+
+@media(max-width:640px){.site-header{padding:2rem 1rem 1.6rem}.topbar{padding:.4rem 1rem}.flip-grid{grid-template-columns:1fr 1fr}.forces-grid{grid-template-columns:1fr}}
+@media print{.lesson-nav,.topbar,.sidebar{display:none}.page-body{grid-template-columns:1fr}body{background:#fff}}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<div class="topbar">
+  <a href="index.html">← AI-103 Course Home</a>
+  <span class="topbar-sep">·</span>
+  <span>MVCC · Dept. of Engineering &amp; Technology</span>
+  <span class="topbar-sep">·</span>
+  <span>Dr. John L. Sands</span>
+</div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="lesson-eyebrow">
+      <span>AI-103: AI Cybersecurity Foundations</span>
+      <span class="sep">·</span><span>Day 6 of 15</span>
+      <span class="sep">·</span><span>4 Contact Hours</span>
+    </div>
+    <h1>AI Risk Categories &amp; Shadow AI</h1>
+    <p class="tagline">Five AI risk categories that don't map onto CIA-triad thinking. Three forces creating the security gap. Shadow AI inside your organization right now — and the governance responses that actually work.</p>
+    <div class="header-meta">
+      <span>⚠️ <strong>Risk Taxonomy</strong></span>
+      <span>⏱ <strong>4 hours · 6 modules + 3 activities</strong></span>
+      <span>🎯 <strong>Learning Objectives 5 &amp; 6</strong></span>
+      <span>📝 <strong>Shadow AI detection checklist + quiz due end of class</strong></span>
+    </div>
+  </div>
+</header>
+
+<nav class="lesson-nav">
+  <div class="lesson-nav-inner">
+    <a href="#overview" class="active">Overview</a>
+    <a href="#m1">1 · Why CIA Triad Fails</a>
+    <a href="#m2">2 · Five Risk Categories</a>
+    <a href="#m3">3 · Risk Deep Dives</a>
+    <a href="#m4">4 · Three Forces</a>
+    <a href="#m5">5 · Shadow AI</a>
+    <a href="#m6">6 · Governance Response</a>
+    <a href="#activity-tiles">Activity: Shadow Patterns</a>
+    <a href="#activity-checklist">Activity: Detection Audit</a>
+    <a href="#activity-scenario">Activity: Decision Lab</a>
+    <a href="#artifact">Assessment</a>
+    <a href="#quiz">Quiz</a>
+  </div>
+</nav>
+
+<div class="page-body">
+<main id="main">
+
+<!-- ── OVERVIEW ─────────────────────────────────────────────── -->
+<section id="overview" class="lesson-section">
+  <h2 class="section-title"><span>🧭</span> Lesson Overview <span class="section-meta">Day 6 · 4 hours</span></h2>
+  <div class="prose">
+    <p>Every risk framework you've used in traditional cybersecurity — threat modeling, risk registers, CIA triad — was built around a core assumption: the systems you're protecting are deterministic, their inputs are controlled, and the threats against them come from outside. AI breaks all three assumptions simultaneously.</p>
+    <p>Today you build the AI-specific risk vocabulary that makes the rest of this course operational. The five AI risk categories (model, data, operational, ethical, third-party) give you a taxonomy that maps to NIST AI RMF MAP outputs. Shadow AI — the hidden AI already operating inside your organization — gives you the most urgent practical threat to address before any of the other categories matter.</p>
+  </div>
+  <div class="analogy-box">
+    <div class="analogy-label">🎓 Anchoring Analogy: The Iceberg Audit</div>
+    <p>An organization that believes it has "five AI systems in production" almost certainly has dozens. The five visible ones are the tip above water — approved, registered, reviewed. Below the surface are: the ChatGPT subscription on the marketing team's credit card, the GitHub Copilot running on the developer's personal laptop, the AI-powered browser extension installed by 23% of staff, and the AI features that silently activated in the SaaS tools you renewed last quarter.</p>
+    <p><strong>Shadow AI is the submerged portion of the iceberg.</strong> Traditional IT governance sees only what's above water. AI governance requires sonar — the detection, policy, and monitoring tools that surface what's below.</p>
+  </div>
+  <h3>Day 6 Learning Objectives</h3>
+  <ol style="margin-left:1.3rem;color:var(--ink-soft);font-size:.92rem">
+    <li style="margin-bottom:.4rem">Explain why the CIA triad is necessary but insufficient for AI risk management.</li>
+    <li style="margin-bottom:.4rem">Define and differentiate the five AI risk categories: model, data, operational, ethical, and third-party.</li>
+    <li style="margin-bottom:.4rem">Apply each risk category to a real AI deployment scenario with specific examples.</li>
+    <li style="margin-bottom:.4rem">Describe the three forces (velocity, pervasiveness, personalization) that create the AI security gap.</li>
+    <li style="margin-bottom:.4rem">Define shadow AI, identify its common patterns, and distinguish it from traditional shadow IT.</li>
+    <li style="margin-bottom:.4rem">Apply shadow AI detection methods across network, SaaS, endpoint, and behavioral signals.</li>
+    <li style="margin-bottom:.4rem">Select appropriate governance responses (block, channel, register, monitor) for different shadow AI scenarios.</li>
+  </ol>
+</section>
+
+<!-- ── M1: WHY CIA TRIAD FAILS ──────────────────────────────── -->
+<section id="m1" class="lesson-section">
+  <h2 class="section-title"><span>🔺</span> Module 1 · Why the CIA Triad Is Necessary but Insufficient <span class="section-meta">20 min</span></h2>
+  <div class="prose">
+    <p>The CIA triad — Confidentiality, Integrity, Availability — is the most foundational model in information security. It maps to every control, every regulation, and every risk assessment in traditional infosec. For AI systems, it still applies — and it still misses the most consequential AI-specific risks entirely.</p>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>CIA Property</th><th>Traditional Meaning</th><th>AI Extension Required</th><th>What CIA Misses</th></tr></thead>
+      <tbody>
+        <tr><td>Confidentiality</td><td>Unauthorized parties cannot read the data</td><td>Training data, prompt content, model weights, and intermediate embeddings can all expose sensitive information</td><td>Model memorization — a model can "leak" training data in its outputs even with no direct data access by the attacker</td></tr>
+        <tr><td>Integrity</td><td>Data and systems are not modified without authorization</td><td>Training data poisoning modifies model behavior without modifying any file or database record in the traditional sense</td><td>Behavioral integrity — the model produces correct code 99.9% of the time, then produces subtly wrong code for one specific function. No hash check detects this.</td></tr>
+        <tr><td>Availability</td><td>Systems are accessible when needed</td><td>Unbounded token consumption (OWASP LLM10) and adversarial prompts can degrade AI service availability</td><td>Quality availability — the system is up and responding, but producing degraded, biased, or harmful outputs. Traditional availability monitoring shows green while the system is actively causing harm.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout callout-shadow">
+    <div class="callout-label">🔑 The Three Gaps CIA Cannot Cover</div>
+    <strong>1. Probabilistic failure</strong> — CIA assumes failures are deterministic and reproducible. AI failures are probabilistic: the same input produces different outputs; the same "fix" doesn't guarantee the same failure won't recur.<br><br>
+    <strong>2. Behavioral risk</strong> — CIA covers whether data flows to unauthorized parties and whether systems are running. It has no concept for "the system is running correctly but producing outputs that discriminate against a protected demographic group."<br><br>
+    <strong>3. Emergent harm</strong> — AI systems can cause harm through their designed, intended outputs — outputs that are not a breach, not unauthorized, and not unavailable. CIA has no category for harm-from-correct-operation.
+  </div>
+</section>
+
+<!-- ── M2: FIVE RISK CATEGORIES ─────────────────────────────── -->
+<section id="m2" class="lesson-section">
+  <h2 class="section-title"><span>🗂️</span> Module 2 · Five AI Risk Categories — Overview <span class="section-meta">25 min</span></h2>
+  <div class="prose">
+    <p>The five AI risk categories provide the vocabulary for MAP worksheets, risk registers, and governance discussions that go beyond what CIA triad supports. Each category has distinct characteristics, distinct failure modes, and distinct control families. <strong>Critically: a single AI deployment may simultaneously carry risks in all five categories.</strong></p>
+  </div>
+  <div class="risk-cat-grid">
+    <div class="risk-cat-card">
+      <div class="rcc-head model"><div class="rcc-icon">🧠</div><div><div class="rcc-title">Model Risk</div><div class="rcc-subtitle">The system itself misbehaves</div></div></div>
+      <div class="rcc-body">
+        <p>Risk arising from the model's own properties: hallucination, drift, bias baked into architecture or weights, performance degradation on subpopulations, non-determinism making validation impossible.</p>
+        <p><strong>CIA analogy:</strong> Closest to integrity — but behavioral integrity is not the same as data integrity. A model producing consistently wrong outputs for a specific demographic is a model risk failure, not an integrity violation in the traditional sense.</p>
+        <div class="rcc-chips"><span class="rcc-chip model">Hallucination</span><span class="rcc-chip model">Drift</span><span class="rcc-chip model">Bias</span><span class="rcc-chip model">Non-determinism</span><span class="rcc-chip model">Subpopulation failure</span></div>
+      </div>
+    </div>
+    <div class="risk-cat-card">
+      <div class="rcc-head data"><div class="rcc-icon">📊</div><div><div class="rcc-title">Data Risk</div><div class="rcc-subtitle">Training data defines behavior</div></div></div>
+      <div class="rcc-body">
+        <p>Risk arising from data used to train, fine-tune, or query the model. Data is not just an asset to protect — it is a control plane. Poisoned data changes what the system does. Biased data produces biased outputs. Regulated data in training creates legal exposure.</p>
+        <p><strong>CIA analogy:</strong> Extends confidentiality and integrity — but the unique risk is data-as-code. The same poisoning attack that traditional infosec would classify as "data modification" in AI becomes a behavioral control attack.</p>
+        <div class="rcc-chips"><span class="rcc-chip data">Poisoning</span><span class="rcc-chip data">Training bias</span><span class="rcc-chip data">Memorization</span><span class="rcc-chip data">Lineage gaps</span><span class="rcc-chip data">Regulated data in training</span></div>
+      </div>
+    </div>
+    <div class="risk-cat-card">
+      <div class="rcc-head ops"><div class="rcc-icon">⚙️</div><div><div class="rcc-title">Operational Risk</div><div class="rcc-subtitle">How it's deployed and managed</div></div></div>
+      <div class="rcc-body">
+        <p>Risk from deployment decisions, integration architecture, human oversight failures, process gaps, and the operational environment in which the model runs. A model that works perfectly in testing can be operationally catastrophic when deployed in the wrong context, with the wrong oversight model, or at the wrong scale.</p>
+        <p><strong>CIA analogy:</strong> Closest to availability — but operational risk covers quality and appropriateness, not just uptime. A model that's up but being misused by its operators is an operational risk.</p>
+        <div class="rcc-chips"><span class="rcc-chip ops">Misuse</span><span class="rcc-chip ops">Over-reliance</span><span class="rcc-chip ops">Wrong context deployment</span><span class="rcc-chip ops">Inadequate oversight</span><span class="rcc-chip ops">Scale failures</span></div>
+      </div>
+    </div>
+    <div class="risk-cat-card">
+      <div class="rcc-head ethical"><div class="rcc-icon">⚖️</div><div><div class="rcc-title">Ethical Risk</div><div class="rcc-subtitle">Harm from correct operation</div></div></div>
+      <div class="rcc-body">
+        <p>Risk arising when the system functions exactly as designed — but that design causes harm to individuals, groups, or society. Disparate impact, dignity violations, autonomy erosion, concentration of power, and democratic harms. <strong>This is the risk category CIA has no vocabulary for.</strong></p>
+        <p><strong>CIA analogy:</strong> None. Ethical risk is the category that falls entirely outside traditional infosec models — a system can be fully confidential, fully intact, and fully available while systematically harming an entire demographic group.</p>
+        <div class="rcc-chips"><span class="rcc-chip ethical">Disparate impact</span><span class="rcc-chip ethical">Dignity violations</span><span class="rcc-chip ethical">Autonomy erosion</span><span class="rcc-chip ethical">Societal harm</span><span class="rcc-chip ethical">Democratic risk</span></div>
+      </div>
+    </div>
+    <div class="risk-cat-card">
+      <div class="rcc-head tparty"><div class="rcc-icon">🔗</div><div><div class="rcc-title">Third-Party &amp; Supply Chain Risk</div><div class="rcc-subtitle">The stack you don't control</div></div></div>
+      <div class="rcc-body">
+        <p>Risk from components, data, and services sourced from outside the organization — foundation models, training datasets, plugins, APIs, SaaS AI features. The AI supply chain has unique opacity: you often cannot fully inspect what a foundation model was trained on or what behavioral properties it has inherited.</p>
+        <p><strong>CIA analogy:</strong> Extends traditional supply chain risk — but AI supply chain opacity is uniquely severe. A SBOM can document software dependencies; an AIBOM can document AI component provenance but cannot guarantee behavioral properties inherited from foundation model training.</p>
+        <div class="rcc-chips"><span class="rcc-chip tparty">Foundation model risk</span><span class="rcc-chip tparty">Plugin vulnerabilities</span><span class="rcc-chip tparty">Vendor AI updates</span><span class="rcc-chip tparty">Embedded AI features</span><span class="rcc-chip tparty">AIBOM gaps</span></div>
+      </div>
+    </div>
+  </div>
+  <h3>Flip Cards: Five Categories — Sub-Risks and Controls</h3>
+  <p style="color:var(--ink-soft);font-size:.9rem;margin-bottom:.5rem">Each flip card covers a specific sub-risk within one of the five categories. Front: what it is. Back: what controls address it and which NIST AI RMF subcategory applies.</p>
+  <div class="flip-grid" id="risk-flip-grid" role="list" aria-label="AI risk sub-category flip cards"></div>
+</section>
+
+<!-- ── M3: RISK DEEP DIVES ───────────────────────────────────── -->
+<section id="m3" class="lesson-section">
+  <h2 class="section-title"><span>🔬</span> Module 3 · Risk Category Deep Dives — Expand for Full Detail <span class="section-meta">30 min</span></h2>
+  <p style="color:var(--ink-soft);font-size:.92rem;margin-bottom:1rem">Click any risk category to expand it. Left column: what the risk means in practice and how it manifests. Right column: MVCC-specific example, real-world incident reference, and the NIST AI RMF category that addresses it.</p>
+  <div class="expand-section" id="risk-expand-section"></div>
+</section>
+
+<!-- ── M4: THREE FORCES ──────────────────────────────────────── -->
+
+<div class="part-banner risk">
+  <div class="pb-num">⚡</div>
+  <div class="pb-title">The Three Forces Creating the AI Security Gap</div>
+  <div class="pb-time">⏱ 20 min</div>
+</div>
+
+<section id="m4" class="lesson-section">
+  <h2 class="section-title"><span>⚡</span> Module 4 · Velocity, Pervasiveness &amp; Personalization <span class="section-meta">20 min</span></h2>
+  <div class="prose">
+    <p>Traditional IT governance was designed for a world where new technology adoption is relatively slow, inventoried, and controlled. AI has broken all three of those conditions simultaneously. Three forces explain why AI security gaps form faster than governance can close them.</p>
+  </div>
+  <div class="forces-grid">
+    <div class="force-card">
+      <div class="force-head velocity">
+        <div class="force-icon">🚀</div>
+        <div class="force-name">Velocity</div>
+      </div>
+      <div class="force-body">
+        <p><strong>AI adoption outpaces governance development by an order of magnitude.</strong> The typical enterprise AI governance program takes 12–18 months to build. A new generative AI capability appears every 4–6 weeks. By the time governance catches up to ChatGPT, employees are already using GPT-4o, Gemini Ultra, and Claude 3.5.</p>
+        <p>GenAI traffic grew <strong>890% in 2024</strong> (Menlo Security). Shadow AI surged <strong>68%</strong> in 2025 alone. Governance policies written in 2023 are now multiple product generations stale.</p>
+        <div class="force-example">Policy gap example: AUP written in Jan 2024 prohibits "ChatGPT use with client data." By Q2 2024, employees had shifted to 14 different AI tools the policy never named. The policy is both overly restrictive (one tool) and completely ineffective (fourteen others).</div>
+      </div>
+    </div>
+    <div class="force-card">
+      <div class="force-head pervasive">
+        <div class="force-icon">🌐</div>
+        <div class="force-name">Pervasiveness</div>
+      </div>
+      <div class="force-body">
+        <p><strong>AI is now embedded in tools your organization already approved.</strong> Microsoft Copilot in Office 365. AI writing in Google Workspace. AI code completion in your IDE. AI features in your CRM, your ITSM, your HR platform. Your SaaS vendors are activating AI features in your existing subscriptions — often without a notice prominent enough to trigger an AI governance review.</p>
+        <p>Organizations manage an average of <strong>490 SaaS applications</strong> (Reco, 2025). Only 47% are authorized. Nearly every enterprise SaaS platform acquired AI capabilities in 2023–2025.</p>
+        <div class="force-example">Pervasiveness example: Salesforce Einstein Copilot activated automatically in an enterprise's existing Salesforce instance. Customer PII now flows to a generative AI feature the security team never reviewed, in a tool IT fully authorized three years before the AI feature existed.</div>
+      </div>
+    </div>
+    <div class="force-card">
+      <div class="force-head personal">
+        <div class="force-icon">🎯</div>
+        <div class="force-name">Personalization</div>
+      </div>
+      <div class="force-body">
+        <p><strong>AI tools are immediately personally productive — creating strong individual incentives to bypass controls.</strong> An employee who discovers that an AI tool makes them 40% faster at their job has a rational personal incentive to keep using it even after being told not to. <strong>48% of employees would continue using banned AI tools</strong> (Offsec, 2026). <strong>65% consider using unvetted AI acceptable</strong>.</p>
+        <p>This makes shadow AI fundamentally different from shadow IT: IT bans were inconvenient. AI bans require giving up a personal productivity multiplier that employees experience daily.</p>
+        <div class="force-example">Personalization example: A paralegal discovers that Claude cuts contract review time from 4 hours to 45 minutes. They're told to stop using it. They keep using it — but more carefully, on a personal account, so it no longer appears in usage logs. Productivity gain still happens. Governance visibility is now zero.</div>
+      </div>
+    </div>
+  </div>
+  <div class="callout callout-danger">
+    <div class="callout-label">⚠️ Why "Just Ban It" Fails</div>
+    Research consistently shows that blanket AI bans are ineffective and counterproductive. When approved alternatives are provided, unauthorized use drops <strong>89%</strong> (Healthcare Brew, 2026). When bans are imposed without alternatives, usage goes underground — it doesn't stop, it just becomes invisible. The security team loses visibility into data flows without reducing the actual data exposure. <strong>The governance goal is channeled, visible AI use — not invisible prohibition.</strong>
+  </div>
+</section>
+
+<!-- ── M5: SHADOW AI ──────────────────────────────────────────── -->
+<div class="part-banner shadow-b">
+  <div class="pb-num">👁️</div>
+  <div class="pb-title">Shadow AI — The Hidden Risk Already Inside Your Organization</div>
+  <div class="pb-time">⏱ 40 min</div>
+</div>
+
+<section id="m5" class="lesson-section">
+  <h2 class="section-title"><span>👁️</span> Module 5 · Shadow AI — Definition, Scale, and Exposure Paths <span class="section-meta">40 min</span></h2>
+
+  <div class="prose">
+    <p>Shadow AI is any AI system, tool, or model used for work purposes outside the organization's AI governance program — without approval, risk assessment, or monitoring. It includes: consumer AI chatbots used for work tasks, developer API integrations without security review, AI-powered browser extensions, open-source models run locally on company devices, and AI features embedded in authorized SaaS tools that activated without IT awareness.</p>
+    <p><strong>The key distinction from shadow IT:</strong> With shadow IT, data went <em>in</em> to unapproved storage. With shadow AI, data goes <em>out</em> — it flows into models that can learn from it, store it, and surface it in responses to other users. The data doesn't just sit in a bucket. It becomes part of something larger and far less controllable.</p>
+  </div>
+
+  <h3>The Scale of the Problem — Current Statistics</h3>
+  <div class="stat-row">
+    <div class="stat-card"><div class="stat-num danger">69%</div><div class="stat-label">of organizations suspect employees use prohibited GenAI tools</div><div class="stat-source">Gartner, 2025</div></div>
+    <div class="stat-card"><div class="stat-num danger">71%</div><div class="stat-label">of UK employees admit using unapproved AI tools at work</div><div class="stat-source">Deloitte / Microsoft, 2024</div></div>
+    <div class="stat-card"><div class="stat-num danger">86%</div><div class="stat-label">of organizations lack visibility into data flows to/from AI tools</div><div class="stat-source">Reco State of Shadow AI, 2025</div></div>
+    <div class="stat-card"><div class="stat-num warn">38%</div><div class="stat-label">of employees share sensitive work information with AI without permission</div><div class="stat-source">CybSafe/NCA, 2024</div></div>
+    <div class="stat-card"><div class="stat-num danger">20%</div><div class="stat-label">of all data breaches now linked to unauthorized AI tools</div><div class="stat-source">IBM Cost of Data Breach, 2025</div></div>
+    <div class="stat-card"><div class="stat-num danger">$670K</div><div class="stat-label">average cost premium per breach involving shadow AI vs. standard breaches</div><div class="stat-source">IBM, 2025</div></div>
+  </div>
+  <div class="stat-row" style="margin-top:0">
+    <div class="stat-card"><div class="stat-num warn">247</div><div class="stat-label">days average detection lag for shadow AI breaches (6 days longer than standard)</div><div class="stat-source">IBM, 2025</div></div>
+    <div class="stat-card"><div class="stat-num warn">37%</div><div class="stat-label">of organizations have policies to even detect shadow AI — leaving 63% flying blind</div><div class="stat-source">IBM, 2025</div></div>
+    <div class="stat-card"><div class="stat-num danger">223</div><div class="stat-label">incidents per month of users sending sensitive data to AI — double from previous year</div><div class="stat-source">Vectra AI, 2025</div></div>
+    <div class="stat-card"><div class="stat-num ok">89%</div><div class="stat-label">drop in unauthorized AI use when approved alternatives are provided</div><div class="stat-source">Healthcare Brew, 2026</div></div>
+  </div>
+
+  <h3>The Data Exposure Chain</h3>
+  <p style="color:var(--ink-soft);font-size:.92rem;margin-bottom:.8rem">Shadow AI doesn't require a sophisticated attack. The most common exposure path is mundane:</p>
+  <div class="exposure-chain">
+    <div class="chain-step"><span class="step-icon">📋</span>Employee has sensitive data (client PII, source code, financial projections)</div>
+    <div class="chain-arrow">→</div>
+    <div class="chain-step"><span class="step-icon">📋</span>Needs help (summarize, draft, debug, translate)</div>
+    <div class="chain-arrow">→</div>
+    <div class="chain-step"><span class="step-icon">💬</span>Pastes data into consumer AI tool (ChatGPT, Claude.ai, Gemini, Copilot)</div>
+    <div class="chain-arrow">→</div>
+    <div class="chain-step danger-step"><span class="step-icon">🌐</span>Data exits the organization's security perimeter</div>
+    <div class="chain-arrow">→</div>
+    <div class="chain-step danger-step"><span class="step-icon">🤖</span>AI provider may train on, store, or surface data in other users' sessions</div>
+    <div class="chain-arrow">→</div>
+    <div class="chain-step danger-step"><span class="step-icon">📊</span>No log. No alert. No detection. Breach cost: $670K premium.</div>
+  </div>
+
+  <h3>Shadow AI Patterns by Business Unit — Click to Expand</h3>
+  <p style="color:var(--ink-soft);font-size:.9rem;margin-bottom:.8rem">These are the most common shadow AI deployments found during enterprise audits in 2025. Click each tile to see the specific risk and typical scale.</p>
+  <div class="shadow-tiles" id="shadow-tiles-grid"></div>
+
+  <h3 style="margin-top:2rem">Shadow AI vs. Shadow IT — Critical Differences</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Dimension</th><th>Shadow IT</th><th>Shadow AI</th></tr></thead>
+      <tbody>
+        <tr><td>Data flow</td><td>Data goes <em>in</em> — stored in unauthorized system</td><td>Data goes <em>out</em> — processed by external model, potentially retained</td></tr>
+        <tr><td>Detection method</td><td>Application inventory, DNS queries, network block lists</td><td>Network DLP, API endpoint monitoring, behavioral analytics — block lists insufficient</td></tr>
+        <tr><td>Visibility</td><td>New software installation visible to endpoint management</td><td>Browser extension, web session, personal API key — invisible to traditional tools</td></tr>
+        <tr><td>Employee incentive</td><td>Convenience, preference</td><td>Productivity multiplier — strong personal incentive even after bans</td></tr>
+        <tr><td>Regulatory exposure</td><td>Data location violation, licensing issue</td><td>EU AI Act deployer obligations, GDPR data transfer, FERPA, IP exposure, model training contribution</td></tr>
+        <tr><td>Reversibility</td><td>Remove the app, data remains in control</td><td>Data already processed by external model — cannot be "un-trained"</td></tr>
+        <tr><td>EU AI Act impact</td><td>Not specifically addressed</td><td>Deployer obligations apply to ALL AI system use — shadow AI deployments may be EU AI Act non-compliant</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="margin-top:2rem">Shadow AI Detection Methods — The Four-Layer Approach</h3>
+  <div class="expand-section" id="detection-expand-section"></div>
+</section>
+
+<!-- ── M6: GOVERNANCE RESPONSE ──────────────────────────────── -->
+<section id="m6" class="lesson-section">
+  <h2 class="section-title"><span>🛡️</span> Module 6 · Governance Responses — Block, Channel, Register, Monitor <span class="section-meta">25 min</span></h2>
+  <div class="prose">
+    <p>Effective shadow AI governance is not a binary: block or allow. A four-response framework matches the response to the risk level of the tool and its use context. The goal is always maximum visibility with minimum friction — pushing usage into managed channels rather than underground.</p>
+  </div>
+
+  <div class="gov-matrix">
+    <div class="gm-header"><span class="gm-title">Shadow AI Governance Response Matrix</span></div>
+    <div class="gm-body">
+      <table class="gm-table">
+        <thead>
+          <tr>
+            <th>Response</th>
+            <th>When to Apply</th>
+            <th>Implementation</th>
+            <th>Risk Tradeoff</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="response-badge rb-block">🚫 BLOCK</span></td>
+            <td>Tools with no legitimate use case AND high data exposure risk. High-risk AI practices prohibited by EU AI Act Article 5. Tools actively exfiltrating data to jurisdictions with no data residency controls.</td>
+            <td>DNS block, proxy block, browser policy. Communicate block reason to users. Provide approved alternative simultaneously.</td>
+            <td>Risk: Drives usage underground to personal devices and hotspots. Only effective when combined with alternative provision. Never block without communicating why.</td>
+          </tr>
+          <tr>
+            <td><span class="response-badge rb-channel">✅ CHANNEL</span></td>
+            <td>Tools with legitimate use cases that can be made safe through configuration, enterprise contracts, or provisioned alternatives. Most consumer AI tools fall here — the use case is legitimate, the governance gap is the implementation.</td>
+            <td>Provide enterprise-contracted versions (ChatGPT Enterprise, Claude for Work, Copilot M365). Configure DLP policies for approved tools. When approved alternatives are provided, unauthorized use drops 89%.</td>
+            <td>Cost of enterprise licensing vs. cost of uncontrolled data exposure. Almost always favorable. Channel is the most effective shadow AI governance response.</td>
+          </tr>
+          <tr>
+            <td><span class="response-badge rb-register">📋 REGISTER</span></td>
+            <td>Tools already in use that represent manageable risk and legitimate productivity value. Cannot be removed without significant disruption. Goal: make the invisible visible through a self-registration or discovery program.</td>
+            <td>AI Use Case Register self-declaration process. Amnesty period where employees declare current AI tool use without penalty. Discovery tools that surface existing usage. Use declarations to assess, then move to Channel or Block as appropriate.</td>
+            <td>Creates visibility immediately. Some registered tools will need to be subsequently blocked or channeled — the registration is not permanent approval. Treat it as a gap analysis, not an approval mechanism.</td>
+          </tr>
+          <tr>
+            <td><span class="response-badge rb-monitor">👁️ MONITOR</span></td>
+            <td>Tools approved for general use that require ongoing surveillance for data classification violations, behavioral anomalies, or scope creep. The approved tools in your AI Use Case Register that don't need constant human review but do need automated watching.</td>
+            <td>API call pattern monitoring, DLP integration with AI tool output channels, behavioral analytics for anomalous usage patterns, automated alerts when sensitive data classifications appear in AI tool prompts.</td>
+            <td>Monitoring without action is theater. Monitor only when there is a defined alert threshold and a defined response action. Otherwise, instrument for reporting rather than real-time monitoring.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout callout-success">
+    <div class="callout-label">✅ The Governance Principle: Channel First</div>
+    The organizations that most effectively manage shadow AI share a common strategy: <strong>provide the enterprise tool before enforcing the ban on the consumer tool.</strong> The sequence matters. Telling employees they can't use ChatGPT before giving them a ChatGPT Enterprise equivalent is a productivity confiscation. Providing ChatGPT Enterprise first, then enforcing policy around the unapproved consumer version, frames the enforcement as protecting something valuable rather than removing it.
+  </div>
+
+  <h3>AI Acceptable Use Policy — What Must Be in It</h3>
+  <div class="expand-section" id="aup-expand-section"></div>
+</section>
+
+<!-- ── ACTIVITIES ────────────────────────────────────────────── -->
+<div class="part-banner lab">
+  <div class="pb-num">▶</div>
+  <div class="pb-title">Lab Activities — Identify, Audit, and Decide</div>
+  <div class="pb-time">⏱ ~75 min</div>
+</div>
+
+<!-- Activity A: Shadow Pattern Identification -->
+<section id="activity-tiles" class="lesson-section">
+  <h2 class="section-title"><span>🔍</span> Activity A · Shadow AI Risk Category Classifier <span class="section-meta">20 min</span></h2>
+  <div class="flip-grid" id="activity-flip-grid" role="list" aria-label="Shadow AI scenario classification flip cards"></div>
+  <div class="callout" style="margin-top:1rem">
+    <div class="callout-label">📋 Activity Instructions</div>
+    Flip each card to see which of the five AI risk categories best applies to that shadow AI scenario — and which NIST AI RMF function addresses it. After flipping all 10, write down: which risk category appears most frequently, and what that tells you about your organization's highest-priority shadow AI governance gap.
+  </div>
+</section>
+
+<!-- Activity B: Detection Checklist -->
+<section id="activity-checklist" class="lesson-section">
+  <h2 class="section-title"><span>✅</span> Activity B · Shadow AI Detection Capability Audit <span class="section-meta">25 min</span></h2>
+  <div class="checklist-container">
+    <div class="cl-header">
+      <span class="cl-title">Shadow AI Detection Capability Audit — MVCC Self-Assessment</span>
+      <span class="cl-score" id="cl-score">0 / 28 controls checked</span>
+    </div>
+    <div class="cl-body">
+      <p style="color:var(--ink-soft);font-size:.92rem;margin-bottom:1rem">Check each detection capability your organization currently has in place. Score your maturity at the end. Work through this as if you are the CISO of MVCC assessing your current shadow AI visibility.</p>
+      <div id="cl-items-container"></div>
+      <div class="cl-maturity" id="cl-maturity" style="display:none"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Activity C: Scenario Decision Lab -->
+<section id="activity-scenario" class="lesson-section">
+  <h2 class="section-title"><span>⚡</span> Activity C · Risk Category &amp; Governance Decision Lab <span class="section-meta">30 min</span></h2>
+  <div class="scenario-lab">
+    <div class="sl-header">
+      <span class="sl-title">AI Risk Category &amp; Shadow AI Decision Lab — 8 Scenarios</span>
+      <span class="sl-score" id="sl-score">0 / 8 answered</span>
+    </div>
+    <div class="sl-body">
+      <p>Each scenario describes an AI situation at an organization. Choose the best risk category classification or governance response. Some scenarios test category identification; others test governance decision-making.</p>
+      <div class="sl-selector">
+        <label for="sl-select">Scenario:</label>
+        <select id="sl-select" onchange="loadScenario(this.value)">
+          <option value="">— Choose a scenario —</option>
+        </select>
+      </div>
+      <div class="sc-card" id="sl-card">
+        <div class="sc-num" id="sl-num"></div>
+        <div class="sc-question" id="sl-q"></div>
+        <div class="sc-options" id="sl-opts"></div>
+        <div class="sc-feedback" id="sl-fb"></div>
+      </div>
+      <div class="sc-nav">
+        <button class="btn btn-lab" onclick="checkScenario()">Check Answer</button>
+        <button class="btn btn-ghost" onclick="nextScenario()">Next →</button>
+        <button class="btn btn-ghost" onclick="resetScenarioLab()">Reset</button>
+        <span class="sc-progress" id="sl-progress">0 of 8 completed</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Assessment Artifact -->
+<section id="artifact" class="lesson-section">
+  <h2 class="section-title"><span>📝</span> Assessment Artifact <span class="section-meta">Due: End of Class</span></h2>
+  <div class="artifact-block">
+    <div class="artifact-label">📋 Day 6 Assessment Artifact</div>
+    <h4>Shadow AI Risk Assessment — MVCC Scenario Analysis</h4>
+    <p>Complete a two-part assessment for the following scenario: <em>MVCC's IT department discovers that 34 faculty and staff members have been using personal ChatGPT accounts to assist with grading, creating course materials, writing recommendation letters, and analyzing student performance data. None of these uses were approved, registered, or reviewed.</em></p>
+    <ul>
+      <li><strong>Part 1 — Risk Category Analysis (200 words):</strong> Identify which of the five AI risk categories this situation implicates and specifically how. Which is the most critical, and why? Does the EU AI Act create any additional obligations?</li>
+      <li><strong>Part 2 — Governance Response Plan (200 words):</strong> What governance response (Block/Channel/Register/Monitor) is most appropriate for each use case identified? Design a 90-day response plan using the four-response framework. Include: immediate action (Day 1), short-term stabilization (Days 2–30), and sustainable governance (Days 31–90).</li>
+    </ul>
+    <p><strong>Grading:</strong> Daily assignment category (25% of course grade). Evaluated on accuracy of risk category identification, appropriateness of governance response selection, and actionability of the 90-day plan.</p>
+  </div>
+</section>
+
+<!-- Quiz -->
+<section id="quiz" class="lesson-section">
+  <h2 class="section-title"><span>❓</span> Day 6 Knowledge Check <span class="section-meta">10 Questions</span></h2>
+  <div class="quiz-block">
+    <div class="quiz-head">
+      <span>Day 6 Knowledge Check — 10 Questions</span>
+      <span class="quiz-score" id="quiz-score-display">Score: 0 / 10</span>
+    </div>
+    <div id="quiz-body"></div>
+    <div class="quiz-actions">
+      <button class="btn btn-primary" onclick="gradeQuiz()">Grade My Quiz</button>
+      <button class="btn btn-ghost" onclick="resetQuiz()">Reset</button>
+      <span class="quiz-msg" id="quiz-msg"></span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-card">
+    <div class="sc-head">On This Page</div>
+    <div class="sc-body">
+      <ul class="sidebar-toc">
+        <li><a href="#overview"><span class="toc-num">→</span>Overview</a></li>
+        <li><a href="#m1"><span class="toc-num">1</span>Why CIA Triad Fails</a></li>
+        <li><a href="#m2"><span class="toc-num">2</span>Five Risk Categories</a></li>
+        <li><a href="#m3"><span class="toc-num">3</span>Risk Deep Dives</a></li>
+        <li><a href="#m4"><span class="toc-num">4</span>Three Forces</a></li>
+        <li><a href="#m5"><span class="toc-num">5</span>Shadow AI</a></li>
+        <li><a href="#m6"><span class="toc-num">6</span>Governance Responses</a></li>
+        <li><a href="#activity-tiles"><span class="toc-num">A</span>Activity: Shadow Classifier</a></li>
+        <li><a href="#activity-checklist"><span class="toc-num">B</span>Activity: Detection Audit</a></li>
+        <li><a href="#activity-scenario"><span class="toc-num">C</span>Activity: Decision Lab</a></li>
+        <li><a href="#artifact"><span class="toc-num">✏</span>Assessment</a></li>
+        <li><a href="#quiz"><span class="toc-num">?</span>Knowledge Check</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="sidebar-card">
+    <div class="sc-head">Objectives Progress</div>
+    <div class="sc-body">
+      <div class="progress-wrap"><div class="progress-fill" id="progress-fill"></div></div>
+      <div class="progress-label" id="progress-label">0 of 7 completed</div>
+      <ul class="lo-list" style="margin-top:.7rem">
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>Explain why CIA triad is insufficient for AI risk.</span></li>
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>Define the five AI risk categories.</span></li>
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>Apply each risk category to a real scenario.</span></li>
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>Describe the three forces creating the AI security gap.</span></li>
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>Define shadow AI and distinguish it from shadow IT.</span></li>
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>Apply four-layer shadow AI detection methods.</span></li>
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>Select appropriate governance responses for shadow AI.</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="sidebar-card">
+    <div class="sc-head">Quick Reference</div>
+    <div class="sc-body">
+      <ul class="sidebar-toc">
+        <li><a href="#m2" style="font-size:.8rem"><strong style="color:var(--model)">🧠 Model Risk</strong> — behavior, drift, hallucination</a></li>
+        <li><a href="#m2" style="font-size:.8rem"><strong style="color:var(--data)">📊 Data Risk</strong> — poisoning, bias, memorization</a></li>
+        <li><a href="#m2" style="font-size:.8rem"><strong style="color:var(--ops)">⚙️ Operational Risk</strong> — misuse, oversight, scale</a></li>
+        <li><a href="#m2" style="font-size:.8rem"><strong style="color:var(--ethical)">⚖️ Ethical Risk</strong> — disparate impact, autonomy</a></li>
+        <li><a href="#m2" style="font-size:.8rem"><strong style="color:var(--tparty)">🔗 Third-Party Risk</strong> — supply chain, AIBOM</a></li>
+        <li><a href="#m5" style="font-size:.8rem"><strong style="color:var(--danger)">Shadow AI</strong> — 69% of orgs · 20% of breaches</a></li>
+        <li><a href="#m6" style="font-size:.8rem"><strong>Block</strong> → prohibited / no safe use</a></li>
+        <li><a href="#m6" style="font-size:.8rem"><strong>Channel</strong> → enterprise version, -89% shadow</a></li>
+        <li><a href="#m6" style="font-size:.8rem"><strong>Register</strong> → discovery amnesty</a></li>
+        <li><a href="#m6" style="font-size:.8rem"><strong>Monitor</strong> → approved tools + DLP</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="sidebar-card">
+    <div class="sc-head">Lesson Navigation</div>
+    <div class="sc-body" style="display:flex;flex-direction:column;gap:.5rem">
+      <a href="lesson05.html" style="font-size:.85rem;font-weight:600;color:var(--oxblood)">← Day 5: EU AI Act</a>
+      <span style="font-size:.85rem;font-weight:600;color:var(--ink-muted)">Day 6 — Current</span>
+      <a href="index.html#lessons" style="font-size:.85rem;font-weight:600;color:var(--ink-muted)">Day 7 — Coming Soon →</a>
+    </div>
+  </div>
+</aside>
+</div>
+
+<div class="lesson-nav-footer">
+  <a href="lesson05.html">← Day 5: EU AI Act Risk Tiers &amp; Obligations</a>
+  <a href="index.html">Course Home</a>
+</div>
+<footer>
+  <strong>AI-103: AI Cybersecurity Foundations · Day 6</strong> · Moraine Valley Community College · Dr. John L. Sands · 2026<br><br>
+  Day 7 covers AI as Target I — the AI threat landscape, MITRE ATLAS, adversarial ML taxonomy, and the OWASP LLM Top 10 introduction.
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════════════════════ */
+
+/* Risk category flip cards */
+const riskFlips=[
+  {cat:'model',icon:'🎭',code:'Model Risk',title:'Hallucination &amp; Confabulation',back:'Model generates plausible but false outputs with confident tone. Cannot be reliably detected by the model itself. High-stakes domains: legal, medical, financial, academic.',nist:'NIST MS-2.5 (Valid &amp; Reliable) + MS-2.3 (Performance Under Real Conditions)'},
+  {cat:'model',icon:'🌊',code:'Model Risk',title:'Concept Drift',back:'Production data distribution shifts away from training distribution. Model accuracy degrades silently. Green dashboard while quality collapses. Requires continuous monitoring, not just launch testing.',nist:'NIST MS-3.1 (Continuous Risk Tracking) + MS-2.4 (Production Monitoring)'},
+  {cat:'model',icon:'📉',code:'Model Risk',title:'Subpopulation Performance Gaps',back:'Model performs well on average but severely underperforms on specific demographic groups. Overall 91% accuracy hides 30% error rate on underrepresented populations. Requires disaggregated evaluation.',nist:'NIST MS-2.11 (Fairness &amp; Bias) — the most critical and most skipped MEASURE subcategory'},
+  {cat:'data',icon:'☠️',code:'Data Risk',title:'Training Data Poisoning',back:'Adversary injects malicious training examples to install backdoor behaviors. Triggers specific inputs → specific malicious outputs. Control-plane attack: changes what system does, not what it stores.',nist:'NIST MS-2.7 (Security &amp; Resilience) — adversarial evaluation required pre-deployment'},
+  {cat:'data',icon:'🧠',code:'Data Risk',title:'Model Memorization &amp; Regurgitation',back:'Model memorizes sensitive training data and reproduces it verbatim in responses. PII, source code, private communications. No data breach required — the model is the exfiltration path.',nist:'NIST MS-2.10 (Privacy-Enhanced) — requires privacy-preserving training techniques evaluation'},
+  {cat:'data',icon:'⚖️',code:'Data Risk',title:'Historical Bias Amplification',back:'Training data reflects historical patterns of discrimination. Model learns and amplifies these patterns. Well-documented: COMPAS recidivism scoring, Amazon hiring AI (scrapped 2018), facial recognition demographic gaps.',nist:'NIST MS-2.11 (Fairness) + MAP-3.1 (Impact Assessment) — requires pre-training data audit'},
+  {cat:'ops',icon:'🤖',code:'Operational Risk',title:'Automation Complacency',back:'Human operators stop exercising genuine oversight — "rubber-stamping" AI outputs. Advisors treat at-risk flags as diagnoses. Radiologists approve AI findings without independent assessment. Oversight exists in policy but not in practice.',nist:'NIST MG-2.4 (Kill-Switch) + Art. 14 EU AI Act (Human Oversight Design) — oversight must be in the interface, not just the policy'},
+  {cat:'ops',icon:'🎯',code:'Operational Risk',title:'Context Deployment Mismatch',back:'Model validated for one population, deployed to another. Academic AI trained on traditional students deployed to non-traditional, first-generation, ESL students. Validation set ≠ production population.',nist:'NIST MAP-1.5 (Risk Tolerance Inheritance) + MS-2.3 (Performance Under Real Deployment Conditions)'},
+  {cat:'ethical',icon:'🏭',code:'Ethical Risk',title:'Disparate Impact at Scale',back:'System functions exactly as designed but systematically disadvantages a protected group. Credit AI with racially disparate approval rates. Hiring AI that disadvantages women. Correct operation producing discriminatory outcomes.',nist:'NIST MS-2.11 (Fairness) — requires disparate impact analysis, not just overall accuracy. EU AI Act Art. 10 (data governance) + Art. 27 (FRIA)'},
+  {cat:'tparty',icon:'📦',code:'Third-Party Risk',title:'Embedded AI Feature Activation',back:'SaaS vendor adds AI features to an approved tool without prominent notification. Microsoft Copilot in Office 365. Salesforce Einstein Copilot. Your approved CRM now processes client PII through an AI you never reviewed.',nist:'NIST GOVERN 6 (Third-Party Policy) + MAP-4 (Component Risk Mapping) — requires vendor change monitoring (MG-3.1)'},
+];
+
+/* Risk deep dive expand data */
+const riskExpandData=[
+  {cat:'model',badge:'Model Risk',title:'Hallucination, Drift &amp; Non-Determinism — A Single System, Three Failure Modes',quote:'The same AI system can hallucinate, drift, and behave differently on the same input — simultaneously and independently.',impl:'<p><strong>Hallucination:</strong> Models generate text that is syntactically fluent and contextually plausible but factually false — and they do so with the same confident tone they use for accurate outputs. This is a structural property of autoregressive language models, not a bug that can be patched away. The model has no internal "truth sensor."</p><p><strong>Drift:</strong> As the production data distribution shifts away from the training distribution, model performance degrades silently. The classic example: a student performance model trained on pre-COVID enrollment patterns deployed post-COVID, when learning modalities, engagement patterns, and risk factors have fundamentally changed.</p><p><strong>Non-determinism:</strong> Temperature parameters and stochastic sampling mean the same input can produce different outputs in different sessions. This makes traditional "run the tests, check green/red" validation inapplicable. You must test distributions of outputs, not individual outputs.',example:'<p><strong>MVCC enrollment chatbot:</strong> Student asks "When is the FAFSA deadline?" The chatbot, trained on 2023 documents, confidently answers "June 30" — which was correct in 2023 but was changed to April 1 for 2025. No hallucination in the traditional sense (the model correctly recalled a real past deadline), but model drift due to stale training data produces factually incorrect, high-stakes financial advice.</p><p><strong>Real incident reference:</strong> A US law firm used AI to draft a legal brief. The model hallucinated six case citations — completely fabricated case names and docket numbers that appeared real. The firm submitted the brief; the cases did not exist. Sanctions followed. The model displayed no uncertainty signal.</p>',failure:'<strong>Control gap:</strong> MVCC deployed the chatbot without a data freshness monitoring plan. The training cutoff was January 2024. By October 2024, nine policy changes had made portions of the chatbot\'s financial aid guidance incorrect. No alert fired because nobody defined a metric for "training data staleness risk."'},
+  {cat:'data',badge:'Data Risk',title:'Data as Code — Why the Training Pipeline is a Control Plane',quote:'Training data defines model behavior. Poisoning training data is not a data integrity attack — it is a behavioral control attack on a living system.',impl:'<p><strong>Data as code:</strong> The training dataset is not just an input to the model — it is the instruction set that defines what the model does in production. This is structurally unlike any previous IT asset: compromise the training data, and you have compromised the system\'s behavior without modifying any line of code, any configuration file, or any executable.</p><p><strong>Memorization:</strong> Large models memorize training data and can reproduce it verbatim when prompted appropriately. Microsoft researchers demonstrated that GPT-2 would reproduce verbatim passages from the C library source code present in its training data. Models trained on scraped web data may have memorized personal emails, forum posts, and private documents.</p><p><strong>Provenance gaps:</strong> Most organizations cannot fully trace where their model\'s training data came from, who labeled it, or what was in it. This is the AIBOM problem — an AI Bill of Materials that documents every data source is aspirational for most deployments.',example:'<p><strong>MVCC at-risk predictor data risk:</strong> The model was trained on 5 years of historical enrollment data. That data reflects 5 years of historical advising patterns — which were themselves shaped by implicit biases in who advisors proactively reached out to. The model has learned from, and will reproduce, those advising biases at scale. The bias was in the ground truth labels ("at-risk" determinations made by human advisors), not in the data collection methodology.</p><p><strong>Supply chain data risk:</strong> MVCC uses a foundation model from a commercial vendor. The vendor cannot fully disclose the model\'s training data composition due to commercial confidentiality. MVCC cannot conduct a full bias audit of data they cannot inspect.</p>',failure:'<strong>Control gap:</strong> MVCC\'s data governance documentation for the at-risk predictor noted "LMS data, attendance data, grade data" as inputs. It did not document which years of data, the demographic composition of the historical cohort, the labeling methodology for the outcome variable, or any known limitations of the historical ground truth.'},
+  {cat:'ops',badge:'Operational Risk',title:'Oversight Failure &amp; Context Mismatch — When Deployment Decisions Become Risk Events',quote:'A model that works perfectly in testing can be operationally catastrophic when deployed in the wrong context, at the wrong scale, or with inadequate human oversight in practice.',impl:'<p><strong>Automation complacency:</strong> When humans are nominally "in the loop" but practically rubber-stamping AI outputs, the designed human oversight becomes theater. This happens for predictable reasons: cognitive load (reviewing 200 AI flags per day means each gets 30 seconds), authority gradients (junior advisors reluctant to override an "objective" AI score), and habituation (overriding the AI when it seems wrong requires active effort the system didn\'t require before AI).</p><p><strong>Scale amplification:</strong> An AI system that is 98% accurate makes 2% errors. At 100 decisions per day, that\'s 2 errors. At 100,000 decisions per day (enterprise scale), that\'s 2,000 errors per day. AI operational risk includes the systematic amplification of whatever errors the model makes, across every instance of the decision.</p>',example:'<p><strong>MVCC advising context:</strong> The at-risk predictor flags 200 students per week for advisor follow-up. There are 8 advisors. Each advisor receives 25 flags per week on top of their regular caseload. After 6 weeks, advisor behavior shifts from "reviewing each flag thoughtfully" to "sending the template email to everyone on the flag list." Human oversight exists in the system architecture but has ceased to exist in practice. The model\'s false positives now receive the same response as true positives — and vice versa.</p>',failure:'<strong>Control gap:</strong> MVCC\'s human oversight policy for the at-risk predictor says "advisors review all flags before contacting students." The system does not log whether advisors opened the flag rationale panel before sending outreach. The policy is unenforceable because the override is not instrumented.'},
+  {cat:'ethical',badge:'Ethical Risk',title:'Harm from Correct Operation — The Category CIA Has No Name For',quote:'A system can be fully confidential, fully intact, and fully available while systematically harming an entire demographic group. This is the category that does not fit in any traditional infosec model.',impl:'<p><strong>Disparate impact:</strong> The system functions exactly as its designers intended. The training objective was optimized correctly. The accuracy metrics pass. But the system\'s outputs systematically disadvantage a protected demographic group — not through error, but through design. Facial recognition systems that perform 34.7% worse on dark-skinned women than light-skinned men (Buolamwini &amp; Gebru, 2018). COMPAS recidivism scoring with racially disparate false positive rates. Hiring algorithms that penalized women\'s college names (Amazon, 2018).</p><p><strong>Autonomy erosion:</strong> Systems that substitute algorithmic judgment for human deliberation in domains where that substitution removes meaningful human agency. Predictive policing that creates self-fulfilling prophecies: police more in predicted crime areas → more arrests there → "confirms" the prediction → more policing. The feedback loop makes the model\'s predictions self-validating independent of their accuracy.</p>',example:'<p><strong>MVCC at-risk predictor ethical risk:</strong> The model is highly accurate overall — 82% of flagged students are genuinely at risk. But the flag rate for first-generation students is 31% compared to 12% for continuing-generation students, and the false positive rate for first-generation students is 18% vs. 6%. The additional advising contact may be beneficial. But if "at-risk" status affects financial aid decisions, scholarship eligibility, or academic standing, the disparate flagging rate becomes a disparate impact on access to educational resources — harm from correct operation of the intended design.</p>',failure:'<strong>Control gap:</strong> The ethics review for the at-risk predictor was conducted by the vendor, not independently. The vendor\'s ethics review measured overall accuracy and did not disaggregate by first-generation status, a characteristic not included in the training data as a labeled variable.'},
+  {cat:'tparty',badge:'Third-Party &amp; Supply Chain Risk',title:'The AI Supply Chain — What You Can\'t Inspect, You Can\'t Fully Trust',quote:'You cannot conduct a full security review of an AI system whose training data, weights, and behavioral properties you cannot fully access or verify.',impl:'<p><strong>Foundation model opacity:</strong> Enterprise AI deployments typically sit on top of foundation models from providers (OpenAI, Anthropic, Google, Meta, Mistral). The provider cannot fully disclose the training data composition (commercial confidentiality, copyright), the alignment procedures (proprietary), or the full range of emergent behaviors (not fully characterized even internally). This opacity is structural, not evasive — it reflects genuine limits of what is knowable about large models even to their creators.</p><p><strong>Embedded AI activation:</strong> SaaS vendors are adding AI features to existing products at high velocity. Microsoft added Copilot to Office 365. Salesforce added Einstein to CRM. ServiceNow added AI to ITSM. An organization that approved Office 365 in 2019 may never have reviewed Copilot\'s data handling practices — but Copilot is now processing their enterprise data. The vendor\'s EULA or Terms of Service changed; the IT governance review did not.</p><p><strong>AIBOM gaps:</strong> A Software Bill of Materials (SBOM) documents every software dependency. An AI Bill of Materials (AIBOM) would document every AI component, training dataset, model version, and behavioral property — but the AIBOM standard is still emerging, and most vendor AIBOMs are incomplete.',example:'<p><strong>MVCC enterprise Office 365:</strong> MVCC approved Microsoft Office 365 for the entire institution in 2018. Microsoft Copilot became available to M365 tenants in 2023. Without an active AI governance review triggered by the Copilot activation, MVCC\'s faculty may be using Copilot to draft student performance evaluations, recommendation letters, and grade appeals — processing FERPA-protected data through an AI feature that was never reviewed under MVCC\'s AI governance program.</p>',failure:'<strong>Control gap:</strong> MVCC\'s vendor management process does not include an AI feature trigger. When existing approved vendors add AI capabilities to their products, no governance review is automatically initiated. The AI Use Case Register only captures systems that were explicitly identified as AI at procurement.'},
+];
+
+/* Detection expand data */
+const detectionExpandData=[
+  {cat:'shadow-b',badge:'Layer 1',title:'Network &amp; DNS Layer — What\'s Leaving the Perimeter',quote:'Network-level detection sees data flows to AI endpoints before content-level analysis is possible.',impl:'<p><strong>DNS query monitoring:</strong> Block or alert on AI-specific domains: api.openai.com, claude.ai, gemini.google.com, api.anthropic.com, and the expanding list of AI provider endpoints. DNS visibility reveals which endpoints are being queried, even through encrypted traffic.</p><p><strong>Proxy/CASB inspection:</strong> Cloud Access Security Brokers can categorize and log traffic to AI services, classify them by risk level, and enforce data-aware policies. Inspect for API call patterns — frequent POST requests to /v1/chat/completions is a signature of LLM API usage.</p><p><strong>Data volume patterns:</strong> Large data transfers to AI endpoints at unusual times (after-hours, unusual user locations) are behavioral anomalies worth alerting. A 500KB upload to api.openai.com at 11:30 PM warrants investigation.</p>',example:'<p>MVCC network monitoring revealed that the single highest-traffic destination for faculty during office hours was not the LMS, not SharePoint, and not email — it was api.openai.com. Network visibility surfaced what no application inventory had captured: 23% of faculty were using the OpenAI API directly, outside any organizational account, with no governance visibility into what data they were sending.</p>',failure:'Network blocking alone is ineffective. Faculty moved to personal mobile hotspots. Traffic disappeared from institutional monitoring. Usage continued; visibility went to zero. Detection without channeled alternatives always fails.'},
+  {cat:'shadow-b',badge:'Layer 2',title:'SaaS Discovery — The Approved Tool That Became AI Without Notice',quote:'86% of organizations lack visibility into data flows to and from AI tools — primarily because AI features activate inside already-approved SaaS applications.',impl:'<p><strong>SaaS management platforms:</strong> Tools like Zylo, Torii, BetterCloud, or Reco catalog all SaaS applications in use, including OAuth grants and browser extension installations. Cross-reference against AI capabilities database to identify approved SaaS tools that have acquired AI features.</p><p><strong>Vendor change monitoring:</strong> Subscribe to major SaaS vendors\' change logs and release notes. Establish a process to trigger AI governance review when an approved vendor activates a new AI capability. NIST AI RMF MG-3.1 (Third-Party Risk Monitoring) provides the governance framework.</p><p><strong>OAuth and API token audit:</strong> Identify all OAuth grants and API tokens that provide AI services access to organizational data. LayerX found that 20% of enterprise users have installed AI-enabled browser extensions, 58% of which carry high or critical permission levels (LayerX, 2025).</p>',example:'<p>MVCC SaaS discovery audit revealed that the institution\'s Grammarly Enterprise subscription had quietly enabled Grammarly\'s AI rewriting features, which process the full text of documents being edited through Grammarly\'s AI backend. Faculty were using it for student evaluations, recommendation letters, and grant proposals — all processed through Grammarly\'s AI with zero governance review.</p>',failure:'SaaS discovery is a point-in-time activity if not maintained continuously. Vendors release AI features quarterly. An audit done in January is already partially stale by March. Requires continuous monitoring, not annual inventory.'},
+];
+
+/* AUP expand data */
+const aupExpandData=[
+  {cat:'shadow-b',badge:'AI AUP',title:'AI Acceptable Use Policy — What Must Be in It to Work',quote:'An AI AUP that doesn\'t differentiate by data classification, use case risk, and tool approval status is an AI AUP that doesn\'t actually govern AI.',impl:'<p><strong>Required clauses (AI-specific):</strong></p><ul><li><strong>Scope statement:</strong> Covers ALL AI tool use for work purposes, including personal accounts, personal devices during work hours, and AI features in approved SaaS tools</li><li><strong>Data classification rules:</strong> Which data classifications may be input into which AI tool tiers (e.g., no confidential data in unapproved tools; no student PII in any non-enterprise AI tool)</li><li><strong>Tool approval tiers:</strong> Fully approved / Limited use (with specific data handling rules) / Prohibited. Dynamic list maintained and linked from the policy.</li><li><strong>Approval pathway:</strong> How an employee requests approval for a new AI tool. Process must be fast enough that employees use it instead of going around it.</li><li><strong>Shadow AI handling:</strong> Amnesty period for self-declaration. Clear escalation path for discovering shadow AI in your team. Non-punitive reporting encouraged.</li><li><strong>Human oversight requirements:</strong> For AI-assisted decisions affecting individuals, what review is required before action is taken on an AI output.</li></ul>',example:'<p><strong>MVCC AI AUP data classification rule example:</strong> "Directory information (name, enrollment status, major) may be included in prompts to MVCC-approved AI tools. FERPA-protected educational records (grades, GPA, financial aid status, disciplinary records) may NOT be included in any AI tool prompt without express FERPA authorization review. PII beyond directory information may only be included in prompts to AI tools that have completed MVCC\'s data processing agreement review."</p>',failure:'MVCC\'s current AUP includes one sentence: "Faculty and staff should use AI tools responsibly and in accordance with FERPA." This provides no actionable guidance, no approved tool list, no data classification rule, and no enforcement mechanism. It is policy theater — documentation that creates the appearance of governance without providing it.'},
+];
+
+/* Shadow tiles data */
+const shadowTiles=[
+  {icon:'💬',title:'Consumer ChatGPT for Work Tasks',dept:'All Departments',desc:'Employees use personal ChatGPT accounts to summarize meeting notes, draft emails, analyze documents, and get help with work tasks. No enterprise contract, no data handling agreement, no logs.',risk:'Risk: PII, IP, and confidential strategy documents exit the organization\'s security perimeter. OpenAI\'s terms may allow training on free-tier conversation data.'},
+  {icon:'💻',title:'Personal GitHub Copilot Subscriptions',dept:'Engineering / IT',desc:'Developers use personal GitHub Copilot subscriptions to generate production code. Proprietary source code is sent to GitHub\'s AI backend for completion. No enterprise license review.',risk:'Risk: IP exposure of proprietary algorithms. Legal risk if Copilot reproduces open-source code with incompatible license in proprietary codebase.'},
+  {icon:'🔌',title:'AI-Powered Browser Extensions',dept:'All Departments',desc:'Browser extensions (Compose AI, Magical, Monica, etc.) installed by individual employees. Extensions access page content, form data, and clipboard — including content on internal tools and portals.',risk:'Risk: LayerX found 20% of enterprise users have AI-enabled extensions; 5.6% are outright malicious. Extensions may access SSO sessions, internal portals, and HR systems.'},
+  {icon:'📱',title:'Vendor Copilots &amp; AI Features',dept:'Operations / HR / Finance',desc:'Salesforce Einstein, Microsoft Copilot, ServiceNow AI, Workday AI — all activated in existing approved SaaS tools. Never reviewed under AI governance. Processing business-critical data.',risk:'Risk: Contractual and regulatory: does the existing DPA cover AI feature processing? Does FERPA authorization extend to AI features? Usually not reviewed.'},
+  {icon:'🎨',title:'AI Image Generation for Marketing',dept:'Marketing / Comms',desc:'Marketing team uses Midjourney, DALL-E, or Stable Diffusion (locally or via API) to create campaign assets. No IP review, no bias review, no disclosure of AI-generated content.',risk:'Risk: EU AI Act Article 50 (disclosure of AI-generated synthetic content). Copyright ambiguity. Brand risk from AI-generated images with unintended content.'},
+  {icon:'🔊',title:'AI Meeting Transcription &amp; Summary',dept:'Executive / Sales / HR',desc:'Employees use Otter.ai, Fireflies.ai, or Zoom AI Companion (personal account) to transcribe and summarize meetings. Audio and transcripts leave the organization.',risk:'Risk: Meeting content (strategy, personnel, client data, M&A discussions) processed by external AI. GDPR and FERPA implications for recordings involving students or EU participants.'},
+  {icon:'📊',title:'Open-Source Models on Local Hardware',dept:'Engineering / Data Science',desc:'Developers download and run Llama, Mistral, or similar open-source models on workstations or personal devices. No visibility to IT. No evaluation for bias, robustness, or appropriate use.',risk:'Risk: Unvetted model behavior. No governance lineage. If outputs influence production decisions, the organization has deployed an AI system with no governance documentation — EU AI Act implications.'},
+  {icon:'🤖',title:'AI Agents with OAuth Permissions',dept:'Engineering / Operations',desc:'Developers create AI agents that use employee OAuth tokens to access email, calendar, and internal APIs autonomously. Agent actions are not logged separately from human actions.',risk:'Risk: OWASP LLM06 (Excessive Agency). Agent with inherited user permissions can take actions the employee did not specifically authorize. Blast radius of a compromised prompt is entire OAuth scope.'},
+];
+
+/* Detection checklist data */
+const clData={
+  'Network Layer':[
+    'DNS query logging enabled and reviewed for AI provider domains',
+    'Proxy/CASB configured to categorize and log AI service traffic',
+    'Alerts configured for large data transfers to AI API endpoints',
+    'Network policy distinguishes AI traffic by risk tier (approved/unknown/prohibited)',
+    'Out-of-hours AI traffic anomaly detection configured',
+    'Personal hotspot bypass detection or policy in place',
+  ],
+  'SaaS Discovery Layer':[
+    'SaaS application inventory includes AI capability classification',
+    'Vendor change monitoring subscription for AI feature activation notices',
+    'OAuth grant audit completed — AI service grants identified',
+    'Browser extension inventory with AI extension identification',
+    'AI feature assessment triggered by SaaS vendor updates',
+    'Third-party SaaS DPIA/FERPA review covers AI feature data processing',
+  ],
+  'Endpoint Layer':[
+    'Endpoint DLP configured to detect AI-specific data exfiltration patterns (clipboard, file upload)',
+    'Local model download detection (LLM weight files, quantized models)',
+    'AI-enabled browser extension blocking or alert policy in place',
+    'USB/removable media policy covers AI model weight transfer',
+    'Developer workstation monitoring for AI API key usage',
+  ],
+  'Behavioral &amp; Policy Layer':[
+    'AI Acceptable Use Policy published and covers all AI use including personal accounts',
+    'Data classification rules specific to AI tool prompts documented',
+    'AI tool approval tiers defined (Approved / Limited / Prohibited)',
+    'Shadow AI amnesty / self-declaration program in place',
+    'AI Use Case Register maintained and current',
+    'AI literacy training includes shadow AI identification and reporting',
+    'Vendor AI security questionnaire in use for new and renewing SaaS',
+    'Incident response playbook includes shadow AI discovery scenario',
+    'Post-breach analysis specifically examines AI tool involvement',
+    'Regular shadow AI audit (at minimum annual) scheduled and resourced',
+  ],
+};
+
+/* Scenario lab data */
+const scenarios=[
+  {id:0,num:'Scenario 1 of 8',q:'An MVCC IT audit discovers that the registrar\'s office has been using a free-tier Otter.ai account to transcribe all admissions meetings, including discussions of student academic history, disciplinary records, and financial situations. Which AI risk category is most directly implicated?',opts:['Model Risk — the transcription AI may hallucinate words in the transcript','Operational Risk — the registrar\'s office is misusing an approved tool','Third-Party &amp; Supply Chain Risk — data is being processed by an external AI under a free-tier terms of service with data retention and training provisions that may allow Otter.ai to use the meeting content','Data Risk — the audio recordings contain biased language from the admissions officers'],correct:2,fb:'Third-Party &amp; Supply Chain Risk is correct. The core risk here is that FERPA-protected student data is being processed under a free-tier terms of service with no institutional data processing agreement, no FERPA authorization, and potential data training clauses that allow Otter.ai to use institutional data. This is compounded by Operational Risk (shadow AI use outside governance) but the primary classification is third-party/supply chain because the exposure path is through an unauthorized vendor.'},
+  {id:1,num:'Scenario 2 of 8',q:'MVCC\'s at-risk student predictor achieves 84% overall accuracy. A follow-up audit finds that the false positive rate (flagging students who are not at risk) is 7% for continuing-generation students but 22% for first-generation students. The system is working as designed. Which risk category does this most precisely represent?',opts:['Model Risk — the model is making errors','Data Risk — the training data was biased','Ethical Risk — harm from correct operation: the system functions as designed but systematically disadvantages a specific student population','Operational Risk — advisors are misinterpreting the flags'],correct:2,fb:'Ethical Risk. The system functions correctly — it\'s producing the outputs it was trained to produce. But those correct outputs systematically disadvantage first-generation students through a 15-percentage-point gap in false positive rates. This is the canonical example of ethical risk: harm from correct operation. The CIA triad has no category for this. Note that Data Risk (historical training data bias) may be a contributing cause, but the active harm is ethical — and it persists even if the training data is "corrected" unless the fairness metric is explicitly included in the objective function.'},
+  {id:2,num:'Scenario 3 of 8',q:'A faculty member discovers that her department has 12 colleagues using 8 different consumer AI tools for course development, grading assistance, and student communication — none approved, none registered, none reviewed. She asks the CISO: "What do we do?" The CISO applies the four-response governance framework. What is the correct immediate first action?',opts:['Block all AI tools immediately and require faculty to use only paper-based processes until governance is established','Terminate the faculty members for policy violations','Initiate a shadow AI registration program: announce a non-punitive amnesty period for faculty to self-declare their AI tool use, while simultaneously fast-tracking enterprise alternatives. Block before providing alternatives drives usage underground.','Send a strongly-worded all-staff email reminding everyone of the existing AUP'],correct:2,fb:'Register + Channel (simultaneously) is the correct governance response sequence. Blocking before providing alternatives drives usage underground — the research consistently shows this. 48% of employees continue using banned AI tools even after being told to stop. A registration amnesty surfaces current usage for risk assessment, while fast-tracking enterprise alternatives (ChatGPT Enterprise, Microsoft Copilot) creates an approved channel that reduces the incentive for shadow use. The strongly-worded email (Option D) without alternatives is ineffective. Termination without prior clear policy is legally problematic. Removing AI tools without replacement is productivity confiscation that creates adversarial employee relationships.'},
+  {id:3,num:'Scenario 4 of 8',q:'The MVCC enrollment chatbot correctly recalls a FAFSA deadline from its January 2024 training data. By October 2024, the deadline has changed. The chatbot continues confidently giving students the old deadline. 47 students miss the new deadline based on the chatbot\'s answer. Which primary risk category and NIST subcategory failed?',opts:['Operational Risk — advisors did not override the chatbot\'s incorrect answer','Model Risk (Drift) — NIST MS-3.1 (Continuous Risk Tracking) and MS-2.4 (Production Monitoring) failed. No alert was configured for training data staleness against ground truth changes.','Data Risk — the training data was poisoned with incorrect dates','Third-Party Risk — the chatbot vendor did not update the model'],correct:1,exp:'Model Risk (Drift) with a specific NIST subcategory failure: MS-3.1 requires continuous risk tracking in production, and MS-2.4 requires monitoring against MAP-identified components and behaviors. A policy change that invalidates cached knowledge is a foreseeable drift event that should have triggered re-evaluation. The failure is the absence of a monitoring mechanism (metric: policy-change-triggered validation frequency) that would have detected the drift before 47 students were harmed.'},
+  {id:4,num:'Scenario 5 of 8',q:'Microsoft activates Copilot for Education in MVCC\'s existing Office 365 tenant. Faculty immediately begin using it to draft student performance evaluations and letters of recommendation. MVCC\'s AI governance team was not notified. Which risk category and NIST AI RMF function most directly addresses this scenario?',opts:['Model Risk — Copilot may hallucinate facts about students','Operational Risk — faculty are using AI without training','Third-Party &amp; Supply Chain Risk — NIST MG-3.1 (Third-Party Risk Monitoring): the absence of a vendor AI feature monitoring process allowed an AI activation to bypass governance review. GOVERN 6.1 (third-party AI risk policy) should have required vendor change monitoring.','Data Risk — Microsoft may train on the evaluation content'],correct:2,fb:'Third-Party &amp; Supply Chain Risk is primary, specifically MG-3.1 (Ongoing monitoring of third-party AI components). The core governance failure is the absence of a process that triggers an AI governance review when an approved vendor activates new AI capabilities. GOVERN 6.1 requires organizational-level policy for third-party AI risk — and that policy should mandate vendor change monitoring that catches exactly this scenario. Data Risk (Option D) is a real secondary concern (does MVCC\'s FERPA authorization extend to Copilot data processing?), but the classification failure is operational governance through a third-party channel.'},
+  {id:5,num:'Scenario 6 of 8',q:'A developer at MVCC uses their personal GitHub Copilot account to write a data analysis script that processes student financial aid records. The script itself runs inside MVCC\'s infrastructure, but the code was written with Copilot assistance — and the financial aid record schemas, column names, and sample data values were included in prompts sent to GitHub\'s AI service. Which risk is most precisely identified?',opts:['Model Risk — Copilot may generate insecure code','Third-Party &amp; Supply Chain Risk combined with Data Risk: proprietary FERPA-protected data structures and sample values were transmitted to an external AI service under personal account terms of service. The data exposed is not the scripts — it is the schema information and student data values sent in prompts.','Operational Risk — the developer should not have used personal tools','Ethical Risk — the developer\'s use of AI may introduce bias into the financial aid analysis'],correct:1,fb:'Third-Party &amp; Supply Chain Risk + Data Risk. The specific harm is the transmission of FERPA-protected data (financial aid record schemas and sample values) to GitHub\'s AI service under personal account terms that may not include FERPA authorization. This is the "data-goes-out" characteristic of shadow AI: the production script stayed inside MVCC\'s infrastructure, but the prompt that created it transmitted institutional data to an external model. The AIBOM for this script is incomplete — there is no documentation of what training data Copilot used, what the script learned from, or what the behavioral properties of the resulting code are.'},
+  {id:6,num:'Scenario 7 of 8',q:'MVCC provides ChatGPT Enterprise to all faculty and staff, configuring it with: no data retention, no training on institutional data, FERPA compliance confirmation, and data processing agreement. Shadow AI incidents drop 87%. Three months later, auditors discover that 6 faculty members are still using personal ChatGPT accounts "because the Enterprise version doesn\'t have the latest model." What governance response is appropriate?',opts:['Block ChatGPT.com at the network level for all institutional devices','Upgrade the Enterprise license to include the latest model access, then enforce the block on personal accounts. The faculty motivation is legitimate (capability gap) and the governance goal is served by closing the gap.','Terminate the faculty members for continued policy violations','Do nothing — a 87% reduction is a governance success; 6 holdouts are negligible risk'],correct:1,fb:'Channel (upgrade) + enforce is correct. The faculty motivation is legitimate — they want access to the latest capabilities — and that motivation is exactly the personalization force that makes shadow AI persist despite bans. The governance response that works: close the capability gap by upgrading the enterprise license, then enforce the block on personal accounts with a clear communication that the enterprise version now has feature parity. This addresses the underlying motivation rather than fighting it. Blocking before capability parity drives the remaining 6 to personal hotspots. Doing nothing accepts ongoing uncontrolled data exposure from the 6 holdouts and signals that policy violations are tolerated.'},
+  {id:7,num:'Scenario 8 of 8',q:'MVCC\'s CISO presents the shadow AI risk program to the President\'s Cabinet. The VP of Finance says: "Just block all AI tools. This is too risky." The CISO must explain why a blanket block is not the most effective governance response. Which argument is best supported by the research?',opts:['Blocking AI tools is technically impossible because AI is embedded in so many platforms','Blocking AI tools will harm MVCC\'s competitive position in faculty recruitment','Research shows that when approved alternatives are provided, unauthorized use drops 89%. When bans are imposed without alternatives, usage goes underground — visibility drops to zero while data exposure continues on personal devices and hotspots. The evidence-based response is: channel first, block second.','Blocking AI tools violates faculty academic freedom rights'],correct:2,fb:'The research-supported argument is C. Blocking without providing alternatives is empirically ineffective: 48% of employees continue using banned tools anyway, and the remainder shift to personal devices where IT has zero visibility. The data exposure continues; the monitoring disappears. The 89% reduction in unauthorized use when approved alternatives are provided is the strongest evidence-based argument for channeling over blocking. Option A is partially true (pervasiveness) but not the strongest argument. Option B is a business argument, not a governance argument. Option D is a legal argument that varies by jurisdiction and employment contract.'},
+];
+
+/* Quiz data */
+const quizData=[
+  {q:'Which of the following scenarios represents a CIA triad gap that AI risk categories address but traditional infosec does not?',opts:['A database server is taken offline by a ransomware attack.','An unauthorized user accesses the student financial aid database.','An at-risk student predictor is fully operational and producing outputs it was designed to produce, but its outputs systematically disadvantage first-generation students at twice the false positive rate of continuing-generation students.','A file server\'s integrity check fails after a configuration change.'],correct:2,exp:'Option C is the CIA triad gap. The system has full confidentiality (no unauthorized access), full integrity (data was not modified), and full availability (system is operational). Yet it is causing systematic harm through correct operation — disparate impact on a protected student population. This is ethical risk, the category that CIA has no vocabulary for.'},
+  {q:'What makes data risk in AI fundamentally different from data risk in traditional information security?',opts:['AI systems process more data than traditional systems, increasing the attack surface.','Training data defines model behavior — it is a control plane, not merely stored information. Poisoning training data changes what the system does, not just what it contains.','AI data is harder to encrypt than traditional database records.','AI data is subject to GDPR whereas traditional data may not be.'],correct:1,exp:'The defining characteristic of AI data risk is "data as code" — training data defines behavioral outputs, making it a control plane attack when compromised. Traditional data risk treats data as a passive asset to protect. AI data risk recognizes that compromised training data compromises system behavior without modifying any executable, configuration file, or code — a genuinely novel attack surface.'},
+  {q:'The "pervasiveness" force in the Three Forces model refers to:',opts:['The fact that AI tools are used by a large number of employees.','The fact that AI capabilities are now embedded in tools the organization already approved — SaaS platforms, office productivity suites, CRMs — creating governance gaps without any new purchasing decision.','The widespread availability of AI tools through consumer channels.','The speed at which new AI tools are released.'],correct:1,exp:'Pervasiveness specifically refers to AI being embedded in already-approved tools. An organization that approved Salesforce in 2019 may be subject to Einstein Copilot governance today without any new purchasing decision or AI-specific review. This is distinct from velocity (new tools appearing rapidly) — pervasiveness is about existing approved tools acquiring AI capabilities.'},
+  {q:'Shadow AI is fundamentally different from shadow IT because:',opts:['Shadow AI tools are more expensive than shadow IT tools.','Shadow AI is used by more employees than shadow IT was.','With shadow IT, data went in to unapproved storage and sat there. With shadow AI, data goes out — it is processed by external models that may learn from it, store it, and surface it in other users\' sessions. The data becomes part of something larger and far less controllable.','Shadow AI is harder to detect because IT departments don\'t know about AI tools.'],correct:2,exp:'The "data goes out" characteristic is the critical distinction. Shadow IT created data residency risks — data in an unapproved Dropbox is still under someone\'s control. Shadow AI creates data exfiltration and training contribution risks — data processed by an external AI model may be retained, used for training, or surfaced in other users\' interactions. This makes shadow AI significantly more consequential than traditional shadow IT.'},
+  {q:'According to current research (2025), what percentage of organizations have shadow AI governance policies in place?',opts:['83%','63%','37%','15%'],correct:2,exp:'Only 37% of organizations have policies to manage or detect shadow AI (IBM, 2025), leaving 63% operating without guardrails. This means the majority of organizations have no formal mechanism to detect, assess, or respond to shadow AI — even as Gartner projects that 40%+ of enterprises will experience security or compliance incidents linked to shadow AI by 2030.'},
+  {q:'An employee who discovers that Claude reduces their contract review time from 4 hours to 45 minutes is told to stop using it. Research shows 48% would continue regardless. Which of the Three Forces explains this behavior?',opts:['Velocity — new AI tools appear faster than governance can adapt','Pervasiveness — AI is embedded in approved tools','Personalization — AI provides individual productivity multipliers that create strong personal incentives to circumvent controls, unlike shadow IT which was merely convenient','Third-Party Risk — the external vendor creates compliance obligations'],correct:2,exp:'Personalization explains the 48% who continue despite bans. Unlike shadow IT (which was a convenience preference), shadow AI represents a significant personal productivity multiplier — the employee\'s individual work output is dramatically improved. This creates a rational economic incentive to continue even after being told to stop. Governance that ignores this incentive structure will always underperform governance that addresses it by providing approved alternatives with equivalent capability.'},
+  {q:'MVCC\'s enrollment chatbot was built with January 2024 training data. By October 2024, FAFSA deadlines have changed and the chatbot is providing incorrect deadline information to students. No alert fired. Which NIST AI RMF failure most precisely describes this gap?',opts:['MAP-1.1 — the intended purpose was not documented','MG-2.4 — the kill-switch was not activated','MS-3.1 (Continuous Risk Tracking) and MS-2.4 (Production Monitoring) — no monitoring mechanism was configured to detect when policy changes created a divergence between training data currency and ground truth, and no alert threshold was set for this known foreseeable drift event.','GOVERN-1.3 — the risk tolerance was not defined'],correct:2,exp:'MS-3.1 requires continuous risk tracking in production — risks identified in MAP must be monitored over time. MS-2.4 requires production monitoring against the components and behaviors identified in MAP. A training data staleness event (policy changes invalidating cached knowledge) is a foreseeable drift risk that MAP should identify and MS should monitor. The absence of any metric or alert for this risk is a MEASURE function failure.'},
+  {q:'Which governance response is most appropriate when employees are using a consumer AI tool for legitimate work purposes, and the organization wants to stop the uncontrolled data exposure without reducing productivity?',opts:['Block the tool immediately at the DNS level','Issue a policy memo prohibiting the tool with enforcement consequences','Channel: provide an enterprise-contracted version of the same tool with appropriate data handling agreements, DLP policies, and institutional controls — then enforce the ban on the consumer version after capability parity is established','Accept the risk as a cost of productivity'},correct:2,exp:'Channel is the evidence-based response. When approved alternatives are provided before enforcement of consumer tool bans, unauthorized use drops 89% (Healthcare Brew, 2026). Blocking without alternatives drives usage to personal hotspots (zero visibility, same data exposure). Policy memos without alternatives are ineffective (48% continue despite bans). Accepting risk without controls violates EU AI Act deployer obligations for any system meeting the limited-risk or higher threshold.'},
+  {q:'Which of the following detection approaches would be MOST effective at discovering AI-enabled browser extensions processing enterprise data on employees\' work devices?',opts:['DNS query monitoring for AI provider domains','Employee self-reporting through an anonymous tip line','OAuth grant and browser extension inventory combined with permission-level analysis — identifying extensions with high or critical permission levels that have AI capabilities, then assessing data access scope','Network traffic volume analysis for large file transfers'],correct:2,exp:'Browser extensions with OAuth permissions are the hardest shadow AI vector to detect through network monitoring alone, because the processing happens in the browser where the data is already present — no separate network transfer is needed. OAuth grant audits identify what data each extension can access; extension inventory with AI capability classification identifies which extensions have AI processing. LayerX found 20% of enterprise users have AI-enabled extensions, 58% with high/critical permissions, 5.6% outright malicious — making this the highest-priority endpoint detection layer.'},
+  {q:'An organization\'s AI AUP states: "Employees should use AI tools responsibly and in accordance with applicable regulations." A security auditor assesses this AUP. What is the most accurate finding?',opts:['This AUP is sufficient — it establishes the principle of responsible use.','This AUP is compliant with EU AI Act requirements.','This AUP fails to govern AI. It lacks: data classification rules for AI inputs, an approved tool list, a tool approval pathway, shadow AI handling procedures, human oversight requirements, and enforcement mechanisms. It is policy theater — documentation without actionable content.','This AUP should be supplemented with a separate FERPA policy.'],correct:2,exp:'The auditor\'s finding is that this AUP is non-operational. Effective AI AUPs must include: scope statement covering all AI use including personal accounts, data classification rules specific to AI prompts, tool tier system (approved/limited/prohibited), approval pathway, shadow AI amnesty and reporting procedures, human oversight requirements by use case, and enforcement mechanisms. A principle statement without operational specifics does not govern AI — it documents an aspiration.'},
+];
+
+/* ═══════════════════════════════════════════════════════════
+   BUILD FUNCTIONS
+═══════════════════════════════════════════════════════════ */
+
+function buildFlips(data,containerId){
+  const grid=document.getElementById(containerId);
+  data.forEach(item=>{
+    const card=document.createElement('div');
+    card.className='flip-card';card.setAttribute('role','listitem');
+    card.setAttribute('tabindex','0');
+    card.setAttribute('aria-label',(item.code||item.category||'')+(': '+(item.title||''))+'— click to flip');
+    const nistLine=item.nist?`<div class="flip-tag">${item.nist}</div>`:'';
+    card.innerHTML=`<div class="flip-inner">
+      <div class="flip-front">
+        <div class="flip-icon">${item.icon}</div>
+        <div class="flip-code ${item.cat||''}">${item.code||''}</div>
+        <div class="flip-title">${item.title||item.name||''}</div>
+        <div class="flip-hint">Click to flip →</div>
+      </div>
+      <div class="flip-back ${item.backCat||item.cat||''}">
+        <div class="flip-back-title">${item.title||item.name||''}</div>
+        <div class="flip-body">${item.back}</div>
+        ${nistLine}
+      </div>
+    </div>`;
+    card.addEventListener('click',()=>card.classList.toggle('flipped'));
+    card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();card.classList.toggle('flipped')}});
+    grid.appendChild(card);
+  });
+}
+
+function buildExpand(data,containerId){
+  const container=document.getElementById(containerId);
+  data.forEach(item=>{
+    const div=document.createElement('div');div.className='expand-item';
+    const c=item.cat;
+    div.innerHTML=`
+      <button class="expand-trigger" onclick="toggleExp(this)" aria-expanded="false">
+        <span class="exp-badge ${c}">${item.badge}</span>
+        <span>${item.title}</span>
+        <span class="exp-tag ${c}">${item.cat.charAt(0).toUpperCase()+item.cat.slice(1)} Risk</span>
+        <span class="expand-chevron">▼</span>
+      </button>
+      <div class="expand-body">
+        <div class="expand-col">
+          <div class="exp-col-label ${c}">What It Means in Practice</div>
+          <div class="exp-quote ${c}">${item.quote}</div>
+          ${item.impl}
+        </div>
+        <div class="expand-col">
+          <div class="exp-col-label neutral">MVCC Example &amp; Real-World Incident</div>
+          ${item.example}
+          <div class="exp-col-label" style="color:var(--oxblood);margin-top:.8rem">⚠️ Critical Control Gap</div>
+          <p style="font-style:italic;color:var(--oxblood);font-size:.86rem">${item.failure}</p>
+        </div>
+      </div>`;
+    container.appendChild(div);
+  });
+}
+
+function buildDetectionExpand(data,containerId){
+  const container=document.getElementById(containerId);
+  data.forEach(item=>{
+    const div=document.createElement('div');div.className='expand-item';
+    const c=item.cat;
+    div.innerHTML=`
+      <button class="expand-trigger" onclick="toggleExp(this)" aria-expanded="false">
+        <span class="exp-badge ${c}">${item.badge}</span>
+        <span>${item.title}</span>
+        <span class="exp-tag ${c}">Detection</span>
+        <span class="expand-chevron">▼</span>
+      </button>
+      <div class="expand-body">
+        <div class="expand-col">
+          <div class="exp-col-label ${c}">Detection Method &amp; Implementation</div>
+          <div class="exp-quote ${c}">${item.quote}</div>
+          ${item.impl}
+        </div>
+        <div class="expand-col">
+          <div class="exp-col-label neutral">MVCC Example &amp; Failure Mode</div>
+          ${item.example}
+          <div class="exp-col-label" style="color:var(--oxblood);margin-top:.8rem">⚠️ Failure Mode</div>
+          <p style="font-style:italic;color:var(--oxblood);font-size:.86rem">${item.failure}</p>
+        </div>
+      </div>`;
+    container.appendChild(div);
+  });
+}
+
+function buildAUPExpand(data,containerId){
+  const container=document.getElementById(containerId);
+  data.forEach(item=>{
+    const div=document.createElement('div');div.className='expand-item';
+    const c=item.cat;
+    div.innerHTML=`
+      <button class="expand-trigger" onclick="toggleExp(this)" aria-expanded="false">
+        <span class="exp-badge ${c}">${item.badge}</span>
+        <span>${item.title}</span>
+        <span class="expand-chevron">▼</span>
+      </button>
+      <div class="expand-body">
+        <div class="expand-col">
+          <div class="exp-col-label ${c}">Required Policy Elements</div>
+          <div class="exp-quote ${c}">${item.quote}</div>
+          ${item.impl}
+        </div>
+        <div class="expand-col">
+          <div class="exp-col-label neutral">MVCC Example Clause &amp; Current Gap</div>
+          ${item.example}
+          <div class="exp-col-label" style="color:var(--oxblood);margin-top:.8rem">⚠️ Current MVCC Gap</div>
+          <p style="font-style:italic;color:var(--oxblood);font-size:.86rem">${item.failure}</p>
+        </div>
+      </div>`;
+    container.appendChild(div);
+  });
+}
+
+function toggleExp(btn){
+  const body=btn.nextElementSibling;
+  const open=body.classList.contains('show');
+  btn.classList.toggle('open',!open);btn.setAttribute('aria-expanded',(!open).toString());
+  body.classList.toggle('show',!open);
+}
+
+/* Shadow tiles */
+function buildShadowTiles(){
+  const grid=document.getElementById('shadow-tiles-grid');
+  shadowTiles.forEach((tile,i)=>{
+    const div=document.createElement('div');div.className='shadow-tile';
+    div.innerHTML=`<div class="st-icon">${tile.icon}</div><div class="st-title">${tile.title}</div><div class="st-dept">${tile.dept}</div><div class="st-desc">${tile.desc}</div><div class="st-risk">${tile.risk}</div>`;
+    div.addEventListener('click',()=>div.classList.toggle('expanded'));
+    grid.appendChild(div);
+  });
+}
+
+/* Activity A flip cards (shadow scenario classifier) */
+const activityFlips=[
+  {icon:'📋',cat:'data',code:'Data Risk',title:'Employee pastes client contract into ChatGPT for summarization',back:'Data Risk: confidential business information exits the security perimeter through a personal AI account. Third-party risk: processed under consumer terms of service with potential training use. NIST MAP-4.2 (data collection and use risks).',backCat:'data'},
+  {icon:'🧮',cat:'model',code:'Model Risk',title:'AI financial advisor gives confident but wrong tax advice',back:'Model Risk: hallucination producing plausible but incorrect financial guidance. High-stakes domain where confident wrong answers cause direct financial harm. NIST MS-2.5 (valid & reliable) + MS-2.3 (real conditions performance).',backCat:'model'},
+  {icon:'👁️',cat:'ops',code:'Operational Risk',title:'Advisors send template emails to ALL at-risk flags without reading them',back:'Operational Risk: automation complacency — human oversight nominally in place but effectively rubber-stamping. The system functions correctly; the oversight does not. NIST MG-2.4 (human oversight design) + EU AI Act Article 14.',backCat:'ops'},
+  {icon:'📊',cat:'ethical',code:'Ethical Risk',title:'Hiring AI scores women 12% lower for engineering roles on average',back:'Ethical Risk: harm from correct operation. System functions as designed but systematically disadvantages a protected class. Not a bug — a design outcome. NIST MS-2.11 (fairness & bias disaggregated evaluation) + EU AI Act Annex III §4.',backCat:'ethical'},
+  {icon:'🔌',cat:'tparty',code:'Third-Party Risk',title:'Salesforce Einstein Copilot activated in existing CRM without IT review',back:'Third-Party Risk: approved vendor adds AI capability processing customer PII under original non-AI data agreement. NIST GOVERN-6.1 (third-party policy) + MG-3.1 (ongoing third-party monitoring). EU AI Act deployer obligation gap.',backCat:'tparty'},
+  {icon:'💬',cat:'data',code:'Data Risk',title:'Developer includes FERPA-protected grade data in Copilot prompts to debug code',back:'Data Risk: FERPA-protected student data transmitted to external AI service under personal account terms. No institutional data processing agreement. Uncontrolled data exfiltration pathway. NIST MS-2.10 (privacy-enhanced evaluation).',backCat:'data'},
+  {icon:'🌊',cat:'model',code:'Model Risk',title:'Student performance model accuracy drops silently after curriculum change',back:'Model Risk (Drift): production data distribution shifts after curriculum restructuring. Model continues operating on stale behavioral assumptions. No alert fires because no drift metric was defined. NIST MS-3.1 + MS-2.4.',backCat:'model'},
+  {icon:'🤖',cat:'ops',code:'Operational Risk',title:'AI agent with email access takes actions user didn\'t explicitly authorize',back:'Operational Risk + OWASP LLM06 (Excessive Agency): agent with inherited OAuth permissions takes unanticipated actions at the direction of a manipulated prompt. NIST MG-2.4 kill-switch mechanism required. EU AI Act Art. 14 human oversight.',backCat:'shadow-b'},
+  {icon:'📱',cat:'tparty',code:'Third-Party Risk',title:'20% of staff have AI browser extensions with high permission levels',back:'Third-Party Risk: browser extensions with high/critical OAuth permissions installed without IT review. Extensions access page content on internal portals, SSO-authenticated sessions, and HR systems. NIST MAP-4.1 (component risks). LayerX: 5.6% are outright malicious.',backCat:'tparty'},
+  {icon:'⚖️',cat:'ethical',code:'Ethical Risk',title:'Predictive model for loan approval has disparate impact on minority applicants',back:'Ethical Risk: the model is accurate overall but produces systematically different approval rates for protected classes at equivalent creditworthiness levels. CIA triad shows no violation. NIST MS-2.11 + EU AI Act Annex III §5 (essential private services, credit scoring). High-risk classification triggers Articles 9-15 compliance.',backCat:'ethical'},
+];
+
+/* Detection checklist */
+let checkedCount=0;
+function buildChecklist(){
+  const container=document.getElementById('cl-items-container');
+  Object.entries(clData).forEach(([section,items])=>{
+    const sectionLabel=document.createElement('div');
+    sectionLabel.className='cl-section-label';
+    sectionLabel.innerHTML=`📡 ${section}`;
+    container.appendChild(sectionLabel);
+    items.forEach((text,i)=>{
+      const row=document.createElement('div');row.className='cl-item';
+      row.innerHTML=`<div class="cl-checkbox" tabindex="0" role="checkbox" aria-checked="false" aria-label="${text}"></div><span class="cl-item-text">${text}</span>`;
+      const cb=row.querySelector('.cl-checkbox');
+      const label=row.querySelector('.cl-item-text');
+      const toggle=()=>{
+        const isChecked=cb.classList.contains('checked');
+        cb.classList.toggle('checked',!isChecked);
+        cb.setAttribute('aria-checked',(!isChecked).toString());
+        label.classList.toggle('checked-text',!isChecked);
+        checkedCount+=isChecked?-1:1;
+        document.getElementById('cl-score').textContent=`${checkedCount} / 28 controls checked`;
+        updateMaturity();
+      };
+      row.addEventListener('click',toggle);
+      cb.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle()}});
+      container.appendChild(row);
+    });
+  });
+}
+
+function updateMaturity(){
+  const pct=checkedCount/28;
+  const mat=document.getElementById('cl-maturity');mat.style.display='block';
+  let level,color,advice;
+  if(pct<0.25){level='Initial (0–25%)';color='var(--danger)';advice='Critical gaps: no visibility into shadow AI data flows. Immediate priorities: SaaS discovery, DNS monitoring, and basic AI AUP.';}
+  else if(pct<0.5){level='Developing (26–50%)';color='var(--ops)';advice='Basic detection in place but significant gaps. Focus on endpoint layer and behavioral analytics. Publish a functional AI AUP.';}
+  else if(pct<0.75){level='Defined (51–75%)';color='var(--warn)';advice='Good coverage. Address remaining gaps systematically. Ensure all four detection layers are integrated with response processes.';}
+  else if(pct<0.9){level='Managed (76–90%)';color='var(--ethical)';advice='Strong detection posture. Focus on detection-to-response integration — ensure alerts drive actions, not just records.';}
+  else{level='Optimizing (91–100%)';color='var(--success)';advice='Industry-leading detection capability. Focus on continuous improvement, threat intelligence integration, and external audit validation.';}
+  mat.innerHTML=`<strong style="color:${color}">Maturity Level: ${level}</strong><br><span style="font-size:.88rem;color:var(--ink-soft)">${advice}</span>`;
+}
+
+/* Scenario lab */
+let currentSc=null;let selectedOpt=null;let answeredSet=new Set();
+function buildScenarioSelect(){
+  const sel=document.getElementById('sl-select');
+  scenarios.forEach((s,i)=>{const o=document.createElement('option');o.value=i;o.textContent=s.num;sel.appendChild(o)});
+}
+function loadScenario(idx){
+  if(idx===''){document.getElementById('sl-card').classList.remove('show');return}
+  currentSc=parseInt(idx);selectedOpt=null;
+  const s=scenarios[currentSc];
+  document.getElementById('sl-num').textContent=s.num;
+  document.getElementById('sl-q').textContent=s.q;
+  const optsDiv=document.getElementById('sl-opts');optsDiv.innerHTML='';
+  s.opts.forEach((o,i)=>{
+    const btn=document.createElement('button');btn.className='sc-opt';btn.innerHTML=o;
+    btn.addEventListener('click',()=>{document.querySelectorAll('.sc-opt').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');selectedOpt=i});
+    optsDiv.appendChild(btn);
+  });
+  document.getElementById('sl-fb').className='sc-feedback';document.getElementById('sl-fb').innerHTML='';
+  document.getElementById('sl-card').classList.add('show');
+}
+function checkScenario(){
+  if(currentSc===null||selectedOpt===null){alert('Select a scenario and an answer first.');return}
+  const s=scenarios[currentSc];const ok=selectedOpt===s.correct;
+  document.querySelectorAll('.sc-opt').forEach((b,i)=>{
+    if(i===s.correct)b.classList.add('correct-r');
+    else if(i===selectedOpt&&!ok)b.classList.add('wrong-r');
+  });
+  const fb=document.getElementById('sl-fb');
+  fb.className=`sc-feedback show ${ok?'ok':'bad'}`;
+  fb.innerHTML=`${ok?'✅ Correct!':'❌ Incorrect.'} ${s.fb||s.exp||''}`;
+  answeredSet.add(currentSc);
+  document.getElementById('sl-score').textContent=`${answeredSet.size} / ${scenarios.length} answered`;
+  document.getElementById('sl-progress').textContent=`${answeredSet.size} of ${scenarios.length} completed`;
+}
+function nextScenario(){if(currentSc===null)return;const n=(currentSc+1)%scenarios.length;document.getElementById('sl-select').value=n;loadScenario(n)}
+function resetScenarioLab(){currentSc=null;selectedOpt=null;answeredSet.clear();document.getElementById('sl-select').value='';document.getElementById('sl-card').classList.remove('show');document.getElementById('sl-score').textContent='0 / 8 answered';document.getElementById('sl-progress').textContent='0 of 8 completed'}
+
+/* Sticky nav */
+const navLinks=document.querySelectorAll('.lesson-nav a');
+const navObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){navLinks.forEach(l=>l.classList.remove('active'));const lnk=document.querySelector(`.lesson-nav a[href="#${e.target.id}"]`);if(lnk)lnk.classList.add('active')}})},{rootMargin:'-25% 0px -65% 0px'});
+document.querySelectorAll('section[id]').forEach(s=>navObs.observe(s));
+
+/* Progress */
+function toggleLO(el){el.classList.toggle('checked');el.setAttribute('aria-checked',el.classList.contains('checked').toString());const all=document.querySelectorAll('.lo-check');const done=document.querySelectorAll('.lo-check.checked').length;document.getElementById('progress-fill').style.width=Math.round(done/all.length*100)+'%';document.getElementById('progress-label').textContent=`${done} of ${all.length} completed`}
+
+/* Quiz */
+function buildQuiz(){
+  const body=document.getElementById('quiz-body');
+  quizData.forEach((q,i)=>{
+    const sec=document.createElement('div');sec.className='quiz-q';
+    sec.innerHTML=`<div class="q-prompt"><span class="q-num">Q${i+1}.</span>${q.q}</div><ul class="q-opts">${q.opts.map((o,j)=>`<li><label><input type="radio" name="q${i}" value="${j}"> ${o}</label></li>`).join('')}</ul><div class="q-fb" id="qf${i}"></div>`;
+    body.appendChild(sec);
+  });
+}
+function gradeQuiz(){
+  let score=0;
+  quizData.forEach((q,i)=>{
+    const sel=document.querySelector(`input[name="q${i}"]:checked`);
+    const fb=document.getElementById(`qf${i}`);fb.classList.add('show');
+    if(sel&&parseInt(sel.value)===q.correct){score++;fb.className='q-fb ok show';fb.innerHTML=`✅ <strong>Correct!</strong> ${q.exp}`}
+    else{fb.className='q-fb bad show';fb.innerHTML=`❌ <strong>${sel?'Incorrect.':'No answer.'}</strong> ${q.exp}`}
+  });
+  document.getElementById('quiz-score-display').textContent=`Score: ${score} / ${quizData.length}`;
+  const msgs=['Keep reviewing — this taxonomy is foundational.','Good effort.','Solid command of the categories.','Strong work!','Excellent!','Perfect!'];
+  document.getElementById('quiz-msg').textContent=msgs[Math.min(5,Math.floor(score/2))];
+}
+function resetQuiz(){
+  document.querySelectorAll('#quiz-body input[type=radio]').forEach(r=>r.checked=false);
+  document.querySelectorAll('.q-fb').forEach(f=>{f.className='q-fb';f.innerHTML=''});
+  document.getElementById('quiz-score-display').textContent=`Score: 0 / ${quizData.length}`;
+  document.getElementById('quiz-msg').textContent='';
+}
+
+/* Init */
+buildFlips(riskFlips,'risk-flip-grid');
+buildFlips(activityFlips,'activity-flip-grid');
+buildExpand(riskExpandData,'risk-expand-section');
+buildDetectionExpand(detectionExpandData,'detection-expand-section');
+buildAUPExpand(aupExpandData,'aup-expand-section');
+buildShadowTiles();
+buildChecklist();
+buildScenarioSelect();
+buildQuiz();
+</script>
+</body>
+</html>
