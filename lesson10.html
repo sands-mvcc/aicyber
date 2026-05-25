@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI-103 Lesson 10 — AI as a Weapon: Deepfakes, AI-generated phishing, malware synthesis, and influence operations. Real statistics, documented incidents, and defensive strategies.">
+<title>AI-103 · Day 10: AI as a Weapon — Deepfakes, Phishing &amp; Influence Operations</title>
+<style>
+:root{
+  --oxblood:#6b1a1a;--oxblood-dk:#4a1010;--oxblood-lt:#8c2a2a;
+  --gold:#c8960c;--gold-lt:#e8b830;
+  --cream:#faf8f4;--parchment:#f2ede3;
+  --ink:#1a1a1a;--ink-soft:#3a3a3a;--ink-muted:#6b6b6b;
+  --border:#d4cdbf;--border-lt:#e8e2d8;
+  /* Weapon category colors */
+  --df:#6b0040;--df-lt:#8c0055;--df-bg:#fef0f7;         /* Deepfakes — deep magenta */
+  --ph:#00386b;--ph-lt:#004f95;--ph-bg:#eef4fb;         /* Phishing — deep blue */
+  --mal:#3a006b;--mal-lt:#5200a0;--mal-bg:#f5eefb;      /* Malware — deep purple */
+  --inf:#006b2a;--inf-lt:#009040;--inf-bg:#eef8f2;      /* Influence Ops — deep green */
+  --bec:#6b3a00;--bec-lt:#9a5500;--bec-bg:#fdf5ee;      /* BEC/Fraud — amber */
+  /* Defense */
+  --def-blue:#00456b;--def-bg:#eef4fa;
+  --success:#1a6b2a;--success-bg:#e8f5eb;
+  --error:#6b1a1a;--error-bg:#fdeaea;
+  --warn:#c8960c;--warn-bg:#fff8e1;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.08);
+  --shadow-md:0 4px 16px rgba(0,0,0,.12);
+  --shadow-lg:0 8px 36px rgba(0,0,0,.16);
+  --radius:6px;
+  --ff-serif:'Fraunces','Georgia',serif;
+  --ff-sans:'IBM Plex Sans','Segoe UI',system-ui,sans-serif;
+  --ff-mono:'IBM Plex Mono','Courier New',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--ff-sans);font-size:16px;line-height:1.7;color:var(--ink);background:var(--cream)}
+a{color:var(--df)}a:hover{text-decoration:underline}
+.skip-link{position:absolute;top:-40px;left:1rem;background:var(--oxblood);color:#fff;padding:.4rem .8rem;border-radius:var(--radius);font-size:.85rem;font-weight:600;transition:top .2s;z-index:9999}
+.skip-link:focus{top:.5rem}
+/* Topbar */
+.topbar{background:var(--oxblood-dk);color:rgba(255,255,255,.7);font-size:.78rem;font-family:var(--ff-mono);letter-spacing:.04em;padding:.45rem 2rem;display:flex;align-items:center;flex-wrap:wrap;gap:.3rem .7rem}
+.topbar a{color:rgba(255,255,255,.8);text-decoration:none}.topbar a:hover{color:#fff}
+.topbar-sep{opacity:.4}
+/* Header */
+.site-header{color:#fff;padding:2.8rem 2rem 2.2rem;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#2a0020 0%,#001a40 50%,#1a0030 100%)}
+.site-header::before{content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(45deg,transparent,transparent 32px,rgba(255,255,255,.016) 32px,rgba(255,255,255,.016) 33px);pointer-events:none}
+.header-inner{max-width:1080px;margin:0 auto;position:relative}
+.lesson-eyebrow{font-family:var(--ff-mono);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-lt);margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.lesson-eyebrow .sep{opacity:.4}
+.site-header h1{font-family:var(--ff-serif);font-size:clamp(1.7rem,3.5vw,2.5rem);font-weight:700;line-height:1.15;margin-bottom:.5rem}
+.site-header .tagline{font-size:.97rem;color:rgba(255,255,255,.75);max-width:700px;margin-bottom:1.4rem}
+.header-meta{display:flex;flex-wrap:wrap;gap:.5rem 1.2rem;font-size:.82rem;color:rgba(255,255,255,.62)}
+.header-meta strong{color:rgba(255,255,255,.9)}
+/* Nav */
+.lesson-nav{background:var(--df);border-bottom:2px solid var(--gold);position:sticky;top:0;z-index:100}
+.lesson-nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;overflow-x:auto;scrollbar-width:none}
+.lesson-nav-inner::-webkit-scrollbar{display:none}
+.lesson-nav a{color:rgba(255,255,255,.72);font-size:.78rem;font-weight:600;letter-spacing:.04em;white-space:nowrap;padding:.6rem 1rem;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .15s;text-decoration:none}
+.lesson-nav a:hover,.lesson-nav a.active{color:#fff;border-bottom-color:var(--gold-lt);background:rgba(255,255,255,.07)}
+/* Layout */
+.page-body{max-width:1080px;margin:0 auto;padding:2.5rem 1.5rem 5rem;display:grid;grid-template-columns:1fr 260px;gap:2.5rem;align-items:start}
+@media(max-width:820px){.page-body{grid-template-columns:1fr}.sidebar{display:none}}
+main{min-width:0}
+/* Sidebar */
+.sidebar{position:sticky;top:56px}
+.sidebar-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:1rem;box-shadow:var(--shadow-sm)}
+.sc-head{background:var(--df);color:#fff;padding:.65rem 1rem;font-size:.78rem;font-family:var(--ff-mono);letter-spacing:.07em;text-transform:uppercase;font-weight:600}
+.sc-body{padding:.9rem 1rem}
+.sidebar-toc{list-style:none}
+.sidebar-toc li{border-bottom:1px solid var(--border-lt)}.sidebar-toc li:last-child{border-bottom:none}
+.sidebar-toc a{display:block;padding:.45rem 0;font-size:.82rem;color:var(--ink-soft);text-decoration:none;transition:color .15s}
+.sidebar-toc a:hover{color:var(--df)}
+.toc-num{font-family:var(--ff-mono);font-size:.72rem;color:var(--oxblood);margin-right:.4rem}
+.lo-list{list-style:none}
+.lo-list li{font-size:.82rem;color:var(--ink-soft);padding:.35rem 0;border-bottom:1px solid var(--border-lt);display:flex;gap:.5rem;align-items:flex-start;line-height:1.45}
+.lo-list li:last-child{border-bottom:none}
+.lo-check{width:1.1rem;height:1.1rem;border:2px solid var(--oxblood);border-radius:3px;flex-shrink:0;margin-top:.15rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.65rem;color:#fff;background:transparent;transition:background .15s}
+.lo-check.checked{background:var(--oxblood)}.lo-check.checked::after{content:'✓'}
+.progress-wrap{height:6px;background:var(--border-lt);border-radius:3px;margin:.7rem 0 .4rem;overflow:hidden}
+.progress-fill{height:100%;background:var(--oxblood);border-radius:3px;width:0%;transition:width .3s}
+.progress-label{font-size:.75rem;color:var(--ink-muted);font-family:var(--ff-mono)}
+/* Sections */
+.lesson-section{margin-bottom:3rem}
+.section-title{font-family:var(--ff-serif);font-size:1.45rem;font-weight:700;color:var(--oxblood);margin-bottom:.3rem;padding-bottom:.45rem;border-bottom:2px solid var(--border);display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap}
+.section-meta{font-family:var(--ff-mono);font-size:.72rem;letter-spacing:.06em;color:var(--ink-muted);text-transform:uppercase;font-weight:normal}
+h3{font-family:var(--ff-sans);font-size:1.05rem;font-weight:700;color:var(--ink);margin:1.5rem 0 .6rem}
+.prose p{margin-bottom:1rem;color:var(--ink-soft)}.prose p:last-child{margin-bottom:0}.prose strong{color:var(--ink)}
+/* Part banner */
+.part-banner{border-radius:var(--radius);padding:.85rem 1.3rem;margin:2.5rem 0 1.8rem;display:flex;align-items:center;gap:1rem;color:#fff}
+.pb-num{font-family:var(--ff-mono);font-size:1.3rem;font-weight:700;color:var(--gold-lt);line-height:1}
+.pb-title{font-family:var(--ff-serif);font-size:1.05rem;font-weight:700}
+.pb-time{margin-left:auto;font-family:var(--ff-mono);font-size:.75rem;color:rgba(255,255,255,.6);white-space:nowrap}
+/* Analogy box */
+.analogy-box{background:var(--parchment);border:1px solid var(--border);border-left:5px solid var(--gold);border-radius:var(--radius);padding:1.2rem 1.5rem;margin:1.5rem 0}
+.analogy-label{font-family:var(--ff-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:.4rem}
+.analogy-box p{color:var(--ink-soft);font-size:.95rem;margin-bottom:.5rem}.analogy-box p:last-child{margin-bottom:0}
+/* Callout */
+.callout{background:var(--warn-bg);border:1px solid #e8c84a;border-left:5px solid var(--gold);border-radius:var(--radius);padding:1rem 1.3rem;margin:1.2rem 0;font-size:.92rem;color:var(--ink-soft)}
+.callout-label{font-weight:700;color:var(--ink);font-family:var(--ff-mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.3rem}
+.callout-danger{background:var(--error-bg);border-color:#e8a4a4;border-left-color:var(--df)}
+.callout-ph{background:var(--ph-bg);border-color:#90b8d8;border-left-color:var(--ph)}
+.callout-inf{background:var(--inf-bg);border-color:#90c490;border-left-color:var(--inf)}
+/* STAT CARDS */
+.stat-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:.9rem;margin:1.5rem 0}
+.stat-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem;text-align:center;box-shadow:var(--shadow-sm)}
+.stat-num{font-family:var(--ff-serif);font-size:2rem;font-weight:700;line-height:1;margin-bottom:.25rem}
+.stat-label{font-size:.78rem;color:var(--ink-muted);line-height:1.4}
+.stat-source{font-family:var(--ff-mono);font-size:.65rem;color:var(--ink-muted);margin-top:.3rem}
+/* CASE STUDY CARDS */
+.case-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;margin:1.5rem 0}
+.case-card{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-md);transition:transform .15s,box-shadow .15s}
+.case-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.cc-head{padding:.75rem 1rem;color:#fff;display:flex;align-items:center;gap:.5rem}
+.cc-icon{font-size:1.4rem}
+.cc-meta{display:flex;flex-direction:column}
+.cc-title{font-weight:700;font-size:.9rem;line-height:1.2}
+.cc-date{font-family:var(--ff-mono);font-size:.68rem;opacity:.8;margin-top:.15rem}
+.cc-body{padding:.85rem 1rem;background:#fff;border:1px solid var(--border);border-top:none}
+.cc-body p{font-size:.86rem;color:var(--ink-soft);line-height:1.55;margin-bottom:.4rem}
+.cc-body p:last-child{margin-bottom:0}
+.cc-impact{font-family:var(--ff-mono);font-size:.73rem;font-weight:700;background:var(--error-bg);color:var(--error);border-radius:3px;padding:.2rem .5rem;display:inline-block;margin-top:.4rem}
+.cc-lesson{font-size:.8rem;color:var(--ink-muted);border-top:1px solid var(--border-lt);padding-top:.4rem;margin-top:.5rem}
+/* FLIP CARDS */
+.flip-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin:1.5rem 0}
+.flip-card{height:220px;cursor:pointer;perspective:900px}
+.flip-inner{width:100%;height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;position:relative}
+.flip-card.flipped .flip-inner{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--radius);padding:1.1rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:var(--shadow-sm)}
+.flip-front{background:#fff;border:1px solid var(--border)}
+.flip-back{transform:rotateY(180deg);color:#fff}
+.flip-icon{font-size:2rem;margin-bottom:.45rem}
+.flip-code{font-family:var(--ff-mono);font-size:.7rem;font-weight:700;letter-spacing:.06em;margin-bottom:.25rem}
+.flip-title{font-weight:700;font-size:.9rem;color:var(--ink);line-height:1.3;margin-bottom:.25rem}
+.flip-hint{font-size:.7rem;color:var(--ink-muted);font-family:var(--ff-mono)}
+.flip-back-title{font-weight:700;font-size:.85rem;margin-bottom:.4rem;color:rgba(255,215,0,.9)}
+.flip-body{font-size:.79rem;line-height:1.5;color:rgba(255,255,255,.92)}
+.flip-tag{font-family:var(--ff-mono);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.2);border-radius:3px;padding:.1rem .4rem;margin-top:.4rem;display:inline-block}
+/* EXPANDABLE DROPDOWNS */
+.expand-section{margin:1.2rem 0}
+.expand-item{border:1px solid var(--border);border-radius:var(--radius);margin-bottom:.5rem;overflow:hidden;box-shadow:var(--shadow-sm);transition:box-shadow .15s}
+.expand-item:hover{box-shadow:var(--shadow-md)}
+.expand-trigger{width:100%;background:#fff;border:none;padding:.9rem 1.1rem;display:flex;align-items:center;gap:.7rem;cursor:pointer;font-family:var(--ff-sans);font-size:.92rem;font-weight:700;color:var(--ink);text-align:left;transition:background .15s}
+.expand-trigger:hover,.expand-trigger.open{background:var(--parchment)}
+.exp-badge{font-family:var(--ff-mono);font-size:.75rem;font-weight:800;border-radius:3px;padding:.15rem .5rem;color:#fff;flex-shrink:0}
+.exp-tag{font-family:var(--ff-mono);font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:.1rem .45rem;border-radius:3px;margin-left:auto;flex-shrink:0}
+.expand-chevron{font-size:.8rem;transition:transform .25s;flex-shrink:0;margin-left:.3rem;color:var(--ink-muted)}
+.expand-trigger.open .expand-chevron{transform:rotate(180deg)}
+.expand-body{display:none;background:#fff;border-top:1px solid var(--border-lt)}
+.expand-body.show{display:grid;grid-template-columns:1fr 1fr;gap:0}
+@media(max-width:640px){.expand-body.show{grid-template-columns:1fr}}
+.expand-col{padding:1rem 1.3rem}.expand-col+.expand-col{border-left:1px solid var(--border-lt)}
+.exp-col-label{font-family:var(--ff-mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:.5rem;color:var(--oxblood)}
+.exp-col-label.blue{color:var(--ph)}.exp-col-label.green{color:var(--inf)}
+.exp-col-label.purple{color:var(--mal)}.exp-col-label.amber{color:var(--bec)}
+.exp-quote{border-left:4px solid;padding:.65rem .9rem;font-size:.84rem;font-style:italic;border-radius:0 4px 4px 0;margin-bottom:.7rem;line-height:1.5}
+.expand-col p{font-size:.88rem;color:var(--ink-soft);line-height:1.55;margin-bottom:.5rem}.expand-col p:last-child{margin-bottom:0}
+.expand-col ul{margin:.3rem 0 .5rem 1.1rem}.expand-col li{font-size:.85rem;color:var(--ink-soft);margin-bottom:.25rem;line-height:1.45}
+.defense-chip{font-family:var(--ff-mono);font-size:.68rem;font-weight:700;border-radius:3px;padding:.1rem .4rem;background:var(--success-bg);color:var(--success)}
+.incident-box{background:var(--parchment);border:1px solid var(--border);border-radius:4px;padding:.65rem .9rem;font-size:.84rem;color:var(--ink-soft);margin:.5rem 0;line-height:1.5}
+/* PHISHING EVOLUTION TIMELINE */
+.phishing-timeline{margin:1.5rem 0;position:relative}
+.phishing-timeline::before{content:'';position:absolute;left:1.5rem;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,var(--ph),var(--df),var(--mal));border-radius:3px}
+.pt-item{display:flex;gap:1.2rem;margin-bottom:1.2rem;position:relative}
+.pt-dot{width:3rem;height:3rem;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:700;flex-shrink:0;z-index:1;box-shadow:var(--shadow-sm)}
+.pt-content{flex:1;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:.8rem 1rem;box-shadow:var(--shadow-sm)}
+.pt-era{font-family:var(--ff-mono);font-size:.75rem;font-weight:700;margin-bottom:.2rem}
+.pt-title{font-weight:700;font-size:.92rem;color:var(--ink);margin-bottom:.3rem}
+.pt-detail{font-size:.85rem;color:var(--ink-soft);line-height:1.5}
+.pt-stat{font-family:var(--ff-mono);font-size:.72rem;background:var(--error-bg);color:var(--error);border-radius:3px;padding:.1rem .4rem;display:inline-block;margin-top:.3rem}
+/* DEEPFAKE DETECTION LAB */
+.detection-lab{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:1.5rem 0;box-shadow:var(--shadow-md)}
+.dl-header{background:var(--df);color:#fff;padding:.8rem 1.2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.dl-title{font-family:var(--ff-mono);font-size:.8rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+.dl-score{font-family:var(--ff-mono);font-size:.82rem;color:var(--gold-lt)}
+.dl-body{padding:1.3rem 1.5rem}
+.dl-body>p{color:var(--ink-soft);font-size:.92rem;margin-bottom:1rem}
+.dl-scenarios{display:flex;flex-direction:column;gap:.75rem}
+.dl-sc{background:var(--parchment);border:1px solid var(--border);border-radius:var(--radius);padding:.9rem 1.1rem}
+.dl-sc-num{font-family:var(--ff-mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.07em;color:var(--df);font-weight:700;margin-bottom:.3rem}
+.dl-sc-text{font-size:.9rem;color:var(--ink-soft);line-height:1.55;margin-bottom:.7rem}
+.dl-options{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.5rem}
+.dl-opt{font-family:var(--ff-sans);font-size:.83rem;font-weight:600;padding:.35rem .8rem;border:2px solid var(--border);border-radius:4px;background:#fff;color:var(--ink-soft);cursor:pointer;transition:all .15s}
+.dl-opt:hover{color:var(--ink)}
+.dl-opt.selected{font-weight:700}
+.dl-opt.correct-r{border-color:var(--success);background:var(--success-bg);color:var(--success)}
+.dl-opt.wrong-r{border-color:var(--error);background:var(--error-bg);color:var(--error)}
+.dl-fb{border-radius:4px;padding:.65rem .9rem;font-size:.86rem;line-height:1.55;display:none;margin-top:.4rem}
+.dl-fb.show{display:block}
+.dl-fb.ok{background:var(--success-bg);border:1px solid #a8d4b0;color:var(--success)}
+.dl-fb.bad{background:var(--error-bg);border:1px solid #e8b4b4;color:var(--error)}
+/* INFLUENCE OP CLASSIFIER */
+.inf-classifier{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:1.5rem 0;box-shadow:var(--shadow-md)}
+.ic-header{background:var(--inf);color:#fff;padding:.8rem 1.2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.ic-title{font-family:var(--ff-mono);font-size:.8rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+.ic-score{font-family:var(--ff-mono);font-size:.82rem;color:rgba(255,255,255,.8)}
+.ic-body{padding:1.3rem 1.5rem}
+.ic-body>p{color:var(--ink-soft);font-size:.92rem;margin-bottom:1rem}
+.ic-scenarios{display:flex;flex-direction:column;gap:.65rem;margin-bottom:.8rem}
+.ic-incident{background:var(--parchment);border:1px solid var(--border);border-left:4px solid var(--inf);border-radius:var(--radius);padding:.8rem 1rem;display:flex;align-items:flex-start;gap:.8rem;flex-wrap:wrap}
+.ic-num{font-family:var(--ff-mono);font-size:.72rem;font-weight:700;color:var(--inf);flex-shrink:0;margin-top:.1rem}
+.ic-text{font-size:.88rem;color:var(--ink-soft);flex:1;line-height:1.5;min-width:200px}
+.ic-select{font-family:var(--ff-sans);font-size:.85rem;border:1px solid var(--border);border-radius:4px;padding:.35rem .6rem;background:#fff;color:var(--ink);cursor:pointer;flex-shrink:0;min-width:170px}
+.ic-results{margin-top:.8rem;display:none}
+.ic-results.show{display:block}
+.ic-result-row{display:flex;align-items:flex-start;gap:.6rem;font-size:.85rem;margin-bottom:.4rem;line-height:1.45}
+/* DEFENSE BUILDER */
+.defense-builder{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:1.5rem 0;box-shadow:var(--shadow-md)}
+.db-header{background:var(--def-blue);color:#fff;padding:.8rem 1.2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+.db-title{font-family:var(--ff-mono);font-size:.8rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+.db-score{font-family:var(--ff-mono);font-size:.82rem;color:rgba(255,255,255,.8)}
+.db-body{padding:1.3rem 1.5rem}
+.db-selector{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin-bottom:1rem}
+.db-selector label{font-weight:600;font-size:.88rem;color:var(--ink-soft)}
+.db-selector select{font-family:var(--ff-sans);font-size:.88rem;border:1px solid var(--border);border-radius:4px;padding:.4rem .7rem;background:#fff;color:var(--ink);cursor:pointer}
+.db-scenario-box{background:var(--parchment);border:1px solid var(--border);border-left:4px solid var(--def-blue);border-radius:var(--radius);padding:.9rem 1.1rem;margin-bottom:1rem;display:none}
+.db-scenario-box.show{display:block}
+.db-sc-label{font-family:var(--ff-mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.07em;color:var(--def-blue);font-weight:700;margin-bottom:.3rem}
+.db-sc-text{font-size:.9rem;color:var(--ink-soft);line-height:1.55}
+.db-controls{display:flex;flex-direction:column;gap:.45rem;margin-bottom:.8rem}
+.db-ctrl{display:flex;align-items:flex-start;gap:.7rem;padding:.55rem .8rem;border:1px solid var(--border-lt);border-radius:4px;font-size:.88rem;color:var(--ink-soft);background:var(--cream);cursor:pointer;transition:background .12s;line-height:1.45}
+.db-ctrl:hover{background:var(--parchment)}
+.db-ctrl input[type=checkbox]{flex-shrink:0;margin-top:.25rem;accent-color:var(--def-blue)}
+.db-result{display:none;background:var(--parchment);border:1px solid var(--border);border-radius:var(--radius);padding:.9rem 1.1rem;font-size:.88rem;color:var(--ink-soft);line-height:1.55}
+.db-result.show{display:block}
+.db-result-item{margin-bottom:.4rem;display:flex;gap:.5rem;align-items:flex-start}
+/* Tables */
+.table-wrap{overflow-x:auto;margin:1.5rem 0}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-sm);font-size:.87rem}
+thead tr{background:var(--df);color:#fff}
+thead.ph-head tr{background:var(--ph)}
+thead.inf-head tr{background:var(--inf)}
+thead.def-head tr{background:var(--def-blue)}
+thead th{padding:.7rem 1rem;text-align:left;font-family:var(--ff-mono);font-size:.73rem;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+tbody tr{border-bottom:1px solid var(--border-lt)}.tbody tr:last-child{border-bottom:none}
+tbody td{padding:.65rem 1rem;color:var(--ink-soft);vertical-align:top;line-height:1.5}
+tbody td:first-child{font-weight:600;color:var(--ink)}
+tbody tr:hover{background:var(--parchment)}
+/* Buttons */
+.btn{font-family:var(--ff-sans);font-weight:700;font-size:.88rem;padding:.55rem 1.2rem;border:none;border-radius:var(--radius);cursor:pointer;transition:background .15s,transform .1s}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--oxblood);color:#fff}.btn-primary:hover{background:var(--oxblood-lt)}
+.btn-df{background:var(--df);color:#fff}.btn-df:hover{background:var(--df-lt)}
+.btn-inf{background:var(--inf);color:#fff}.btn-inf:hover{background:var(--inf-lt)}
+.btn-def{background:var(--def-blue);color:#fff}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--ink-soft)}.btn-ghost:hover{background:var(--parchment)}
+/* Quiz */
+.quiz-block{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:1.5rem 0;box-shadow:var(--shadow-sm)}
+.quiz-head{background:var(--oxblood-dk);color:#fff;padding:.7rem 1.2rem;font-family:var(--ff-mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;display:flex;align-items:center;justify-content:space-between}
+.quiz-score-d{color:var(--gold-lt)}
+.quiz-q{padding:1.2rem 1.5rem;border-bottom:1px solid var(--border-lt)}.quiz-q:last-child{border-bottom:none}
+.q-prompt{font-weight:600;color:var(--ink);font-size:.95rem;margin-bottom:.9rem;line-height:1.5}
+.q-num{font-family:var(--ff-mono);font-size:.72rem;color:var(--oxblood);font-weight:700;margin-right:.4rem}
+.q-opts{list-style:none}
+.q-opts li{margin-bottom:.45rem}
+.q-opts label{display:flex;align-items:flex-start;gap:.7rem;cursor:pointer;padding:.5rem .8rem;border:1px solid var(--border-lt);border-radius:4px;font-size:.88rem;color:var(--ink-soft);background:var(--cream);transition:background .12s}
+.q-opts label:hover{background:var(--parchment);border-color:var(--border)}
+.q-opts input[type=radio]{flex-shrink:0;margin-top:.2rem;accent-color:var(--oxblood)}
+.q-fb{margin-top:.7rem;padding:.7rem .9rem;border-radius:4px;font-size:.86rem;display:none;line-height:1.5}
+.q-fb.ok{background:var(--success-bg);border:1px solid #a8d4b0;color:var(--success)}
+.q-fb.bad{background:var(--error-bg);border:1px solid #e8b4b4;color:var(--error)}
+.q-fb.show{display:block}
+.quiz-actions{padding:1rem 1.5rem;border-top:1px solid var(--border-lt);display:flex;gap:.7rem;flex-wrap:wrap;align-items:center}
+.quiz-msg{font-size:.88rem;color:var(--ink-muted);font-family:var(--ff-mono)}
+/* Artifact */
+.artifact-block{background:var(--parchment);border:1px solid var(--border);border-left:5px solid var(--oxblood);border-radius:var(--radius);padding:1.2rem 1.5rem;margin:1.5rem 0}
+.artifact-label{font-family:var(--ff-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--oxblood);font-weight:700;margin-bottom:.4rem}
+.artifact-block h4{font-family:var(--ff-serif);font-size:1rem;font-weight:700;margin-bottom:.5rem;color:var(--ink)}
+.artifact-block p{font-size:.9rem;color:var(--ink-soft);margin-bottom:.5rem}.artifact-block p:last-child{margin-bottom:0}
+.artifact-block ul{margin:.4rem 0 .5rem 1.2rem}.artifact-block li{font-size:.9rem;color:var(--ink-soft);margin-bottom:.3rem}
+/* Footer */
+.lesson-nav-footer{max-width:1080px;margin:0 auto;display:flex;justify-content:space-between;padding:1rem 1.5rem;border-top:1px solid var(--border);flex-wrap:wrap;gap:.5rem}
+.lesson-nav-footer a{font-size:.88rem;font-weight:700;color:var(--oxblood)}
+footer{background:var(--oxblood-dk);color:rgba(255,255,255,.55);text-align:center;font-size:.8rem;padding:1.5rem 1rem;font-family:var(--ff-mono);letter-spacing:.03em}
+footer strong{color:rgba(255,255,255,.8)}
+@media(max-width:640px){.site-header{padding:2rem 1rem 1.6rem}.topbar{padding:.4rem 1rem}.flip-grid{grid-template-columns:1fr 1fr}}
+@media print{.lesson-nav,.topbar,.sidebar{display:none}.page-body{grid-template-columns:1fr}body{background:#fff}}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+<div class="topbar">
+  <a href="index.html">← AI-103 Course Home</a>
+  <span class="topbar-sep">·</span>
+  <span>MVCC · Dept. of Engineering &amp; Technology</span>
+  <span class="topbar-sep">·</span>
+  <span>Dr. John L. Sands</span>
+</div>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="lesson-eyebrow">
+      <span>AI-103: AI Cybersecurity Foundations</span>
+      <span class="sep">·</span><span>Day 10 of 15</span>
+      <span class="sep">·</span><span>4 Contact Hours</span>
+    </div>
+    <h1>AI as a Weapon — Deepfakes, Phishing &amp; Influence Operations</h1>
+    <p class="tagline">The attacker now has access to AI tools that were nation-state exclusive five years ago. Voice cloning from 20 seconds of audio. Phishing emails with 54% click rates. $25M stolen from a single video call. Democratic elections influenced at scale.</p>
+    <div class="header-meta">
+      <span>⚔️ <strong>Offensive AI Capabilities</strong></span>
+      <span>⏱ <strong>4 hours · 5 modules + 3 activities</strong></span>
+      <span>🎯 <strong>Learning Objectives 14 &amp; 15</strong></span>
+      <span>📝 <strong>Incident response brief due end of class</strong></span>
+    </div>
+  </div>
+</header>
+<nav class="lesson-nav">
+  <div class="lesson-nav-inner">
+    <a href="#overview" class="active">Overview</a>
+    <a href="#m1">1 · The Weaponization Shift</a>
+    <a href="#m2">2 · Deepfakes</a>
+    <a href="#m3">3 · AI Phishing &amp; BEC</a>
+    <a href="#m4">4 · Influence Operations</a>
+    <a href="#m5">5 · Defense Posture</a>
+    <a href="#activity-detect">Activity: Detect It</a>
+    <a href="#activity-classify">Activity: Classify the Op</a>
+    <a href="#activity-defend">Activity: Defend the Org</a>
+    <a href="#artifact">Assessment</a>
+    <a href="#quiz">Quiz</a>
+  </div>
+</nav>
+<div class="page-body">
+<main id="main">
+
+<!-- ── OVERVIEW ──────────────────────────────────────────────── -->
+<section id="overview" class="lesson-section">
+  <h2 class="section-title"><span>🧭</span> Lesson Overview <span class="section-meta">Day 10 · 4 hours</span></h2>
+  <div class="prose">
+    <p>Days 7–9 covered AI as a target — attacks against AI systems. Today the perspective flips entirely: <strong>AI as the weapon</strong>. The same generative AI capabilities that enable creative content, business automation, and educational tools are also enabling unprecedented offensive capabilities. The economics of sophisticated cyberattacks have fundamentally changed.</p>
+    <p>Four years ago, a convincing deepfake video required a Hollywood production budget. A targeted spear-phishing campaign required a skilled social engineer spending 16 hours per email. An influence operation required a nation-state's intelligence infrastructure. Today, each of these can be accomplished in minutes, by low-skill actors, for near-zero cost. That democratization of offensive capability is this lesson's central argument.</p>
+  </div>
+  <div class="analogy-box">
+    <div class="analogy-label">🎓 Anchoring Analogy: The Printing Press as a Weapon</div>
+    <p>The printing press democratized the production of text — and within decades of its invention, it was used to produce propaganda, forged documents, and seditious pamphlets at unprecedented scale. The invention itself was neutral; the capability it created was immediately weaponized alongside its legitimate uses.</p>
+    <p>Generative AI is the printing press of media synthesis. It democratized the creation of convincing audio, video, images, and text. Every use case that makes generative AI valuable for legitimate purposes has a weaponized counterpart: creative writing → phishing email generation; voice synthesis → CEO fraud; image generation → disinformation imagery; conversational AI → social engineering at scale. <strong>The weapon and the tool share the same capability base. Defense cannot ban the capability — it must detect the weaponized use.</strong></p>
+  </div>
+  <h3>Day 10 Learning Objectives</h3>
+  <ol style="margin-left:1.3rem;color:var(--ink-soft);font-size:.92rem">
+    <li style="margin-bottom:.4rem">Explain the economic and capability shifts that made AI weaponization accessible beyond nation-state actors.</li>
+    <li style="margin-bottom:.4rem">Describe deepfake attack types (audio, video, image, real-time) with documented financial and reputational impact.</li>
+    <li style="margin-bottom:.4rem">Explain how AI-generated phishing achieves human-expert effectiveness at nation-state scale and cost.</li>
+    <li style="margin-bottom:.4rem">Identify the five components of an AI-enabled influence operation and apply them to documented real-world campaigns.</li>
+    <li style="margin-bottom:.4rem">Select appropriate technical and procedural defenses for each offensive AI category.</li>
+    <li style="margin-bottom:.4rem">Apply detection strategies to realistic deepfake, phishing, and influence operation scenarios.</li>
+  </ol>
+</section>
+
+<!-- ── M1: THE WEAPONIZATION SHIFT ─────────────────────────── -->
+<section id="m1" class="lesson-section">
+  <h2 class="section-title"><span>⚡</span> Module 1 · The Weaponization Shift — Economics Change Everything <span class="section-meta">20 min</span></h2>
+  <div class="prose">
+    <p>The security community spent decades building defenses calibrated to the attacker economics of the pre-AI era. Phishing defenses assume attackers will make grammatical errors. Fraud controls assume social engineering requires skilled human actors. Content moderation assumes disinformation requires significant production resources. Every one of these assumptions has been invalidated by generative AI.</p>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Offensive Capability</th><th>Pre-AI Era</th><th>Generative AI Era (2025–2026)</th><th>Capability Multiplier</th></tr></thead>
+      <tbody>
+        <tr><td>Spear-phishing email</td><td>16 hours / email (IBM estimate); requires language fluency + target research</td><td>Seconds; AI generates personalized emails referencing real projects, colleagues, and relationships</td><td>~5,760× speed; 95% cost reduction</td></tr>
+        <tr><td>Voice cloning (impersonation)</td><td>Months of audio; required studio; nation-state capability</td><td>20–30 seconds of audio; freely available tools; $0 marginal cost</td><td>Technology democratized to commodity</td></tr>
+        <tr><td>Convincing deepfake video</td><td>$10,000–$100,000+ production; Hollywood-grade VFX; weeks</td><td>$0 + 45 minutes + free software; achievable by non-technical actors</td><td>99%+ cost reduction</td></tr>
+        <tr><td>Influence operation</td><td>Nation-state intelligence infrastructure; troll farms; hundreds of staff</td><td>One actor + LLM + social media API; thousands of unique persona posts per day</td><td>Scale multiplied by orders of magnitude</td></tr>
+        <tr><td>Malware generation</td><td>Skilled malware developers; months of development</td><td>LLMs generate functional exploit code and malware variants; automated obfuscation</td><td>Entry barrier removed for low-skill actors</td></tr>
+        <tr><td>Social engineering script</td><td>Professional social engineer; custom scripts per target</td><td>LLM generates context-aware conversation scripts; real-time deepfake impersonation</td><td>Personalization at mass scale</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout callout-danger">
+    <div class="callout-label">💰 The New Attacker Economics</div>
+    Attackers now save <strong>95% on campaign costs</strong> using LLMs. A 2024 campaign targeting 800 small accounting firms generated customized tax-deadline phishing emails referencing each firm's specific state registration details — achieving a <strong>27% click rate</strong> at the cost of what a single traditional spear-phishing email used to cost. The constraint was human time. LLMs removed the constraint.
+  </div>
+</section>
+
+<!-- ── M2: DEEPFAKES ─────────────────────────────────────────── -->
+<div class="part-banner" style="background:var(--df)">
+  <div class="pb-num">🎭</div>
+  <div class="pb-title">Deepfakes — When Seeing Is No Longer Believing</div>
+  <div class="pb-time">⏱ 50 min</div>
+</div>
+<section id="m2" class="lesson-section">
+  <h2 class="section-title"><span>🎭</span> Module 2 · Deepfakes — Scale, Impact &amp; Detection <span class="section-meta">50 min</span></h2>
+  <div class="prose">
+    <p>Deepfakes — AI-generated synthetic media that replaces or impersonates a real person's face, voice, or body — have crossed from research curiosity to primary attack vector. The World Economic Forum ranked AI-driven disinformation as the largest short-term global risk in both 2024 and 2025. The Keepnet research found that only <strong>0.1% of participants correctly identified all fake and real media</strong> shown. When humans cannot reliably detect deepfakes, security cannot depend on human detection as a control.</p>
+  </div>
+
+  <h3>Current Scale &amp; Financial Impact</h3>
+  <div class="stat-row">
+    <div class="stat-card"><div class="stat-num" style="color:var(--df)">1,740%</div><div class="stat-label">Deepfake fraud surge in North America, 2022–2023</div><div class="stat-source">WEF, 2025</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--df)">$25M</div><div class="stat-label">Single incident loss — Arup video conference deepfake (Feb 2024)</div><div class="stat-source">Documented</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--error)">$200M+</div><div class="stat-label">Deepfake fraud losses, North America, Q1 2025 alone</div><div class="stat-source">WEF, 2025</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--error)">$40B</div><div class="stat-label">Projected global deepfake-enabled fraud losses by 2027</div><div class="stat-source">Deloitte</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--warn)">0.1%</div><div class="stat-label">People who correctly identify ALL fake + real media (iProov 2025)</div><div class="stat-source">iProov</div></div>
+    <div class="stat-card"><div class="stat-num" style="color:var(--warn)">20s</div><div class="stat-label">Audio required to clone a voice convincingly (2025)</div><div class="stat-source">WEF, 2025</div></div>
+  </div>
+
+  <h3>Deepfake Attack Types — Flip Cards</h3>
+  <div class="flip-grid" id="df-flip-grid" role="list" aria-label="Deepfake attack type flip cards"></div>
+
+  <h3 style="margin-top:2rem">Landmark Deepfake Incidents — Case Studies</h3>
+  <div class="case-grid" id="df-case-grid"></div>
+
+  <h3 style="margin-top:2rem">Deepfake Detection Methods — What Works in 2025</h3>
+  <div class="expand-section" id="df-expand"></div>
+
+  <h3 style="margin-top:1.5rem">Detection Comparison: Human vs. Technical</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Detection Method</th><th>Audio Deepfake</th><th>Video Deepfake</th><th>Image Deepfake</th><th>Limitation</th></tr></thead>
+      <tbody>
+        <tr><td>Human detection (unaided)</td><td style="text-align:center;color:var(--error)">❌ ~0.1% reliable</td><td style="text-align:center;color:var(--error)">❌ &lt;50% accurate</td><td style="text-align:center;color:var(--error)">❌ Fails on modern GAN</td><td>Technology has surpassed human perception</td></tr>
+        <tr><td>Spectral/frequency analysis</td><td style="text-align:center;color:var(--success)">✅ Effective</td><td style="text-align:center;color:var(--warn)">⚠️ Partial</td><td style="text-align:center;color:var(--success)">✅ Effective</td><td>Adversarial post-processing can defeat</td></tr>
+        <tr><td>Liveness detection (biometric)</td><td style="text-align:center;color:var(--success)">✅ For IDV</td><td style="text-align:center;color:var(--warn)">⚠️ Bypassed +704%</td><td style="text-align:center;color:var(--warn)">⚠️ Partial</td><td>Face-swap + virtual camera bypasses IDV</td></tr>
+        <tr><td>C2PA content credentials</td><td style="text-align:center;color:var(--success)">✅ Provenance</td><td style="text-align:center;color:var(--success)">✅ Provenance</td><td style="text-align:center;color:var(--success)">✅ Provenance</td><td>Requires camera/device adoption; doesn't cover all content</td></tr>
+        <tr><td>AI-based detector models</td><td style="text-align:center;color:var(--success)">✅ Current gen</td><td style="text-align:center;color:var(--warn)">⚠️ Arms race</td><td style="text-align:center;color:var(--warn)">⚠️ Arms race</td><td>Detectors trained on yesterday's generators; adversarial evasion</td></tr>
+        <tr><td>Procedural controls (code words)</td><td style="text-align:center;color:var(--success)">✅ Out-of-band</td><td style="text-align:center;color:var(--success)">✅ Out-of-band</td><td style="text-align:center;color:var(--success)">✅ Out-of-band</td><td>Requires organizational implementation; humans forget under pressure</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ── M3: AI PHISHING & BEC ────────────────────────────────── -->
+<div class="part-banner" style="background:var(--ph)">
+  <div class="pb-num">📧</div>
+  <div class="pb-title">AI-Generated Phishing &amp; Business Email Compromise</div>
+  <div class="pb-time">⏱ 40 min</div>
+</div>
+<section id="m3" class="lesson-section">
+  <h2 class="section-title"><span>📧</span> Module 3 · AI-Generated Phishing — The Grammar Check Fallacy <span class="section-meta">40 min</span></h2>
+  <div class="prose">
+    <p>For two decades, phishing training taught employees to look for grammatical errors, unusual phrasing, and suspicious sender addresses. Every one of those signals has been eliminated by large language models. KnowBe4's 2025 Phishing Benchmarking Report found that <strong>82.6% of phishing emails analyzed between September 2024 and February 2025 contained AI-generated content</strong>. The grammar check approach is not just inadequate — it is actively misleading, creating false confidence in employees who believe they can spot phishing by checking for errors that no longer exist.</p>
+  </div>
+
+  <h3>The Phishing Attack Chain — How AI Transformed Every Stage</h3>
+  <div class="phishing-timeline">
+    <div class="pt-item">
+      <div class="pt-dot" style="background:var(--ph);color:#fff">1</div>
+      <div class="pt-content">
+        <div class="pt-era" style="color:var(--ph)">Stage 1 — Reconnaissance</div>
+        <div class="pt-title">AI-Powered Target Profiling</div>
+        <div class="pt-detail">AI scrapes LinkedIn, company websites, GitHub, press releases, social media. Builds a profile of the target including: role, reporting relationships, current projects, communication style, recent announcements, and colleague names. Takes minutes; previously took hours per target.</div>
+        <div class="pt-stat">Cost: $0 in labor. Scale: thousands of profiles per hour</div>
+      </div>
+    </div>
+    <div class="pt-item">
+      <div class="pt-dot" style="background:var(--ph);color:#fff">2</div>
+      <div class="pt-content">
+        <div class="pt-era" style="color:var(--ph)">Stage 2 — Lure Generation</div>
+        <div class="pt-title">Hyper-Personalized Email Crafting at Scale</div>
+        <div class="pt-detail">LLM generates personalized emails referencing real projects, specific colleagues by name, accurate organizational context, and the target's communication style (learned from public posts). Eliminates all traditional phishing signals: no grammar errors, no generic phrasing, no suspicious requests that feel "off."</div>
+        <div class="pt-stat">AI phishing achieves 54% click rates vs. 12% for human-written (Academic study, 2025)</div>
+      </div>
+    </div>
+    <div class="pt-item">
+      <div class="pt-dot" style="background:var(--df);color:#fff">3</div>
+      <div class="pt-content">
+        <div class="pt-era" style="color:var(--df)">Stage 3 — Delivery &amp; Voice Validation</div>
+        <div class="pt-title">Multi-Channel + Deepfake Voice Validation</div>
+        <div class="pt-detail">Hybrid attacks: phishing email followed by a "trust-building call" using a deepfake voice clone of a manager or colleague. The call validates the email request — "just checking you got my email about the wire transfer." TOAD attacks (Telephone-Oriented Attack Delivery) use AI-generated voice to establish credibility that email alone cannot achieve.</div>
+        <div class="pt-stat">77% of voice clone victims who confirmed loss reported financial harm</div>
+      </div>
+    </div>
+    <div class="pt-item">
+      <div class="pt-dot" style="background:var(--mal);color:#fff">4</div>
+      <div class="pt-content">
+        <div class="pt-era" style="color:var(--mal)">Stage 4 — Payload &amp; Post-Exploitation</div>
+        <div class="pt-title">AI-Generated Malware &amp; Adaptive Response</div>
+        <div class="pt-detail">LLMs generate functional malware, polymorphic code that changes signature with each execution, and context-aware response scripts for when targets push back. DaaS (Deepfake-as-a-Service) platforms offer end-to-end toolkits including template generation, domain spoofing, account takeover capabilities, and customer support for attackers.</div>
+        <div class="pt-stat">SpamGPT dark-web toolkits; 95% attacker cost reduction</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>AI Phishing Sub-Categories — Flip Cards</h3>
+  <div class="flip-grid" id="ph-flip-grid" role="list" aria-label="AI phishing type flip cards"></div>
+
+  <h3 style="margin-top:2rem">AI Phishing Deep Dives</h3>
+  <div class="expand-section" id="ph-expand"></div>
+
+  <div class="callout callout-ph">
+    <div class="callout-label">📊 Why Old Training Fails — The Grammar Signal Is Dead</div>
+    Traditional phishing awareness training that teaches "look for bad grammar or suspicious language" is now actively counterproductive — it creates false confidence in employees who successfully identify 1990s-era phishing while completely missing AI-generated phishing that is grammatically perfect, contextually accurate, and stylistically indistinguishable from legitimate communication. <strong>Organizations running sustained, behavior-based phishing simulation programs achieve 1.5% failure rates. Those relying on annual awareness training see negligible improvement over untrained populations (Verizon 2025 DBIR).</strong>
+  </div>
+</section>
+
+<!-- ── M4: INFLUENCE OPERATIONS ─────────────────────────────── -->
+<div class="part-banner" style="background:var(--inf)">
+  <div class="pb-num">🌐</div>
+  <div class="pb-title">Influence Operations — Democracy's AI Threat</div>
+  <div class="pb-time">⏱ 35 min</div>
+</div>
+<section id="m4" class="lesson-section">
+  <h2 class="section-title"><span>🌐</span> Module 4 · AI-Enabled Influence Operations — Scale Meets Personalization <span class="section-meta">35 min</span></h2>
+  <div class="prose">
+    <p>Influence operations — coordinated efforts to manipulate public opinion through synthetic or deceptive information — predate AI. What AI adds is the combination of scale, personalization, and production quality that previously required nation-state resources. The World Economic Forum ranked AI-driven disinformation as the #1 global risk for both 2024 and 2025.</p>
+  </div>
+  <div class="analogy-box">
+    <div class="analogy-label">💡 The Newspaper vs. Printing Press Analogy</div>
+    <p>Before the printing press, propaganda required handwritten manuscripts — expensive, slow, limited distribution. The printing press enabled mass distribution but still required physical production. Radio and television added audio-visual reach. The internet removed geographic limits. <strong>Generative AI is the final unlock: it removes the production bottleneck entirely.</strong> Any actor, anywhere, can now produce thousands of unique, contextually appropriate, visually or aurally convincing influence pieces per day targeting specific demographic groups, in multiple languages, adapted to each platform's format and norms.</p>
+    <p>The Romania 2024 election is the canonical example: tens of thousands of AI-powered bot accounts, deepfake videos, coordinated TikTok manipulation — enough to make a fringe candidate win the first round of a presidential election before the results were annulled.</p>
+  </div>
+  <h3>Five Components of an AI-Enabled Influence Operation</h3>
+  <div class="flip-grid" id="inf-flip-grid" role="list" aria-label="Influence operation component flip cards"></div>
+  <h3 style="margin-top:2rem">Documented Real-World Operations</h3>
+  <div class="case-grid" id="inf-case-grid"></div>
+  <h3 style="margin-top:2rem">Influence Operation Deep Dives</h3>
+  <div class="expand-section" id="inf-expand"></div>
+  <div class="table-wrap" style="margin-top:1.5rem">
+    <table>
+      <thead class="inf-head"><tr><th>AI Capability</th><th>Traditional IO Use</th><th>AI-Enabled Extension</th><th>Scale Multiplier</th></tr></thead>
+      <tbody>
+        <tr><td>Content generation</td><td>Troll farm employees write manual posts</td><td>LLM generates thousands of unique, contextually tailored posts per hour</td><td>10,000×+ volume</td></tr>
+        <tr><td>Persona creation</td><td>Fake accounts with stock photos</td><td>GAN-generated unique face images per account; AI-written biography and posting history</td><td>Unlimited unique personas</td></tr>
+        <tr><td>Audience targeting</td><td>Broad demographic targeting</td><td>Psychological profile-based micro-targeting; different narrative angles per segment</td><td>APT-level personalization at consumer cost</td></tr>
+        <tr><td>Synthetic media</td><td>Doctored images; simple audio edits</td><td>Full video deepfakes; voice clones of political figures; realistic image generation</td><td>Production quality without production cost</td></tr>
+        <tr><td>Translation &amp; localization</td><td>Expensive professional translation</td><td>Instant translation + cultural localization into any language/dialect</td><td>Global reach instantaneously</td></tr>
+        <tr><td>Amplification</td><td>Bot network maintenance</td><td>AI-managed bot farms that adapt timing and engagement patterns to avoid detection</td><td>Evasion of platform detection at scale</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ── M5: DEFENSE POSTURE ──────────────────────────────────── -->
+<div class="part-banner" style="background:var(--def-blue)">
+  <div class="pb-num">🛡️</div>
+  <div class="pb-title">Defensive Posture — Technical Controls + Human Protocol</div>
+  <div class="pb-time">⏱ 25 min</div>
+</div>
+<section id="m5" class="lesson-section">
+  <h2 class="section-title"><span>🛡️</span> Module 5 · Defensive Posture — What Actually Works <span class="section-meta">25 min</span></h2>
+  <div class="prose">
+    <p>Defense against AI-weaponized attacks cannot rely primarily on detection — the detection arms race consistently favors the attacker when the attacker can iterate faster than the defender's detection systems are updated. Effective defense combines technical controls at the infrastructure level with procedural controls that bypass the AI capability entirely (out-of-band verification) and sustained behavioral training that addresses the real failure mode (social pressure and urgency exploitation, not grammar errors).</p>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead class="def-head"><tr><th>Threat</th><th>Technical Controls</th><th>Procedural Controls</th><th>Training Focus</th></tr></thead>
+      <tbody>
+        <tr><td>Audio deepfake (voice cloning)</td><td>AI voice analysis tools; liveness detection; audio watermarking (C2PA)</td><td>Pre-agreed code words for financial requests; callback on verified number; dual approval for transfers &gt;$X</td><td>Urgency and pressure as red flags; verify-before-act protocol</td></tr>
+        <tr><td>Video deepfake (video call fraud)</td><td>Video liveness detection; C2PA content credentials; behavioral anomaly detection</td><td>Never authorize wire transfers via video call alone; callback out-of-band; challenge questions only the real person would know</td><td>All financial authorization requires out-of-band secondary verification</td></tr>
+        <tr><td>AI-generated phishing email</td><td>AI-based email security (intent analysis, not keyword scanning); DMARC/DKIM/SPF; behavioral analytics</td><td>Financial request procedures that require secondary approval; never click links in email — navigate directly; report-phishing button in email client</td><td>Urgency/pressure signals; TOAD recognition; simulation programs (not annual training)</td></tr>
+        <tr><td>BEC (business email compromise)</td><td>DMARC enforcement; email authentication; anomaly detection on payment requests</td><td>Vendor payment change verification: call the vendor on their known number; financial process requiring dual approval</td><td>Verify changes to bank details by phone; CEO requests for unusual transfers are red flags</td></tr>
+        <tr><td>AI disinformation / influence op</td><td>Content provenance (C2PA); AI content detection; platform-level deepfake labeling (EU AI Act Art. 50)</td><td>Cross-source verification before sharing; news literacy protocols; AI content labeling policy</td><td>Media literacy; source verification habits; emotional response as a red flag signal</td></tr>
+        <tr><td>AI malware generation</td><td>Behavioral EDR (behavior, not signature); network segmentation; least privilege; sandboxing</td><td>Software supply chain verification; code signing; secure development lifecycle</td><td>No executable attachments; verify software from official channels</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout callout-inf">
+    <div class="callout-label">✅ The Most Cost-Effective Single Defense</div>
+    For financial fraud (deepfake voice + BEC): a <strong>pre-agreed verbal code word</strong> for all financial authorization requests. If a caller claiming to be the CFO requests a wire transfer, the recipient asks for the code word. If the caller cannot provide it, the request is not fulfilled regardless of how convincing the audio sounds. Cost: near zero. Effectiveness: 100% against audio deepfake fraud targeting that specific channel. This procedural control completely bypasses AI detection — it does not attempt to detect the deepfake; it requires proof the attacker cannot forge.
+  </div>
+  <h3>AI-Specific Controls by Layer</h3>
+  <div class="flip-grid" id="defense-flip-grid" role="list" aria-label="Defense control flip cards"></div>
+</section>
+
+<!-- ── ACTIVITIES ─────────────────────────────────────────────── -->
+<div class="part-banner" style="background:var(--oxblood)">
+  <div class="pb-num">▶</div>
+  <div class="pb-title">Lab Activities — Detect, Classify, Defend</div>
+  <div class="pb-time">⏱ ~70 min</div>
+</div>
+
+<!-- Activity A: Deepfake Detection Lab -->
+<section id="activity-detect" class="lesson-section">
+  <h2 class="section-title"><span>🔍</span> Activity A · Deepfake &amp; Phishing Detection Lab <span class="section-meta">25 min</span></h2>
+  <div class="detection-lab">
+    <div class="dl-header">
+      <span class="dl-title">Identify the Attack Type &amp; Best Detection Method</span>
+      <span class="dl-score" id="dl-score">0 / 10 correct</span>
+    </div>
+    <div class="dl-body">
+      <p>For each scenario, select the correct attack category and the most effective defense or detection method. Some scenarios describe attacks that combine multiple techniques — identify the primary category and the control that would most directly prevent harm.</p>
+      <div class="dl-scenarios" id="dl-scenarios-container"></div>
+      <div style="display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1rem">
+        <button class="btn btn-ghost" onclick="resetDetectLab()">Reset All</button>
+        <span style="font-family:var(--ff-mono);font-size:.82rem;color:var(--ink-muted);align-self:center" id="dl-progress">0 of 10 answered</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Activity B: Influence Op Classifier -->
+<section id="activity-classify" class="lesson-section">
+  <h2 class="section-title"><span>🌐</span> Activity B · Influence Operation Incident Classifier <span class="section-meta">20 min</span></h2>
+  <div class="inf-classifier">
+    <div class="ic-header">
+      <span class="ic-title">Match Each Incident to Its Influence Operation Technique</span>
+      <span class="ic-score" id="ic-score">0 / 8 correct</span>
+    </div>
+    <div class="ic-body">
+      <p>Match each documented or realistic influence operation incident to the primary IO technique it exemplifies. Click "Check All" when done.</p>
+      <div class="ic-scenarios" id="ic-scenarios-container"></div>
+      <div style="display:flex;gap:.7rem;flex-wrap:wrap;margin-top:.5rem">
+        <button class="btn btn-inf" onclick="checkAllIC()">Check All Answers</button>
+        <button class="btn btn-ghost" onclick="resetIC()">Reset</button>
+      </div>
+      <div class="ic-results" id="ic-results"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Activity C: Defend the Org -->
+<section id="activity-defend" class="lesson-section">
+  <h2 class="section-title"><span>🛡️</span> Activity C · Defend the Organization — MVCC Attack Scenarios <span class="section-meta">25 min</span></h2>
+  <div class="defense-builder">
+    <div class="db-header">
+      <span class="db-title">Select Effective Defenses for Each Attack Scenario</span>
+      <span class="db-score" id="db-score">0 / 5 completed</span>
+    </div>
+    <div class="db-body">
+      <p>Select a MVCC attack scenario. Check every control that effectively addresses that specific attack. Some options sound reasonable but don't actually work for that attack type.</p>
+      <div class="db-selector">
+        <label for="db-select">Select scenario:</label>
+        <select id="db-select" onchange="loadDbScenario(this.value)">
+          <option value="">— Choose an attack scenario —</option>
+        </select>
+      </div>
+      <div class="db-scenario-box" id="db-scenario-box">
+        <div class="db-sc-label" id="db-sc-label"></div>
+        <div class="db-sc-text" id="db-sc-text"></div>
+      </div>
+      <div class="db-controls" id="db-controls"></div>
+      <div style="display:flex;gap:.7rem;flex-wrap:wrap;margin-bottom:.5rem">
+        <button class="btn btn-def" onclick="checkDbScenario()">Check Defenses</button>
+        <button class="btn btn-ghost" onclick="resetDbScenario()">Reset This</button>
+      </div>
+      <div class="db-result" id="db-result"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Artifact -->
+<section id="artifact" class="lesson-section">
+  <h2 class="section-title"><span>📝</span> Assessment Artifact <span class="section-meta">Due: End of Class</span></h2>
+  <div class="artifact-block">
+    <div class="artifact-label">📋 Day 10 Assessment Artifact</div>
+    <h4>Incident Response Brief — MVCC Deepfake BEC Attack</h4>
+    <p>You are MVCC's CISO. At 2:47 PM on a Tuesday during enrollment week, the Director of Financial Aid receives a video call that appears to be from the VP of Finance. The video looks and sounds authentic. The VP requests an immediate wire transfer of $87,500 to a new vendor for "emergency enrollment system licensing." The Director is about to initiate the transfer.</p>
+    <p>Write a 400-word incident response brief covering:</p>
+    <ul>
+      <li><strong>Immediate response (Day 0):</strong> What should the Director do RIGHT NOW before taking any action? What one out-of-band verification step would definitively resolve whether this is legitimate?</li>
+      <li><strong>If confirmed as deepfake BEC:</strong> Which MVCC personnel are notified first? What is the containment action (has money moved?)? What documentation is required?</li>
+      <li><strong>Root cause controls missing:</strong> What procedural control, if it had been implemented before this call, would have made this attack impossible to succeed? Reference the specific defense and why it works against deepfake audio/video impersonation.</li>
+      <li><strong>30-day program update:</strong> What one technical control and one training update would you implement within 30 days to address this attack vector at MVCC?</li>
+    </ul>
+    <p><strong>Grading:</strong> Daily assignment (25% of course grade). Evaluated on immediacy and specificity of IR response, accuracy of the deepfake control identification, and practicality of the 30-day program update.</p>
+  </div>
+</section>
+
+<!-- Quiz -->
+<section id="quiz" class="lesson-section">
+  <h2 class="section-title"><span>❓</span> Day 10 Knowledge Check <span class="section-meta">10 Questions</span></h2>
+  <div class="quiz-block">
+    <div class="quiz-head">
+      <span>Day 10 Knowledge Check — 10 Questions</span>
+      <span class="quiz-score-d" id="quiz-score-display">Score: 0 / 10</span>
+    </div>
+    <div id="quiz-body"></div>
+    <div class="quiz-actions">
+      <button class="btn btn-primary" onclick="gradeQuiz()">Grade My Quiz</button>
+      <button class="btn btn-ghost" onclick="resetQuiz()">Reset</button>
+      <span class="quiz-msg" id="quiz-msg"></span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-card">
+    <div class="sc-head">On This Page</div>
+    <div class="sc-body">
+      <ul class="sidebar-toc">
+        <li><a href="#overview"><span class="toc-num">→</span>Overview</a></li>
+        <li><a href="#m1"><span class="toc-num">1</span>The Weaponization Shift</a></li>
+        <li><a href="#m2"><span class="toc-num">2</span>Deepfakes</a></li>
+        <li><a href="#m3"><span class="toc-num">3</span>AI Phishing &amp; BEC</a></li>
+        <li><a href="#m4"><span class="toc-num">4</span>Influence Operations</a></li>
+        <li><a href="#m5"><span class="toc-num">5</span>Defense Posture</a></li>
+        <li><a href="#activity-detect"><span class="toc-num">A</span>Detection Lab</a></li>
+        <li><a href="#activity-classify"><span class="toc-num">B</span>IO Classifier</a></li>
+        <li><a href="#activity-defend"><span class="toc-num">C</span>Defend MVCC</a></li>
+        <li><a href="#artifact"><span class="toc-num">✏</span>Assessment</a></li>
+        <li><a href="#quiz"><span class="toc-num">?</span>Knowledge Check</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="sidebar-card">
+    <div class="sc-head">Objectives Progress</div>
+    <div class="sc-body">
+      <div class="progress-wrap"><div class="progress-fill" id="progress-fill"></div></div>
+      <div class="progress-label" id="progress-label">0 of 6 completed</div>
+      <ul class="lo-list" style="margin-top:.7rem">
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>Explain the economic shift enabling AI weaponization.</span></li>
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>Describe deepfake types with financial impact examples.</span></li>
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>Explain how AI phishing achieves expert effectiveness at scale.</span></li>
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>Identify 5 IO components; apply to real campaigns.</span></li>
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>Select technical and procedural defenses by threat type.</span></li>
+        <li><div class="lo-check" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleLO(this)" onkeydown="if(event.key==='Enter'||event.key===' ')toggleLO(this)"></div><span>Apply detection strategies to realistic scenarios.</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="sidebar-card">
+    <div class="sc-head">Key Stats Quick Ref</div>
+    <div class="sc-body">
+      <ul class="sidebar-toc">
+        <li><a href="#m2" style="font-size:.8rem"><strong style="color:var(--df)">$25M</strong> — Arup deepfake video loss</a></li>
+        <li><a href="#m2" style="font-size:.8rem"><strong style="color:var(--df)">0.1%</strong> — humans identifying ALL fakes</a></li>
+        <li><a href="#m2" style="font-size:.8rem"><strong style="color:var(--df)">20s</strong> — audio to clone a voice</a></li>
+        <li><a href="#m3" style="font-size:.8rem"><strong style="color:var(--ph)">82.6%</strong> — phishing emails with AI</a></li>
+        <li><a href="#m3" style="font-size:.8rem"><strong style="color:var(--ph)">54%</strong> — AI phishing click rate</a></li>
+        <li><a href="#m3" style="font-size:.8rem"><strong style="color:var(--ph)">95%</strong> — attacker cost reduction</a></li>
+        <li><a href="#m4" style="font-size:.8rem"><strong style="color:var(--inf)">Romania 2024</strong> — election AI manipulation</a></li>
+        <li><a href="#m5" style="font-size:.8rem"><strong>Code words</strong> — best BEC defense</a></li>
+        <li><a href="#m5" style="font-size:.8rem"><strong>Out-of-band verify</strong> — bypasses deepfake</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="sidebar-card">
+    <div class="sc-head">Navigation</div>
+    <div class="sc-body" style="display:flex;flex-direction:column;gap:.5rem">
+      <a href="lesson09.html" style="font-size:.85rem;font-weight:600;color:var(--oxblood)">← Day 9: Attacks on Data &amp; Models</a>
+      <span style="font-size:.85rem;font-weight:600;color:var(--ink-muted)">Day 10 — Current</span>
+      <a href="index.html#lessons" style="font-size:.85rem;font-weight:600;color:var(--ink-muted)">Day 11 — Coming Soon →</a>
+    </div>
+  </div>
+</aside>
+</div>
+<div class="lesson-nav-footer">
+  <a href="lesson09.html">← Day 9: Attacks on Data &amp; Models</a>
+  <a href="index.html">Course Home</a>
+</div>
+<footer>
+  <strong>AI-103: AI Cybersecurity Foundations · Day 10</strong> · Moraine Valley Community College · Dr. John L. Sands · 2026<br><br>
+  Day 11 covers Secure AI Architecture &amp; Lifecycle Controls — AIBOM, model cards, and defense-in-depth for AI systems.
+</footer>
+
+<script>
+/* ════════════════════════════════════════════════════════════════
+   DATA
+════════════════════════════════════════════════════════════════ */
+
+/* Deepfake flip cards */
+const dfFlips=[
+  {icon:'🎤',code:'Audio Deepfake',title:'Voice Cloning &amp; Vishing',back:'Clone a voice from 20–30 seconds of audio. Used for: BEC fraud ("wire the money now"), family emergency scams, executive impersonation, bypassing voice-based authentication. 442% vishing surge in 2025.',tag:'77% of voice clone victims report financial loss',bg:'var(--df)'},
+  {icon:'🎬',code:'Video Deepfake',title:'Synthetic Video &amp; Real-Time Impersonation',back:'Full face/body replacement in real-time video calls. Arup lost $25M from a single video conference with a deepfake CFO and colleagues. Video deepfake creation time dropped to 45 minutes with free software in 2025.',tag:'$25M Arup incident — Feb 2024',bg:'var(--df)'},
+  {icon:'🖼️',code:'Image Deepfake',title:'Synthetic Image Generation',back:'GAN/diffusion models generate photorealistic images of real people in fabricated situations. Used for: non-consensual imagery, political disinformation, fraud documentation, fake news imagery. Romanian election: deepfake candidate imagery on TikTok.',tag:'Used in Romania 2024, Ireland 2025 elections',bg:'var(--df)'},
+  {icon:'📋',code:'Document Deepfake',title:'Synthetic Identity &amp; Document Fraud',back:'AI generates convincing fake IDs, bank statements, medical records, employment verification, and tax documents. Used to pass KYC/AML checks. Cryptocurrency sector saw 88% of deepfake fraud cases involve document fraud in 2023.',tag:'88% of crypto deepfake fraud: KYC bypass',bg:'var(--df)'},
+  {icon:'🤖',code:'DaaS Platform',title:'Deepfake-as-a-Service',back:'Full-service deepfake attack platforms available on dark web and clearnet in 2025. Offer: voice/video cloning, template generation, persona simulation, customer support for attackers. Democratized nation-state-level capability to criminal groups of any skill level.',tag:'DaaS fueled 180% global sophisticated fraud surge',bg:'var(--df)'},
+  {icon:'🆔',code:'IDV Bypass',title:'Biometric Authentication Bypass',back:'Face-swap tools + virtual cameras defeat liveness detection in remote identity verification (IDV) and KYC systems. Attacks on IDV systems increased 704% in 2023. Banks, fintech, and crypto exchanges are primary targets.',tag:'+704% IDV bypass attacks; 88% crypto fraud',bg:'var(--df)'},
+];
+
+/* Deepfake case studies */
+const dfCases=[
+  {icon:'🏢',title:'Arup — $25M Video Conference Fraud',date:'February 2024',color:'var(--df)',text:'A finance employee at global engineering firm Arup was asked to join a video conference with the company\'s Chief Financial Officer and several colleagues. All participants — including the CFO — were deepfakes. The employee wired $25.6 million across 15 transactions to attacker-controlled accounts. The entire call appeared authentic: faces, voices, demeanor, and the specific language used were convincing.',impact:'$25.6 million — largest documented deepfake incident at time of reporting',lesson:'Even video calls with multiple "known" participants should trigger out-of-band verification for financial authorizations. Code words eliminate this attack vector entirely.'},
+  {icon:'⚡',title:'UK Energy CEO Voice Clone',date:'2019 — The First Major Voice Clone',color:'var(--df)',text:'In 2019 — before "deepfake" was a mainstream term — attackers used AI voice cloning to impersonate the CEO of a UK energy firm\'s German parent company. The cloned voice called the UK subsidiary CEO and requested an urgent wire transfer of €220,000. The voice matched the German CEO\'s accent and speaking style. The transfer was made.',impact:'€220,000 — the attack that proved the threat was real, not theoretical',lesson:'This incident demonstrated in 2019 what most security teams didn\'t take seriously until 2024: voice cloning is operationally viable at criminal scale and does not require sophisticated attackers.'},
+  {icon:'🏦',title:'Ferrari Executive Deepfake Attempt',date:'2024',color:'var(--df)',text:'Attackers impersonated Ferrari CEO Benedetto Vigna using a voice clone in WhatsApp messages, then attempted to move to a phone call. The targeted Ferrari executive became suspicious when the voice clone used unusual phrasing about a confidential acquisition deal the executive hadn\'t heard of. The executive asked a personal question only the real CEO would know — the attacker could not answer.',impact:'Attack failed — the procedural challenge question worked perfectly',lesson:'Personal verification questions that only the real person could answer are an effective procedural control. Preparedness matters: the executive had been trained to use this verification technique.'},
+  {icon:'🏛️',title:'Romania Presidential Election Manipulation',date:'2024',color:'var(--inf)',text:'Romanian intelligence services identified a sweeping Russian-linked disinformation campaign that artificially boosted far-right candidate Calin Georgescu. The operation used: deepfake videos of the candidate, tens of thousands of AI-powered bot accounts on TikTok, paid influencer networks, and coordinated content that exploited TikTok\'s algorithm. Georgescu won the first round of the presidential election. The results were annulled.',impact:'Election results annulled — first major documented case of AI-enabled election outcome alteration',lesson:'AI-enabled influence operations can achieve electoral impact at national scale. The combination of synthetic media + algorithmic amplification + social platform dynamics creates systemic vulnerability.'},
+];
+
+/* Deepfake expand data */
+const dfExpand=[
+  {badge:'Audio Detection',badgeColor:'var(--df)',tagText:'Technical',tagBg:'var(--df-bg)',tagColor:'var(--df)',
+   title:'Detecting AI Voice Clones — Technical &amp; Procedural',
+   quote:'Voice cloning now requires as little as 20 seconds of audio. Traditional voice authentication cannot distinguish a high-quality voice clone from the genuine speaker.',
+   impl:'<p><strong>Technical detection:</strong></p><ul><li>Spectral analysis: synthetic voices show artifacts in frequency domain — tools like ReSemble Detect, ElevenLabs detection API, and platform-native detectors analyze audio spectrograms for synthetic markers</li><li>Behavioral biometrics: micro-pause patterns, breathing rhythms, and background noise profiles differ between real and synthetic audio</li><li>Liveness prompts: unexpected conversational challenges (random phrase repetition, backward counting) are difficult for real-time synthesis to handle gracefully</li></ul><p><strong>The arms race problem:</strong> Detection models trained on current-generation voice clones are defeated by next-generation synthesis. Technical detection is necessary but insufficient as a primary control.</p>',
+   example:'<p><strong>The out-of-band verification protocol:</strong> The most reliable defense is not detection — it is a process that bypasses the need for detection entirely. For any financial request received via phone or video call: (1) End the call. (2) Call back the requester on their verified, pre-stored phone number (not a number provided in the call). (3) Confirm the request through this independent channel. If the call was a deepfake, step 2 reaches the real person who has no knowledge of the "request."</p>',
+   incident:'<strong>Ferrari Protocol Success:</strong> The Ferrari executive who suspected the voice clone asked a personal question only the real CEO would know. The attacker could not answer. Attack failed. This demonstrates that procedural verification completely defeats technically sophisticated deepfake audio — the attacker cannot synthesize an answer they don\'t have.',
+   defense:'Pre-agreed code words; out-of-band callback on verified numbers; challenge questions; dual approval for financial transfers; AI voice detection tools (as secondary layer); C2PA audio provenance for recorded content.'},
+];
+
+/* Phishing flip cards */
+const phFlips=[
+  {icon:'🎯',code:'Spear Phishing 2.0',title:'AI-Personalized Targeted Phishing',back:'LLM generates emails referencing real projects, colleagues by name, accurate org context, and the target\'s communication style. Achieves 54% click rates vs. 12% for human-written. Previously required 16 hours per email; now: seconds.',tag:'54% click rate; 95% attacker cost reduction',bg:'var(--ph)'},
+  {icon:'📱',code:'TOAD Attack',title:'Telephone-Oriented Attack Delivery',back:'Hybrid: phishing email followed by a deepfake voice call that "validates" the email request. The call creates social proof that the email is legitimate. 6.1% of phishing campaigns in 2023 used TOAD; growing rapidly in 2024–2025. The voice adds authority the email lacks.',tag:'AI voice + email = trust amplification',bg:'var(--ph)'},
+  {icon:'💼',code:'BEC / CEO Fraud',title:'Business Email Compromise at AI Scale',back:'AI generates emails impersonating executives requesting urgent wire transfers, vendor payment changes, or sensitive data. BEC targets 400+ companies per day using deepfakes. FBI phishing losses tripled in one year to $215.8M (FBI IC3 2025).',tag:'400+ companies/day targeted; FBI IC3: $215.8M',bg:'var(--bec)'},
+  {icon:'🔗',code:'Supply Chain Phishing',title:'AI Phishing → Software Supply Chain',back:'September 2025: AI-written spear phishing email targeting a developer referenced specific GitHub commits and used the developer\'s coding terminology. Resulted in credential theft and hijacking of NPM packages with billions of weekly downloads.',tag:'Sept 2025 NPM attack: billions of downloads affected',bg:'var(--ph)'},
+  {icon:'🤖',code:'Dark Web PaaS',title:'Phishing-as-a-Service (AI-Powered)',back:'SpamGPT and similar DaaS/PaaS tools on dark web sell end-to-end AI phishing toolkits: template generation, domain spoofing, account takeover, customer support. Even non-technical actors can deploy expert-level personalized phishing campaigns.',tag:'SpamGPT: sells for thousands; no skill required',bg:'var(--mal)'},
+  {icon:'📊',code:'Mass Personalization',title:'APT-Level Precision at Mass Scale',back:'2024 campaign targeted 800 accounting firms with customized emails referencing each firm\'s specific state registration details. 27% click rate. Previously APT-exclusive capability — now available to anyone with $50 and an LLM API key.',tag:'27% click rate against 800 firms simultaneously',bg:'var(--ph)'},
+];
+
+/* Phishing expand */
+const phExpand=[
+  {badge:'AI BEC',badgeColor:'var(--bec)',tagText:'Business Email Compromise',tagBg:'var(--bec-bg)',tagColor:'var(--bec)',
+   title:'Business Email Compromise — CEO Fraud at AI Scale',
+   quote:'FBI IC3 2025: phishing-related financial losses tripled in one year from $70M to $215.8M. BEC targets at least 400 companies per day using deepfakes.',
+   impl:'<p><strong>How AI transformed BEC:</strong> Traditional BEC required a skilled social engineer who understood the target organization, knew key personnel relationships, and could convincingly impersonate leadership. AI produces this in seconds by processing LinkedIn, company website, press releases, and any public executive communications. The resulting email references the right names, the right projects, and the right financial relationships — defeating all "does this feel right?" intuition.</p><p><strong>Hybrid BEC:</strong> Email → deepfake voice call sequence. The voice call "confirms" the email request, defeating the "call to verify" training employees receive. Defense: the callback must be to the verified pre-stored number, not any number provided by the caller.</p>',
+   example:'<p><strong>MVCC scenario:</strong> An AI scrapes MVCC\'s website and LinkedIn for the name of the Director of Finance, the VP of Academic Affairs, and current institutional priorities (enrollment growth, IT upgrade). It generates an email from the VP\'s address (spoofed or compromised) requesting the Director of Finance process an "emergency vendor payment" for enrollment software, referencing a real vendor MVCC uses, and citing a board directive from a recent meeting. The email is grammatically perfect, contextually accurate, and indistinguishable from legitimate communication.</p>',
+   incident:'<strong>Documented BEC incidents 2025:</strong> Multiple organizations reported BEC attacks where deepfake voice calls (using AI-cloned voices of CFOs or legal counsel) followed initial phishing emails to "validate" urgent wire transfer requests. The combined email + voice approach bypassed standard "call to verify" training because employees were trained to call the person — not trained to call back on an independently verified number.',
+   defense:'DMARC/DKIM/SPF enforcement; financial process dual approval; all vendor payment changes verified by phone call to independently verified number; CEO financial request protocol (no CEO email alone authorizes transfers); AI email intent detection; TOAD-awareness training.'},
+  {badge:'Grammar Signal',badgeColor:'var(--ph)',tagText:'Why Detection Fails',tagBg:'var(--ph-bg)',tagColor:'var(--ph)',
+   title:'Why Traditional Phishing Training Creates False Confidence',
+   quote:'KnowBe4 2025: 82.6% of phishing emails contain AI-generated content. Academic study 2025: AI phishing achieves 54% click rates vs. 12% for human-written.',
+   impl:'<p><strong>The grammar check fallacy:</strong> Every signal that traditional phishing training teaches employees to look for has been eliminated:</p><ul><li>Grammar errors → AI generates flawless grammar</li><li>Unusual phrasing → AI matches target\'s communication style</li><li>"This feels generic" → AI references specific projects, colleagues, relationships</li><li>Suspicious sender → AI generates contextually appropriate sender identity or compromises legitimate accounts</li><li>Urgent/pressure tone → AI calibrates urgency to match the target\'s expected communication patterns</li></ul><p><strong>The replacement signals:</strong> What employees should actually notice: (1) Any request for financial action via email only, (2) Urgency that bypasses normal process, (3) Request to keep the communication confidential, (4) Unexpected contact through an unusual channel, (5) Request that deviates from established procedure — regardless of how authentic it sounds.</p>',
+   example:'<p><strong>The training message shift:</strong> Replace "check for bad grammar" with "check the process." Legitimate financial requests follow established procedures. An email that requests urgency + confidentiality + deviation from normal process is suspicious regardless of how perfect the language is. <strong>Process deviation is the signal; grammar is not.</strong></p>',
+   incident:'',
+   defense:'Replace grammar-focused training with process-focused training; sustained simulation programs (not annual training) achieve 1.5% failure rates; behavioral analytics (email intent, process deviation); AI-based email security that analyzes intent not keywords; DMARC enforcement.'},
+];
+
+/* Influence op flip cards */
+const infFlips=[
+  {icon:'👥',code:'IO Component 1',title:'Synthetic Persona Creation',back:'AI generates unique GAN-created face images (no real person) + AI-written biography + posting history + consistent political opinions. Creates unlimited authentic-appearing fake accounts that cannot be reverse-image-searched. Spamouflage and similar state-linked networks use thousands simultaneously.',tag:'Unlimited unique personas; no real face to trace',bg:'var(--inf)'},
+  {icon:'📝',code:'IO Component 2',title:'Narrative Generation at Scale',back:'LLMs generate thousands of unique posts — same narrative angle, different wording — in multiple languages simultaneously. Avoids platform duplicate detection. Content adapts to each platform\'s format and norms. Targets specific demographic psychographic profiles.',tag:'Thousands of unique posts per hour per narrative',bg:'var(--inf)'},
+  {icon:'🎬',code:'IO Component 3',title:'Synthetic Media Production',back:'AI generates: fake videos of politicians saying things they never said; AI-cloned audio of officials; photorealistic images of fabricated events; "news anchor" videos with AI-generated presenters reading false stories. Ireland 2025: deepfake of candidate "withdrawing" days before election.',tag:'Ireland 2025; Romania 2024 — electoral impact',bg:'var(--df)'},
+  {icon:'📣',code:'IO Component 4',title:'Algorithmic Amplification',back:'IO operations engineer content specifically for platform recommendation algorithms: emotionally activating content (outrage, fear) receives algorithmic amplification; timing coordinated with news cycles; bot networks seed initial engagement that triggers organic amplification.',tag:'Algorithm exploitation amplifies IO at zero cost',bg:'var(--inf)'},
+  {icon:'🎯',code:'IO Component 5',title:'Micro-Targeted Psychological Profiling',back:'AI analyzes publicly available data to identify psychological profiles, political sensitivities, and demographic-specific persuasion angles. Different narrative framings delivered to different demographic segments — conservative vs. progressive; urban vs. rural; emotional vs. analytical personas.',tag:'APT-level personalization; consumer cost',bg:'var(--inf)'},
+];
+
+/* Influence op case studies */
+const infCases=[
+  {icon:'🗳️',title:'Romania 2024 — First AI-Influenced Election',date:'December 2024',color:'var(--inf)',text:'Russian-linked operation amplified fringe candidate Calin Georgescu to win the first round of Romania\'s presidential election. Weapons: AI-powered bot accounts (tens of thousands), deepfake videos, TikTok algorithm exploitation, paid influencer networks. Romanian intelligence confirmed the foreign-origin coordinated AI operation. The Constitutional Court annulled the first-round results.',impact:'Presidential election annulled — unprecedented democratic disruption',lesson:'AI-enabled IO can achieve decisive electoral impact. Platform algorithmic amplification is the force multiplier — the bots seeded engagement that TikTok\'s algorithm then amplified organically.'},
+  {icon:'🎙️',title:'Biden Robocall — US Primary Suppression',date:'January 2024',color:'var(--df)',text:'Voters in New Hampshire received robocalls using an AI-cloned voice of President Biden, instructing them not to vote in the Democratic primary and to "save their vote for November." The voice clone was convincing enough to require official authentication to debunk. The New Hampshire AG confirmed the calls were AI-generated.',impact:'First confirmed use of AI voice cloning for US voter suppression',lesson:'Voice cloning for political manipulation costs essentially nothing and can reach millions. Caller ID manipulation combined with voice cloning creates highly convincing suppression campaigns.'},
+  {icon:'🇮🇪',title:'Ireland 2025 — Election Eve Deepfake',date:'2025',color:'var(--df)',text:'Days before Ireland\'s presidential election, a deepfake video was released falsely depicting the eventual winner announcing the withdrawal of his candidacy. The video was sophisticated enough to require fact-checking from national broadcasters. It included fake "breaking news" footage from fabricated broadcasts.',impact:'Near-miss — the deepfake was debunked but circulated widely in the critical 72-hour window',lesson:'Election-eve timing maximizes impact of deepfake disinformation — insufficient time for correction to reach all voters before they cast ballots. Speed of deployment matters more than production quality.'},
+  {icon:'🌐',title:'Spamouflage — China\'s AI IO Infrastructure',date:'Ongoing 2024–2025',color:'var(--inf)',text:'Australia\'s Strategic Policy Institute identified the Chinese-government-linked Spamouflage network operating across X (Twitter) and YouTube — a coordinated inauthentic behavior network using AI-generated content, GAN face images for fake account profile pictures, and AI-written posts across multiple languages. Microsoft identified Spamouflage\'s AI-generated content in the 2024 Taiwan presidential election as the first confirmed nation-state use of AI for foreign election influence.',impact:'First nation-state AI-generated election interference confirmed by Microsoft',lesson:'Nation-state IO infrastructure is moving to AI-generated content at scale. The combination of state resources + AI capability creates influence operations no single organization can fully counter without platform-level interventions.'},
+];
+
+/* Influence op expand */
+const infExpand=[
+  {badge:'Detection',badgeColor:'var(--inf)',tagText:'IO Defense',tagBg:'var(--inf-bg)',tagColor:'var(--inf)',
+   title:'Detecting AI Influence Operations — Signals &amp; Systems',
+   quote:'AI-enabled IO cannot be defeated by content detection alone. Detection must operate at the network, behavioral, and provenance level — not just at the content level.',
+   impl:'<p><strong>Technical detection signals:</strong></p><ul><li>Network analysis: coordinated inauthentic behavior — accounts created simultaneously, posting patterns suggesting automation, unusual engagement velocity</li><li>Image analysis: GAN-generated faces (no real person behind the account); reverse image search failure; eye and hair artifact patterns common to GAN outputs</li><li>Content provenance: C2PA content credentials on images/video — cryptographic record of creation origin; absence of credentials on high-impact political content is itself a signal</li><li>Temporal analysis: posting timing patterns inconsistent with claimed time zone or demographic behavior</li></ul>',
+   example:'<p><strong>The verification hierarchy:</strong> (1) Primary source — does the claimed organization\'s official account confirm this? (2) Cross-source — do three independent, editorially independent sources confirm this? (3) Emotional check — does your reaction to this content feel unusually strong? Outrage and fear are optimized for by IO algorithms. (4) Timing check — is this breaking 72 hours before an election, verdict, or high-stakes decision?</p>',
+   incident:'CETAS Turing Institute analysis of 2024 US election found no conclusive evidence that AI disinformation altered the final result — but confirmed it amplified harmful narratives and entrenched political polarization. Effect on discourse exists even without decisive outcome impact.',
+   defense:'Media literacy training; cross-source verification habits; C2PA content credentials adoption; platform-level coordinated inauthentic behavior detection; regulatory requirements for AI content labeling (EU AI Act Art. 50); election integrity coalitions; pre-bunking campaigns before anticipated IO operations.'},
+];
+
+/* Defense flip cards */
+const defenseFlips=[
+  {icon:'🔑',code:'Procedural Control #1',title:'Pre-Agreed Code Words',back:'For all financial authorization via voice/video: require the caller to provide a pre-agreed code word known only to the two parties. No code word = no authorization. Cost: $0. Effectiveness: 100% against voice deepfake fraud targeting that channel. Completely bypasses AI detection.',tag:'Bypasses detection entirely — requires no AI counter',bg:'var(--def-blue)'},
+  {icon:'📞',code:'Procedural Control #2',title:'Out-of-Band Callback Protocol',back:'Any financial request received via phone/video/email: hang up. Call back on the person\'s verified, pre-stored number (never a number provided in the suspicious communication). If legitimate, you reach the real person. If deepfake, you reach the real person who has no knowledge of the "request."',tag:'Ferrari attack failed using this control',bg:'var(--def-blue)'},
+  {icon:'✉️',code:'Technical Control #1',title:'DMARC + AI Email Security',back:'DMARC/DKIM/SPF authentication verifies email infrastructure — works regardless of email content quality. AI-based email security (intent analysis, not keyword scanning) detects BEC patterns. Together: infrastructure verification + behavioral intent detection.',tag:'Last reliable machine-verifiable signal in AI phishing era',bg:'var(--ph)'},
+  {icon:'🎓',code:'Training Control',title:'Process-Focused Security Training',back:'Replace "look for grammar errors" with "follow the process." Any urgency + confidentiality + deviation from established procedure = suspicious — regardless of how authentic the communication sounds. Sustained simulation programs (not annual training) achieve 1.5% failure rates.',tag:'Verizon 2025 DBIR: sustained training = 1.5% fail rate',bg:'var(--def-blue)'},
+  {icon:'📜',code:'Content Provenance',title:'C2PA Content Credentials',back:'Coalition for Content Provenance and Authenticity (C2PA) embeds cryptographic provenance metadata in images, audio, and video at creation. Enables verification of whether content is AI-generated and where it originated. Major camera makers and AI platforms adopting. EU AI Act Art. 50 supports labeling requirements.',tag:'C2PA: cryptographic chain of custody for media',bg:'var(--inf)'},
+  {icon:'📋',code:'Process Control',title:'Financial Authorization Framework',back:'All wire transfers &gt;$X require dual approval. Vendor payment changes require phone verification to a pre-stored vendor number. No transfer authorized by email alone, regardless of claimed sender. CEO exception requests are automatic red flags for additional verification.',tag:'Dual approval + out-of-band verify = BEC defense',bg:'var(--bec)'},
+];
+
+/* Detection Lab scenarios */
+const detectScenarios=[
+  {num:'Scenario 1',text:'MVCC\'s VP of Finance receives a 3-minute video call from a person who appears to be the college President. The caller\'s face, voice, and office background all look authentic. The caller asks the VP to authorize an emergency wire transfer for a "board-directed acquisition" and to keep it confidential. Which attack type is this, and what is the MOST effective immediate response?',opts:['Real-time video deepfake + BEC — Effective response: hang up immediately and call the President back on their stored cell number to verify the request was legitimate','Phishing email — Check the email headers to verify the domain','Social engineering — Ask the caller for their employee ID number','Influence operation — Report the call to the FBI'],correct:0,fb:'Real-time video deepfake + BEC. The confidentiality request and urgency are classic BEC signals. The MOST effective immediate response: end the call and call the President back on a pre-stored verified number — not any number provided during the call. This procedural control completely bypasses the deepfake capability. Even if the video and audio were perfect, the out-of-band callback reaches the real President who has no knowledge of the "request."'},
+  {num:'Scenario 2',text:'An MVCC faculty member receives an email appearing to be from their department chair, referencing a specific ongoing curriculum review project, written in the chair\'s typical communication style, requesting the faculty member download and review a "revised accreditation document" attached as a ZIP file. The email domain is @mvcc.edu. Which signals most indicate this is an AI-generated phishing attack?',opts:['The grammar is perfect — that means it must be AI-generated phishing','The urgency + unusual request (ZIP attachment with unusual document) + confidentiality framing are process-deviation signals; legitimate curriculum review documents don\'t arrive as ZIP files via unexpected email','The email references a real project — only the real chair would know that','The domain is correct so the email must be legitimate'],correct:1,fb:'The process-deviation signals are correct: ZIP attachment for a curriculum document, unexpected email (was this communication expected?), and urgency framing. Perfect grammar is no longer a reliable phishing signal — AI generates perfect grammar by default. The real clues are: is this how curriculum documents are normally shared? Was this expected? Does the request fit the normal workflow? These process-deviation signals replace grammar as the primary detection approach in the AI era.'},
+  {num:'Scenario 3',text:'MVCC receives a call on the general phone line. The caller sounds exactly like a known student who has an active financial aid dispute. The caller provides the student\'s ID number and requests that their financial aid refund be redirected to a new bank account. The voice matches perfectly. What defense correctly addresses this?',opts:['Accept the change — the voice matches and the ID number is correct','Reject all voice-based account changes regardless of voice authenticity; any account change must go through an authenticated online portal or verified in-person with ID; the financial aid office does not process account changes via voice call','Ask the caller three security questions','Transfer to a supervisor who is better at detecting voice clones'],correct:1,fb:'Policy control: financial account changes are never processed via voice call, regardless of how authentic the voice sounds. This is the key insight: the defense does not depend on detecting the deepfake — it eliminates the voice channel as a change authorization mechanism entirely. The student must authenticate through a secure channel (portal with MFA, or in-person with ID). A policy that says "we never process account changes via phone" is 100% effective against voice clone account fraud in that channel.'},
+  {num:'Scenario 4',text:'A faculty member notices their social media feed filling with outrage about an MVCC administrative decision. The posts all reference the same specific claim about MVCC policy, use slightly different wording, come from accounts they don\'t recognize, and have been posted within the last 2 hours — many with only a few weeks of posting history. What type of attack is most likely?',opts:['Phishing campaign targeting MVCC employees','Coordinated inauthentic behavior — likely an AI-generated influence operation. Signals: simultaneous posting, same narrative in different wording (evades duplicate detection), new accounts, high-velocity engagement pattern, emotional activation content.','A legitimate viral post about a real MVCC concern','A supply chain attack on social media'],correct:1,fb:'Coordinated inauthentic behavior — the signals are: (1) simultaneous high-volume posting in a short window, (2) same narrative in varied wording (designed to evade platform duplicate detection), (3) accounts with limited posting history, (4) strong emotional activation designed to generate shares. This is consistent with an AI-generated influence operation: LLMs generating thousands of unique posts from bot accounts. Verification: does MVCC have a public statement about this policy? Does the claim appear in credible media sources independently? High emotional response to content is itself a prompt to verify before sharing.'},
+  {num:'Scenario 5',text:'An MVCC administrator receives an email from an external vendor stating that the vendor\'s bank account details have changed and all future payments should go to the new account. The email is written in the vendor\'s typical professional style, references the current contract number, and uses the vendor\'s actual email domain. What is the correct response?',opts:['Update the payment details — the email looks legitimate and references the real contract','Call the vendor immediately on their phone number stored in MVCC\'s vendor management system — not any phone number provided in the email — to verbally confirm the bank change. This procedural control defeats AI-generated BEC regardless of email quality.','Reply to the email asking the vendor to confirm the change','Check the email headers to verify the domain'],correct:1,fb:'Out-of-band phone verification to a pre-stored vendor number is the correct response. AI-generated BEC can perfectly replicate vendor communication style, reference accurate contract details, and spoof domains. The email content cannot be used to verify the email. The only reliable verification is calling the vendor\'s independently stored phone number — bypassing the email channel entirely. This control is called out specifically by CISA and FBI guidance on BEC: all vendor payment changes require voice confirmation to a pre-stored number before processing.'},
+  {num:'Scenario 6',text:'A video appears on social media three days before an election showing a local school board candidate apparently making offensive statements at what looks like a private dinner party. The video is surprisingly high quality for a "leaked" personal video. The candidate\'s campaign immediately denies authenticity. How do you evaluate whether this is a deepfake?',opts:['If the video quality is high, it\'s probably authentic — deepfakes usually look glitchy','Evaluate: (1) C2PA content credentials — does the video have cryptographic provenance metadata? (2) Primary source — who released this and through what channel? (3) Cross-source — do independent investigative journalists confirm? (4) Timing — 3 days before election is a common IO release timing designed to maximize impact with insufficient time for correction.','Ask the candidate\'s campaign — they will know if it\'s fake','High video quality means sophisticated attacker = nation-state = likely real'],correct:1,fb:'The evaluation framework is correct. Election-eve timing (3 days before) is a documented influence operation pattern: release disinformation when there is insufficient time for effective correction to reach all voters before they vote. High production quality is no longer evidence of authenticity — it is evidence that the creator had access to modern AI tools. C2PA content credentials provide cryptographic provenance; absence of credentials on politically significant content is itself a signal. Cross-source verification: does the video appear in credible investigative journalism with independent verification?'},
+  {num:'Scenario 7',text:'An employee reports receiving a phone call from someone claiming to be from the IT help desk, asking them to read back a one-time passcode (OTP) sent to their phone. The caller\'s voice sounds professional and the request sounds technically plausible. What is this attack, and what is the correct response?',opts:['Vishing (voice phishing) + MFA bypass attempt — never share OTP codes with anyone who calls you, regardless of who they claim to be. IT support will never ask for your OTP. Hang up and report to security.','Legitimate IT support call — IT sometimes needs OTP codes to help with account access','Data drift detection scenario','Social engineering + TOAD attack — report to your manager first'],correct:0,fb:'Vishing (AI-enabled voice phishing) combined with a real-time OTP phishing attack (also called MFA bypass or adversary-in-the-middle). The voice may be AI-synthesized to sound like a professional IT voice. The request is the key: legitimate IT support NEVER needs your OTP code. OTP codes are the authentication factor that proves you are you — sharing it gives the attacker the same proof. Hang up. Call IT on the verified help desk number. Report the call. This is the correct response regardless of how convincing the voice sounded.'},
+  {num:'Scenario 8',text:'MVCC\'s marketing team wants to post a video response to a recent social media controversy. Before posting, what AI-era consideration should they add to their standard content review process?',opts:['Use an AI tool to make the video higher quality before posting','Add C2PA content credentials to the video at creation, and ensure the official MVCC account posts it (not an unofficial account). In the AI era, viewers and fact-checkers need cryptographic provenance to verify that official content is authentic and unmanipulated.','Post it immediately before a deepfake version is created','Add a watermark saying "This is not a deepfake"'],correct:1,fb:'C2PA content credentials provide cryptographic proof of origin and authenticity for official communications. As deepfakes become more convincing, organizations need provenance infrastructure that allows viewers and fact-checkers to verify that official content is genuine. The process: authenticate the camera or creation device with C2PA, sign the content at creation, post from the verified official account. If an adversary creates a deepfake version later, the absence of valid C2PA credentials on the deepfake (or mismatch with the original\'s credentials) is cryptographic evidence of manipulation.'},
+  {num:'Scenario 9',text:'An MVCC student reports receiving a text message that appears to be from the College\'s financial aid office, with a link to "verify their FAFSA information" before their aid is cancelled. The message uses the student\'s correct name and partial student ID. Which attack is this, and what is the most important advice for the student?',opts:['This is a legitimate MVCC communication — MVCC sends texts about financial aid','SMS phishing (smishing) with AI-personalization — the use of the student\'s correct name and partial ID is a personalization tactic that AI can generate from scraped enrollment data or previous data breaches. The student should NOT click the link. They should navigate directly to myMVCC.edu and check their financial aid status there.','Data poisoning attack on the MVCC financial aid system','An influence operation targeting MVCC students'],correct:1,fb:'Smishing (SMS phishing) with AI personalization. The personalization (correct name + partial ID) is a classic legitimacy signal that AI can generate at scale from scraped data or data breach records — it does not prove the message is from MVCC. The critical defense: never navigate financial aid through links in text messages. Navigate directly to the official URL you know. If you have any doubt, call the financial aid office at the verified number on the official MVCC website. 40% of phishing campaigns now extend beyond email to SMS and other channels.'},
+  {num:'Scenario 10',text:'MVCC is implementing a new policy for financial transfers. Which combination of controls most effectively defends against AI-enabled BEC and deepfake financial fraud?',opts:['Strong spam filters + annual phishing awareness training','Pre-agreed code words for financial authorization requests + dual approval for transfers over a threshold + out-of-band callback verification for vendor payment changes + AI-based email security (intent analysis) + sustained phishing simulation program (quarterly, not annual)','Blocking all external email','Requiring executives to use encrypted email only'],correct:1,fb:'Layered defense is correct. The specific combination matters: (1) Code words: eliminates deepfake voice attacks in the authorization channel; (2) Dual approval: no single person can authorize a fraudulent transfer; (3) Out-of-band callback: verifies vendor payment changes through a trusted independent channel; (4) AI email security: detects BEC patterns that keyword filters miss; (5) Sustained simulation: creates genuine behavioral change (1.5% failure rate) vs. annual training\'s negligible effect. This combination addresses AI phishing (AI email security + simulation), AI voice deepfake (code words + callback), and process manipulation (dual approval).'},
+];
+
+/* Influence Op Incidents for Activity B */
+const ioIncidents=[
+  {num:'1',text:'Russian-linked operation created tens of thousands of AI-powered bot accounts on TikTok to artificially boost a fringe candidate\'s presence in Romania\'s presidential election, using deepfakes and coordinated content that exploited TikTok\'s recommendation algorithm.',correct:'Algorithmic amplification + synthetic persona network'},
+  {num:'2',text:'An AI-generated robocall using President Biden\'s cloned voice instructed New Hampshire primary voters to stay home and "save their vote for November."',correct:'AI voice cloning for voter suppression'},
+  {num:'3',text:'GAN-generated profile pictures (faces of people who do not exist) were used to populate hundreds of inauthentic social media accounts that appeared to belong to diverse real individuals across multiple demographics.',correct:'Synthetic persona creation (GAN faces)'},
+  {num:'4',text:'A deepfake video depicting a presidential candidate announcing the withdrawal of their candidacy was released three days before Ireland\'s 2025 election. The video included fake "breaking news" footage from fabricated broadcasts.',correct:'Synthetic video + strategic timing'},
+  {num:'5',text:'An influence operation generated unique posts for different demographic segments: rural voters received economic anxiety framing; urban voters received cultural identity framing; both were created by an LLM from the same underlying narrative template.',correct:'Micro-targeted narrative generation'},
+  {num:'6',text:'In Kenya 2024, an influence operation used AI-generated images depicting protesters holding Russian flags and same-sex couples kissing — fabricated imagery designed to discredit a legitimate protest movement.',correct:'AI image fabrication for narrative manipulation'},
+  {num:'7',text:'China\'s Spamouflage network used AI to generate multilingual content across X and YouTube during Taiwan\'s 2024 presidential election, representing the first confirmed nation-state use of AI-generated content to influence a foreign election.',correct:'Nation-state IO using AI content generation'},
+  {num:'8',text:'An IO campaign released emotionally activating content specifically timed to coincide with a breaking news cycle, knowing that platform algorithms amplify high-engagement content organically — turning the platform\'s own recommendation system into the distribution mechanism.',correct:'Algorithmic amplification via emotional content'},
+];
+
+const ioOptions=['— Select technique —','Algorithmic amplification + synthetic persona network','AI voice cloning for voter suppression','Synthetic persona creation (GAN faces)','Synthetic video + strategic timing','Micro-targeted narrative generation','AI image fabrication for narrative manipulation','Nation-state IO using AI content generation','Algorithmic amplification via emotional content'];
+
+/* Defense builder scenarios */
+const dbScenarios=[
+  {val:'bec',label:'BEC + Deepfake Audio — Finance Director Attack',text:'MVCC\'s Finance Director receives a call from a voice that sounds exactly like the VP of Finance, requesting an urgent wire transfer to a new vendor account. The voice is a deepfake. Design defenses.',controls:[
+    {text:'Pre-agreed code word: Finance Director asks caller for the financial code word; deepfake cannot provide it',correct:true,why:'Completely bypasses audio deepfake — attacker cannot know the code word'},
+    {text:'Train Finance Director to detect voice clones by listening for audio artifacts',correct:false,why:'0.1% detection accuracy; technology has surpassed human perception'},
+    {text:'Out-of-band callback: hang up, call VP of Finance on stored cell number',correct:true,why:'Reaches real VP who has no knowledge of the fraudulent request'},
+    {text:'Dual approval: no wire transfer authorized by a single person regardless of requester identity',correct:true,why:'Even if deepfake succeeds in one channel, requires second independent authorization'},
+    {text:'Enable caller ID display to verify the phone number',correct:false,why:'Caller ID is trivially spoofed; does not verify caller identity'},
+  ]},
+  {val:'phish',label:'AI Spear Phishing — Faculty Credential Theft',text:'A faculty member receives a hyper-personalized phishing email referencing their real research project, written in the department chair\'s style, requesting they log in to a fake MVCC portal. Design defenses.',controls:[
+    {text:'Train faculty to look for grammar errors and spelling mistakes',correct:false,why:'82.6% of phishing emails contain AI-generated content — perfect grammar is now standard'},
+    {text:'DMARC/DKIM/SPF enforcement: email authentication verifying the sending infrastructure',correct:true,why:'Infrastructure verification works regardless of email content quality'},
+    {text:'Process-focused training: any unexpected request to log in through an unfamiliar link = suspicious regardless of personalization',correct:true,why:'Addresses the real attack vector — process deviation signals, not grammar'},
+    {text:'AI-based email security analyzing intent and behavioral patterns, not keywords',correct:true,why:'Catches BEC and spear phishing patterns that keyword-based filters miss'},
+    {text:'Quarterly phishing simulation program with personalized scenarios',correct:true,why:'Verizon 2025 DBIR: sustained programs achieve 1.5% failure rate vs. negligible improvement from annual training'},
+  ]},
+  {val:'deepfake-video',label:'Video Deepfake — Board Meeting Impersonation',text:'An adversary creates a deepfake video of MVCC\'s President addressing what appears to be an emergency board meeting, announcing a controversial institutional decision. The video is circulated on social media before MVCC can respond.',controls:[
+    {text:'Issue a text denial on social media',correct:false,why:'Text denial is easily dismissed — requires verifiable counter-evidence'},
+    {text:'Post the official response with C2PA content credentials providing cryptographic provenance',correct:true,why:'Cryptographic proof of authenticity; fact-checkers can verify official content is genuine'},
+    {text:'Use an AI detection tool to analyze the deepfake and publish the results',correct:true,why:'Technical analysis of deepfake artifacts provides evidence-based debunking'},
+    {text:'Post from verified official accounts immediately with authentic equivalent video',correct:true,why:'Authentic content from verified accounts provides clear contrast to the deepfake'},
+    {text:'Contact platform trust & safety to report coordinated inauthentic behavior',correct:true,why:'Platform-level intervention can limit distribution of confirmed deepfake content'},
+  ]},
+  {val:'io',label:'Influence Operation — MVCC Misinformation Campaign',text:'Coordinated social media posts spread false claims about MVCC\'s academic quality, using AI-generated content from multiple new accounts to make the campaign appear organic.',controls:[
+    {text:'Respond to every individual post with corrections',correct:false,why:'Whack-a-mole is ineffective at scale; engagement amplifies reach of the IO content'},
+    {text:'Report coordinated inauthentic behavior to platform trust & safety with documented evidence',correct:true,why:'Platform intervention addresses the network, not just individual posts'},
+    {text:'Publish a clear, authoritative statement from official verified channels with evidence',correct:true,why:'Verified official content from trusted accounts provides reliable counter-narrative'},
+    {text:'Pre-bunking: proactively inform community about potential IO tactics before campaigns emerge',correct:true,why:'Pre-bunking is more effective than debunking at reducing belief in false claims'},
+    {text:'Contact the accounts and ask them to stop',correct:false,why:'Bot networks do not respond to human contact; engagement may signal active monitoring'},
+  ]},
+  {val:'smishing',label:'AI Smishing — Student Financial Aid Fraud',text:'Students receive personalized SMS messages claiming their financial aid will be cancelled unless they click a link to "verify" information. Messages include correct student names and partial IDs.',controls:[
+    {text:'Train students that MVCC will never ask them to verify financial aid through an SMS link',correct:true,why:'Process-deviation training: establish the legitimate process so deviations are recognizable'},
+    {text:'Configure SMS short-code filtering to block suspicious domains',correct:true,why:'Technical control reduces delivery of known malicious SMS domains'},
+    {text:'Reassure students that personalized messages are more likely to be legitimate',correct:false,why:'Incorrect — personalization is a classic phishing legitimacy signal that AI can generate from breached or scraped data'},
+    {text:'Implement MVCC portal communication as the authoritative channel for financial aid changes',correct:true,why:'Channel policy: legitimate communications go through official authenticated channels, not SMS links'},
+    {text:'Notify students to always navigate directly to the MVCC website rather than clicking links',correct:true,why:'Direct navigation completely bypasses malicious link delivery'},
+  ]},
+];
+
+/* ════════════════════════════════════════════════════════════════
+   BUILD FUNCTIONS
+════════════════════════════════════════════════════════════════ */
+
+function buildFlips(data,containerId){
+  const grid=document.getElementById(containerId);
+  data.forEach(item=>{
+    const card=document.createElement('div');card.className='flip-card';
+    card.setAttribute('tabindex','0');card.setAttribute('role','listitem');
+    const col=item.bg||'var(--df)';
+    card.innerHTML=`<div class="flip-inner"><div class="flip-front"><div class="flip-icon">${item.icon}</div><div class="flip-code" style="color:${col}">${item.code}</div><div class="flip-title">${item.title}</div><div class="flip-hint">Click to flip →</div></div><div class="flip-back" style="background:${col}"><div class="flip-back-title">${item.title}</div><div class="flip-body">${item.back}</div><span class="flip-tag">${item.tag}</span></div></div>`;
+    card.addEventListener('click',()=>card.classList.toggle('flipped'));
+    card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();card.classList.toggle('flipped')}});
+    grid.appendChild(card);
+  });
+}
+
+function buildCases(data,containerId){
+  const grid=document.getElementById(containerId);
+  data.forEach(item=>{
+    const c=document.createElement('div');c.className='case-card';
+    c.innerHTML=`<div class="cc-head" style="background:${item.color}"><div class="cc-icon">${item.icon}</div><div class="cc-meta"><div class="cc-title">${item.title}</div><div class="cc-date">${item.date}</div></div></div><div class="cc-body"><p>${item.text}</p><div class="cc-impact">${item.impact}</div><div class="cc-lesson">📌 <strong>Security lesson:</strong> ${item.lesson}</div></div>`;
+    grid.appendChild(c);
+  });
+}
+
+function buildExpand(data,containerId){
+  const container=document.getElementById(containerId);
+  data.forEach(item=>{
+    const div=document.createElement('div');div.className='expand-item';
+    div.innerHTML=`<button class="expand-trigger" onclick="toggleExp(this)" aria-expanded="false"><span class="exp-badge" style="background:${item.badgeColor}">${item.badge}</span><span>${item.title}</span><span class="exp-tag" style="background:${item.tagBg};color:${item.tagColor};margin-left:auto;flex-shrink:0">${item.tagText}</span><span class="expand-chevron" style="margin-left:.3rem">▼</span></button><div class="expand-body"><div class="expand-col"><div class="exp-col-label">Technical Detail &amp; Mechanics</div><div class="exp-quote" style="background:${item.tagBg};border-left-color:${item.badgeColor};color:${item.badgeColor}">${item.quote}</div>${item.impl}</div><div class="expand-col"><div class="exp-col-label">MVCC Application &amp; Verification</div>${item.example}${item.incident?`<div class="exp-col-label" style="margin-top:.8rem">📋 Real Incident</div><div class="incident-box">${item.incident}</div>`:''}<div class="exp-col-label" style="color:var(--success);margin-top:.8rem">✅ Primary Defenses</div><p style="font-size:.86rem;color:var(--ink-soft)">${item.defense}</p></div></div>`;
+    container.appendChild(div);
+  });
+}
+
+function toggleExp(btn){const b=btn.nextElementSibling;const o=b.classList.contains('show');btn.classList.toggle('open',!o);btn.setAttribute('aria-expanded',(!o).toString());b.classList.toggle('show',!o)}
+
+/* Detection Lab */
+let dlAnswered=new Set();let dlCorrect=0;
+function buildDetectLab(){
+  const container=document.getElementById('dl-scenarios-container');
+  detectScenarios.forEach((sc,i)=>{
+    const div=document.createElement('div');div.className='dl-sc';
+    div.innerHTML=`<div class="dl-sc-num">${sc.num}</div><div class="dl-sc-text">${sc.text}</div><div class="dl-options">${sc.opts.map((o,j)=>`<button class="dl-opt" onclick="checkDlOpt(${i},${j},this)">${o}</button>`).join('')}</div><div class="dl-fb" id="dl-fb-${i}"></div>`;
+    container.appendChild(div);
+  });
+}
+function checkDlOpt(i,j,btn){
+  if(document.getElementById(`dl-fb-${i}`).classList.contains('show'))return;
+  const sc=detectScenarios[i];
+  const opts=btn.parentElement.querySelectorAll('.dl-opt');
+  opts.forEach((b,k)=>{if(k===sc.correct)b.classList.add('correct-r');else if(b===btn&&k!==sc.correct)b.classList.add('wrong-r')});
+  const ok=j===sc.correct;
+  if(!dlAnswered.has(i)){dlAnswered.add(i);if(ok)dlCorrect++;}
+  const fb=document.getElementById(`dl-fb-${i}`);
+  fb.className=`dl-fb show ${ok?'ok':'bad'}`;
+  fb.innerHTML=`${ok?'✅ Correct!':'❌ Incorrect.'} ${sc.fb}`;
+  document.getElementById('dl-score').textContent=`${dlCorrect} / ${detectScenarios.length} correct`;
+  document.getElementById('dl-progress').textContent=`${dlAnswered.size} of ${detectScenarios.length} answered`;
+}
+function resetDetectLab(){
+  dlAnswered.clear();dlCorrect=0;
+  detectScenarios.forEach((_,i)=>{document.getElementById(`dl-fb-${i}`).className='dl-fb';document.getElementById(`dl-fb-${i}`).innerHTML='';});
+  document.querySelectorAll('.dl-opt').forEach(b=>b.classList.remove('correct-r','wrong-r'));
+  document.getElementById('dl-score').textContent='0 / 10 correct';
+  document.getElementById('dl-progress').textContent='0 of 10 answered';
+}
+
+/* IO Classifier */
+function buildIOClassifier(){
+  const container=document.getElementById('ic-scenarios-container');
+  ioIncidents.forEach((inc,i)=>{
+    const div=document.createElement('div');div.className='ic-incident';
+    const opts=ioOptions.map(o=>`<option value="${o}">${o}</option>`).join('');
+    div.innerHTML=`<span class="ic-num">${inc.num}</span><span class="ic-text">${inc.text}</span><select class="ic-select" id="ic-sel-${i}">${opts}</select>`;
+    container.appendChild(div);
+  });
+}
+function checkAllIC(){
+  let correct=0;let html='';
+  ioIncidents.forEach((inc,i)=>{
+    const sel=document.getElementById(`ic-sel-${i}`).value;
+    const ok=sel===inc.correct;
+    if(ok)correct++;
+    const icon=ok?'✅':'❌';
+    html+=`<div class="ic-result-row"><span style="font-size:1rem;flex-shrink:0">${icon}</span><span><strong>Incident ${inc.num}:</strong> <span style="color:${ok?'var(--success)':'var(--error)'};">${sel==='— Select technique —'?'Not answered':sel}</span><br><span style="color:var(--ink-muted);font-size:.82rem">Correct: <strong>${inc.correct}</strong></span></span></div>`;
+  });
+  document.getElementById('ic-score').textContent=`${correct} / ${ioIncidents.length} correct`;
+  const res=document.getElementById('ic-results');
+  res.innerHTML=`<div style="font-family:var(--ff-mono);font-size:.88rem;font-weight:700;color:var(--inf);margin-bottom:.7rem">Score: ${correct} / ${ioIncidents.length}</div>`+html;
+  res.classList.add('show');res.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function resetIC(){
+  ioIncidents.forEach((_,i)=>{const s=document.getElementById(`ic-sel-${i}`);if(s)s.value='— Select technique —'});
+  const r=document.getElementById('ic-results');r.classList.remove('show');r.innerHTML='';
+  document.getElementById('ic-score').textContent='0 / 8 correct';
+}
+
+/* Defense Builder */
+let dbCurrent=null;let dbCompleted=new Set();
+function buildDbSelect(){
+  const sel=document.getElementById('db-select');
+  dbScenarios.forEach(sc=>{const o=document.createElement('option');o.value=sc.val;o.textContent=sc.label;sel.appendChild(o)});
+}
+function loadDbScenario(val){
+  if(!val){document.getElementById('db-scenario-box').classList.remove('show');document.getElementById('db-controls').innerHTML='';document.getElementById('db-result').classList.remove('show');return}
+  dbCurrent=dbScenarios.find(s=>s.val===val);
+  document.getElementById('db-sc-label').textContent=dbCurrent.label;
+  document.getElementById('db-sc-text').textContent=dbCurrent.text;
+  document.getElementById('db-scenario-box').classList.add('show');
+  document.getElementById('db-controls').innerHTML=dbCurrent.controls.map((c,i)=>`<label class="db-ctrl"><input type="checkbox" id="db-c-${i}"> ${c.text}</label>`).join('');
+  document.getElementById('db-result').classList.remove('show');
+}
+function checkDbScenario(){
+  if(!dbCurrent)return;
+  const sc=dbCurrent;let html='';
+  let correct=sc.controls.filter(c=>c.correct).length;let rightSelected=0;let wrongSelected=0;
+  sc.controls.forEach((c,i)=>{
+    const checked=document.getElementById('db-c-'+i)?.checked;
+    if(c.correct&&checked)rightSelected++;
+    if(!c.correct&&checked)wrongSelected++;
+    const label=checked?(c.correct?'✅ Correctly selected':'❌ Wrong selection'):(c.correct?'⚠️ Should have selected':'✅ Correctly excluded');
+    const color=c.correct?'var(--success)':'var(--error)';
+    html+=`<div class="db-result-item"><span style="flex-shrink:0;font-weight:700;color:${color};font-size:.82rem">${label}:</span><span>${c.text} — ${c.why}</span></div>`;
+  });
+  const r=document.getElementById('db-result');
+  r.innerHTML=`<strong>${rightSelected===correct&&wrongSelected===0?'✅ Perfect!':rightSelected>0?`⚠️ ${rightSelected}/${correct} correct, ${wrongSelected} incorrect`:'❌ Review needed'}</strong><br><br>${html}`;
+  r.classList.add('show');
+  if(!dbCompleted.has(dbCurrent.val)){dbCompleted.add(dbCurrent.val);document.getElementById('db-score').textContent=`${dbCompleted.size} / ${dbScenarios.length} completed`;}
+}
+function resetDbScenario(){
+  if(!dbCurrent)return;
+  dbCurrent.controls.forEach((_,i)=>{const c=document.getElementById('db-c-'+i);if(c)c.checked=false});
+  document.getElementById('db-result').classList.remove('show');
+}
+
+/* Sticky nav */
+const navLinks=document.querySelectorAll('.lesson-nav a');
+const navObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){navLinks.forEach(l=>l.classList.remove('active'));const lnk=document.querySelector(`.lesson-nav a[href="#${e.target.id}"]`);if(lnk)lnk.classList.add('active')}})},{rootMargin:'-25% 0px -65% 0px'});
+document.querySelectorAll('section[id]').forEach(s=>navObs.observe(s));
+
+/* Progress */
+function toggleLO(el){el.classList.toggle('checked');el.setAttribute('aria-checked',el.classList.contains('checked').toString());const all=document.querySelectorAll('.lo-check');const done=document.querySelectorAll('.lo-check.checked').length;document.getElementById('progress-fill').style.width=Math.round(done/all.length*100)+'%';document.getElementById('progress-label').textContent=`${done} of ${all.length} completed`}
+
+/* Quiz */
+const quizData=[
+  {q:'What percentage of phishing emails analyzed between September 2024 and February 2025 contained AI-generated content, according to KnowBe4\'s 2025 Phishing Benchmarking Report?',opts:['32%','56%','82.6%','91%'],correct:2,exp:'KnowBe4\'s 2025 Phishing Benchmarking Report found that 82.6% of analyzed phishing emails contained AI-generated content. This statistic directly refutes the premise of traditional phishing training that focuses on detecting grammar errors and poor writing — the vast majority of phishing emails are now grammatically perfect because they are AI-generated.'},
+  {q:'The Arup deepfake incident (February 2024) involved which specific attack vector, and what was the financial impact?',opts:['AI-generated phishing email; $1.2 million','Real-time video deepfake call impersonating the CFO and multiple colleagues; $25.6 million wired to attacker accounts','Voice clone robocall; €220,000','Document deepfake (fake invoice); $500,000'],correct:1,exp:'The Arup incident involved real-time video deepfakes of the CFO and several colleagues in a video conference call. The finance employee wired $25.6 million across 15 transactions. This was the largest documented deepfake fraud incident at the time and demonstrated that even high-quality video authentication — seeing multiple familiar faces simultaneously — cannot substitute for out-of-band verification for financial authorizations.'},
+  {q:'What percentage of research participants correctly identified ALL fake and real media shown in the 2025 iProov study?',opts:['12%','23%','47%','0.1%'],correct:3,exp:'Only 0.1% of participants correctly identified all fake and real media in the iProov 2025 study. This statistic is the foundation for why organizational defense cannot depend on human detection of deepfakes. When the human detection rate is effectively zero, security controls must bypass the need for human detection entirely — through procedural controls (code words, out-of-band verification) rather than through training humans to "spot" deepfakes.'},
+  {q:'A TOAD (Telephone-Oriented Attack Delivery) attack combines which elements?',opts:['Two-factor authentication bypass + social engineering','Email phishing followed by a trust-building phone call (often AI-voice-enabled) that validates the email\'s request, adding social proof through human or AI voice interaction','SMS smishing + in-person social engineering','Technical exploitation + physical access'],correct:1,exp:'TOAD combines email phishing with a follow-up phone call (real human or AI-cloned voice) that "confirms" the email request. The phone call creates social proof that the email is legitimate — "I just sent you an email about the wire transfer, did you get it?" The voice adds authority and urgency that email alone cannot achieve. Defense: the callback in TOAD verification must be to an independently pre-stored number, not any number the caller provides.'},
+  {q:'What makes a pre-agreed code word the most cost-effective defense against deepfake audio BEC fraud?',opts:['It is difficult for attackers to discover because it is stored securely in the email system','It is expensive to implement and therefore signals organizational seriousness','It completely bypasses the deepfake technology — the control does not attempt to detect the deepfake; it requires knowledge the attacker cannot forge, regardless of audio quality','It complies with the EU AI Act Article 50 transparency requirements'],correct:2,exp:'The code word defense bypasses the detection problem entirely. Whether the deepfake voice clone is 60% or 100% convincing is irrelevant — the attacker cannot produce the code word. The defense operates independently of detection capability, which is why it\'s the most effective single control for this threat: cost near zero, effectiveness near 100% for that specific attack channel. The Ferrari incident demonstrated this: the executive\'s personal verification question failed the attacker because they couldn\'t answer something only the real CEO would know.'},
+  {q:'Which election is documented as the first confirmed use of AI-generated content by a nation-state to influence a foreign election?',opts:['US Presidential Election 2024','Romania Presidential Election 2024','Taiwan Presidential Election 2024 (Microsoft documentation of Chinese Spamouflage network)','Ireland Presidential Election 2025'],correct:2,exp:'Microsoft documented the Chinese government-linked Spamouflage network\'s use of AI-generated content in Taiwan\'s 2024 presidential election — the first confirmed nation-state use of AI-generated material to influence a foreign election. Romania\'s election (2024) demonstrated the first confirmed election result annulled due to AI-enabled influence operations. Ireland\'s election (2025) saw the first deepfake video of a candidate "withdrawing" released days before polling.'},
+  {q:'Traditional phishing training that teaches employees to "check for bad grammar" is inadequate because:',opts:['Phishing emails are now encrypted and therefore unreadable by spam filters','Grammar checking is a GDPR violation','82.6% of phishing emails now contain AI-generated content that is grammatically perfect. The signal that training told employees to look for no longer exists — and training that still emphasizes it creates false confidence in employees who believe they can detect AI phishing by looking for errors that aren\'t there.','AI grammar detection tools have become too expensive for most organizations'],correct:2,exp:'The grammar signal is dead. KnowBe4 2025 data (82.6% AI-generated phishing) and multiple studies (54% click rates for AI phishing vs. 12% for human-written) demonstrate that AI eliminates the grammatical markers that made phishing detectable. Training that focuses on grammar creates employees who correctly identify 2010-era phishing while completely missing 2025-era AI phishing. The replacement signals: process deviation (urgency + confidentiality + unusual channel = suspicious regardless of grammar).'},
+  {q:'What is the most effective organizational approach to phishing resilience, according to the Verizon 2025 Data Breach Investigations Report?',opts:['Annual mandatory phishing awareness training','AI-based email filtering combined with SPF/DKIM/DMARC','Sustained, behavior-based phishing simulation programs run quarterly or more frequently, which achieve 1.5% failure rates compared to negligible improvement from annual training alone','Blocking all HTML email and allowing only plain text'],correct:2,exp:'Verizon 2025 DBIR: organizations conducting sustained, behavior-based phishing programs achieve failure rates around 1.5%. Organizations relying on annual training see negligible improvement over untrained populations. The difference is behavioral practice — regular simulated attacks that create conditioned responses — vs. knowledge transfer that employees do not apply under social pressure. Frequency and realism of simulation matter far more than content volume of training.'},
+  {q:'C2PA (Coalition for Content Provenance and Authenticity) addresses which specific gap in deepfake defense?',opts:['It detects deepfakes by analyzing audio frequency spectra','It blocks deepfake distribution on social media platforms','It provides cryptographic provenance metadata embedded at content creation, enabling verification of whether content is AI-generated and documenting the chain of custody from camera to distribution — works regardless of how convincing the deepfake looks','It trains employees to identify GAN-generated facial artifacts'],correct:2,exp:'C2PA provides cryptographic content credentials that document origin and authenticity from the moment of capture or creation. This is provenance-based verification rather than detection-based verification — it doesn\'t try to identify deepfakes by looking for artifacts; it provides a chain of custody that authentic content has and synthetic content lacks. For official communications from verified organizations, C2PA enables fact-checkers and viewers to verify that official content is authentic. For political or journalistic content, absence of C2PA credentials is itself a signal worth noting.'},
+  {q:'The Romania 2024 presidential election is significant for AI security research because:',opts:['It was the first election to use electronic voting','AI deepfakes prevented all candidates from participating','A Russian-linked AI-enabled influence operation — using deepfakes, tens of thousands of AI bot accounts, and TikTok algorithm exploitation — helped a fringe candidate win the first round, leading to the entire election result being annulled by Romania\'s Constitutional Court','Romania became the first country to pass legislation requiring AI content labeling'],correct:2,exp:'Romania 2024 is the first documented case of an AI-enabled influence operation achieving sufficient electoral impact to cause election results to be annulled. The operation combined: AI-generated deepfakes, tens of thousands of coordinated AI bot accounts, TikTok algorithmic exploitation (the algorithm amplified emotionally activating content organically), and paid influencer networks. The Constitutional Court annulled the first-round results citing the foreign-origin coordinated inauthentic behavior campaign. This established that AI-enabled IO can produce decisive electoral outcomes at national scale.'},
+];
+
+function buildQuiz(){
+  const body=document.getElementById('quiz-body');
+  quizData.forEach((q,i)=>{
+    const sec=document.createElement('div');sec.className='quiz-q';
+    sec.innerHTML=`<div class="q-prompt"><span class="q-num">Q${i+1}.</span>${q.q}</div><ul class="q-opts">${q.opts.map((o,j)=>`<li><label><input type="radio" name="q${i}" value="${j}"> ${o}</label></li>`).join('')}</ul><div class="q-fb" id="qf${i}"></div>`;
+    body.appendChild(sec);
+  });
+}
+function gradeQuiz(){
+  let score=0;
+  quizData.forEach((q,i)=>{
+    const sel=document.querySelector(`input[name="q${i}"]:checked`);
+    const fb=document.getElementById(`qf${i}`);fb.classList.add('show');
+    if(sel&&parseInt(sel.value)===q.correct){score++;fb.className='q-fb ok show';fb.innerHTML=`✅ <strong>Correct!</strong> ${q.exp}`}
+    else{fb.className='q-fb bad show';fb.innerHTML=`❌ <strong>${sel?'Incorrect.':'No answer.'}</strong> ${q.exp}`}
+  });
+  document.getElementById('quiz-score-display').textContent=`Score: ${score} / ${quizData.length}`;
+  const msgs=['Keep reviewing.','Good effort.','Solid command.','Strong work!','Excellent!','Perfect!'];
+  document.getElementById('quiz-msg').textContent=msgs[Math.min(5,Math.floor(score/2))];
+}
+function resetQuiz(){
+  document.querySelectorAll('#quiz-body input[type=radio]').forEach(r=>r.checked=false);
+  document.querySelectorAll('.q-fb').forEach(f=>{f.className='q-fb';f.innerHTML=''});
+  document.getElementById('quiz-score-display').textContent=`Score: 0 / ${quizData.length}`;
+  document.getElementById('quiz-msg').textContent='';
+}
+
+/* Init */
+buildFlips(dfFlips,'df-flip-grid');
+buildFlips(phFlips,'ph-flip-grid');
+buildFlips(infFlips,'inf-flip-grid');
+buildFlips(defenseFlips,'defense-flip-grid');
+buildCases(dfCases,'df-case-grid');
+buildCases(infCases,'inf-case-grid');
+buildExpand(dfExpand,'df-expand');
+buildExpand(phExpand,'ph-expand');
+buildExpand(infExpand,'inf-expand');
+buildDetectLab();
+buildIOClassifier();
+buildDbSelect();
+buildQuiz();
+</script>
+</body>
+</html>
