@@ -1,0 +1,1658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI-103 Lesson 13 — AI Policies, AUPs & Governance Documents. Build an AI AUP, use case register, IR annex, and documentation that withstands audit. Aligned to NIST AI RMF, ISO 42001, and EU AI Act.">
+<title>AI-103 · Day 13: AI Policies, AUPs &amp; Governance Documents</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,300&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root {
+    --c-bg:#ffffff;--c-surface:#f8f7f5;--c-surface2:#f0ede8;--c-border:#ddd8d0;
+    --c-text:#1a1714;--c-text-mid:#4a4440;--c-text-soft:#7a7370;
+    --c-accent:#7c1c1c;--c-accent-light:#f5eded;--c-accent-mid:#b85c5c;
+    --c-green:#1a5c3a;--c-green-light:#eef7f2;
+    --c-blue:#1a3a5c;--c-blue-light:#eef3f8;
+    --c-gold:#8a6a10;--c-gold-light:#fdf7e8;
+    --c-purple:#4a1a7c;--c-purple-light:#f2eef8;
+    --c-warn:#7a3c00;--c-warn-light:#fdf0e8;
+    --c-teal:#0d5c5c;--c-teal-light:#eaf6f6;
+    --font-serif:'Fraunces',Georgia,serif;
+    --font-sans:'IBM Plex Sans',system-ui,sans-serif;
+    --font-mono:'IBM Plex Mono',monospace;
+    --radius:8px;--shadow:0 2px 12px rgba(0,0,0,.08);--max-w:900px;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--font-sans);background:var(--c-bg);color:var(--c-text);font-size:16px;line-height:1.7;}
+  .skip{position:absolute;left:-9999px;top:0;}
+  .skip:focus{left:0;padding:.5rem 1rem;background:var(--c-accent);color:#fff;z-index:999;}
+
+  /* ---- Site bar ---- */
+  .site-bar{background:var(--c-surface);border-bottom:1px solid var(--c-border);padding:.6rem 1.5rem;font-size:.78rem;color:var(--c-text-soft);display:flex;flex-wrap:wrap;gap:.4rem .8rem;align-items:center;}
+  .site-bar a{color:var(--c-accent);text-decoration:none;}
+  .site-bar a:hover{text-decoration:underline;}
+
+  /* ---- Sticky lesson nav ---- */
+  .lesson-nav{background:var(--c-surface);border-bottom:1px solid var(--c-border);padding:.6rem 1.5rem;display:flex;flex-wrap:wrap;gap:.4rem .2rem;align-items:center;font-size:.82rem;position:sticky;top:0;z-index:40;}
+  .lesson-nav a{color:var(--c-text-mid);text-decoration:none;padding:.2rem .5rem;border-radius:4px;transition:background .15s;}
+  .lesson-nav a:hover{background:var(--c-border);color:var(--c-accent);}
+  .lesson-nav .sep{color:var(--c-border);user-select:none;}
+
+  /* ---- Hero ---- */
+  .lesson-hero{padding:3.5rem 1.5rem 2.5rem;border-bottom:3px solid var(--c-accent);background:linear-gradient(160deg,var(--c-surface) 0%,var(--c-bg) 60%);}
+  .lesson-meta-top{font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--c-accent);font-weight:600;margin-bottom:1rem;}
+  .lesson-hero h1{font-family:var(--font-serif);font-size:clamp(1.9rem,4vw,2.8rem);font-weight:700;line-height:1.2;color:var(--c-text);max-width:780px;margin-bottom:1rem;}
+  .lesson-hero .subtitle{font-size:1.05rem;color:var(--c-text-mid);max-width:720px;font-style:italic;font-family:var(--font-serif);font-weight:300;margin-bottom:1.5rem;}
+  .meta-badges{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem;}
+  .badge{display:inline-flex;align-items:center;gap:.3rem;background:var(--c-accent-light);color:var(--c-accent);border:1px solid var(--c-accent-mid);border-radius:999px;padding:.25rem .75rem;font-size:.78rem;font-weight:600;}
+
+  /* ---- Page layout ---- */
+  main{padding:0 1.5rem;}
+  .page-with-rail{display:grid;grid-template-columns:1fr 220px;gap:2.5rem;align-items:start;}
+  section{padding:3rem 0 2rem;border-bottom:1px solid var(--c-border);}
+  section:last-child{border-bottom:none;}
+  h2{font-family:var(--font-serif);font-size:1.7rem;font-weight:700;color:var(--c-text);margin-bottom:.3rem;}
+  h2 .sec-num{font-family:var(--font-sans);font-size:.78rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--c-accent);display:block;margin-bottom:.3rem;}
+  h3{font-family:var(--font-serif);font-size:1.2rem;font-weight:600;color:var(--c-text);margin:1.8rem 0 .6rem;}
+  p{margin-bottom:1rem;}p:last-child{margin-bottom:0;}
+  strong{font-weight:600;}em{font-style:italic;}
+
+  /* ---- Part headers ---- */
+  .part-header{background:var(--c-text);color:#fff;border-radius:var(--radius);padding:1.2rem 1.5rem;margin:2rem -1.5rem 1rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;}
+  .part-header .part-label{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;opacity:.7;}
+  .part-header h2{font-size:1.2rem;color:#fff;font-family:var(--font-sans);margin:0;}
+  .part-header .part-time{font-size:.85rem;opacity:.8;background:rgba(255,255,255,.15);padding:.2rem .7rem;border-radius:999px;}
+
+  /* ---- Callout boxes ---- */
+  .callout{border-radius:var(--radius);padding:1.2rem 1.5rem;margin:1.5rem 0;border-left:4px solid;}
+  .callout-analogy{background:var(--c-gold-light);border-color:var(--c-gold);}
+  .callout-key{background:var(--c-blue-light);border-color:var(--c-blue);}
+  .callout-warn{background:var(--c-warn-light);border-color:var(--c-warn);}
+  .callout-green{background:var(--c-green-light);border-color:var(--c-green);}
+  .callout-accent{background:var(--c-accent-light);border-color:var(--c-accent);}
+  .callout-teal{background:var(--c-teal-light);border-color:var(--c-teal);}
+  .callout-title{font-weight:700;margin-bottom:.4rem;display:flex;align-items:center;gap:.5rem;}
+
+  /* ---- Objectives ---- */
+  .obj-list{list-style:none;display:grid;gap:.6rem;margin:1rem 0;}
+  .obj-list li{display:flex;gap:.8rem;align-items:flex-start;background:var(--c-surface);border-radius:var(--radius);padding:.7rem 1rem;font-size:.92rem;}
+  .obj-list li .obj-num{background:var(--c-accent);color:#fff;border-radius:50%;width:1.5rem;height:1.5rem;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;flex-shrink:0;margin-top:.1rem;}
+  .obj-progress{margin:1rem 0;}
+  .op-label{font-size:.82rem;color:var(--c-text-soft);margin-bottom:.4rem;}
+  .op-bar-wrap{background:var(--c-surface2);border-radius:999px;height:6px;}
+  .op-bar{background:var(--c-accent);height:6px;border-radius:999px;transition:width .4s;}
+
+  /* ---- Accordion ---- */
+  .accordion{margin:1rem 0;border-radius:var(--radius);overflow:hidden;border:1px solid var(--c-border);}
+  .accordion-item{border-bottom:1px solid var(--c-border);}
+  .accordion-item:last-child{border-bottom:none;}
+  .accordion-trigger{width:100%;text-align:left;background:var(--c-surface);border:none;padding:1rem 1.2rem;font-family:var(--font-sans);font-size:.95rem;font-weight:600;color:var(--c-text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:.5rem;transition:background .15s;}
+  .accordion-trigger:hover{background:var(--c-surface2);}
+  .accordion-trigger .trigger-icon{font-size:.8rem;color:var(--c-accent);flex-shrink:0;transition:transform .3s;}
+  .accordion-trigger[aria-expanded="true"] .trigger-icon{transform:rotate(180deg);}
+  .accordion-trigger[aria-expanded="true"]{background:var(--c-accent-light);color:var(--c-accent);}
+  .trigger-meta{display:flex;align-items:center;gap:.5rem;}
+  .trigger-tag{font-size:.72rem;font-weight:600;letter-spacing:.05em;background:var(--c-accent);color:#fff;border-radius:999px;padding:.1rem .55rem;}
+  .trigger-tag.green{background:var(--c-green);}
+  .trigger-tag.blue{background:var(--c-blue);}
+  .trigger-tag.warn{background:var(--c-warn);}
+  .trigger-tag.teal{background:var(--c-teal);}
+  .accordion-body{display:none;padding:1.2rem 1.5rem;background:var(--c-bg);border-top:2px solid var(--c-accent);font-size:.93rem;}
+  .accordion-body.open{display:block;animation:fadeSlide .2s ease;}
+  @keyframes fadeSlide{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ---- Flip cards ---- */
+  .flip-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1.2rem;margin:1.5rem 0;}
+  .flip-card{height:210px;perspective:900px;cursor:pointer;}
+  .flip-card-inner{position:relative;width:100%;height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;}
+  .flip-card.flipped .flip-card-inner{transform:rotateY(180deg);}
+  .flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--radius);padding:1.2rem;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);}
+  .flip-front{background:var(--c-surface);border:2px solid var(--c-border);}
+  .flip-front .flip-icon{font-size:2rem;margin-bottom:.5rem;}
+  .flip-front .flip-label{font-family:var(--font-serif);font-size:1rem;font-weight:600;color:var(--c-text);}
+  .flip-front .flip-hint{font-size:.72rem;color:var(--c-text-soft);margin-top:.4rem;}
+  .flip-back{background:var(--c-accent);color:#fff;transform:rotateY(180deg);justify-content:flex-start;align-items:flex-start;text-align:left;overflow-y:auto;}
+  .flip-back.green-back{background:var(--c-green);}
+  .flip-back.blue-back{background:var(--c-blue);}
+  .flip-back.gold-back{background:var(--c-gold);}
+  .flip-back.purple-back{background:var(--c-purple);}
+  .flip-back.teal-back{background:var(--c-teal);}
+  .flip-back .back-label{font-weight:700;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;opacity:.8;margin-bottom:.4rem;}
+  .flip-back .back-text{font-size:.83rem;line-height:1.5;}
+
+  /* ---- Tables ---- */
+  .data-table{width:100%;border-collapse:collapse;font-size:.87rem;margin:1.2rem 0;}
+  .data-table th{background:var(--c-text);color:#fff;padding:.6rem .8rem;text-align:left;font-weight:600;font-size:.82rem;}
+  .data-table td{padding:.6rem .8rem;border-bottom:1px solid var(--c-border);vertical-align:top;}
+  .data-table tr:nth-child(even) td{background:var(--c-surface);}
+  .data-table tr:hover td{background:var(--c-accent-light);}
+  .pill{display:inline-block;border-radius:4px;padding:.1rem .4rem;font-size:.72rem;font-weight:700;}
+  .pill-r{background:#fff0f0;color:#c00;}
+  .pill-y{background:var(--c-gold-light);color:var(--c-gold);}
+  .pill-g{background:var(--c-green-light);color:var(--c-green);}
+  .pill-b{background:var(--c-blue-light);color:var(--c-blue);}
+
+  /* ---- Stat grid ---- */
+  .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.8rem;margin:1.2rem 0;}
+  .stat-block{text-align:center;background:var(--c-surface);border-radius:var(--radius);padding:1rem;border:1px solid var(--c-border);}
+  .stat-num{font-family:var(--font-serif);font-size:2rem;font-weight:700;color:var(--c-accent);line-height:1;}
+  .stat-desc{font-size:.75rem;color:var(--c-text-soft);margin-top:.3rem;}
+
+  /* ---- AUP Builder (interactive document) ---- */
+  .aup-doc{border:2px solid var(--c-border);border-radius:var(--radius);overflow:hidden;margin:1.5rem 0;}
+  .aup-doc-header{background:var(--c-text);color:#fff;padding:1rem 1.4rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;}
+  .aup-doc-header h4{font-family:var(--font-mono);font-size:.95rem;margin:0;}
+  .aup-doc-header .doc-badge{font-size:.72rem;background:rgba(255,255,255,.15);padding:.2rem .6rem;border-radius:999px;}
+  .aup-section{border-bottom:1px solid var(--c-border);}
+  .aup-section:last-child{border-bottom:none;}
+  .aup-section-header{background:var(--c-surface);padding:.75rem 1.2rem;font-weight:700;font-size:.9rem;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;transition:background .15s;}
+  .aup-section-header:hover{background:var(--c-surface2);}
+  .aup-section-header .aup-expand{font-size:.78rem;color:var(--c-accent);transition:transform .3s;}
+  .aup-section-header.open .aup-expand{transform:rotate(180deg);}
+  .aup-section-body{display:none;padding:1rem 1.4rem;}
+  .aup-section-body.open{display:block;animation:fadeSlide .2s ease;}
+  .aup-field{margin-bottom:1rem;}
+  .aup-field label{display:block;font-size:.82rem;font-weight:600;color:var(--c-text-soft);margin-bottom:.3rem;text-transform:uppercase;letter-spacing:.04em;}
+  .aup-input{width:100%;border:1px solid var(--c-border);border-radius:6px;padding:.5rem .8rem;font-family:var(--font-sans);font-size:.88rem;color:var(--c-text);background:var(--c-bg);transition:border-color .15s;}
+  .aup-input:focus{outline:none;border-color:var(--c-accent);background:#fff;}
+  .aup-textarea{width:100%;border:1px solid var(--c-border);border-radius:6px;padding:.5rem .8rem;font-family:var(--font-sans);font-size:.88rem;color:var(--c-text);background:var(--c-bg);min-height:80px;resize:vertical;transition:border-color .15s;}
+  .aup-textarea:focus{outline:none;border-color:var(--c-accent);}
+  .aup-radio-group{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.3rem;}
+  .aup-radio-opt{display:flex;align-items:center;gap:.4rem;background:var(--c-surface);border:1px solid var(--c-border);border-radius:6px;padding:.3rem .7rem;cursor:pointer;font-size:.85rem;transition:all .15s;}
+  .aup-radio-opt:hover{border-color:var(--c-accent);background:var(--c-accent-light);}
+  .aup-radio-opt input{accent-color:var(--c-accent);}
+  .aup-checklist{list-style:none;}
+  .aup-checklist li{display:flex;align-items:flex-start;gap:.5rem;padding:.3rem 0;font-size:.87rem;border-bottom:1px dashed var(--c-border);}
+  .aup-checklist li:last-child{border-bottom:none;}
+  .aup-checklist input[type=checkbox]{flex-shrink:0;margin-top:.2rem;accent-color:var(--c-accent);}
+  .aup-preview-btn{background:var(--c-accent);color:#fff;border:none;border-radius:6px;padding:.45rem 1rem;font-family:var(--font-sans);font-size:.83rem;font-weight:600;cursor:pointer;transition:filter .15s;}
+  .aup-preview-btn:hover{filter:brightness(.85);}
+
+  /* ---- Use Case Register ---- */
+  .ucr-table-wrap{overflow-x:auto;margin:1.2rem 0;}
+  .ucr-table{width:100%;border-collapse:collapse;font-size:.82rem;min-width:700px;}
+  .ucr-table th{background:var(--c-blue);color:#fff;padding:.55rem .7rem;text-align:left;font-weight:600;font-size:.78rem;white-space:nowrap;}
+  .ucr-table td{padding:.5rem .7rem;border-bottom:1px solid var(--c-border);vertical-align:top;}
+  .ucr-table tr:nth-child(even) td{background:var(--c-surface);}
+  .ucr-table tr:hover td{background:var(--c-blue-light);}
+  .ucr-add-row{background:var(--c-green);color:#fff;border:none;border-radius:6px;padding:.4rem .9rem;font-family:var(--font-sans);font-size:.82rem;font-weight:600;cursor:pointer;margin:.5rem 0;transition:filter .15s;}
+  .ucr-add-row:hover{filter:brightness(.85);}
+  .ucr-input{border:1px solid var(--c-border);border-radius:4px;padding:.25rem .4rem;font-size:.8rem;font-family:var(--font-sans);width:100%;background:var(--c-bg);}
+  .ucr-input:focus{outline:none;border-color:var(--c-blue);}
+  .ucr-select{border:1px solid var(--c-border);border-radius:4px;padding:.25rem .4rem;font-size:.8rem;font-family:var(--font-sans);background:var(--c-bg);}
+  .risk-high{background:#fff0f0;color:#c00;font-weight:700;border-radius:4px;padding:.1rem .4rem;font-size:.72rem;}
+  .risk-med{background:var(--c-gold-light);color:var(--c-gold);font-weight:700;border-radius:4px;padding:.1rem .4rem;font-size:.72rem;}
+  .risk-low{background:var(--c-green-light);color:var(--c-green);font-weight:700;border-radius:4px;padding:.1rem .4rem;font-size:.72rem;}
+
+  /* ---- IR Annex builder ---- */
+  .ir-step{background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--radius);padding:.9rem 1.1rem;margin:.6rem 0;display:grid;grid-template-columns:auto 1fr;gap:.6rem 1rem;align-items:start;}
+  .ir-step-num{background:var(--c-accent);color:#fff;border-radius:50%;width:2rem;height:2rem;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;flex-shrink:0;margin-top:.1rem;}
+  .ir-step-name{font-weight:700;font-size:.93rem;margin-bottom:.3rem;}
+  .ir-step-traditional{font-size:.82rem;color:var(--c-text-mid);margin-bottom:.3rem;}
+  .ir-step-ai{font-size:.82rem;color:var(--c-accent);font-weight:600;}
+  .ir-step-ai::before{content:"→ AI Extension: ";}
+
+  /* ---- Activity ---- */
+  .activity-header{background:var(--c-accent);color:#fff;border-radius:var(--radius) var(--radius) 0 0;padding:1rem 1.4rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;}
+  .activity-header .act-badge{font-size:.75rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;opacity:.8;}
+  .activity-header h3{font-size:1.1rem;font-family:var(--font-sans);font-weight:600;margin:0;}
+  .activity-header .act-time{font-size:.82rem;background:rgba(255,255,255,.2);padding:.2rem .7rem;border-radius:999px;}
+  .activity-body{border:1px solid var(--c-accent);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:1.4rem;}
+
+  /* ---- Buttons ---- */
+  .btn-primary{background:var(--c-accent);color:#fff;border:none;border-radius:var(--radius);padding:.55rem 1.3rem;font-family:var(--font-sans);font-size:.9rem;font-weight:600;cursor:pointer;transition:filter .15s;}
+  .btn-primary:hover{filter:brightness(.85);}
+  .btn-secondary{background:var(--c-surface);color:var(--c-text);border:1px solid var(--c-border);border-radius:var(--radius);padding:.55rem 1.3rem;font-family:var(--font-sans);font-size:.9rem;font-weight:600;cursor:pointer;transition:background .15s;margin-left:.5rem;}
+  .btn-secondary:hover{background:var(--c-surface2);}
+  .result-box{margin-top:1rem;padding:1rem 1.2rem;border-radius:var(--radius);font-size:.9rem;display:none;}
+  .result-box.show{display:block;animation:fadeSlide .2s ease;}
+  .result-ok{background:var(--c-green-light);border:1px solid var(--c-green);color:var(--c-green);}
+  .result-partial{background:var(--c-gold-light);border:1px solid var(--c-gold);color:var(--c-gold);}
+  .result-miss{background:#fff0f0;border:1px solid #c00;color:#c00;}
+  .score-big{font-family:var(--font-serif);font-size:2rem;font-weight:700;}
+
+  /* ---- Policy gap sorter ---- */
+  .gap-sort-wrap{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0;}
+  .gap-col{border:2px dashed var(--c-border);border-radius:var(--radius);padding:.8rem;min-height:120px;}
+  .gap-col-label{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--c-text-soft);margin-bottom:.5rem;}
+  .gap-col.has-items{border-color:var(--c-accent-mid);}
+  .gap-chip{background:var(--c-surface);border:1px solid var(--c-border);border-radius:6px;padding:.35rem .65rem;font-size:.83rem;margin:.3rem;display:inline-block;cursor:pointer;transition:all .15s;user-select:none;}
+  .gap-chip:hover{border-color:var(--c-accent);color:var(--c-accent);}
+  .gap-chip.selected{background:var(--c-accent);border-color:var(--c-accent);color:#fff;}
+  .gap-chip.correct{background:var(--c-green);border-color:var(--c-green);color:#fff;}
+  .gap-chip.incorrect{background:#c00;border-color:#c00;color:#fff;}
+
+  /* ---- Quiz ---- */
+  .quiz-q{background:var(--c-surface);border-radius:var(--radius);padding:1.2rem 1.4rem;margin-bottom:1rem;}
+  .quiz-q .q-text{font-weight:600;margin-bottom:.8rem;font-size:.95rem;}
+  .quiz-opts{list-style:none;display:grid;gap:.45rem;}
+  .quiz-opts li label{display:flex;align-items:flex-start;gap:.6rem;padding:.5rem .8rem;border-radius:6px;border:1px solid var(--c-border);background:var(--c-bg);cursor:pointer;font-size:.87rem;transition:background .15s;}
+  .quiz-opts li label:hover{background:var(--c-accent-light);}
+  .quiz-opts li input[type=radio]{flex-shrink:0;margin-top:.2rem;accent-color:var(--c-accent);}
+  .quiz-opts li.correct label{background:var(--c-green-light);border-color:var(--c-green);color:var(--c-green);}
+  .quiz-opts li.wrong label{background:#fff0f0;border-color:#c00;color:#c00;}
+  .quiz-feedback{font-size:.84rem;padding:.6rem .8rem;border-radius:6px;margin-top:.5rem;display:none;}
+  .quiz-feedback.show{display:block;}
+  .quiz-score-panel{background:var(--c-text);color:#fff;border-radius:var(--radius);padding:1.5rem;text-align:center;display:none;}
+  .quiz-score-panel.show{display:block;}
+  .qs-big{font-family:var(--font-serif);font-size:2.5rem;font-weight:700;}
+  .qs-label{font-size:.9rem;opacity:.7;}
+
+  /* ---- Rail ---- */
+  .rail{position:sticky;top:4rem;padding:1.2rem;background:var(--c-surface);border-radius:var(--radius);border:1px solid var(--c-border);font-size:.82rem;}
+  .rail h4{font-family:var(--font-serif);font-size:.95rem;margin-bottom:.8rem;color:var(--c-text);}
+  .rail-nav{list-style:none;}
+  .rail-nav li{margin-bottom:.3rem;}
+  .rail-nav a{color:var(--c-text-mid);text-decoration:none;display:block;padding:.2rem .3rem;border-radius:4px;}
+  .rail-nav a:hover{color:var(--c-accent);background:var(--c-accent-light);}
+  .rail-section{margin-top:1.2rem;padding-top:1rem;border-top:1px solid var(--c-border);}
+  .rail-section .term{font-weight:600;margin-top:.5rem;color:var(--c-text);}
+  .rail-section .def{color:var(--c-text-soft);font-size:.78rem;}
+
+  /* ---- Bottom nav ---- */
+  .lesson-nav-bottom{display:flex;justify-content:space-between;align-items:center;padding:1.5rem 0;gap:1rem;flex-wrap:wrap;}
+  .nav-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--radius);padding:.6rem 1.1rem;text-decoration:none;color:var(--c-text);font-size:.88rem;font-weight:500;transition:background .15s;}
+  .nav-btn:hover{background:var(--c-surface2);}
+  .nav-btn.primary{background:var(--c-accent);color:#fff;border-color:var(--c-accent);}
+  .nav-btn.primary:hover{filter:brightness(.85);}
+
+  /* ---- Scenario cards ---- */
+  .scenario-card{background:var(--c-bg);border:1px solid var(--c-border);border-radius:var(--radius);padding:1rem;margin:.8rem 0;font-size:.91rem;}
+  .scenario-card strong{color:var(--c-accent);}
+
+  /* ---- Policy preview pane ---- */
+  .policy-preview{background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--radius);padding:1.5rem;margin-top:1rem;font-size:.87rem;display:none;}
+  .policy-preview.show{display:block;animation:fadeSlide .3s ease;}
+  .policy-preview h4{font-family:var(--font-serif);font-size:1.1rem;font-weight:700;margin-bottom:1rem;text-align:center;border-bottom:2px solid var(--c-accent);padding-bottom:.5rem;}
+  .policy-preview p{margin-bottom:.7rem;line-height:1.6;}
+  .policy-preview .pol-section{margin-bottom:1.2rem;}
+  .policy-preview .pol-label{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--c-accent);margin-bottom:.2rem;}
+
+  /* ---- Responsive ---- */
+  @media(max-width:720px){.page-with-rail{grid-template-columns:1fr;}.rail{display:none;}.flip-grid{grid-template-columns:1fr 1fr;}.gap-sort-wrap{grid-template-columns:1fr;}}
+  @media(max-width:480px){.flip-grid{grid-template-columns:1fr;}h2{font-size:1.4rem;}.lesson-hero h1{font-size:1.7rem;}}
+  footer{background:var(--c-surface);border-top:1px solid var(--c-border);padding:1.5rem;font-size:.8rem;color:var(--c-text-soft);text-align:center;margin-top:3rem;}
+  footer p{margin:.2rem;}
+</style>
+</head>
+<body>
+<a href="#main" class="skip">Skip to main content</a>
+
+<div class="site-bar" role="banner">
+  <a href="https://sands-mvcc.github.io/aicyber/index.html">← AI-103 Course Home</a>
+  <span class="sep">·</span>
+  <span>MVCC · Dept. of Engineering &amp; Technology · Dr. John L. Sands</span>
+</div>
+
+<nav class="lesson-nav" aria-label="Lesson navigation">
+  <a href="#overview">Overview</a><span class="sep">·</span>
+  <a href="#m1">1 · Why Documents?</a><span class="sep">·</span>
+  <a href="#m2">2 · AI AUP</a><span class="sep">·</span>
+  <a href="#m3">3 · Use Case Register</a><span class="sep">·</span>
+  <a href="#activity-a">Activity A</a><span class="sep">·</span>
+  <a href="#m4">4 · ISO 42001 Docs</a><span class="sep">·</span>
+  <a href="#m5">5 · IR Annex</a><span class="sep">·</span>
+  <a href="#activity-b">Activity B</a><span class="sep">·</span>
+  <a href="#activity-c">Activity C</a><span class="sep">·</span>
+  <a href="#artifact">Assessment</a><span class="sep">·</span>
+  <a href="#quiz">Quiz</a>
+</nav>
+
+<header class="lesson-hero">
+  <p class="lesson-meta-top">AI-103: AI Cybersecurity Foundations · Day 13 of 15 · 4 Contact Hours</p>
+  <h1>AI Policies, AUPs &amp; Governance Documents</h1>
+  <p class="subtitle">The policy is the easy part. The hard part is building documents that are specific enough to be enforceable, aligned to frameworks auditors actually check, and operational enough that staff follow them.</p>
+  <div class="meta-badges">
+    <span class="badge">📋 AI AUP</span>
+    <span class="badge">⏱ 4 hrs · 5 modules + 3 activities</span>
+    <span class="badge">🎯 Learning Objective 9</span>
+    <span class="badge">📝 AI AUP draft due end of class · Mini-Project Part 2 of 2</span>
+  </div>
+  <nav aria-label="Section quick links" style="font-size:.84rem;color:var(--c-text-soft);">
+    <a href="#overview" style="color:var(--c-accent);text-decoration:none;margin-right:.8rem;">Overview</a>
+    <a href="#m2" style="color:var(--c-accent);text-decoration:none;margin-right:.8rem;">2 · AI AUP</a>
+    <a href="#m3" style="color:var(--c-accent);text-decoration:none;margin-right:.8rem;">3 · Use Case Register</a>
+    <a href="#m4" style="color:var(--c-accent);text-decoration:none;margin-right:.8rem;">4 · ISO 42001</a>
+    <a href="#m5" style="color:var(--c-accent);text-decoration:none;margin-right:.8rem;">5 · IR Annex</a>
+    <a href="#quiz" style="color:var(--c-accent);text-decoration:none;">Quiz</a>
+  </nav>
+</header>
+
+<main id="main">
+<div class="page-with-rail">
+<div>
+
+<!-- ============================================================
+     OVERVIEW
+============================================================ -->
+<section id="overview">
+  <h2><span class="sec-num">🧭 Lesson Overview · Day 13 · 4 hours</span>From Principles to Paper — and Paper to Practice</h2>
+
+  <p>Days 1–12 built the <em>knowledge</em> of AI cybersecurity: frameworks, risk categories, threat landscapes, secure architecture, and vendor governance. Today the course shifts to the <em>documentation</em> layer — the written governance artifacts that make AI security auditable, enforceable, and repeatable. An AI security program that exists only in engineers' heads is not a program; it is a set of tribal customs that disappears when the engineer leaves.</p>
+
+  <p>The governance documents covered today — the AI Acceptable Use Policy, the Use Case Register, ISO 42001-aligned management documents, and the AI Incident Response Annex — are the instruments through which everything else in this course becomes operational. They are also the artifacts regulators, auditors, and cyber insurers will ask for first.</p>
+
+  <div class="callout callout-analogy">
+    <p class="callout-title">⚖️ Anchoring Analogy: The Building Code and the Inspection</p>
+    <p>A building can be constructed by a skilled architect with excellent judgment who knows every safety principle by heart. But without a building code — a written, publicly known, auditable standard — there is no way for an inspector to verify compliance, no consistent baseline for contractors, and no recourse when something goes wrong. The building code does not replace the architect's judgment. It makes the judgment <em>legible</em>, <em>consistent</em>, and <em>enforceable</em> across every building in the jurisdiction.</p>
+    <p><strong>AI governance documents are the building code for AI.</strong> They make the security team's judgment legible to auditors, consistent across deployments, and enforceable across the organization. A policy that says "use AI responsibly" is not a building code. A policy that specifies which data categories may not enter AI systems, which approvals are required, what happens on violation, and who owns the annual review — that is a building code.</p>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat-block"><div class="stat-num">88%</div><div class="stat-desc">Orgs using AI in ≥1 business function (McKinsey 2025)</div></div>
+    <div class="stat-block"><div class="stat-num">11%</div><div class="stat-desc">Organizations with no responsible AI policies (Stanford AI Index 2026)</div></div>
+    <div class="stat-block"><div class="stat-num">39%</div><div class="stat-desc">Higher ed institutions with AI-related AUP (EDUCAUSE 2025)</div></div>
+    <div class="stat-block"><div class="stat-num">76%</div><div class="stat-desc">Compliance professionals using ISO 42001 as AI governance backbone (2025 benchmark)</div></div>
+  </div>
+
+  <h3>Day 13 Learning Objectives</h3>
+  <ul class="obj-list">
+    <li><span class="obj-num">1</span>Explain why governance documents are the operationalizing layer of an AI security program — and why vague policy fails audit.</li>
+    <li><span class="obj-num">2</span>Construct an AI Acceptable Use Policy that covers the eight essential components and withstands regulatory scrutiny.</li>
+    <li><span class="obj-num">3</span>Build and populate an AI Use Case Register aligned to NIST AI RMF MAP function and ISO 42001 inventory requirements.</li>
+    <li><span class="obj-num">4</span>Identify the key ISO 42001 governance documents and their role in an AI Management System (AIMS).</li>
+    <li><span class="obj-num">5</span>Draft an AI Incident Response Annex that extends the NIST SP 800-61 lifecycle for AI-specific incidents.</li>
+    <li><span class="obj-num">6</span>Evaluate whether a draft AI governance document would withstand an audit — identifying gaps and remediation language.</li>
+  </ul>
+
+  <div class="obj-progress">
+    <div class="op-label">Objectives progress: <span id="obj-count">0</span> of 6 completed</div>
+    <div class="op-bar-wrap"><div class="op-bar" id="obj-bar" style="width:0%"></div></div>
+  </div>
+</section>
+
+<!-- Part A Header -->
+<div class="part-header">
+  <div>
+    <div class="part-label">Part A · Lecture &amp; Structured Exploration</div>
+    <h2>Why Governance Documents Fail — and What Good Ones Look Like</h2>
+  </div>
+  <span class="part-time">⏱ ~2 hours</span>
+</div>
+
+<!-- ============================================================
+     MODULE 1 — WHY DOCUMENTS MATTER
+============================================================ -->
+<section id="m1">
+  <h2><span class="sec-num">Module 1 · 20 min</span>Why AI Governance Documents Fail — The Four Common Failures</h2>
+
+  <p>Most organizations that have AI governance documents still fail audits — not because they lack a policy, but because their policy fails one of four common tests. Understanding these failure modes is the prerequisite for building documents that work.</p>
+
+  <div class="flip-grid">
+    <div class="flip-card" tabindex="0" onclick="this.classList.toggle('flipped');markObjective(0);" onkeydown="if(event.key==='Enter'||event.key===' '){this.classList.toggle('flipped');markObjective(0);}">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="flip-icon">🌫️</div><div class="flip-label">Failure 1: The Vague Policy</div><div class="flip-hint">Click to flip</div></div>
+        <div class="flip-back"><div class="back-label">Why It Fails Audit</div><div class="back-text">"Use AI responsibly" and "do not share sensitive data with AI tools" are not policies — they are platitudes. An auditor cannot verify compliance with a principle. A policy must name: which specific data categories are prohibited, what "sensitive" means in your classification scheme, which tools are approved vs. prohibited, and what the approval process is for new tools. Vague policies create a compliance theater where the document exists but constrains nothing.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" tabindex="0" onclick="this.classList.toggle('flipped');markObjective(0);" onkeydown="if(event.key==='Enter'||event.key===' '){this.classList.toggle('flipped');markObjective(0);}">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="flip-icon">📅</div><div class="flip-label">Failure 2: The Stale Policy</div><div class="flip-hint">Click to flip</div></div>
+        <div class="flip-back blue-back"><div class="back-label">Why It Fails Audit</div><div class="back-text">An AI AUP written in 2023 that hasn't been updated is a policy about a different AI landscape. Agentic AI, the EU AI Act's 2025 enforcement, new state laws (Texas TRAIGA, Colorado AI Act effective 2026), and the OWASP LLM Top 10 2025 edition all changed the governance requirements. Policies must have a named review owner, an annual (minimum) review cycle, and a documented version history. Auditors check the review date as well as the content.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" tabindex="0" onclick="this.classList.toggle('flipped');markObjective(0);" onkeydown="if(event.key==='Enter'||event.key===' '){this.classList.toggle('flipped');markObjective(0);}">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="flip-icon">🔧</div><div class="flip-label">Failure 3: No Enforcement Layer</div><div class="flip-hint">Click to flip</div></div>
+        <div class="flip-back gold-back"><div class="back-label">Why It Fails Audit</div><div class="back-text">A policy that says "don't paste PHI into ChatGPT" without a technical control to block it is a wall with no gate. The 2025 Strac AI AUP guidance makes this point directly: 48% of employees knowingly violated AI policies. Policy without enforcement produces documented non-compliance — which is worse than no policy for regulatory purposes. Every policy prohibition must be backed by either a technical control (DLP, CASB blocking) or a procedural control with audit evidence.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" tabindex="0" onclick="this.classList.toggle('flipped');markObjective(0);" onkeydown="if(event.key==='Enter'||event.key===' '){this.classList.toggle('flipped');markObjective(0);}">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="flip-icon">👻</div><div class="flip-label">Failure 4: Missing Shadow AI</div><div class="flip-hint">Click to flip</div></div>
+        <div class="flip-back green-back"><div class="back-label">Why It Fails Audit</div><div class="back-text">A policy that governs only formally approved AI systems while 71% of employees use AI tools at work misses most of the actual AI risk. Shadow AI — unauthorized tools, embedded features in approved software, personal AI subscriptions used for work tasks — must be explicitly addressed. The policy must define what shadow AI is, how employees report tools they want to use, what happens when shadow AI is discovered, and what the approval pathway looks like. A policy silent on shadow AI is a policy for the AI you know about, not the AI you have.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" tabindex="0" onclick="this.classList.toggle('flipped');markObjective(0);" onkeydown="if(event.key==='Enter'||event.key===' '){this.classList.toggle('flipped');markObjective(0);}">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="flip-icon">🏝️</div><div class="flip-label">Failure 5: Policy Island</div><div class="flip-hint">Click to flip</div></div>
+        <div class="flip-back purple-back"><div class="back-label">Why It Fails Audit</div><div class="back-text">An AI AUP that doesn't cross-reference the organization's data classification policy, information security policy, vendor management policy, and acceptable use policy creates conflicting standards. Auditors follow the document chain: if the AI AUP says "no sensitive data in AI tools" but the data classification policy doesn't define "sensitive," there is a governance gap even if both documents exist. AI governance documents must be explicitly linked to the broader policy ecosystem — not created in isolation.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" tabindex="0" onclick="this.classList.toggle('flipped');markObjective(0);" onkeydown="if(event.key==='Enter'||event.key===' '){this.classList.toggle('flipped');markObjective(0);}">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="flip-icon">📦</div><div class="flip-label">Failure 6: No Document Hierarchy</div><div class="flip-hint">Click to flip</div></div>
+        <div class="flip-back teal-back"><div class="back-label">Why It Fails Audit</div><div class="back-text">Organizations often write one large AI policy document that tries to be a policy, a procedure, a standard, and a guideline simultaneously. The ISO 42001 model distinguishes clearly: the Policy sets direction and is approved by leadership; Standards define mandatory requirements; Procedures describe how to do it; Guidelines offer optional best practices. Auditors expect this hierarchy. Trying to put everything in one document produces a document that is too vague at the policy level and too burdensome to update at the procedure level.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     MODULE 2 — AI AUP
+============================================================ -->
+<section id="m2">
+  <h2><span class="sec-num">Module 2 · 45 min</span>The AI Acceptable Use Policy — Eight Essential Components</h2>
+
+  <p>An AI Acceptable Use Policy (AI AUP) is the foundational governance document for most organizations' AI programs. It defines who may use AI, which tools are approved, what data may be processed, what uses are prohibited, what verification is required for AI outputs, and what happens on violation. In 2026, the absence of an AI AUP is treated by regulators, auditors, and cyber insurers as a governance failure — not a gap.</p>
+
+  <p>The eight components below represent the consensus structure drawn from NIST AI RMF GOVERN function requirements, ISO 42001 Clause 6.2 (AI objectives), EU AI Act Article 4 (AI literacy), and current practitioner guidance. <strong>Expand each component</strong> to see what it must contain and what an auditor expects to find.</p>
+
+  <div class="accordion">
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>📌 Component 1: Scope &amp; Applicability</span>
+        <span class="trigger-meta"><span class="trigger-tag">Required</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>What it must contain:</strong> An explicit statement of <em>who</em> the policy covers (employees, contractors, vendors, students, volunteers — anyone who accesses organizational systems or data), <em>which AI systems</em> it governs (generative AI, agentic AI, embedded AI features in sanctioned SaaS, personal AI tools used for work tasks, AI provided to students), and <em>which devices</em> are in scope (corporate-managed, BYOD, personal devices accessing organizational data).</p>
+        <p><strong>The MVCC version:</strong> At a community college, scope must explicitly address: faculty using AI tools for instruction (generating course content, grading assistance), students using AI for coursework (a separate academic integrity policy may apply, but the AUP governs institutional data), administrative staff using AI for operations, and vendors whose products include embedded AI features. If the policy doesn't say it covers these populations, it doesn't — and their AI use is ungoverned.</p>
+        <p><strong>Audit test:</strong> An auditor will ask: "Is a faculty member who uses ChatGPT to draft a student communication covered by your AI AUP?" If the answer requires interpretation rather than reference to explicit policy text, the scope is insufficient.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>📚 Component 2: Definitions</span>
+        <span class="trigger-meta"><span class="trigger-tag">Required</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>What it must contain:</strong> Precise definitions for every term the policy uses whose meaning could be disputed. At minimum: <em>Generative AI</em>, <em>Agentic AI</em>, <em>Shadow AI</em>, <em>Foundation Model</em>, <em>Sanctioned Tool</em>, <em>Prohibited Tool</em>, <em>AI Output</em>, <em>Sensitive Data</em> (mapped to your data classification scheme), <em>Human Review</em> (what constitutes a qualifying review), and <em>Material Modification</em> (when does customizing a tool create new governance obligations).</p>
+        <p><strong>Why definitions determine enforceability:</strong> A policy that says "do not use unsanctioned AI tools" but does not define "unsanctioned" will be argued around by every employee who believes their tool is fine. A policy that says "ChatGPT, Claude, Gemini, and any other generative AI tool not listed in Appendix A is an unsanctioned tool" is enforceable. Ambiguous policies create compliance theater where the document exists but constrains nothing.</p>
+        <p><strong>The 2026 additions:</strong> By 2026, definitions should also include: <em>Agentic AI System</em> (an AI system that can take autonomous actions using tools), <em>Model Context Protocol (MCP)</em> (a standard enabling AI agents to connect to external services), and <em>AI-Embedded Feature</em> (an AI capability added by a SaaS vendor to a product without the deployer making a separate AI procurement decision).</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>✅ Component 3: Sanctioned Tools List</span>
+        <span class="trigger-meta"><span class="trigger-tag">Required</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>What it must contain:</strong> An explicit list (maintained as a living appendix, not embedded in the policy body so it can be updated without full policy revision) of approved AI tools — including tool name, approved version/tier, data categories permitted, approved use cases, and any conditions of use (e.g., "Microsoft 365 Copilot — enterprise tier only; FERPA-protected data prohibited without IT approval"). Anything not on the approved list is unsanctioned.</p>
+        <p><strong>The three-tier structure (PurpleSec 2026 model):</strong></p>
+        <ul style="padding-left:1.2rem;margin:.5rem 0;font-size:.88rem;">
+          <li style="margin-bottom:.3rem;"><strong>Tier 1 — Enterprise Sanctioned:</strong> Formally vetted, approved, under data processing agreement, permitted for specified data categories (e.g., Claude for Work enterprise, Microsoft Copilot enterprise tier, internal AI platform)</li>
+          <li style="margin-bottom:.3rem;"><strong>Tier 2 — Tolerated with Restrictions:</strong> Not formally vetted but not prohibited; may be used for non-sensitive tasks only; review pending (e.g., free-tier consumer AI tools for drafting public content)</li>
+          <li><strong>Tier 3 — Prohibited:</strong> Explicitly prohibited — tools with no enterprise DPA, tools that train on user data, tools with unacceptable jurisdiction/data residency, tools in sectors with known security issues</li>
+        </ul>
+        <p><strong>Why a living appendix:</strong> The AI tool landscape changes faster than any policy can be formally revised. By maintaining the approved list as Appendix A (separately versioned, approved by the AI governance committee rather than requiring full board/president approval), organizations can add or remove tools on a 30-day cycle rather than waiting for the annual policy review.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>🔒 Component 4: Data Classification &amp; Permitted Use</span>
+        <span class="trigger-meta"><span class="trigger-tag">Required</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>What it must contain:</strong> An explicit matrix of which data categories may and may not be entered into which AI tool tiers. This is the component that most directly addresses the incidents that drove AI AUP adoption: the Samsung engineer who pasted source code into ChatGPT, the marketing associate who uploaded a customer list to a generative AI tool, the finance analyst who shared a confidential earnings report.</p>
+        <table class="data-table" style="margin:.7rem 0;">
+          <thead><tr><th>Data Category</th><th>Tier 1 Tools</th><th>Tier 2 Tools</th><th>Tier 3 Tools</th></tr></thead>
+          <tbody>
+            <tr><td>FERPA-protected student records</td><td><span class="pill pill-y">⚠ With IT approval</span></td><td><span class="pill pill-r">✗ Prohibited</span></td><td><span class="pill pill-r">✗ Prohibited</span></td></tr>
+            <tr><td>Employee PII (HR records, payroll)</td><td><span class="pill pill-y">⚠ With HR + IT approval</span></td><td><span class="pill pill-r">✗ Prohibited</span></td><td><span class="pill pill-r">✗ Prohibited</span></td></tr>
+            <tr><td>Financial / budget data (non-public)</td><td><span class="pill pill-y">⚠ With VP Finance approval</span></td><td><span class="pill pill-r">✗ Prohibited</span></td><td><span class="pill pill-r">✗ Prohibited</span></td></tr>
+            <tr><td>Proprietary research / IP</td><td><span class="pill pill-y">⚠ With PI approval</span></td><td><span class="pill pill-r">✗ Prohibited</span></td><td><span class="pill pill-r">✗ Prohibited</span></td></tr>
+            <tr><td>Internal operational data (non-sensitive)</td><td><span class="pill pill-g">✓ Permitted</span></td><td><span class="pill pill-g">✓ Permitted</span></td><td><span class="pill pill-r">✗ Prohibited</span></td></tr>
+            <tr><td>Publicly available information</td><td><span class="pill pill-g">✓ Permitted</span></td><td><span class="pill pill-g">✓ Permitted</span></td><td><span class="pill pill-r">✗ Prohibited</span></td></tr>
+          </tbody>
+        </table>
+        <p><strong>The MVCC-specific additions:</strong> Community colleges must address FERPA explicitly — student academic records, financial aid data, and enrollment information are FERPA-protected and cannot be entered into any AI system without a school official justification and FERPA-compliant data processing agreement. The policy must also address student work: student submissions, essays, and academic records are student data under FERPA and may not be processed by AI grading tools without appropriate institutional agreements.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>🚫 Component 5: Prohibited Uses</span>
+        <span class="trigger-meta"><span class="trigger-tag">Required</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>What it must contain:</strong> An explicit, non-exhaustive list of prohibited AI uses. "Non-exhaustive" is an important qualifier — new prohibited uses will emerge that the policy didn't anticipate, and the policy should include a catch-all ("or any use that violates applicable law, regulation, or institutional policy").</p>
+        <p><strong>Standard prohibited uses at a community college:</strong></p>
+        <ul style="padding-left:1.2rem;margin:.5rem 0;font-size:.88rem;">
+          <li style="margin-bottom:.3rem;">Using AI to generate academic work submitted by students as their own (governed by Academic Integrity Policy; cross-referenced here)</li>
+          <li style="margin-bottom:.3rem;">Using AI to make or materially influence employment decisions (hiring, performance evaluation, termination) without documented human review and bias audit</li>
+          <li style="margin-bottom:.3rem;">Entering FERPA-protected student data into any AI system not covered by a FERPA-compliant DPA</li>
+          <li style="margin-bottom:.3rem;">Using AI to generate, distribute, or amplify content that is false, misleading, or discriminatory</li>
+          <li style="margin-bottom:.3rem;">Using AI to circumvent institutional security controls, authentication systems, or access restrictions</li>
+          <li style="margin-bottom:.3rem;">Using AI to monitor, surveil, or profile individuals without authorization and applicable legal basis</li>
+          <li style="margin-bottom:.3rem;">Using AI systems classified as prohibited under EU AI Act Article 5 (social scoring, real-time biometric surveillance, subliminal manipulation)</li>
+          <li>Deploying agentic AI that can take financial, legal, or data-modifying actions without human approval for each action</li>
+        </ul>
+        <p><strong>The EU AI Act linkage:</strong> EU AI Act Article 5 (effective February 2025) prohibits specific AI uses absolutely. If any community college has international students or EU-national faculty, or deploys AI to EU-based persons, these prohibitions apply as legal obligations — not just policy preferences. The AUP should cross-reference Article 5 explicitly.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>✋ Component 6: Human Review &amp; Verification Requirements</span>
+        <span class="trigger-meta"><span class="trigger-tag">Required</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>What it must contain:</strong> Explicit requirements for human review and verification of AI outputs before they are used in specific contexts. This is the operationalization of EU AI Act Article 14 (human oversight) at the policy level.</p>
+        <p><strong>Risk-tiered verification requirements:</strong></p>
+        <table class="data-table" style="margin:.7rem 0;font-size:.83rem;">
+          <thead><tr><th>Use Context</th><th>Minimum Verification</th><th>Documentation Required</th></tr></thead>
+          <tbody>
+            <tr><td>High-stakes decisions (admissions, financial aid, employment)</td><td>Qualified human reviews and approves before decision is executed; AI output advisory only</td><td>Review log with reviewer name, date, rationale</td></tr>
+            <tr><td>Student-facing educational content</td><td>Faculty member reviews for accuracy, bias, and appropriateness before publication</td><td>Faculty attestation in LMS or document system</td></tr>
+            <tr><td>External communications (press releases, grant applications)</td><td>Department head or designee reviews before submission</td><td>Standard approval workflow</td></tr>
+            <tr><td>Internal drafts and operational documents</td><td>Author reviews for accuracy before circulation</td><td>No additional documentation required</td></tr>
+            <tr><td>Agentic AI actions (sends emails, modifies records, executes transactions)</td><td>Human approves each action category; irreversible actions require individual confirmation</td><td>Tool call log retained per IR Annex</td></tr>
+          </tbody>
+        </table>
+        <p><strong>What "human review" must not mean:</strong> The policy must be specific about what constitutes a qualifying review. Clicking "accept" on an AI-generated document without reading it is not a human review. The policy should state that human review means the reviewer takes intellectual responsibility for the content — they would be able to explain and defend it independently of the AI output.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>⚠️ Component 7: Shadow AI &amp; Approval Pathway</span>
+        <span class="trigger-meta"><span class="trigger-tag">Required</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>What it must contain:</strong> An explicit definition of shadow AI (any AI tool or feature used for institutional purposes that is not on the sanctioned tools list), and a clear, frictionless pathway for employees to request approval of tools they want to use. The approval pathway is the critical element: a policy that defines shadow AI but provides no pathway for legitimate requests drives usage underground.</p>
+        <p><strong>The MVCC shadow AI approval pathway:</strong></p>
+        <ol style="padding-left:1.2rem;margin:.5rem 0;font-size:.88rem;line-height:1.9;">
+          <li>Employee identifies a tool they want to use → submits AI Tool Request form (IT portal)</li>
+          <li>IT Security reviews: data processing agreement, data residency, training-on-user-data terms (5 business days)</li>
+          <li>If approved: tool added to Tier 2 (tolerated) or Tier 1 (sanctioned after DPA review) list</li>
+          <li>If denied: employee notified with reason; may request appeal to AI Governance Committee</li>
+          <li>Interim use: employee may not use the tool until review is complete; urgent exceptions require VP approval</li>
+        </ol>
+        <p><strong>Enforcement for discovered shadow AI:</strong> The policy must specify progressive consequences for discovered shadow AI use — from education and coaching for first-time, low-risk use, to formal disciplinary action for repeated or high-risk violations. Without a graduated enforcement structure, managers face an all-or-nothing enforcement choice that typically results in no enforcement.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>📋 Component 8: Governance, Accountability &amp; Review</span>
+        <span class="trigger-meta"><span class="trigger-tag">Required</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>What it must contain:</strong> Named roles with documented AI governance responsibilities, not just titles. The difference between "the CISO is responsible for AI security" (not specific enough to audit) and "the Director of IT Security maintains the sanctioned tools list, conducts quarterly shadow AI scans, and reports violations to the AI Governance Committee" (auditable).</p>
+        <p><strong>The MVCC AI Governance Structure:</strong></p>
+        <table class="data-table" style="margin:.7rem 0;font-size:.83rem;">
+          <thead><tr><th>Role</th><th>AI Governance Responsibilities</th><th>Review Cadence</th></tr></thead>
+          <tbody>
+            <tr><td>President / Board</td><td>Approves AI AUP; sets AI risk appetite; receives annual AI governance report</td><td>Annual</td></tr>
+            <tr><td>AI Governance Committee</td><td>Reviews AI use case register; approves high-risk AI deployments; adjudicates shadow AI appeals; reviews incidents</td><td>Quarterly</td></tr>
+            <tr><td>Director of IT Security (Policy Owner)</td><td>Maintains sanctioned tools list; conducts quarterly shadow AI scans; manages vendor assessments; coordinates AI incidents</td><td>Ongoing</td></tr>
+            <tr><td>Legal Counsel</td><td>Advises on regulatory compliance; reviews AI DPAs; identifies EU AI Act obligations</td><td>On change / on demand</td></tr>
+            <tr><td>Department Heads</td><td>Ensure staff complete AI literacy training; enforce AUP within department; report AI incidents</td><td>Ongoing</td></tr>
+            <tr><td>All Employees</td><td>Complete AI literacy training; follow AUP; report shadow AI and incidents; do not share credentials for AI systems</td><td>Annual training</td></tr>
+          </tbody>
+        </table>
+        <p><strong>Review cycle:</strong> The policy must specify an annual review cycle at minimum, with triggered reviews on: new regulation effective dates, significant AI capability changes (new model family deployment), major AI incidents, and organizational changes that affect AI risk scope. The review cycle must be documented with evidence (meeting minutes, version control log) — not just stated in the policy.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     MODULE 3 — USE CASE REGISTER
+============================================================ -->
+<section id="m3">
+  <h2><span class="sec-num">Module 3 · 30 min</span>The AI Use Case Register — Your AI Asset Inventory</h2>
+
+  <p>An AI Use Case Register is the authoritative inventory of every AI system an organization is developing, piloting, or operating — including AI embedded in vendor products. It is the AI-equivalent of a system inventory under NIST CSF or ISO 27001. Without an AI Use Case Register, an organization cannot govern AI it doesn't know about, cannot map its EU AI Act obligations, and cannot conduct a meaningful risk assessment.</p>
+
+  <div class="callout callout-key">
+    <p class="callout-title">🔑 NIST AI RMF MAP Function Connection</p>
+    <p>The NIST AI RMF's MAP function (covered in Lesson 3) explicitly requires documenting AI system context, capabilities, and limitations before risk assessment. The Use Case Register is the operational artifact that satisfies MAP requirements: MAP 1.1 (context), MAP 2.2 (data), MAP 3.1 (tasks and impacts), and MAP 5.2 (risk factors). An organization with no Use Case Register cannot demonstrate MAP function compliance.</p>
+  </div>
+
+  <div class="callout callout-analogy">
+    <p class="callout-title">📦 Analogy: The Drug Formulary</p>
+    <p>A hospital's pharmacy maintains a formulary — an approved list of medications, including their approved indications, dosage requirements, interaction warnings, and prescribing controls. A medication not on the formulary cannot be dispensed without special authorization. The formulary is not just a list: it is a governance instrument that ensures every medication in use is known, approved, and appropriately controlled. <strong>The AI Use Case Register is the formulary for AI systems.</strong> Every AI system in use must be registered, approved, classified, and reviewed — or it is an ungoverned deployment with unknown risk.</p>
+  </div>
+
+  <h3>Required Fields — What Every Register Entry Must Capture</h3>
+  <p>Expand each field group to see what information is required and why it matters for governance.</p>
+
+  <div class="accordion">
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>🆔 Identity &amp; Classification Fields</span>
+        <span class="trigger-meta"><span class="trigger-tag blue">Core Fields</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>System Name &amp; ID:</strong> Unique identifier for the AI system (e.g., MVCC-AI-2026-003). Enables cross-reference from incident reports, vendor contracts, and risk assessments to the register entry.</p>
+        <p><strong>Lifecycle Status:</strong> Pre-deployment / Pilot / Deployed / Retired. Aligned to DHS AI Use Case Inventory 2025 stage categories. Determines which governance controls are active.</p>
+        <p><strong>EU AI Act Risk Tier:</strong> Prohibited / High Risk (Annex III) / GPAI / Limited Risk / Minimal Risk. Determines regulatory obligations. Must be re-evaluated when use case changes.</p>
+        <p><strong>NIST AI RMF Impact Level:</strong> Low / Medium / High / Critical. Drives assessment frequency and control requirements. Based on potential harms to individuals, organization, and society.</p>
+        <p><strong>AI System Type:</strong> Generative / Discriminative / Predictive / Agentic / Recommender / Computer Vision / NLP. Determines which threat categories are most relevant.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>👥 Ownership &amp; Accountability Fields</span>
+        <span class="trigger-meta"><span class="trigger-tag blue">Core Fields</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>Business Owner:</strong> Named individual (not a department) accountable for the business use case. Takes responsibility for use case appropriateness, human oversight, and incident escalation. This is not the technical owner.</p>
+        <p><strong>Technical Owner:</strong> Named individual responsible for deployment, maintenance, and technical controls. Accountable for model card maintenance, monitoring, and AIBOM currency.</p>
+        <p><strong>Vendor / Provider:</strong> Legal name of the entity providing the AI system. Links to the vendor risk assessment and contract record. If internally built, this is the development team.</p>
+        <p><strong>EU AI Act Role for MVCC:</strong> Deployer / Provider (if MVCC built or fine-tuned) / Importer. Determines MVCC's legal obligations. Must be reviewed by Legal Counsel for high-risk systems.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>📊 Data &amp; Use Case Fields</span>
+        <span class="trigger-meta"><span class="trigger-tag blue">Core Fields</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>Data Categories Processed:</strong> Mapped to the institutional data classification scheme. If FERPA-protected: DPA status, FERPA exception applied, data minimization measures. If PII: DPIA reference. This field directly triggers the vendor assessment and contract clause requirements from Lesson 12.</p>
+        <p><strong>Affected Populations:</strong> Who is subject to AI-influenced decisions? Students, employees, members of the public, specific demographic groups? This field informs the bias audit scope and human oversight requirements.</p>
+        <p><strong>Decision Type:</strong> Does the AI make, assist, or inform decisions? Is the decision reversible? High-stakes + irreversible = mandatory human-in-the-loop requirement. This field drives the human oversight control design.</p>
+        <p><strong>Approved Use Cases:</strong> An explicit list of approved uses. Use cases not on this list require AI Governance Committee approval before deployment. Prevents scope creep — the AI tutoring chatbot approved for math assistance should not be answering questions about financial aid eligibility without an amended use case approval.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>🔄 Lifecycle &amp; Review Fields</span>
+        <span class="trigger-meta"><span class="trigger-tag blue">Core Fields</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>Deployment Date &amp; Last Review Date:</strong> Enables identification of systems that haven't been reviewed against current policy and regulation. An AI system deployed in 2023 that hasn't been reviewed since the EU AI Act's 2025 enforcement date is a compliance gap.</p>
+        <p><strong>Next Review Date:</strong> Set at deployment; frequency determined by risk tier (High risk: quarterly; Medium: semi-annual; Low: annual). Must be tracked by the IT Security team and escalated if missed.</p>
+        <p><strong>Retirement Trigger Criteria:</strong> Explicit conditions under which this system should be retired: model version end-of-life, vendor discontinuation, regulatory prohibition, documented performance degradation below threshold. Prevents zombie AI systems that remain in production past their useful or safe life.</p>
+        <p><strong>Linked Documents:</strong> Cross-references to vendor contract, AIBOM, model card, risk assessment, DPA, and incident history. This cross-reference structure is what transforms a list into an auditable evidence chain.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Live Use Case Register — MVCC Example (Interactive)</h3>
+  <p>The register below shows three pre-populated MVCC AI systems. You can add additional entries using the form below the table. Use this during Activity A to complete the registration of new systems.</p>
+
+  <div class="ucr-table-wrap">
+    <table class="ucr-table" id="ucr-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>System Name</th>
+          <th>Status</th>
+          <th>EU AI Act Tier</th>
+          <th>Risk</th>
+          <th>Business Owner</th>
+          <th>MVCC Role</th>
+          <th>Data Categories</th>
+          <th>Next Review</th>
+        </tr>
+      </thead>
+      <tbody id="ucr-body">
+        <tr>
+          <td><span style="font-family:var(--font-mono);font-size:.78rem;">AI-2026-001</span></td>
+          <td><strong>Math Tutoring Chatbot</strong></td>
+          <td><span class="pill pill-g">Deployed</span></td>
+          <td><span class="pill pill-r">High Risk</span></td>
+          <td><span class="risk-high">HIGH</span></td>
+          <td>Dean, Developmental Ed</td>
+          <td><span class="pill pill-b">Deployer</span></td>
+          <td>Student learning data (FERPA)</td>
+          <td>2026-09-01</td>
+        </tr>
+        <tr>
+          <td><span style="font-family:var(--font-mono);font-size:.78rem;">AI-2026-002</span></td>
+          <td><strong>MS 365 Copilot</strong></td>
+          <td><span class="pill pill-y">Pilot</span></td>
+          <td><span class="pill pill-y">Limited Risk</span></td>
+          <td><span class="risk-med">MED</span></td>
+          <td>Director, IT</td>
+          <td><span class="pill pill-b">Deployer</span></td>
+          <td>Internal docs, email, Teams (FERPA scope excluded)</td>
+          <td>2026-08-01</td>
+        </tr>
+        <tr>
+          <td><span style="font-family:var(--font-mono);font-size:.78rem;">AI-2026-003</span></td>
+          <td><strong>AI Early Alert (SIS)</strong></td>
+          <td><span class="pill pill-r">Pre-Deployment</span></td>
+          <td><span class="pill pill-r">High Risk</span></td>
+          <td><span class="risk-high">HIGH</span></td>
+          <td>VP, Student Services</td>
+          <td><span class="pill pill-b">Deployer</span></td>
+          <td>Academic records, attendance (FERPA)</td>
+          <td>2026-07-01</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <button class="ucr-add-row" onclick="addUCRRow()">+ Add New AI System Entry</button>
+  <div id="ucr-form" style="display:none;background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--radius);padding:1rem;margin:.5rem 0;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.6rem;margin-bottom:.7rem;">
+      <div><label style="font-size:.75rem;font-weight:700;color:var(--c-text-soft);display:block;margin-bottom:.2rem;">System Name</label><input class="ucr-input" id="ucr-name" type="text" placeholder="e.g. AI Grading Assistant"></div>
+      <div><label style="font-size:.75rem;font-weight:700;color:var(--c-text-soft);display:block;margin-bottom:.2rem;">Status</label>
+        <select class="ucr-select" id="ucr-status"><option>Pre-Deployment</option><option>Pilot</option><option>Deployed</option><option>Retired</option></select></div>
+      <div><label style="font-size:.75rem;font-weight:700;color:var(--c-text-soft);display:block;margin-bottom:.2rem;">EU AI Act Tier</label>
+        <select class="ucr-select" id="ucr-tier"><option>High Risk</option><option>Limited Risk</option><option>Minimal Risk</option><option>GPAI</option><option>Prohibited</option></select></div>
+      <div><label style="font-size:.75rem;font-weight:700;color:var(--c-text-soft);display:block;margin-bottom:.2rem;">Impact Risk</label>
+        <select class="ucr-select" id="ucr-risk"><option>HIGH</option><option>MED</option><option>LOW</option></select></div>
+      <div><label style="font-size:.75rem;font-weight:700;color:var(--c-text-soft);display:block;margin-bottom:.2rem;">Business Owner</label><input class="ucr-input" id="ucr-owner" type="text" placeholder="e.g. Dean, Instruction"></div>
+      <div><label style="font-size:.75rem;font-weight:700;color:var(--c-text-soft);display:block;margin-bottom:.2rem;">MVCC Role</label>
+        <select class="ucr-select" id="ucr-role"><option>Deployer</option><option>Provider</option><option>Importer</option></select></div>
+      <div><label style="font-size:.75rem;font-weight:700;color:var(--c-text-soft);display:block;margin-bottom:.2rem;">Data Categories</label><input class="ucr-input" id="ucr-data" type="text" placeholder="e.g. Student grades (FERPA)"></div>
+      <div><label style="font-size:.75rem;font-weight:700;color:var(--c-text-soft);display:block;margin-bottom:.2rem;">Next Review Date</label><input class="ucr-input" id="ucr-review" type="date"></div>
+    </div>
+    <button class="btn-primary" onclick="submitUCRRow()" style="font-size:.85rem;padding:.4rem .9rem;">Add to Register</button>
+    <button class="btn-secondary" onclick="cancelUCRRow()" style="font-size:.85rem;padding:.4rem .9rem;">Cancel</button>
+  </div>
+</section>
+
+<!-- ============================================================
+     ACTIVITY A
+============================================================ -->
+<section id="activity-a">
+  <div class="activity-header">
+    <div>
+      <div class="act-badge">Activity A · Part A · 25 min</div>
+      <h3>Policy Gap Analysis — What's Missing from This AUP?</h3>
+    </div>
+    <span class="act-time">⏱ 15 min individual + 10 min debrief</span>
+  </div>
+  <div class="activity-body">
+    <p>The text below is an excerpt from MVCC's current draft AI Acceptable Use Policy — written in 2024 and never updated. Your task: identify which of the eight essential AUP components are <strong>missing or inadequate</strong> and which are <strong>present and adequate</strong>. Drag or click each component into the correct column.</p>
+
+    <div class="callout callout-warn" style="margin:.8rem 0;">
+      <p class="callout-title">⚠️ Draft Policy Excerpt — MVCC AI Use Policy (2024)</p>
+      <p style="font-size:.87rem;font-family:var(--font-mono);line-height:1.7;">
+        <em>MVCC employees are encouraged to use AI tools responsibly to enhance their productivity. Staff should exercise good judgment when using AI and avoid sharing confidential information. All AI-generated content must be reviewed before use. The IT Department maintains a list of approved tools. Violations of this policy may result in disciplinary action. This policy was approved by the President's Cabinet in March 2024.</em>
+      </p>
+    </div>
+
+    <div class="gap-sort-wrap">
+      <div class="gap-col" id="gap-adequate">
+        <div class="gap-col-label">✅ Present &amp; Adequate</div>
+        <div id="adequate-items"></div>
+      </div>
+      <div class="gap-col" id="gap-missing">
+        <div class="gap-col-label">⚠️ Missing or Inadequate</div>
+        <div id="missing-items"></div>
+      </div>
+    </div>
+
+    <div style="margin:.8rem 0;">
+      <p style="font-size:.85rem;font-weight:600;margin-bottom:.4rem;">Click each component to assign it:</p>
+      <div id="gap-chip-pool"></div>
+    </div>
+
+    <div style="margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap;">
+      <button class="btn-primary" onclick="checkGapActivity()">Check My Analysis</button>
+      <button class="btn-secondary" onclick="resetGapActivity()">Reset</button>
+    </div>
+    <div id="gap-result" class="result-box"></div>
+
+    <p style="margin-top:1rem;font-size:.88rem;"><strong>Debrief (10 min):</strong> Which components were hardest to classify? What would it take to bring this 2024 draft up to 2026 standards? The class will draft two remediation sentences for the most critical gap.</p>
+  </div>
+</section>
+
+<!-- Part B Header -->
+<div class="part-header">
+  <div>
+    <div class="part-label">Part B · Deep Dive &amp; Lab</div>
+    <h2>ISO 42001 Governance Documents &amp; AI IR Annex</h2>
+  </div>
+  <span class="part-time">⏱ ~2 hours</span>
+</div>
+
+<!-- ============================================================
+     MODULE 4 — ISO 42001 DOCUMENTS
+============================================================ -->
+<section id="m4">
+  <h2><span class="sec-num">Module 4 · 40 min</span>ISO 42001 — The AI Management System Document Architecture</h2>
+
+  <p>ISO/IEC 42001:2023 is the world's first certifiable AI management system standard — the ISO 27001 analogue for AI. As of a 2025 benchmark, 76% of compliance professionals intend to use ISO 42001 as their AI governance backbone. Understanding its document architecture is increasingly a prerequisite for enterprise AI governance roles.</p>
+
+  <div class="callout callout-analogy">
+    <p class="callout-title">🏗️ Analogy: The ISO 27001 Model You Already Know</p>
+    <p>If you've implemented or audited ISO 27001, you know the document hierarchy: the Information Security Policy (strategic direction) → the Statement of Applicability (which Annex A controls apply) → documented procedures and work instructions → records as evidence of implementation. ISO 42001 follows an identical structure — Policy → AIMS Scope → Statement of Applicability (42 Annex A controls) → procedures → records. The content is different; the architecture is the same. <strong>This means ISO 27001 practitioners can map their existing document governance skills directly to ISO 42001 implementation.</strong></p>
+  </div>
+
+  <h3>The ISO 42001 Document Hierarchy — Click Each Level to Expand</h3>
+
+  <div class="accordion">
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>📜 Level 1: AI Policy (Clause 5.2)</span>
+        <span class="trigger-meta"><span class="trigger-tag teal">Strategic</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>What it is:</strong> The AI Policy is a high-level statement of organizational commitment to responsible AI — approved by top management, communicated to all personnel, and available to interested parties. It is NOT the AUP (which is operational). The AI Policy sets direction; the AUP implements it.</p>
+        <p><strong>Required content per ISO 42001 Clause 5.2:</strong> The policy must be appropriate to the organization's purpose; include a commitment to satisfy applicable requirements; include a commitment to continual improvement; and provide a framework for setting AI objectives.</p>
+        <p><strong>At MVCC, the AI Policy would include commitments to:</strong> deploy AI in service of student success and institutional mission; protect student and employee data in AI systems; maintain human oversight of AI decisions that materially affect individuals; comply with FERPA, EU AI Act (where applicable), and applicable state AI laws; and continually improve the AI management system.</p>
+        <p><strong>What it is NOT:</strong> It is not a list of prohibited uses (that belongs in the AUP). It is not a technical control specification (that belongs in procedures). It is not a risk assessment (that is a separate artifact). Leadership approval of a one-page AI Policy statement is the starting point for ISO 42001 compliance — the document that authorizes everything below it in the hierarchy.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>🗺️ Level 2: AIMS Scope &amp; AI System Inventory (Clause 4.3)</span>
+        <span class="trigger-meta"><span class="trigger-tag teal">Strategic</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>What it is:</strong> A documented statement of the boundaries and applicability of the AI Management System (AIMS) — which organizational units, processes, AI systems, and stakeholder relationships are within the AIMS scope. ISO 42001 Clause 4.3 requires this to be documented.</p>
+        <p><strong>The AI system inventory:</strong> The AIMS scope document links to the AI Use Case Register (Module 3) as the operational inventory of in-scope AI systems. InfosecTrain's 2026 implementation guidance makes this explicit: "You cannot govern what you cannot see — the AI inventory is the foundation of the AIMS." A scope document without an inventory is a boundary without content.</p>
+        <p><strong>Common scoping decisions for community colleges:</strong> Institutions often initially scope to high-risk AI systems only (narrower scope, faster certification path) with a roadmap to expand scope. A community college might scope their AIMS to: AI systems that process student records; AI systems used in instructional delivery; AI systems used in employment decisions. This excludes low-risk productivity AI from the AIMS scope while governance matures — but requires the AUP to cover out-of-scope systems through a separate operational policy.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>✅ Level 2: Statement of Applicability (SoA) — Annex A Controls</span>
+        <span class="trigger-meta"><span class="trigger-tag teal">Strategic</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>What it is:</strong> A document that lists all 42 ISO 42001 Annex A controls, states whether each control is applicable to the organization, and — for applicable controls — provides evidence of implementation. Directly analogous to the ISO 27001 Statement of Applicability.</p>
+        <p><strong>The 42 controls are grouped into themes:</strong></p>
+        <ul style="padding-left:1.2rem;margin:.5rem 0;font-size:.88rem;">
+          <li style="margin-bottom:.3rem;"><strong>Organizational controls (A.2–A.6):</strong> AI policy, roles and responsibilities, risk management, resource management, impact assessment</li>
+          <li style="margin-bottom:.3rem;"><strong>AI-specific controls (A.6–A.10):</strong> AI system lifecycle, data governance, model training controls, model performance, monitoring and logging</li>
+          <li style="margin-bottom:.3rem;"><strong>Human oversight controls (A.8):</strong> Human review mechanisms, explainability, user training</li>
+          <li><strong>Third-party controls (A.9):</strong> Supplier relationships, AIBOM, vendor risk assessment</li>
+        </ul>
+        <p><strong>The EU AI Act alignment:</strong> A 2025 ISACA paper documents a direct crosswalk between ISO 42001 Annex A controls and EU AI Act obligations — enabling organizations to use the SoA as simultaneous evidence for both ISO 42001 certification and EU AI Act compliance assessments. This is the "practical pairing" that makes ISO 42001 the preferred governance backbone for organizations with EU exposure.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>📋 Level 3: Procedures &amp; Work Instructions</span>
+        <span class="trigger-meta"><span class="trigger-tag">Operational</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>What they are:</strong> The operational documents that specify <em>how</em> ISO 42001 controls are implemented in practice. ISO 42001 requires documented procedures for: AI risk assessment methodology; AI system lifecycle management; AI incident response; AI supplier assessment; model performance monitoring; and internal AIMS audit.</p>
+        <p><strong>Key procedures for MVCC:</strong></p>
+        <ul style="padding-left:1.2rem;margin:.5rem 0;font-size:.88rem;">
+          <li style="margin-bottom:.3rem;"><strong>AI System Intake Procedure:</strong> How a new AI system request is received, assessed, approved or rejected, and registered. Includes the data classification step, risk tier assessment, EU AI Act role determination, and vendor assessment initiation trigger.</li>
+          <li style="margin-bottom:.3rem;"><strong>AI Risk Assessment Procedure:</strong> How AI-specific risks are identified, rated, treated, and documented. Linked to the risk register format and review cadence.</li>
+          <li style="margin-bottom:.3rem;"><strong>AI Incident Response Procedure:</strong> The AI IR Annex covered in Module 5 below. Extends NIST SP 800-61 for AI-specific incidents.</li>
+          <li><strong>AI Shadow AI Discovery Procedure:</strong> How unauthorized AI use is detected (CASB logs, network monitoring, employee reporting), documented, investigated, and resolved.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>📁 Level 4: Records — The Audit Evidence Layer</span>
+        <span class="trigger-meta"><span class="trigger-tag green">Evidence</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>What they are:</strong> The documented evidence that procedures were followed and controls are operating — the artifacts an auditor inspects to verify compliance. Without records, every claim in the policy and procedure documents is unverifiable assertion.</p>
+        <p><strong>Key records for ISO 42001 / EU AI Act compliance:</strong></p>
+        <table class="data-table" style="margin:.7rem 0;font-size:.82rem;">
+          <thead><tr><th>Record Type</th><th>Content</th><th>Retention (ISACA guidance)</th></tr></thead>
+          <tbody>
+            <tr><td>AI Risk Assessment</td><td>Risk identification, rating, treatment decisions, residual risk, approver</td><td>Life of system + 3 years</td></tr>
+            <tr><td>AI System Approvals</td><td>Use case register entries, approval decisions, EU AI Act role determination</td><td>Life of system + 3 years</td></tr>
+            <tr><td>Vendor Assessments</td><td>Questionnaire responses, AIBOM, contract clause compliance evidence</td><td>Duration of relationship + 2 years</td></tr>
+            <tr><td>AI Incident Reports</td><td>Detection, analysis, containment, lessons learned, regulatory notifications</td><td>5 years (regulatory exposure)</td></tr>
+            <tr><td>Human Oversight Logs</td><td>Evidence of human review before high-stakes AI-assisted decisions</td><td>Per decision type (e.g., employment: 7 years)</td></tr>
+            <tr><td>AI Literacy Training Records</td><td>Staff completion records; training content version; assessment scores</td><td>Duration of employment + 2 years</td></tr>
+            <tr><td>Internal AIMS Audit Results</td><td>Audit scope, findings, corrective actions, closure evidence</td><td>5 years</td></tr>
+          </tbody>
+        </table>
+        <p><strong>The ISACA cadence standard:</strong> The 2025 ISO 42001 / EU AI Act pairing paper specifies practical record-keeping cadences: quarterly risk reviews at 100% coverage; serious incident reports drafted within 72 hours of detection; and log retention of 180–365 days according to risk tier. These cadences are what turn governance documents from aspirational artifacts into operational evidence.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     MODULE 5 — IR ANNEX
+============================================================ -->
+<section id="m5">
+  <h2><span class="sec-num">Module 5 · 40 min</span>The AI Incident Response Annex — Extending NIST SP 800-61 for AI</h2>
+
+  <p>The NIST SP 800-61 incident response lifecycle — Preparation → Detection &amp; Analysis → Containment, Eradication &amp; Recovery → Post-Incident Activity — was designed for traditional information security incidents: data breaches, malware infections, unauthorized access. It is correct for AI incidents but incomplete. AI introduces incident types, detection challenges, and response actions that have no parallel in the 800-61 framework.</p>
+
+  <p>The AI IR Annex is a supplementary document — it does not replace your existing IR plan, it extends it. Every phase of the 800-61 lifecycle gains new requirements when the incident involves an AI system.</p>
+
+  <div class="callout callout-key">
+    <p class="callout-title">🔑 New Incident Types the Standard IR Plan Doesn't Cover</p>
+    <p>AI introduces incidents that have no analogue in traditional infosec: <strong>Hallucination cascade</strong> (model producing systematically false outputs at scale), <strong>Model poisoning discovery</strong> (finding that training data was tampered with), <strong>Prompt injection exfiltration</strong> (sensitive data extracted through adversarial inputs), <strong>Model drift</strong> (performance degradation that crosses a risk threshold), <strong>Deepfake impersonation</strong> (synthetic media used to impersonate institutional leaders), and <strong>Agentic AI runaway</strong> (agent takes unauthorized actions beyond its intended scope). Each of these requires detection methods, analysis approaches, and response actions not found in standard IR playbooks.</p>
+  </div>
+
+  <h3>NIST SP 800-61 Extended for AI — Six Phases with AI Extensions</h3>
+  <p>Click any phase to expand the AI-specific extensions for that lifecycle phase.</p>
+
+  <div class="accordion">
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>🛡️ Phase 1: Preparation</span>
+        <span class="trigger-meta"><span class="trigger-tag green">Foundation</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>Traditional 800-61:</strong> Establish IR capability, train IR team, prepare detection tools, define incident categories, establish communication protocols.</p>
+        <p><strong>AI Extensions:</strong></p>
+        <ul style="padding-left:1.2rem;font-size:.88rem;line-height:1.9;">
+          <li>Maintain the AI Use Case Register with current deployment status (enables rapid scope identification during incidents)</li>
+          <li>Establish model rollback capability for every deployed AI system before deployment — not after an incident occurs</li>
+          <li>Define AI-specific incident categories: model behavior anomaly, data poisoning discovery, prompt injection exfiltration, agentic AI scope violation, deepfake impersonation, regulatory notification trigger</li>
+          <li>Train IR team on AI-specific forensics: tool call logs, model version history, input/output log analysis, drift metric review</li>
+          <li>Establish relationships with foundation model providers (OpenAI, Anthropic) for coordinated incident response on shared infrastructure incidents</li>
+          <li>Pre-draft regulatory notification templates for EU AI Act Article 73 (serious incident reporting) and applicable sector regulators</li>
+        </ul>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>🔍 Phase 2: Detection &amp; Analysis</span>
+        <span class="trigger-meta"><span class="trigger-tag warn">AI-Hardest Phase</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>Traditional 800-61:</strong> Monitor for security events, triage alerts, confirm incidents, determine scope, characterize attack.</p>
+        <p><strong>AI Extensions:</strong></p>
+        <ul style="padding-left:1.2rem;font-size:.88rem;line-height:1.9;">
+          <li><strong>AI-specific detection signals:</strong> Model output quality metrics crossing drift thresholds (PSI, ADWIN), unusual input pattern clusters (potential adversarial probing), output content anomalies (systematic hallucination, unexpected data disclosure), tool call log anomalies (agent taking unapproved actions), and user complaint spikes correlated with specific input patterns</li>
+          <li><strong>The detection gap:</strong> Many AI incidents — including poisoning and backdoor activation — produce no traditional security alerts. Behavioral monitoring of model outputs is the primary detection mechanism, not log-based SIEM rules</li>
+          <li><strong>Analysis questions unique to AI incidents:</strong> Is this behavior consistent with a known model limitation (in the model card's risk section) or a new threat? Has the model version changed recently? Is the affected population consistent with a targeted attack? Is the behavior triggered by a specific input pattern (backdoor indicator)?</li>
+          <li><strong>Severity classification:</strong> Determine whether the incident triggers EU AI Act Article 73 serious incident reporting obligation (within 72 hours to the relevant market surveillance authority for high-risk systems)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>🔒 Phase 3: Containment</span>
+        <span class="trigger-meta"><span class="trigger-tag">Response</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>Traditional 800-61:</strong> Isolate affected systems, stop the attack spread, preserve forensic evidence.</p>
+        <p><strong>AI Extensions:</strong></p>
+        <ul style="padding-left:1.2rem;font-size:.88rem;line-height:1.9;">
+          <li><strong>Model isolation:</strong> Disable or restrict access to the affected AI system without necessarily taking it fully offline — may be possible to implement enhanced input filtering while investigation continues</li>
+          <li><strong>Traffic redirection:</strong> For API-based AI services, route requests to the prior model version (if rollback capability was established in Preparation) or to a manual process</li>
+          <li><strong>Evidence preservation for AI incidents:</strong> Capture current model version hash, input/output logs for the period surrounding the incident, tool call logs (for agentic incidents), and model behavioral metrics. Unlike traditional forensics, AI incident evidence is time-sensitive — logs may rotate and behavioral metrics may change as the model continues to operate</li>
+          <li><strong>Agentic AI containment:</strong> For incidents involving agentic AI, containment must include disabling tool access to prevent further autonomous actions — the equivalent of revoking network access for a compromised endpoint, but applied to the agent's tool permissions</li>
+        </ul>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>🧹 Phase 4: Eradication &amp; Recovery</span>
+        <span class="trigger-meta"><span class="trigger-tag">Response</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>Traditional 800-61:</strong> Remove malware, patch vulnerabilities, restore from clean backups, validate recovery.</p>
+        <p><strong>AI Extensions:</strong></p>
+        <ul style="padding-left:1.2rem;font-size:.88rem;line-height:1.9;">
+          <li><strong>Model rollback:</strong> Restore the prior, known-clean model version. Validate using a clean test set that was not part of the incident investigation. Document the rollback in the AIBOM and model card version history</li>
+          <li><strong>Data remediation for poisoning incidents:</strong> If training data poisoning is confirmed, eradication requires identifying and removing the poisoned data from the training dataset, retraining the model, and re-running all safety evaluations on the retrained model before redeployment. This is a weeks-to-months process — not an overnight restore</li>
+          <li><strong>Prompt injection eradication:</strong> For prompt injection incidents, eradication involves patching the input validation layer, updating the system prompt to close the exploitation path, and regression testing the fix against the original attack vector</li>
+          <li><strong>Validation before redeployment:</strong> AI systems returning from an incident must pass: full safety evaluation, bias re-evaluation (to detect whether poisoning introduced bias), adversarial robustness testing against the incident's attack vector, and AI Governance Committee approval</li>
+        </ul>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>📝 Phase 5: Post-Incident Activity &amp; Regulatory Notification</span>
+        <span class="trigger-meta"><span class="trigger-tag">Learning</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>Traditional 800-61:</strong> Lessons learned review, update procedures, improve detection, report to management.</p>
+        <p><strong>AI Extensions:</strong></p>
+        <ul style="padding-left:1.2rem;font-size:.88rem;line-height:1.9;">
+          <li><strong>EU AI Act Article 73 notification:</strong> Providers of high-risk AI systems must report "serious incidents" to market surveillance authorities. The Annex must define what constitutes a serious incident (death or serious injury; infringement of fundamental rights; loss of critical infrastructure access), the 72-hour notification timeline, and the reporting pathway (EU AI Office for GPAI models; national authorities for high-risk systems)</li>
+          <li><strong>AI use case register update:</strong> Every AI incident must generate an update to the affected system's Use Case Register entry — documenting the incident date, type, severity, and outcome. This creates the historical risk record that informs future risk assessments</li>
+          <li><strong>Model card update:</strong> If the incident reveals a previously undocumented limitation, failure mode, or bias pattern, the model card must be updated to document it — and all deployers of that model version must be notified</li>
+          <li><strong>Governance program improvement:</strong> AI incidents are the highest-value source of improvements to the AI governance program. The lessons-learned process must explicitly ask: what governance control, if present, would have prevented or detected this incident earlier? The answer drives AIMS improvement per ISO 42001 Clause 10</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h3>AI Incident Classification Matrix</h3>
+  <table class="data-table">
+    <thead>
+      <tr><th>Incident Type</th><th>Detection Signal</th><th>Severity Indicator</th><th>Regulatory Trigger</th><th>Primary Response</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Hallucination Cascade</strong></td><td>User complaints; output quality metrics; factual accuracy monitoring</td><td>Scale × severity of incorrect outputs; affected population size</td><td>EU AI Act Art. 73 if high-risk system; sector-specific if medical/legal</td><td>Implement enhanced output filtering; notify affected users; model rollback if widespread</td></tr>
+      <tr><td><strong>Prompt Injection Exfiltration</strong></td><td>Unusual output content; data classification alerts on AI outputs; SIEM anomaly</td><td>Data classification of exfiltrated content; affected individuals count</td><td>GDPR Art. 33/34 (data breach); state breach notification laws; EU AI Act Art. 73</td><td>Disable affected endpoint; patch injection vulnerability; forensic log analysis</td></tr>
+      <tr><td><strong>Model Poisoning Discovery</strong></td><td>Systematic bias pattern; specific trigger-activated behavior; red team finding</td><td>Scope of affected training data; model deployment breadth; decision severity</td><td>EU AI Act Art. 73 for high-risk; notify other deployers of same model</td><td>Model isolation; forensic analysis of training data; full retrain required</td></tr>
+      <tr><td><strong>Agentic AI Scope Violation</strong></td><td>Tool call log anomaly; unauthorized action detected; affected system alert</td><td>Irreversibility of actions taken; data/financial impact; authorization bypass</td><td>Depends on action type; financial: FinCEN; health: OCR; general: board notification</td><td>Disable agent tool access; reverse actions where possible; redesign permission model</td></tr>
+      <tr><td><strong>Model Drift — Threshold Breach</strong></td><td>PSI/ADWIN metric crossing threshold; performance monitoring alert</td><td>Risk tier of affected system; decision type; affected population</td><td>EU AI Act Art. 72 (post-market monitoring) — update monitoring plan</td><td>Temporary manual review for affected decisions; model retraining; rollback if severe</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================
+     ACTIVITY B — THINK-PAIR-SHARE
+============================================================ -->
+<section id="activity-b">
+  <div class="activity-header">
+    <div>
+      <div class="act-badge">Activity B · Think-Pair-Share · 30 min</div>
+      <h3>MVCC AI Governance Document Audit — What Would a Regulator Find?</h3>
+    </div>
+    <span class="act-time">⏱ 5+10+10+5 min</span>
+  </div>
+  <div class="activity-body">
+    <p>Imagine that MVCC receives an inquiry from the Illinois Attorney General's office following a student complaint that an AI early-alert system incorrectly flagged them as "at-risk" and triggered unsolicited advising outreach, which the student found stigmatizing and inaccurate. The AG's office requests the following documents:</p>
+    <ol style="font-size:.92rem;padding-left:1.2rem;line-height:1.9;">
+      <li>The AI Acceptable Use Policy governing the system</li>
+      <li>The AI Use Case Register entry for the early-alert system</li>
+      <li>Evidence of human oversight procedures for AI-generated flags</li>
+      <li>The vendor contract, including data processing and AIBOM provisions</li>
+      <li>Any AI incident reports related to the system since deployment</li>
+    </ol>
+    <p><strong>Instructions:</strong></p>
+    <ol style="font-size:.92rem;padding-left:1.2rem;line-height:1.9;">
+      <li><strong>Think (5 min):</strong> Based on the governance documents covered today, which of these five document categories is MVCC most likely to have gaps in? Which would a regulator find most problematic? Write your analysis individually.</li>
+      <li><strong>Pair (10 min):</strong> Compare with a partner. Did you agree on the highest-risk gap? For the document MVCC is most likely to be missing or have inadequate, draft two sentences of remediation language you would want to see.</li>
+      <li><strong>Share (10 min):</strong> Class share-out. Instructor captures the consensus most-critical gap and the class's proposed remediation language.</li>
+      <li><strong>Debrief (5 min):</strong> This scenario involves an Illinois state law inquiry — not an EU AI Act enforcement action. What does this tell us about the geographic scope of AI governance obligations? How does a community college's exposure to US state AI law differ from its EU AI Act exposure?</li>
+    </ol>
+    <div class="callout callout-green" style="margin-top:1rem;">
+      <p class="callout-title">🎓 Instructor Note</p>
+      <p>The scenario is designed to surface the human oversight documentation gap — the piece most institutions are missing. The student complaint focuses not on whether the AI was wrong (which is a technical question) but on whether there was a process for contesting the AI's output and a human accountable for the decision to contact the student. The class should debate: is human review of <em>every</em> AI early-alert flag operationally feasible? And if not, what governance alternative (tiered review, appeal process, student notification) is both feasible and compliant?</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     ACTIVITY C — AUP BUILDER LAB
+============================================================ -->
+<section id="activity-c">
+  <div class="activity-header">
+    <div>
+      <div class="act-badge">Activity C · AUP Builder Lab · 45 min · Mini-Project</div>
+      <h3>Draft the MVCC AI Acceptable Use Policy — Interactive Builder</h3>
+    </div>
+    <span class="act-time">⏱ 45 min · Assessment Artifact Component</span>
+  </div>
+  <div class="activity-body">
+    <p>Use the interactive builder below to draft MVCC's AI Acceptable Use Policy. The builder guides you through all eight components, prompts you with questions for each section, and generates a formatted policy preview. <strong>This is Part 2 of your Mini-Project</strong> — the draft you produce here, combined with the vendor risk assessment from Lesson 12, constitutes the complete Mini-Project submission.</p>
+
+    <div class="aup-doc" id="aup-builder">
+      <div class="aup-doc-header">
+        <h4>MVCC AI Acceptable Use Policy — Draft Builder</h4>
+        <span class="doc-badge">Practice — not auto-submitted</span>
+      </div>
+
+      <!-- Section 1: Scope -->
+      <div class="aup-section">
+        <div class="aup-section-header" onclick="toggleAUPSection(this)">
+          <span>📌 Section 1: Scope &amp; Applicability</span>
+          <span class="aup-expand">▼</span>
+        </div>
+        <div class="aup-section-body">
+          <div class="aup-field">
+            <label>Who does this policy cover? (Check all that apply)</label>
+            <ul class="aup-checklist">
+              <li><input type="checkbox" id="scope-emp"> <span>All MVCC employees (full-time, part-time, temporary)</span></li>
+              <li><input type="checkbox" id="scope-con"> <span>Contractors and consultants with access to MVCC systems</span></li>
+              <li><input type="checkbox" id="scope-stu"> <span>Students using MVCC-provided AI systems or tools</span></li>
+              <li><input type="checkbox" id="scope-vnd"> <span>Vendors whose products include AI features processing MVCC data</span></li>
+              <li><input type="checkbox" id="scope-vol"> <span>Volunteers and board members with system access</span></li>
+            </ul>
+          </div>
+          <div class="aup-field">
+            <label>Which AI systems are in scope? (Describe below)</label>
+            <textarea class="aup-textarea" id="scope-systems" placeholder="Example: This policy covers all AI systems, including: (1) generative AI tools such as ChatGPT, Claude, and Gemini; (2) AI features embedded in sanctioned SaaS products; (3) AI systems developed or fine-tuned internally; and (4) any AI tool used by covered persons for institutional purposes, regardless of device or payment source."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: Data Classification -->
+      <div class="aup-section">
+        <div class="aup-section-header" onclick="toggleAUPSection(this)">
+          <span>🔒 Section 2: Data Classification &amp; Permitted Use</span>
+          <span class="aup-expand">▼</span>
+        </div>
+        <div class="aup-section-body">
+          <div class="aup-field">
+            <label>List the data categories that are PROHIBITED from entry into any AI tool without specific authorization:</label>
+            <textarea class="aup-textarea" id="data-prohibited" placeholder="Example: FERPA-protected student education records; employee PII including SSN, salary, and performance data; protected health information (PHI); personally identifiable financial information; unpublished research data; attorney-client privileged communications; any data classified as Restricted or Confidential under the MVCC Data Classification Standard."></textarea>
+          </div>
+          <div class="aup-field">
+            <label>What approval is required to use prohibited data categories in Tier 1 (sanctioned) AI tools?</label>
+            <textarea class="aup-textarea" style="min-height:60px;" id="data-approval" placeholder="Example: Written approval from the data owner (e.g., Registrar for student records, CHRO for employee data) and IT Security confirmation that the tool's DPA covers the data category. Approval documented in the AI use request system within 5 business days."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Prohibited Uses -->
+      <div class="aup-section">
+        <div class="aup-section-header" onclick="toggleAUPSection(this)">
+          <span>🚫 Section 3: Prohibited Uses</span>
+          <span class="aup-expand">▼</span>
+        </div>
+        <div class="aup-section-body">
+          <div class="aup-field">
+            <label>Select all uses that are explicitly prohibited (minimum required selections highlighted):</label>
+            <ul class="aup-checklist">
+              <li><input type="checkbox" id="proh-ferpa"> <span>Entering FERPA-protected student data into AI tools without an approved DPA</span></li>
+              <li><input type="checkbox" id="proh-employ"> <span>Making employment decisions (hiring, termination, promotion) based on AI output without documented human review</span></li>
+              <li><input type="checkbox" id="proh-discrim"> <span>Using AI to generate or distribute content that discriminates on protected characteristics</span></li>
+              <li><input type="checkbox" id="proh-security"> <span>Using AI to circumvent security controls, authentication systems, or access restrictions</span></li>
+              <li><input type="checkbox" id="proh-agent"> <span>Deploying agentic AI that can take irreversible actions (financial transactions, data deletion, external communications) without human approval for each action</span></li>
+              <li><input type="checkbox" id="proh-art5"> <span>Using AI systems that perform functions prohibited by EU AI Act Article 5 (social scoring, real-time biometric surveillance, subliminal manipulation)</span></li>
+              <li><input type="checkbox" id="proh-impersonate"> <span>Using AI to generate content that falsely impersonates MVCC officials, faculty, or staff</span></li>
+              <li><input type="checkbox" id="proh-shadow"> <span>Using non-sanctioned AI tools for institutional purposes without completing the tool approval process</span></li>
+            </ul>
+          </div>
+          <div class="aup-field">
+            <label>Add any MVCC-specific prohibited use not listed above:</label>
+            <input class="aup-input" id="proh-custom" type="text" placeholder="e.g. Using AI to generate student grade appeals or academic records without faculty oversight">
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 4: Human Review -->
+      <div class="aup-section">
+        <div class="aup-section-header" onclick="toggleAUPSection(this)">
+          <span>✋ Section 4: Human Review Requirements</span>
+          <span class="aup-expand">▼</span>
+        </div>
+        <div class="aup-section-body">
+          <div class="aup-field">
+            <label>For high-stakes decisions using AI (employment, financial aid, academic standing), human review means:</label>
+            <div class="aup-radio-group">
+              <label class="aup-radio-opt"><input type="radio" name="hr-level" value="a">The reviewer reads the AI output and can explain and defend the decision independently</label>
+              <label class="aup-radio-opt"><input type="radio" name="hr-level" value="b">The reviewer acknowledges they have seen the AI output before the decision is executed</label>
+              <label class="aup-radio-opt"><input type="radio" name="hr-level" value="c">An automated system confirms the AI output is within expected range before execution</label>
+            </div>
+          </div>
+          <div class="aup-field">
+            <label>When must human review be documented (logged with reviewer name, date, and outcome)?</label>
+            <textarea class="aup-textarea" style="min-height:60px;" id="hr-log" placeholder="Example: Human review must be documented for all AI-assisted decisions that: affect student academic status, financial aid, or enrollment; affect employee hiring, discipline, or compensation; involve FERPA-protected data; or are identified as high-stakes in the AI Use Case Register."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 5: Shadow AI -->
+      <div class="aup-section">
+        <div class="aup-section-header" onclick="toggleAUPSection(this)">
+          <span>👻 Section 5: Shadow AI &amp; Approval Pathway</span>
+          <span class="aup-expand">▼</span>
+        </div>
+        <div class="aup-section-body">
+          <div class="aup-field">
+            <label>How should employees report a tool they want to use that isn't on the approved list?</label>
+            <textarea class="aup-textarea" style="min-height:60px;" id="shadow-process" placeholder="Example: Employees who wish to use an AI tool not on the sanctioned list must submit an AI Tool Request via the IT Service Portal. IT Security will review and respond within 10 business days. The tool may not be used for institutional purposes until approval is granted or an exception is authorized by the employee's VP."></textarea>
+          </div>
+          <div class="aup-field">
+            <label>What are the consequences for discovered shadow AI use?</label>
+            <textarea class="aup-textarea" style="min-height:60px;" id="shadow-consequence" placeholder="Example: First occurrence (low-risk tool, no data exposure): Education and coaching; mandatory AUP training. Second occurrence or high-risk tool: Formal written warning; mandatory remediation training. Intentional or high-risk data exposure: Disciplinary action up to and including termination; referral to legal counsel for data breach assessment."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 6: Governance -->
+      <div class="aup-section">
+        <div class="aup-section-header" onclick="toggleAUPSection(this)">
+          <span>📋 Section 6: Governance &amp; Review Cycle</span>
+          <span class="aup-expand">▼</span>
+        </div>
+        <div class="aup-section-body">
+          <div class="aup-field">
+            <label>Who owns this policy? (Named role, not just department)</label>
+            <input class="aup-input" id="gov-owner" type="text" placeholder="e.g. Director of Information Security">
+          </div>
+          <div class="aup-field">
+            <label>Who approves this policy?</label>
+            <input class="aup-input" id="gov-approver" type="text" placeholder="e.g. President's Cabinet / Board of Trustees">
+          </div>
+          <div class="aup-field">
+            <label>When is this policy reviewed? (Select all that apply)</label>
+            <ul class="aup-checklist">
+              <li><input type="checkbox" id="rev-annual"> <span>Annually — minimum review regardless of changes</span></li>
+              <li><input type="checkbox" id="rev-reg"> <span>When a new AI regulation becomes effective that affects MVCC</span></li>
+              <li><input type="checkbox" id="rev-incident"> <span>Following a significant AI security incident at MVCC or at a peer institution</span></li>
+              <li><input type="checkbox" id="rev-new"> <span>When a new high-risk AI system is approved for deployment</span></li>
+              <li><input type="checkbox" id="rev-audit"> <span>Following an external audit finding related to AI governance</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding:1rem 1.4rem;border-top:1px solid var(--c-border);display:flex;gap:.7rem;flex-wrap:wrap;align-items:center;">
+        <button class="aup-preview-btn" onclick="generateAUPPreview()">Generate Policy Preview</button>
+        <span style="font-size:.8rem;color:var(--c-text-soft);">Complete at least 4 sections for a full preview</span>
+      </div>
+    </div>
+
+    <div class="policy-preview" id="aup-preview">
+      <h4 id="preview-title">MVCC AI Acceptable Use Policy</h4>
+      <div id="preview-body"></div>
+      <p style="margin-top:1.2rem;font-size:.8rem;color:var(--c-text-soft);border-top:1px solid var(--c-border);padding-top:.6rem;">Draft generated by AI-103 Day 13 AUP Builder · Review and finalize with Legal Counsel before adoption · Version: Draft-[DATE]</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     ASSESSMENT ARTIFACT
+============================================================ -->
+<section id="artifact">
+  <h2><span class="sec-num">📝 Assessment Artifact · Due: End of Class</span>AI AUP — Mini-Project Part 2 of 2</h2>
+
+  <div class="callout callout-accent">
+    <p class="callout-title">📋 Day 13 Assessment Artifact — Mini-Project Completion</p>
+    <h3 style="font-family:var(--font-serif);margin:.3rem 0 .6rem;">AI Acceptable Use Policy — MVCC Draft (500–700 words + structured appendix)</h3>
+    <p>Finalize the AI AUP draft you built in Activity C into a submission-ready policy document. The document must include all eight components as distinct, labeled sections, plus:</p>
+    <ol style="padding-left:1.2rem;line-height:2;margin:.6rem 0;">
+      <li><strong>Appendix A — Sanctioned Tools List:</strong> Classify at least 5 AI tools in the Tier 1/2/3 structure. For each Tier 1 tool, specify the data categories permitted and any conditions of use.</li>
+      <li><strong>Framework alignment statement:</strong> For each of the three frameworks covered in this course (NIST AI RMF, ISO 42001, EU AI Act), identify one specific section or article that your policy satisfies — and how. This demonstrates the policy is framework-anchored, not just internally invented.</li>
+      <li><strong>Policy gap self-assessment:</strong> Identify one component of your draft that you believe is weakest — the section most likely to fail an audit or regulatory inquiry — and explain specifically what additional language or evidence would close the gap.</li>
+    </ol>
+    <p><strong>Combined Mini-Project submission:</strong> This AUP (Day 13) + the Vendor Risk Assessment (Day 12) = the complete AI AUP + Vendor Risk Assessment Mini-Project (20% of course grade). Submit both documents together. The Vendor Risk Assessment should cross-reference the AUP's sanctioned tools list for the vendor assessed.</p>
+    <p><strong>Grading:</strong> Evaluated on completeness of all 8 AUP components; specificity and enforceability of policy language (not vague platitudes); accuracy of framework alignment statements; and quality of gap self-assessment.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     QUIZ
+============================================================ -->
+<section id="quiz">
+  <h2><span class="sec-num">❓ Day 13 Knowledge Check · 6 Questions · Instant Feedback</span>Test Your Mastery</h2>
+  <p>Formative check — does not affect your grade. Predicts performance on the Mini-Project.</p>
+
+  <div id="quiz-container">
+
+    <div class="quiz-q" data-correct="c">
+      <div class="q-text">Q1. A university's AI acceptable use policy states: "Employees should use AI tools responsibly and avoid sharing sensitive information." An auditor reviews this policy and concludes it will not withstand regulatory scrutiny. Which failure mode BEST describes this policy's deficiency?</div>
+      <ul class="quiz-opts">
+        <li><label><input type="radio" name="q1" value="a"> The policy is too short — a compliant AI AUP must be at least 10 pages.</label></li>
+        <li><label><input type="radio" name="q1" value="b"> The policy does not reference any governance framework — it should explicitly cite ISO 42001 or NIST AI RMF.</label></li>
+        <li><label><input type="radio" name="q1" value="c"> The policy is vague — it fails to define "sensitive information," specify which tools are sanctioned, or state what "responsible" use requires, making it unenforceable and un-auditable.</label></li>
+        <li><label><input type="radio" name="q1" value="d"> The policy applies only to employees — it should also cover AI systems themselves.</label></li>
+      </ul>
+      <div class="quiz-feedback" id="qfb-1"></div>
+    </div>
+
+    <div class="quiz-q" data-correct="b">
+      <div class="q-text">Q2. An organization maintains an AI Use Case Register with entries for all formally approved AI deployments. However, a recent shadow AI scan found that 23% of employees regularly use AI tools not listed in the register. Which governance document directly addresses this gap?</div>
+      <ul class="quiz-opts">
+        <li><label><input type="radio" name="q2" value="a"> The AI Risk Assessment — it should have identified shadow AI as a risk and required remediation.</label></li>
+        <li><label><input type="radio" name="q2" value="b"> The AI Acceptable Use Policy — specifically the Shadow AI and Approval Pathway component, which must define shadow AI, provide a frictionless approval pathway, specify enforcement consequences, and establish a shadow AI discovery program.</label></li>
+        <li><label><input type="radio" name="q2" value="c"> The ISO 42001 Statement of Applicability — it should have included a control for shadow AI inventory.</label></li>
+        <li><label><input type="radio" name="q2" value="d"> The AI Incident Response Annex — shadow AI discovery should trigger an incident response process.</label></li>
+      </ul>
+      <div class="quiz-feedback" id="qfb-2"></div>
+    </div>
+
+    <div class="quiz-q" data-correct="d">
+      <div class="q-text">Q3. In the ISO 42001 document hierarchy, what is the CORRECT relationship between the AI Policy (Level 1) and the AI Acceptable Use Policy (operational document)?</div>
+      <ul class="quiz-opts">
+        <li><label><input type="radio" name="q3" value="a"> They are synonymous — the AI Policy and the AI Acceptable Use Policy are the same document at different levels of detail.</label></li>
+        <li><label><input type="radio" name="q3" value="b"> The AUP supersedes the AI Policy — if they conflict, the AUP's specific language takes precedence.</label></li>
+        <li><label><input type="radio" name="q3" value="c"> The AI Policy is drafted by employees and approved by the board; the AUP is drafted by the board and communicated to employees.</label></li>
+        <li><label><input type="radio" name="q3" value="d"> The AI Policy (Level 1) sets strategic direction and organizational commitment, approved by top management. The AUP is an operational document that implements the AI Policy — specifying which tools, data, uses, and behaviors are permitted. The AI Policy authorizes the AUP; the AUP operationalizes it.</label></li>
+      </ul>
+      <div class="quiz-feedback" id="qfb-3"></div>
+    </div>
+
+    <div class="quiz-q" data-correct="a">
+      <div class="q-text">Q4. An AI incident response team discovers that a customer service chatbot has been producing systematically biased outputs for three weeks — consistently providing lower-quality responses to customers who write in non-standard English. Which AI-specific incident response action is MOST critical immediately after detection?</div>
+      <ul class="quiz-opts">
+        <li><label><input type="radio" name="q4" value="a"> Preserve evidence (current model version hash, input/output logs for the incident period, behavioral metrics) before logs rotate — this forensic evidence determines whether the bias represents a poisoning attack, a drift pattern, or a known model limitation that was inadequately governed.</label></li>
+        <li><label><input type="radio" name="q4" value="b"> Immediately retrain the model on a corrected dataset — the longer the biased model operates, the greater the regulatory exposure.</label></li>
+        <li><label><input type="radio" name="q4" value="c"> Notify the EU AI Office within 72 hours — all AI bias incidents involving customer data require immediate regulatory notification.</label></li>
+        <li><label><input type="radio" name="q4" value="d"> Update the model card to document the bias as a known limitation — transparency obligations require disclosure before response.</label></li>
+      </ul>
+      <div class="quiz-feedback" id="qfb-4"></div>
+    </div>
+
+    <div class="quiz-q" data-correct="b">
+      <div class="q-text">Q5. A community college includes "FERPA-protected student records" on the list of data categories prohibited from entry into AI tools. A faculty member argues this prohibition prevents them from using AI to generate personalized feedback on student essays. Which response BEST demonstrates a compliant AUP design?</div>
+      <ul class="quiz-opts">
+        <li><label><input type="radio" name="q5" value="a"> The prohibition must stand — FERPA data cannot be processed by any AI system under any circumstances.</label></li>
+        <li><label><input type="radio" name="q5" value="b"> The AUP should include an approval pathway: the faculty member requests IT Security approval to use a specific Tier 1 tool with a FERPA-compliant DPA for this specific use case. If approved, the tool is added to the sanctioned list for this use case with documented FERPA conditions. The prohibition applies to unsanctioned tools; approved tools with compliant DPAs are permitted with conditions.</label></li>
+        <li><label><input type="radio" name="q5" value="c"> The prohibition only covers identifiable student data — grade analytics that don't include names are not FERPA-protected and can be used freely.</label></li>
+        <li><label><input type="radio" name="q5" value="d"> FERPA does not cover AI processing — it only governs disclosure of records to third parties, and AI tools used internally are not third parties.</label></li>
+      </ul>
+      <div class="quiz-feedback" id="qfb-5"></div>
+    </div>
+
+    <div class="quiz-q" data-correct="c">
+      <div class="q-text">Q6. Which statement MOST accurately describes the role of records (Level 4) in an ISO 42001-compliant AI Management System?</div>
+      <ul class="quiz-opts">
+        <li><label><input type="radio" name="q6" value="a"> Records are optional documentation maintained for internal quality purposes — ISO 42001 certification is based on policies and procedures, not evidence of implementation.</label></li>
+        <li><label><input type="radio" name="q6" value="b"> Records are the written history of AI incidents only — procedures and policies are verified through interviews during the certification audit.</label></li>
+        <li><label><input type="radio" name="q6" value="c"> Records are the audit evidence layer that transforms policy commitments into verifiable compliance — without records (risk assessments, approval logs, training completion, incident reports), every policy claim is unverifiable assertion that an ISO 42001 auditor will treat as non-conformance.</label></li>
+        <li><label><input type="radio" name="q6" value="d"> Records are maintained exclusively by the IT department — business owners are responsible for policies and procedures, not evidence.</label></li>
+      </ul>
+      <div class="quiz-feedback" id="qfb-6"></div>
+    </div>
+
+    <div style="margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap;">
+      <button class="btn-primary" onclick="gradeQuiz()">Grade My Quiz</button>
+      <button class="btn-secondary" onclick="resetQuiz()">Reset</button>
+    </div>
+    <div class="quiz-score-panel" id="quiz-score-panel"></div>
+  </div>
+</section>
+
+<!-- Bottom nav -->
+<div class="lesson-nav-bottom">
+  <a href="https://sands-mvcc.github.io/aicyber/lesson12.html" class="nav-btn">← Day 12: Vendor &amp; Supply Chain Risk</a>
+  <a href="https://sands-mvcc.github.io/aicyber/lesson14.html" class="nav-btn primary">Day 14: AI Incident Response &amp; Red Teaming →</a>
+</div>
+
+</div><!-- end main col -->
+
+<!-- ===== RAIL ===== -->
+<aside class="rail" aria-label="On-page navigation and key terms">
+  <h4>On This Page</h4>
+  <ul class="rail-nav">
+    <li><a href="#overview">→ Lesson Overview</a></li>
+    <li><a href="#m1">1 Why Documents Fail</a></li>
+    <li><a href="#m2">2 AI AUP (8 Components)</a></li>
+    <li><a href="#m3">3 Use Case Register</a></li>
+    <li><a href="#activity-a">A Policy Gap Analysis</a></li>
+    <li><a href="#m4">4 ISO 42001 Documents</a></li>
+    <li><a href="#m5">5 AI IR Annex</a></li>
+    <li><a href="#activity-b">B Think-Pair-Share</a></li>
+    <li><a href="#activity-c">C AUP Builder Lab</a></li>
+    <li><a href="#artifact">✏ Assessment</a></li>
+    <li><a href="#quiz">? Knowledge Check</a></li>
+  </ul>
+
+  <div class="rail-section">
+    <h4>Objectives Progress</h4>
+    <div style="font-size:.78rem;color:var(--c-text-soft);margin-bottom:.3rem;" id="rail-obj-count">0 of 6 completed</div>
+    <ul style="list-style:none;font-size:.78rem;" id="rail-obj-list">
+      <li>☐ Explain why governance documents fail</li>
+      <li>☐ Construct an AI AUP (8 components)</li>
+      <li>☐ Build an AI Use Case Register</li>
+      <li>☐ Identify ISO 42001 document hierarchy</li>
+      <li>☐ Draft an AI IR Annex</li>
+      <li>☐ Evaluate a policy for audit readiness</li>
+    </ul>
+  </div>
+
+  <div class="rail-section">
+    <h4>Key Terms — Day 13</h4>
+    <div class="term">AI AUP</div><div class="def">Acceptable Use Policy — operational document governing AI tool use</div>
+    <div class="term">AI Use Case Register</div><div class="def">Authoritative inventory of all AI systems; operational artifact for NIST MAP</div>
+    <div class="term">ISO 42001</div><div class="def">Certifiable AI Management System standard; 42 Annex A controls</div>
+    <div class="term">AIMS</div><div class="def">AI Management System — the governance program ISO 42001 certifies</div>
+    <div class="term">Statement of Applicability</div><div class="def">Documents which Annex A controls apply and evidence of implementation</div>
+    <div class="term">AI IR Annex</div><div class="def">Supplement to NIST SP 800-61 for AI-specific incident types and actions</div>
+    <div class="term">Hallucination Cascade</div><div class="def">AI incident: systematic false outputs at scale requiring IR response</div>
+    <div class="term">Shadow AI</div><div class="def">Unauthorized AI tools used for institutional purposes without approval</div>
+    <div class="term">Model Rollback</div><div class="def">IR capability: restoring prior known-clean model version after incident</div>
+    <div class="term">Policy Hierarchy</div><div class="def">Policy → Standard → Procedure → Guideline; ISO 42001 uses this structure</div>
+  </div>
+
+  <div class="rail-section">
+    <h4>Lesson Navigation</h4>
+    <a href="https://sands-mvcc.github.io/aicyber/index.html" class="nav-btn" style="display:block;text-align:center;margin-bottom:.4rem;font-size:.82rem;">← Course Home</a>
+    <a href="https://sands-mvcc.github.io/aicyber/lesson12.html" class="nav-btn" style="display:block;text-align:center;margin-bottom:.4rem;font-size:.82rem;">← Day 12</a>
+    <a href="https://sands-mvcc.github.io/aicyber/lesson14.html" class="nav-btn primary" style="display:block;text-align:center;font-size:.82rem;">Day 14 →</a>
+  </div>
+</aside>
+
+</div><!-- end page-with-rail -->
+</main>
+
+<footer>
+  <p><strong>AI-103: AI Cybersecurity Foundations · Day 13</strong> · Moraine Valley Community College · Department of Engineering &amp; Technology · Dr. John L. Sands · 2026</p>
+  <p>Day 14 covers AI Incident Response, Red Teaming &amp; Tabletop Exercises — adapting NIST SP 800-61 and running AI-specific red team exercises.</p>
+</footer>
+
+<script>
+/* ============================================================
+   ACCORDION
+============================================================ */
+function toggleAccordion(btn){
+  const body=btn.nextElementSibling;
+  const isOpen=btn.getAttribute('aria-expanded')==='true';
+  document.querySelectorAll('.accordion-trigger[aria-expanded="true"]').forEach(b=>{
+    b.setAttribute('aria-expanded','false');b.nextElementSibling.classList.remove('open');
+  });
+  if(!isOpen){btn.setAttribute('aria-expanded','true');body.classList.add('open');}
+  markObjective(3);
+}
+
+/* ============================================================
+   AUP SECTION TOGGLE
+============================================================ */
+function toggleAUPSection(header){
+  const body=header.nextElementSibling;
+  header.classList.toggle('open');
+  body.classList.toggle('open');
+  markObjective(1);
+}
+
+/* ============================================================
+   USE CASE REGISTER
+============================================================ */
+let ucrCount=4;
+function addUCRRow(){
+  document.getElementById('ucr-form').style.display='block';
+  document.getElementById('ucr-add-row') && (document.getElementById('ucr-add-row').style.display='none');
+  markObjective(2);
+}
+function cancelUCRRow(){ document.getElementById('ucr-form').style.display='none'; }
+function submitUCRRow(){
+  const name=document.getElementById('ucr-name').value||'New AI System';
+  const status=document.getElementById('ucr-status').value;
+  const tier=document.getElementById('ucr-tier').value;
+  const risk=document.getElementById('ucr-risk').value;
+  const owner=document.getElementById('ucr-owner').value||'TBD';
+  const role=document.getElementById('ucr-role').value;
+  const data=document.getElementById('ucr-data').value||'TBD';
+  const review=document.getElementById('ucr-review').value||'TBD';
+  const id=`AI-2026-00${ucrCount++}`;
+  const statusClass=status==='Deployed'?'pill-g':status==='Pilot'?'pill-y':'pill-r';
+  const riskBadge=risk==='HIGH'?'risk-high':risk==='MED'?'risk-med':'risk-low';
+  const tierClass=tier==='High Risk'?'pill-r':tier==='Limited Risk'?'pill-y':'pill-g';
+  const tr=document.createElement('tr');
+  tr.innerHTML=`
+    <td><span style="font-family:var(--font-mono);font-size:.78rem;">${id}</span></td>
+    <td><strong>${name}</strong></td>
+    <td><span class="pill ${statusClass}">${status}</span></td>
+    <td><span class="pill ${tierClass}">${tier}</span></td>
+    <td><span class="${riskBadge}">${risk}</span></td>
+    <td>${owner}</td>
+    <td><span class="pill pill-b">${role}</span></td>
+    <td>${data}</td>
+    <td>${review}</td>
+  `;
+  document.getElementById('ucr-body').appendChild(tr);
+  cancelUCRRow();
+  ['ucr-name','ucr-owner','ucr-data'].forEach(id=>document.getElementById(id).value='');
+  markObjective(2);
+}
+
+/* ============================================================
+   ACTIVITY A — GAP ANALYSIS
+============================================================ */
+const gapItems=[
+  {text:"Scope & Applicability",correct:"missing",reason:"The policy says 'employees' but doesn't specify contractors, vendors, or students. No device scope is defined."},
+  {text:"Definitions",correct:"missing",reason:"'Sensitive information' and 'responsible' are undefined — making the policy unenforceable."},
+  {text:"Sanctioned Tools List",correct:"missing",reason:"'The IT Department maintains a list' acknowledges the list exists but doesn't define it or make it accessible to covered persons."},
+  {text:"Data Classification & Permitted Use",correct:"missing",reason:"'Confidential information' is the only data category mentioned, with no classification mapping or specific prohibitions."},
+  {text:"Prohibited Uses",correct:"missing",reason:"No specific prohibited uses are listed beyond the vague 'sharing confidential information.'"},
+  {text:"Human Review Requirements",correct:"adequate",reason:"'All AI-generated content must be reviewed before use' — vague but present. It needs specificity but the concept is there."},
+  {text:"Shadow AI & Approval Pathway",correct:"missing",reason:"No mention of shadow AI, no approval pathway for new tools, no enforcement mechanism defined."},
+  {text:"Governance & Review Cycle",correct:"adequate",reason:"'Approved by President's Cabinet in March 2024' — establishes approver. But no review cycle, no named policy owner, and the 2024 date raises staleness concerns."}
+];
+
+const gapSelections={};
+function buildGapActivity(){
+  const pool=document.getElementById('gap-chip-pool');
+  pool.innerHTML=gapItems.map((item,i)=>`<span class="gap-chip" data-idx="${i}" onclick="selectGapItem(this,${i})">${item.text}</span>`).join('');
+}
+function selectGapItem(chip,idx){
+  const item=gapItems[idx];
+  if(chip.classList.contains('selected')){
+    chip.classList.remove('selected');
+    delete gapSelections[idx];
+    const containers=['adequate-items','missing-items'];
+    containers.forEach(cid=>{
+      const el=document.getElementById(cid);
+      Array.from(el.querySelectorAll('.gap-chip')).forEach(c=>{if(c.dataset.idx==idx)c.remove();});
+    });
+    return;
+  }
+  chip.classList.add('selected');
+  // Ask user to assign
+  const picker=document.createElement('div');
+  picker.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border:2px solid var(--c-accent);border-radius:8px;padding:1.2rem;z-index:200;min-width:260px;box-shadow:0 8px 32px rgba(0,0,0,.2);';
+  picker.innerHTML=`<p style="font-weight:600;margin-bottom:.8rem;font-size:.9rem;">Classify "<em>${item.text}</em>":</p>
+    <button onclick="assignGap(${idx},'adequate',this.closest('div[style]'))" style="display:block;width:100%;text-align:left;background:var(--c-green-light);border:1px solid var(--c-green);border-radius:6px;padding:.5rem .8rem;margin-bottom:.5rem;cursor:pointer;font-size:.88rem;color:var(--c-green);font-weight:600;">✅ Present &amp; Adequate</button>
+    <button onclick="assignGap(${idx},'missing',this.closest('div[style]'))" style="display:block;width:100%;text-align:left;background:var(--c-warn-light);border:1px solid var(--c-warn);border-radius:6px;padding:.5rem .8rem;margin-bottom:.5rem;cursor:pointer;font-size:.88rem;color:var(--c-warn);font-weight:600;">⚠️ Missing or Inadequate</button>
+    <button onclick="cancelGap(${idx},this.closest('div[style]'))" style="font-size:.8rem;color:var(--c-text-soft);background:none;border:none;cursor:pointer;margin-top:.2rem;">Cancel</button>`;
+  document.body.appendChild(picker);
+}
+function assignGap(idx,assignment,picker){
+  gapSelections[idx]=assignment;
+  const targetId=assignment==='adequate'?'adequate-items':'missing-items';
+  const target=document.getElementById(targetId);
+  const tag=document.createElement('span');
+  tag.className='gap-chip selected';tag.dataset.idx=idx;tag.textContent=gapItems[idx].text;tag.style.cursor='default';
+  target.appendChild(tag);
+  target.parentElement.classList.add('has-items');
+  picker.remove();
+  markObjective(5);
+}
+function cancelGap(idx,picker){
+  document.querySelectorAll(`.gap-chip[data-idx="${idx}"]`).forEach(c=>c.classList.remove('selected'));
+  picker.remove();
+}
+function checkGapActivity(){
+  let correct=0;
+  gapItems.forEach((item,i)=>{
+    const assigned=gapSelections[i];
+    const isCorrect=assigned===item.correct;
+    if(isCorrect) correct++;
+  });
+  const rb=document.getElementById('gap-result');rb.classList.add('show');
+  if(correct>=7){
+    rb.className='result-box show result-ok';
+    rb.innerHTML=`<span class="score-big">✓ ${correct}/8 correct</span><br>Excellent analysis. You correctly identified which components are adequate and which are missing or insufficient. ${correct===8?'Perfect score!':''}<br><br><strong>Key gaps in this draft:</strong> No definitions, no data classification matrix, no prohibited uses list, no shadow AI pathway, and no review cycle — 5 of the 8 required components are missing or inadequate. Human review (vague but present) and governance (approver named but no review cycle) are partially present.`;
+    markObjective(5);
+  } else if(correct>=5){
+    rb.className='result-box show result-partial';
+    rb.innerHTML=`<span class="score-big">${correct}/8 correct</span><br>Good effort — review the components you misclassified. Pay attention to the difference between "vague but present" (partially adequate) and "entirely missing."`;
+  } else {
+    rb.className='result-box show result-miss';
+    rb.innerHTML=`<span class="score-big">${correct}/8 correct</span><br>Review Module 2 — focus on what each of the 8 components must contain to be considered adequate, not just present.`;
+  }
+}
+function resetGapActivity(){
+  Object.keys(gapSelections).forEach(k=>delete gapSelections[k]);
+  document.querySelectorAll('#gap-chip-pool .gap-chip').forEach(c=>c.classList.remove('selected','correct','incorrect'));
+  ['adequate-items','missing-items'].forEach(id=>{document.getElementById(id).innerHTML='';});
+  const rb=document.getElementById('gap-result');rb.className='result-box';rb.innerHTML='';
+}
+buildGapActivity();
+
+/* ============================================================
+   AUP PREVIEW GENERATOR
+============================================================ */
+function generateAUPPreview(){
+  const scopeEmp=document.getElementById('scope-emp').checked;
+  const scopeCon=document.getElementById('scope-con').checked;
+  const scopeStu=document.getElementById('scope-stu').checked;
+  const scopeVnd=document.getElementById('scope-vnd').checked;
+  const scopeSystems=document.getElementById('scope-systems').value||'[Scope not yet defined]';
+  const dataProhibited=document.getElementById('data-prohibited').value||'[Data categories not yet defined]';
+  const dataApproval=document.getElementById('data-approval').value||'[Approval process not yet defined]';
+  const hrLog=document.getElementById('hr-log').value||'[Human review documentation requirements not yet defined]';
+  const shadowProcess=document.getElementById('shadow-process').value||'[Shadow AI approval pathway not yet defined]';
+  const shadowConsequence=document.getElementById('shadow-consequence').value||'[Enforcement consequences not yet defined]';
+  const govOwner=document.getElementById('gov-owner').value||'[Policy owner not yet named]';
+  const govApprover=document.getElementById('gov-approver').value||'[Approver not yet named]';
+  const hrLevel=document.querySelector('input[name="hr-level"]:checked')?.value;
+  const hrText=hrLevel==='a'?'The reviewer reads the AI output and can explain and defend the decision independently.':hrLevel==='b'?'The reviewer acknowledges they have seen the AI output before the decision is executed.':'[Human review standard not yet selected]';
+
+  const prohs=[];
+  if(document.getElementById('proh-ferpa').checked) prohs.push('Entering FERPA-protected student data into AI tools without an approved DPA');
+  if(document.getElementById('proh-employ').checked) prohs.push('Making employment decisions based on AI output without documented human review');
+  if(document.getElementById('proh-discrim').checked) prohs.push('Generating or distributing discriminatory content using AI');
+  if(document.getElementById('proh-security').checked) prohs.push('Using AI to circumvent security controls or access restrictions');
+  if(document.getElementById('proh-agent').checked) prohs.push('Deploying agentic AI with irreversible actions without human approval for each action');
+  if(document.getElementById('proh-art5').checked) prohs.push('Using AI systems performing EU AI Act Article 5 prohibited functions');
+  if(document.getElementById('proh-impersonate').checked) prohs.push('Using AI to impersonate MVCC officials, faculty, or staff');
+  if(document.getElementById('proh-shadow').checked) prohs.push('Using non-sanctioned AI tools for institutional purposes without completing the approval process');
+  const customProh=document.getElementById('proh-custom').value;
+  if(customProh) prohs.push(customProh);
+
+  const scopedTo=[scopeEmp?'all employees':'',scopeCon?'contractors and consultants':'',scopeStu?'students using MVCC-provided AI systems':'',scopeVnd?'vendors with AI-embedded products processing MVCC data':''].filter(Boolean).join(', ');
+
+  const preview=document.getElementById('aup-preview');
+  const body=document.getElementById('preview-body');
+  body.innerHTML=`
+    <div class="pol-section"><div class="pol-label">Purpose</div>
+    <p>This policy establishes requirements for the acceptable use of artificial intelligence systems at Moraine Valley Community College (MVCC). It is designed to enable responsible AI adoption while protecting student and institutional data, ensuring regulatory compliance, and maintaining human oversight of consequential decisions.</p></div>
+
+    <div class="pol-section"><div class="pol-label">1. Scope &amp; Applicability</div>
+    <p>This policy applies to: <strong>${scopedTo||'[scope not fully defined]'}</strong>. The following AI systems are in scope: ${scopeSystems}</p></div>
+
+    <div class="pol-section"><div class="pol-label">2. Data Classification &amp; Permitted Use</div>
+    <p>The following data categories are <strong>prohibited</strong> from entry into any AI system without specific written authorization: ${dataProhibited}</p>
+    <p><strong>Authorization process for exceptions:</strong> ${dataApproval}</p></div>
+
+    <div class="pol-section"><div class="pol-label">3. Prohibited Uses</div>
+    ${prohs.length>0?'<p>The following uses of AI are explicitly prohibited:</p><ul style="padding-left:1.2rem;">'+prohs.map(p=>`<li style="margin-bottom:.3rem;">${p}</li>`).join('')+'</ul>':'<p><em>[Prohibited uses not yet defined]</em></p>'}
+    <p>This list is non-exhaustive. Any use of AI that violates applicable law, regulation, or institutional policy is also prohibited.</p></div>
+
+    <div class="pol-section"><div class="pol-label">4. Human Review Requirements</div>
+    <p><strong>Definition of qualifying human review:</strong> ${hrText}</p>
+    <p><strong>Documentation requirements:</strong> ${hrLog}</p></div>
+
+    <div class="pol-section"><div class="pol-label">5. Shadow AI &amp; Approval Pathway</div>
+    <p><strong>Shadow AI</strong> is defined as any AI tool or feature used for MVCC institutional purposes that is not on the sanctioned tools list (Appendix A). Shadow AI use is subject to this policy regardless of whether the tool was discovered by IT or self-reported.</p>
+    <p><strong>Approval pathway:</strong> ${shadowProcess}</p>
+    <p><strong>Enforcement:</strong> ${shadowConsequence}</p></div>
+
+    <div class="pol-section"><div class="pol-label">6. Governance &amp; Review</div>
+    <p><strong>Policy Owner:</strong> ${govOwner}<br>
+    <strong>Approving Authority:</strong> ${govApprover}<br>
+    <strong>Review Triggers:</strong> ${[document.getElementById('rev-annual').checked?'Annual':'',document.getElementById('rev-reg').checked?'New regulation effective date':'',document.getElementById('rev-incident').checked?'Significant AI incident':'',document.getElementById('rev-new').checked?'New high-risk AI deployment':'',document.getElementById('rev-audit').checked?'External audit finding':''].filter(Boolean).join('; ')||'[Review triggers not yet defined]'}</p></div>
+
+    <div class="pol-section"><div class="pol-label">Appendix A — Sanctioned Tools List</div>
+    <p><em>[Complete Appendix A as part of your Mini-Project submission. List at least 5 AI tools with their tier classification (Tier 1 Enterprise Sanctioned / Tier 2 Tolerated / Tier 3 Prohibited), permitted data categories, and conditions of use.]</em></p></div>
+
+    <div class="pol-section"><div class="pol-label">Framework Alignment</div>
+    <p><em>[Complete the framework alignment statement in your Mini-Project submission: identify one specific NIST AI RMF, ISO 42001, and EU AI Act reference that each section of this policy satisfies.]</em></p></div>
+  `;
+  preview.classList.add('show');
+  markObjective(1);
+  markObjective(5);
+  window.scrollTo({top:preview.offsetTop-80,behavior:'smooth'});
+}
+
+/* ============================================================
+   QUIZ
+============================================================ */
+const quizAnswers={
+  q1:{correct:'c',feedback:{c:'✓ Correct. The policy fails the vague policy test — the two most critical failures are undefined terms ("sensitive information") and unspecified behaviors ("responsibly"). An auditor cannot verify compliance with undefined terms; a regulator cannot fine an employee for violating a standard that wasn\'t defined in the policy. Specificity is the difference between a platitude and an enforceable policy.',default:'✗ The correct answer is C. The core failure is vagueness — undefined terms and unspecified requirements make the policy un-auditable and unenforceable, regardless of its length or framework citations.'}},
+  q2:{correct:'b',feedback:{b:'✓ Correct. Shadow AI is the specific AUP component that directly addresses unauthorized AI use. It must define shadow AI explicitly, provide a frictionless approval pathway (the absence of which drives tools underground), specify enforcement consequences (graduated, not all-or-nothing), and trigger a shadow AI discovery program. Without this component, employees who want to use non-approved tools have no legitimate path — so they use them anyway without disclosure.',default:'✗ The correct answer is B. The Shadow AI & Approval Pathway component of the AUP is specifically designed to address unauthorized AI tool use — by defining it, providing a pathway for legitimate requests, and specifying consequences for violations.'}},
+  q3:{correct:'d',feedback:{d:'✓ Correct. The AI Policy (Level 1) is the strategic direction document — approved by top management, communicating organizational commitment, appropriate for external audiences. The AUP is the operational document that implements the AI Policy — specifying exactly which tools, data categories, uses, and behaviors are permitted for employees. The AI Policy says "we commit to responsible AI"; the AUP says "here is exactly what responsible means for your daily work."',default:'✗ The correct answer is D. They are distinct documents at different levels of the ISO 42001 hierarchy. The AI Policy is strategic and broad; the AUP is operational and specific. The AI Policy authorizes the program; the AUP runs it.'}},
+  q4:{correct:'a',feedback:{a:'✓ Correct. AI incident forensics are time-sensitive in a way that traditional security forensics often are not — input/output logs may rotate, behavioral metrics change as the model continues to serve requests, and the model itself may be updated. Evidence preservation is the critical first step because it determines whether the incident is a poisoning attack (requiring full retraining), a drift pattern (requiring retraining or rollback), or a known documented limitation (requiring policy/oversight updates). Without this evidence, the response is guesswork.',default:'✗ The correct answer is A. Evidence preservation is the first critical action because AI incident forensic evidence is time-sensitive — logs rotate, metrics evolve, and the investigation cannot be completed without the original evidence. All subsequent response decisions (retrain vs. rollback, regulatory notification threshold, affected population scope) depend on this analysis.'}},
+  q5:{correct:'b',feedback:{b:'✓ Correct. A well-designed AUP doesn\'t create a binary prohibition — it creates a prohibition on unsanctioned processing and an approval pathway for sanctioned processing. If a Tier 1 tool has a FERPA-compliant data processing agreement and the specific use case (essay feedback) is approved, the processing is permitted under the AUP. The prohibition protects against unsanctioned processing; the approval pathway enables legitimate use cases. A policy that simply prohibits FERPA data in AI without an exception pathway will be worked around by faculty who need the capability.',default:'✗ The correct answer is B. FERPA data can be processed by AI systems that have appropriate DPAs and institutional approval — FERPA governs disclosure and requires institutional safeguards, not absolute prohibition. The AUP\'s approval pathway creates the compliant channel for legitimate use cases.'}},
+  q6:{correct:'c',feedback:{c:'✓ Correct. Records are the evidence layer that makes governance verifiable. An ISO 42001 auditor does not accept policy documents as proof that controls are operating — they examine records: risk assessment documents showing who approved what risk treatment, training completion logs showing staff were trained, incident reports showing the IR process was followed, vendor assessment records showing due diligence was conducted. Without records, every policy claim is assertion. Records transform assertion into evidence.',default:'✗ The correct answer is C. Records are the audit evidence layer — the artifacts that prove governance controls are actually being followed, not just written down. ISO 42001 auditors examine records during certification audits to verify that documented procedures are being implemented.'}},
+};
+function gradeQuiz(){
+  const qs=document.querySelectorAll('#quiz-container .quiz-q');let score=0;
+  qs.forEach(q=>{
+    const qname=q.querySelector('input[type=radio]').name;
+    const qdata=quizAnswers[qname];
+    const selected=q.querySelector(`input[name="${qname}"]:checked`);
+    const feedback=document.getElementById(`qfb-${qname.replace('q','')}`);
+    q.querySelectorAll('li').forEach(li=>li.classList.remove('correct','wrong'));
+    if(selected){
+      const val=selected.value;
+      if(val===qdata.correct){score++;selected.closest('li').classList.add('correct');feedback.className='quiz-feedback show';feedback.style.background='var(--c-green-light)';feedback.style.color='var(--c-green)';feedback.textContent=qdata.feedback[val]||qdata.feedback.default;}
+      else{selected.closest('li').classList.add('wrong');q.querySelector(`input[value="${qdata.correct}"]`).closest('li').classList.add('correct');feedback.className='quiz-feedback show';feedback.style.background='#fff0f0';feedback.style.color='#c00';feedback.textContent=qdata.feedback[val]||qdata.feedback.default;}
+    } else {feedback.className='quiz-feedback show';feedback.style.background='#fff0f0';feedback.style.color='#c00';feedback.textContent='— No answer selected. '+qdata.feedback.default;}
+  });
+  const panel=document.getElementById('quiz-score-panel');panel.className='quiz-score-panel show';
+  const pct=Math.round(score/6*100);
+  const msg=score>=5?'🏆 Strong mastery — ready for the Mini-Project submission.':score>=4?'✅ Good — review the questions you missed before finalizing your AUP draft.':'📚 Review Modules 2 and 4 before finalizing your AUP.';
+  panel.innerHTML=`<div class="qs-big">${score} / 6</div><div class="qs-label">${pct}% — ${msg}</div>`;
+  if(score>=5) markObjective(5);
+}
+function resetQuiz(){
+  document.querySelectorAll('#quiz-container input[type=radio]').forEach(r=>r.checked=false);
+  document.querySelectorAll('#quiz-container li').forEach(li=>li.classList.remove('correct','wrong'));
+  document.querySelectorAll('.quiz-feedback').forEach(fb=>{fb.className='quiz-feedback';fb.textContent='';});
+  document.getElementById('quiz-score-panel').className='quiz-score-panel';
+}
+
+/* ============================================================
+   OBJECTIVE TRACKER
+============================================================ */
+const completedObjs=new Set();
+const objLabels=['Explain why governance documents fail','Construct an AI AUP (8 components)','Build an AI Use Case Register','Identify ISO 42001 document hierarchy','Draft an AI IR Annex','Evaluate a policy for audit readiness'];
+function markObjective(idx){
+  completedObjs.add(idx);
+  const count=completedObjs.size;
+  document.getElementById('obj-count').textContent=count;
+  document.getElementById('obj-bar').style.width=Math.round(count/6*100)+'%';
+  document.getElementById('rail-obj-count').textContent=count+' of 6 completed';
+  const railList=document.getElementById('rail-obj-list');
+  if(railList) railList.querySelectorAll('li').forEach((li,i)=>{li.textContent=(completedObjs.has(i)?'✅ ':'☐ ')+objLabels[i];});
+}
+// Auto-mark obj 4 when IR accordion sections open
+document.querySelectorAll('#m5 .accordion-trigger').forEach(btn=>btn.addEventListener('click',()=>markObjective(4)));
+// Auto-mark obj 0 on flip card interactions
+document.querySelectorAll('#m1 .flip-card').forEach(c=>c.addEventListener('click',()=>markObjective(0)));
+</script>
+</body>
+</html>
