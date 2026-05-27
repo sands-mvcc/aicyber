@@ -1,0 +1,1610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI-103 Lesson 12 — Vendor & Supply Chain Risk for AI. AI value chain, provider/deployer/importer roles, vendor assessments, embedded AI risk, and third-party governance.">
+<title>AI-103 · Day 12: Vendor &amp; Supply Chain Risk for AI</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,300&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root {
+    --c-bg:#ffffff;--c-surface:#f8f7f5;--c-surface2:#f0ede8;--c-border:#ddd8d0;
+    --c-text:#1a1714;--c-text-mid:#4a4440;--c-text-soft:#7a7370;
+    --c-accent:#7c1c1c;--c-accent-light:#f5eded;--c-accent-mid:#b85c5c;
+    --c-green:#1a5c3a;--c-green-light:#eef7f2;
+    --c-blue:#1a3a5c;--c-blue-light:#eef3f8;
+    --c-gold:#8a6a10;--c-gold-light:#fdf7e8;
+    --c-purple:#4a1a7c;--c-purple-light:#f2eef8;
+    --c-warn:#7a3c00;--c-warn-light:#fdf0e8;
+    --c-teal:#0d5c5c;--c-teal-light:#eaf6f6;
+    --font-serif:'Fraunces',Georgia,serif;
+    --font-sans:'IBM Plex Sans',system-ui,sans-serif;
+    --font-mono:'IBM Plex Mono',monospace;
+    --radius:8px;--shadow:0 2px 12px rgba(0,0,0,.08);
+    --shadow-lg:0 8px 32px rgba(0,0,0,.12);--max-w:900px;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--font-sans);background:var(--c-bg);color:var(--c-text);font-size:16px;line-height:1.7;}
+
+  .skip{position:absolute;left:-9999px;top:0;}
+  .skip:focus{left:0;padding:.5rem 1rem;background:var(--c-accent);color:#fff;z-index:999;}
+
+  /* ---- Site bar ---- */
+  .site-bar{background:var(--c-surface);border-bottom:1px solid var(--c-border);padding:.6rem 1.5rem;font-size:.78rem;color:var(--c-text-soft);display:flex;flex-wrap:wrap;gap:.4rem .8rem;align-items:center;}
+  .site-bar a{color:var(--c-accent);text-decoration:none;}
+  .site-bar a:hover{text-decoration:underline;}
+
+  /* ---- Sticky nav ---- */
+  .lesson-nav{background:var(--c-surface);border-bottom:1px solid var(--c-border);padding:.6rem 1.5rem;display:flex;flex-wrap:wrap;gap:.4rem .2rem;align-items:center;font-size:.82rem;position:sticky;top:0;z-index:40;}
+  .lesson-nav a{color:var(--c-text-mid);text-decoration:none;padding:.2rem .5rem;border-radius:4px;transition:background .15s;}
+  .lesson-nav a:hover{background:var(--c-border);color:var(--c-accent);}
+  .lesson-nav .sep{color:var(--c-border);user-select:none;}
+
+  /* ---- Hero ---- */
+  .lesson-hero{padding:3.5rem 1.5rem 2.5rem;border-bottom:3px solid var(--c-accent);background:linear-gradient(160deg,var(--c-surface) 0%,var(--c-bg) 60%);}
+  .lesson-meta-top{font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--c-accent);font-weight:600;margin-bottom:1rem;}
+  .lesson-hero h1{font-family:var(--font-serif);font-size:clamp(1.9rem,4vw,2.8rem);font-weight:700;line-height:1.2;color:var(--c-text);max-width:780px;margin-bottom:1rem;}
+  .lesson-hero .subtitle{font-size:1.05rem;color:var(--c-text-mid);max-width:720px;font-style:italic;font-family:var(--font-serif);font-weight:300;margin-bottom:1.5rem;}
+  .meta-badges{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem;}
+  .badge{display:inline-flex;align-items:center;gap:.3rem;background:var(--c-accent-light);color:var(--c-accent);border:1px solid var(--c-accent-mid);border-radius:999px;padding:.25rem .75rem;font-size:.78rem;font-weight:600;}
+
+  /* ---- Layout ---- */
+  main{padding:0 1.5rem;}
+  .page-with-rail{display:grid;grid-template-columns:1fr 220px;gap:2.5rem;align-items:start;}
+  section{padding:3rem 0 2rem;border-bottom:1px solid var(--c-border);}
+  section:last-child{border-bottom:none;}
+  h2{font-family:var(--font-serif);font-size:1.7rem;font-weight:700;color:var(--c-text);margin-bottom:.3rem;}
+  h2 .sec-num{font-family:var(--font-sans);font-size:.78rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--c-accent);display:block;margin-bottom:.3rem;}
+  h3{font-family:var(--font-serif);font-size:1.2rem;font-weight:600;color:var(--c-text);margin:1.8rem 0 .6rem;}
+  p{margin-bottom:1rem;}p:last-child{margin-bottom:0;}
+  strong{font-weight:600;}em{font-style:italic;}
+  ul.prose-list{padding-left:1.3rem;margin:.6rem 0;}
+  ul.prose-list li{margin-bottom:.4rem;font-size:.93rem;}
+
+  /* ---- Part headers ---- */
+  .part-header{background:var(--c-text);color:#fff;border-radius:var(--radius);padding:1.2rem 1.5rem;margin:2rem -1.5rem 1rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;}
+  .part-header .part-label{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;opacity:.7;}
+  .part-header h2{font-size:1.2rem;color:#fff;font-family:var(--font-sans);margin:0;}
+  .part-header .part-time{font-size:.85rem;opacity:.8;background:rgba(255,255,255,.15);padding:.2rem .7rem;border-radius:999px;}
+
+  /* ---- Callout boxes ---- */
+  .callout{border-radius:var(--radius);padding:1.2rem 1.5rem;margin:1.5rem 0;border-left:4px solid;}
+  .callout-analogy{background:var(--c-gold-light);border-color:var(--c-gold);}
+  .callout-analogy strong{color:var(--c-gold);}
+  .callout-key{background:var(--c-blue-light);border-color:var(--c-blue);}
+  .callout-key strong{color:var(--c-blue);}
+  .callout-warn{background:var(--c-warn-light);border-color:var(--c-warn);}
+  .callout-warn strong{color:var(--c-warn);}
+  .callout-green{background:var(--c-green-light);border-color:var(--c-green);}
+  .callout-green strong{color:var(--c-green);}
+  .callout-accent{background:var(--c-accent-light);border-color:var(--c-accent);}
+  .callout-accent strong{color:var(--c-accent);}
+  .callout-teal{background:var(--c-teal-light);border-color:var(--c-teal);}
+  .callout-teal strong{color:var(--c-teal);}
+  .callout-title{font-weight:700;margin-bottom:.4rem;display:flex;align-items:center;gap:.5rem;}
+
+  /* ---- Objectives list ---- */
+  .obj-list{list-style:none;display:grid;gap:.6rem;margin:1rem 0;}
+  .obj-list li{display:flex;gap:.8rem;align-items:flex-start;background:var(--c-surface);border-radius:var(--radius);padding:.7rem 1rem;font-size:.92rem;}
+  .obj-list li .obj-num{background:var(--c-accent);color:#fff;border-radius:50%;width:1.5rem;height:1.5rem;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;flex-shrink:0;margin-top:.1rem;}
+
+  /* ---- Flip cards ---- */
+  .flip-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.2rem;margin:1.5rem 0;}
+  .flip-card{height:210px;perspective:900px;cursor:pointer;}
+  .flip-card-inner{position:relative;width:100%;height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;}
+  .flip-card.flipped .flip-card-inner{transform:rotateY(180deg);}
+  .flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--radius);padding:1.2rem;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);}
+  .flip-front{background:var(--c-surface);border:2px solid var(--c-border);}
+  .flip-front .flip-icon{font-size:2rem;margin-bottom:.5rem;}
+  .flip-front .flip-label{font-family:var(--font-serif);font-size:1rem;font-weight:600;color:var(--c-text);}
+  .flip-front .flip-hint{font-size:.72rem;color:var(--c-text-soft);margin-top:.4rem;}
+  .flip-back{background:var(--c-accent);color:#fff;transform:rotateY(180deg);justify-content:flex-start;align-items:flex-start;text-align:left;overflow-y:auto;}
+  .flip-back.green-back{background:var(--c-green);}
+  .flip-back.blue-back{background:var(--c-blue);}
+  .flip-back.gold-back{background:var(--c-gold);}
+  .flip-back.purple-back{background:var(--c-purple);}
+  .flip-back.teal-back{background:var(--c-teal);}
+  .flip-back .back-label{font-weight:700;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;opacity:.8;margin-bottom:.4rem;}
+  .flip-back .back-text{font-size:.83rem;line-height:1.5;}
+
+  /* ---- Accordion ---- */
+  .accordion{margin:1rem 0;border-radius:var(--radius);overflow:hidden;border:1px solid var(--c-border);}
+  .accordion-item{border-bottom:1px solid var(--c-border);}
+  .accordion-item:last-child{border-bottom:none;}
+  .accordion-trigger{width:100%;text-align:left;background:var(--c-surface);border:none;padding:1rem 1.2rem;font-family:var(--font-sans);font-size:.95rem;font-weight:600;color:var(--c-text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:.5rem;transition:background .15s;}
+  .accordion-trigger:hover{background:var(--c-surface2);}
+  .accordion-trigger .trigger-icon{font-size:.8rem;color:var(--c-accent);flex-shrink:0;transition:transform .3s;}
+  .accordion-trigger[aria-expanded="true"] .trigger-icon{transform:rotate(180deg);}
+  .accordion-trigger[aria-expanded="true"]{background:var(--c-accent-light);color:var(--c-accent);}
+  .trigger-meta{display:flex;align-items:center;gap:.5rem;}
+  .trigger-tag{font-size:.72rem;font-weight:600;letter-spacing:.05em;background:var(--c-accent);color:#fff;border-radius:999px;padding:.1rem .55rem;}
+  .trigger-tag.green{background:var(--c-green);}
+  .trigger-tag.warn{background:var(--c-warn);}
+  .accordion-body{display:none;padding:1.2rem 1.5rem;background:var(--c-bg);border-top:2px solid var(--c-accent);font-size:.93rem;}
+  .accordion-body.open{display:block;animation:slideDown .2s ease;}
+  @keyframes slideDown{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ---- Tables ---- */
+  .data-table{width:100%;border-collapse:collapse;font-size:.87rem;margin:1.2rem 0;}
+  .data-table th{background:var(--c-text);color:#fff;padding:.6rem .8rem;text-align:left;font-weight:600;font-size:.82rem;}
+  .data-table td{padding:.6rem .8rem;border-bottom:1px solid var(--c-border);vertical-align:top;}
+  .data-table tr:nth-child(even) td{background:var(--c-surface);}
+  .data-table tr:hover td{background:var(--c-accent-light);}
+  .tag-pill{display:inline-block;border-radius:4px;padding:.1rem .4rem;font-size:.72rem;font-weight:700;}
+  .pill-r{background:#fff0f0;color:#c00;}
+  .pill-y{background:var(--c-gold-light);color:var(--c-gold);}
+  .pill-g{background:var(--c-green-light);color:var(--c-green);}
+  .pill-b{background:var(--c-blue-light);color:var(--c-blue);}
+
+  /* ---- AI Value chain diagram ---- */
+  .value-chain{display:flex;align-items:stretch;border-radius:var(--radius);overflow:hidden;border:2px solid var(--c-border);margin:1.5rem 0;flex-wrap:wrap;}
+  .vc-node{flex:1;min-width:120px;padding:.9rem .7rem;text-align:center;cursor:pointer;position:relative;transition:filter .15s;border-right:2px solid rgba(255,255,255,.25);}
+  .vc-node:last-child{border-right:none;}
+  .vc-node:hover{filter:brightness(.88);}
+  .vc-node.active{outline:3px solid #fff;outline-offset:-3px;filter:brightness(.82);}
+  .vc-icon{font-size:1.4rem;}
+  .vc-name{font-size:.75rem;font-weight:700;color:#fff;margin-top:.3rem;line-height:1.2;}
+  .vc-role{font-size:.68rem;color:rgba(255,255,255,.75);margin-top:.2rem;}
+  .vc-arrow{position:absolute;right:-10px;top:50%;transform:translateY(-50%);z-index:2;font-size:1rem;color:#fff;pointer-events:none;}
+  .vc-n1{background:#1a5c3a;}
+  .vc-n2{background:#1a3a5c;}
+  .vc-n3{background:#4a1a7c;}
+  .vc-n4{background:#7c1c1c;}
+  .vc-n5{background:#5c4a00;}
+  .vc-n6{background:#0d5c5c;}
+  .vc-detail{background:var(--c-surface2);border:1px solid var(--c-border);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:1.2rem 1.5rem;display:none;animation:slideDown .2s ease;}
+  .vc-detail.open{display:block;}
+  .vc-detail h4{font-family:var(--font-serif);font-weight:600;margin-bottom:.5rem;}
+  .vc-risk-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.6rem;}
+  .risk-tag{background:var(--c-text);color:#fff;font-size:.73rem;font-weight:600;border-radius:4px;padding:.18rem .5rem;}
+
+  /* ---- Stat grid ---- */
+  .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.8rem;margin:1.2rem 0;}
+  .stat-block{text-align:center;background:var(--c-surface);border-radius:var(--radius);padding:1rem;border:1px solid var(--c-border);}
+  .stat-num{font-family:var(--font-serif);font-size:2rem;font-weight:700;color:var(--c-accent);line-height:1;}
+  .stat-desc{font-size:.75rem;color:var(--c-text-soft);margin-top:.3rem;}
+
+  /* ---- Role comparison cards ---- */
+  .role-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:1.5rem 0;}
+  .role-card{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);}
+  .role-card-header{padding:.9rem 1.1rem;color:#fff;font-weight:700;font-size:.95rem;display:flex;align-items:center;gap:.5rem;}
+  .role-card-body{padding:.8rem 1.1rem;background:var(--c-bg);border:1px solid var(--c-border);border-top:none;border-radius:0 0 var(--radius) var(--radius);font-size:.83rem;}
+  .role-card-body ul{padding-left:1.1rem;}
+  .role-card-body li{margin-bottom:.3rem;}
+  .rc-provider .role-card-header{background:var(--c-green);}
+  .rc-deployer .role-card-header{background:var(--c-blue);}
+  .rc-importer .role-card-header{background:var(--c-purple);}
+  .rc-distributor .role-card-header{background:var(--c-gold);}
+  .rc-authorized .role-card-header{background:var(--c-teal);}
+
+  /* ---- Vendor tier matrix ---- */
+  .tier-matrix{display:grid;gap:.8rem;margin:1.5rem 0;}
+  .tier-row{display:grid;grid-template-columns:auto 1fr auto auto;gap:.8rem 1rem;align-items:start;background:var(--c-surface);border-radius:var(--radius);padding:.9rem 1.1rem;border:2px solid var(--c-border);cursor:pointer;transition:border-color .15s;}
+  .tier-row:hover{border-color:var(--c-accent-mid);}
+  .tier-row.tier-1{border-left:6px solid #c00;}
+  .tier-row.tier-2{border-left:6px solid var(--c-gold);}
+  .tier-row.tier-3{border-left:6px solid var(--c-green);}
+  .tier-badge{font-size:.72rem;font-weight:700;border-radius:4px;padding:.2rem .5rem;white-space:nowrap;}
+  .tb-1{background:#fff0f0;color:#c00;border:1px solid #c00;}
+  .tb-2{background:var(--c-gold-light);color:var(--c-gold);border:1px solid var(--c-gold);}
+  .tb-3{background:var(--c-green-light);color:var(--c-green);border:1px solid var(--c-green);}
+  .tier-name{font-weight:700;font-size:.95rem;}
+  .tier-desc{font-size:.84rem;color:var(--c-text-mid);}
+  .tier-cadence{font-size:.78rem;font-weight:600;color:var(--c-text-soft);white-space:nowrap;}
+  .tier-expand{font-size:.8rem;color:var(--c-accent);}
+  .tier-detail{grid-column:1/-1;display:none;padding:.6rem 0 .2rem;font-size:.87rem;border-top:1px solid var(--c-border);margin-top:.4rem;}
+  .tier-detail.open{display:block;animation:slideDown .2s ease;}
+
+  /* ---- Vendor questionnaire builder ---- */
+  .vq-section{margin:1rem 0;}
+  .vq-domain{background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--radius);overflow:hidden;margin-bottom:.6rem;}
+  .vq-domain-header{padding:.7rem 1.1rem;font-weight:700;font-size:.9rem;display:flex;justify-content:space-between;align-items:center;cursor:pointer;border-bottom:1px solid var(--c-border);}
+  .vq-domain-header:hover{background:var(--c-surface2);}
+  .vq-domain-body{display:none;padding:.6rem 1.1rem;}
+  .vq-domain-body.open{display:block;animation:slideDown .15s ease;}
+  .vq-q{display:flex;align-items:flex-start;gap:.6rem;padding:.4rem 0;border-bottom:1px dashed var(--c-border);font-size:.86rem;}
+  .vq-q:last-child{border-bottom:none;}
+  .vq-check{flex-shrink:0;margin-top:.2rem;width:16px;height:16px;cursor:pointer;accent-color:var(--c-accent);}
+  .vq-q-text{flex:1;}
+  .vq-risk{font-size:.7rem;font-weight:700;margin-left:.3rem;border-radius:3px;padding:.1rem .3rem;}
+  .vq-r-h{background:#fff0f0;color:#c00;}
+  .vq-r-m{background:var(--c-gold-light);color:var(--c-gold);}
+  .vq-r-l{background:var(--c-green-light);color:var(--c-green);}
+  .vq-score{font-size:.85rem;color:var(--c-text-soft);margin:.6rem 0;}
+
+  /* ---- Activity / lab ---- */
+  .activity-header{background:var(--c-accent);color:#fff;border-radius:var(--radius) var(--radius) 0 0;padding:1rem 1.4rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;}
+  .activity-header .act-badge{font-size:.75rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;opacity:.8;}
+  .activity-header h3{font-size:1.1rem;font-family:var(--font-sans);font-weight:600;margin:0;}
+  .activity-header .act-time{font-size:.82rem;background:rgba(255,255,255,.2);padding:.2rem .7rem;border-radius:999px;}
+  .activity-body{border:1px solid var(--c-accent);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:1.4rem;}
+
+  /* ---- Scenario cards ---- */
+  .scenario-card{background:var(--c-bg);border:1px solid var(--c-border);border-radius:var(--radius);padding:1rem;margin:.8rem 0;font-size:.91rem;}
+  .scenario-card strong{color:var(--c-accent);}
+
+  /* ---- Buttons ---- */
+  .btn-primary{background:var(--c-accent);color:#fff;border:none;border-radius:var(--radius);padding:.55rem 1.3rem;font-family:var(--font-sans);font-size:.9rem;font-weight:600;cursor:pointer;transition:filter .15s;}
+  .btn-primary:hover{filter:brightness(.85);}
+  .btn-secondary{background:var(--c-surface);color:var(--c-text);border:1px solid var(--c-border);border-radius:var(--radius);padding:.55rem 1.3rem;font-family:var(--font-sans);font-size:.9rem;font-weight:600;cursor:pointer;transition:background .15s;margin-left:.5rem;}
+  .btn-secondary:hover{background:var(--c-surface2);}
+  .result-box{margin-top:1rem;padding:1rem 1.2rem;border-radius:var(--radius);font-size:.9rem;display:none;}
+  .result-box.show{display:block;animation:slideDown .2s ease;}
+  .result-ok{background:var(--c-green-light);border:1px solid var(--c-green);color:var(--c-green);}
+  .result-partial{background:var(--c-gold-light);border:1px solid var(--c-gold);color:var(--c-gold);}
+  .result-miss{background:#fff0f0;border:1px solid #c00;color:#c00;}
+  .score-big{font-family:var(--font-serif);font-size:2rem;font-weight:700;}
+
+  /* ---- Quiz ---- */
+  .quiz-q{background:var(--c-surface);border-radius:var(--radius);padding:1.2rem 1.4rem;margin-bottom:1rem;}
+  .quiz-q .q-text{font-weight:600;margin-bottom:.8rem;font-size:.95rem;}
+  .quiz-opts{list-style:none;display:grid;gap:.45rem;}
+  .quiz-opts li label{display:flex;align-items:flex-start;gap:.6rem;padding:.5rem .8rem;border-radius:6px;border:1px solid var(--c-border);background:var(--c-bg);cursor:pointer;font-size:.87rem;transition:background .15s;}
+  .quiz-opts li label:hover{background:var(--c-accent-light);}
+  .quiz-opts li input[type=radio]{flex-shrink:0;margin-top:.2rem;accent-color:var(--c-accent);}
+  .quiz-opts li.correct label{background:var(--c-green-light);border-color:var(--c-green);color:var(--c-green);}
+  .quiz-opts li.wrong label{background:#fff0f0;border-color:#c00;color:#c00;}
+  .quiz-feedback{font-size:.84rem;padding:.6rem .8rem;border-radius:6px;margin-top:.5rem;display:none;}
+  .quiz-feedback.show{display:block;}
+  .quiz-score-panel{background:var(--c-text);color:#fff;border-radius:var(--radius);padding:1.5rem;text-align:center;display:none;}
+  .quiz-score-panel.show{display:block;}
+  .quiz-score-panel .qs-big{font-family:var(--font-serif);font-size:2.5rem;font-weight:700;}
+  .quiz-score-panel .qs-label{font-size:.9rem;opacity:.7;}
+
+  /* ---- Rail ---- */
+  .rail{position:sticky;top:4rem;padding:1.2rem;background:var(--c-surface);border-radius:var(--radius);border:1px solid var(--c-border);font-size:.82rem;}
+  .rail h4{font-family:var(--font-serif);font-size:.95rem;margin-bottom:.8rem;color:var(--c-text);}
+  .rail-nav{list-style:none;}
+  .rail-nav li{margin-bottom:.3rem;}
+  .rail-nav a{color:var(--c-text-mid);text-decoration:none;display:block;padding:.2rem .3rem;border-radius:4px;}
+  .rail-nav a:hover{color:var(--c-accent);background:var(--c-accent-light);}
+  .rail-section{margin-top:1.2rem;padding-top:1rem;border-top:1px solid var(--c-border);}
+  .rail-section .term{font-weight:600;margin-top:.5rem;color:var(--c-text);}
+  .rail-section .def{color:var(--c-text-soft);font-size:.78rem;}
+
+  /* ---- Progress ---- */
+  .obj-progress{margin:1rem 0;}
+  .op-label{font-size:.82rem;color:var(--c-text-soft);margin-bottom:.4rem;}
+  .op-bar-wrap{background:var(--c-surface2);border-radius:999px;height:6px;}
+  .op-bar{background:var(--c-accent);height:6px;border-radius:999px;transition:width .4s;}
+
+  /* ---- Lesson nav bottom ---- */
+  .lesson-nav-bottom{display:flex;justify-content:space-between;align-items:center;padding:1.5rem 0;gap:1rem;flex-wrap:wrap;}
+  .nav-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--radius);padding:.6rem 1.1rem;text-decoration:none;color:var(--c-text);font-size:.88rem;font-weight:500;transition:background .15s;}
+  .nav-btn:hover{background:var(--c-surface2);}
+  .nav-btn.primary{background:var(--c-accent);color:#fff;border-color:var(--c-accent);}
+  .nav-btn.primary:hover{filter:brightness(.85);}
+
+  /* ---- Contract clause builder ---- */
+  .clause-palette{display:flex;flex-wrap:wrap;gap:.5rem;margin:.8rem 0;}
+  .clause-chip{background:var(--c-surface2);border:2px solid var(--c-border);border-radius:999px;padding:.25rem .75rem;font-size:.8rem;font-weight:500;cursor:pointer;user-select:none;transition:all .15s;}
+  .clause-chip:hover{border-color:var(--c-accent);color:var(--c-accent);}
+  .clause-chip.selected{background:var(--c-accent);border-color:var(--c-accent);color:#fff;}
+  .clause-chip.correct{background:var(--c-green);border-color:var(--c-green);color:#fff;}
+  .clause-chip.incorrect{background:#c00;border-color:#c00;color:#fff;}
+  .clause-drop{min-height:70px;border:2px dashed var(--c-border);border-radius:var(--radius);padding:.8rem;display:flex;flex-wrap:wrap;gap:.4rem;align-items:flex-start;align-content:flex-start;background:var(--c-bg);margin:.5rem 0;font-size:.82rem;color:var(--c-text-soft);}
+  .clause-drop.has-items{border-color:var(--c-accent-mid);color:var(--c-text);}
+
+  /* ---- Responsive ---- */
+  @media(max-width:720px){
+    .page-with-rail{grid-template-columns:1fr;}
+    .rail{display:none;}
+    .flip-grid{grid-template-columns:1fr 1fr;}
+    .role-grid{grid-template-columns:1fr;}
+    .value-chain{flex-direction:column;}
+    .vc-node{border-right:none;border-bottom:2px solid rgba(255,255,255,.25);}
+  }
+  @media(max-width:480px){
+    .flip-grid{grid-template-columns:1fr;}
+    h2{font-size:1.4rem;}
+    .lesson-hero h1{font-size:1.7rem;}
+  }
+
+  footer{background:var(--c-surface);border-top:1px solid var(--c-border);padding:1.5rem;font-size:.8rem;color:var(--c-text-soft);text-align:center;margin-top:3rem;}
+  footer p{margin:.2rem;}
+</style>
+</head>
+<body>
+<a href="#main" class="skip">Skip to main content</a>
+
+<div class="site-bar" role="banner">
+  <a href="https://sands-mvcc.github.io/aicyber/index.html">← AI-103 Course Home</a>
+  <span class="sep">·</span>
+  <span>MVCC · Dept. of Engineering &amp; Technology · Dr. John L. Sands</span>
+</div>
+
+<nav class="lesson-nav" aria-label="Lesson navigation">
+  <a href="#overview">Overview</a><span class="sep">·</span>
+  <a href="#m1">1 · AI Value Chain</a><span class="sep">·</span>
+  <a href="#m2">2 · Roles &amp; Obligations</a><span class="sep">·</span>
+  <a href="#m3">3 · Embedded AI Risk</a><span class="sep">·</span>
+  <a href="#m4">4 · Vendor Tiering</a><span class="sep">·</span>
+  <a href="#activity-a">Activity A</a><span class="sep">·</span>
+  <a href="#m5">5 · Vendor Assessment</a><span class="sep">·</span>
+  <a href="#activity-b">Activity B</a><span class="sep">·</span>
+  <a href="#activity-c">Activity C</a><span class="sep">·</span>
+  <a href="#artifact">Assessment</a><span class="sep">·</span>
+  <a href="#quiz">Quiz</a>
+</nav>
+
+<!-- Hero -->
+<header class="lesson-hero">
+  <p class="lesson-meta-top">AI-103: AI Cybersecurity Foundations · Day 12 of 15 · 4 Contact Hours</p>
+  <h1>Vendor &amp; Supply Chain Risk for AI</h1>
+  <p class="subtitle">You cannot govern what you cannot see — and most organizations cannot see the AI their vendors have already deployed inside the tools they trust every day.</p>
+  <div class="meta-badges">
+    <span class="badge">🔗 Supply Chain Risk</span>
+    <span class="badge">⏱ 4 hrs · 5 modules + 3 activities</span>
+    <span class="badge">🎯 Learning Objectives 7 &amp; 8</span>
+    <span class="badge">📝 Vendor risk assessment due end of class</span>
+  </div>
+  <nav aria-label="Section quick links" style="font-size:.84rem;color:var(--c-text-soft);">
+    <a href="#overview" style="color:var(--c-accent);text-decoration:none;margin-right:.8rem;">Overview</a>
+    <a href="#m1" style="color:var(--c-accent);text-decoration:none;margin-right:.8rem;">1 · Value Chain</a>
+    <a href="#m2" style="color:var(--c-accent);text-decoration:none;margin-right:.8rem;">2 · Roles</a>
+    <a href="#m3" style="color:var(--c-accent);text-decoration:none;margin-right:.8rem;">3 · Embedded AI</a>
+    <a href="#m4" style="color:var(--c-accent);text-decoration:none;margin-right:.8rem;">4 · Tiering</a>
+    <a href="#m5" style="color:var(--c-accent);text-decoration:none;margin-right:.8rem;">5 · Assessment</a>
+    <a href="#quiz" style="color:var(--c-accent);text-decoration:none;">Quiz</a>
+  </nav>
+</header>
+
+<main id="main">
+<div class="page-with-rail">
+<div>
+
+<!-- ============================================================
+     OVERVIEW
+============================================================ -->
+<section id="overview">
+  <h2><span class="sec-num">🧭 Lesson Overview · Day 12 · 4 hours</span>The Invisible Supply Chain</h2>
+
+  <p>Day 11 established the <em>internal</em> architecture for a secure AI system. Today the lens widens to every AI dependency your organization doesn't build itself — which, for most organizations, is the majority of the AI they actually use. Foundation models from OpenAI, Anthropic, Google, or Meta. Fine-tuned derivatives built by your SaaS vendors. Copilot features embedded invisibly in Microsoft 365, Salesforce, or your HR platform. Analytics tools that have quietly added "AI-powered insights." Every one of these is an AI system you are effectively deploying — with all the governance obligations that entails — even if you never wrote a line of ML code.</p>
+
+  <p>The central challenge is opacity: traditional vendor risk management was designed for software with known CVEs, auditable source code, and deterministic behavior. AI systems are none of those things. A vendor can assure you their product is "NIST-compliant" while their underlying foundation model was trained on data you would never permit in your own systems, has known bias patterns the vendor hasn't documented, and processes your users' data in ways not covered by your DPA.</p>
+
+  <div class="callout callout-analogy">
+    <p class="callout-title">🏭 Anchoring Analogy: The Food Safety Chain</p>
+    <p>A restaurant is responsible for the food it serves. It cannot tell a customer who develops an allergic reaction "our supplier didn't disclose that ingredient." Food safety law holds the restaurant — the entity that serves the customer — responsible for knowing what is in the food, where it came from, and whether it is safe. The restaurant must audit suppliers, require ingredient transparency, and maintain records that regulators can inspect.</p>
+    <p><strong>AI governance works the same way.</strong> Your organization is the entity that deploys AI to your users or uses AI in decisions that affect your customers. Regulators — especially under the EU AI Act — do not accept "we didn't know what the vendor was doing" as a defense. The deployer has legal obligations regardless of whether the AI was built internally or procured from a vendor. <em>You are responsible for the food you serve.</em></p>
+  </div>
+
+  <h3>Day 12 Learning Objectives</h3>
+  <ul class="obj-list">
+    <li><span class="obj-num">1</span>Map the AI value chain from foundation model provider through to end deployer and identify the security and governance implications at each layer.</li>
+    <li><span class="obj-num">2</span>Distinguish provider, deployer, importer, and distributor obligations under the EU AI Act and apply them to realistic organizational scenarios.</li>
+    <li><span class="obj-num">3</span>Identify and assess risks specific to embedded and hidden AI in third-party software products.</li>
+    <li><span class="obj-num">4</span>Apply a tiering framework to classify vendors by AI risk level and determine appropriate assessment cadence.</li>
+    <li><span class="obj-num">5</span>Conduct a structured AI vendor risk assessment using a domain-based questionnaire.</li>
+    <li><span class="obj-num">6</span>Identify contract clauses and procurement requirements that provide governance leverage over AI vendors.</li>
+  </ul>
+
+  <div class="obj-progress">
+    <div class="op-label">Objectives progress: <span id="obj-count">0</span> of 6 completed</div>
+    <div class="op-bar-wrap"><div class="op-bar" id="obj-bar" style="width:0%"></div></div>
+  </div>
+</section>
+
+<!-- Part A Header -->
+<div class="part-header">
+  <div>
+    <div class="part-label">Part A · Lecture &amp; Structured Exploration</div>
+    <h2>The AI Value Chain &amp; Role Obligations</h2>
+  </div>
+  <span class="part-time">⏱ ~2 hours</span>
+</div>
+
+<!-- ============================================================
+     MODULE 1 — AI VALUE CHAIN
+============================================================ -->
+<section id="m1">
+  <h2><span class="sec-num">Module 1 · 40 min</span>The AI Value Chain — Six Layers of Inherited Risk</h2>
+
+  <p>Every AI system in production sits at the end of a value chain that can span six or more distinct layers of suppliers, intermediaries, and integrators. Risk and compliance obligations flow down this chain — but transparency frequently does not. An organization that deploys a SaaS product with embedded AI may have no visibility into the foundation model it uses, the dataset it was trained on, or the jurisdiction in which inference occurs.</p>
+
+  <div class="callout callout-key">
+    <p class="callout-title">🔑 The Supply Chain Reality Check</p>
+    <p>A 2025 Secureframe report found that supply chain attacks accounted for <strong>47% of total affected individuals</strong> in the first half of 2025, with third-party vendor and supply chain compromise costing an average of <strong>$4.91 million per breach</strong>. The IBM 2025 Cost of a Data Breach Report found that <strong>13% of organizations reported breaches involving AI models or applications</strong> — and 97% of those organizations lacked proper AI access controls. When your AI vendor is breached, you inherit that risk.</p>
+  </div>
+
+  <h3>The Six-Layer AI Value Chain — Click Any Node to Explore</h3>
+  <p>Each layer in the AI value chain introduces distinct risks that the layer below inherits without necessarily being aware of them. Click any node to see the actors, responsibilities, and inherited risks at that layer.</p>
+
+  <div class="value-chain" role="tablist" aria-label="AI value chain layers">
+    <div class="vc-node vc-n1 active" role="tab" tabindex="0" onclick="selectVC(0)" onkeydown="if(event.key==='Enter')selectVC(0)">
+      <div class="vc-icon">⛏️</div>
+      <div class="vc-name">Data &amp; Compute Providers</div>
+      <div class="vc-role">Layer 1</div>
+      <div class="vc-arrow">›</div>
+    </div>
+    <div class="vc-node vc-n2" role="tab" tabindex="0" onclick="selectVC(1)" onkeydown="if(event.key==='Enter')selectVC(1)">
+      <div class="vc-icon">🧠</div>
+      <div class="vc-name">Foundation Model Providers</div>
+      <div class="vc-role">Layer 2</div>
+      <div class="vc-arrow">›</div>
+    </div>
+    <div class="vc-node vc-n3" role="tab" tabindex="0" onclick="selectVC(2)" onkeydown="if(event.key==='Enter')selectVC(2)">
+      <div class="vc-icon">🔧</div>
+      <div class="vc-name">Model Adapters &amp; Fine-Tuners</div>
+      <div class="vc-role">Layer 3</div>
+      <div class="vc-arrow">›</div>
+    </div>
+    <div class="vc-node vc-n4" role="tab" tabindex="0" onclick="selectVC(3)" onkeydown="if(event.key==='Enter')selectVC(3)">
+      <div class="vc-icon">🏗️</div>
+      <div class="vc-name">Application Developers</div>
+      <div class="vc-role">Layer 4</div>
+      <div class="vc-arrow">›</div>
+    </div>
+    <div class="vc-node vc-n5" role="tab" tabindex="0" onclick="selectVC(4)" onkeydown="if(event.key==='Enter')selectVC(4)">
+      <div class="vc-icon">🏢</div>
+      <div class="vc-name">Enterprise Deployers</div>
+      <div class="vc-role">Layer 5</div>
+      <div class="vc-arrow">›</div>
+    </div>
+    <div class="vc-node vc-n6" role="tab" tabindex="0" onclick="selectVC(5)" onkeydown="if(event.key==='Enter')selectVC(5)">
+      <div class="vc-icon">👤</div>
+      <div class="vc-name">End Users &amp; Affected Persons</div>
+      <div class="vc-role">Layer 6</div>
+    </div>
+  </div>
+  <div id="vc-detail" class="vc-detail open"></div>
+
+  <div class="stat-grid">
+    <div class="stat-block"><div class="stat-num">71%</div><div class="stat-desc">Firms using GenAI in ≥1 business function (2025)</div></div>
+    <div class="stat-block"><div class="stat-num">$4.91M</div><div class="stat-desc">Avg. cost of third-party AI supply chain breach (2025)</div></div>
+    <div class="stat-block"><div class="stat-num">47%</div><div class="stat-desc">Affected individuals from supply chain attacks (H1 2025)</div></div>
+    <div class="stat-block"><div class="stat-num">97%</div><div class="stat-desc">Of AI breach victims lacked proper AI access controls</div></div>
+  </div>
+
+  <h3>Supply Chain Attack Vectors — Flip Cards</h3>
+  <p>Traditional vendor risk management asks "is their software patched?" AI vendor risk requires asking six additional questions. Click each card to see the attack and its supply-chain implication.</p>
+
+  <div class="flip-grid">
+    <div class="flip-card" tabindex="0" onclick="this.classList.toggle('flipped')" onkeydown="if(event.key==='Enter'||event.key===' ')this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="flip-icon">☠️</div><div class="flip-label">Data Poisoning via Upstream</div><div class="flip-hint">Click to flip</div></div>
+        <div class="flip-back green-back"><div class="back-label">Supply Chain Implication</div><div class="back-text">Adversarial training data injected at Layer 1 (data providers) or Layer 2 (foundation model training) propagates silently through every downstream fine-tune and deployment. A deployer at Layer 5 has no visibility into what data their foundation model was trained on — and no control over whether that data was tampered with.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" tabindex="0" onclick="this.classList.toggle('flipped')" onkeydown="if(event.key==='Enter'||event.key===' ')this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="flip-icon">🪝</div><div class="flip-label">Backdoor via Fine-Tuner</div><div class="flip-hint">Click to flip</div></div>
+        <div class="flip-back blue-back"><div class="back-label">Supply Chain Implication</div><div class="back-text">A malicious or compromised model adapter (Layer 3) can implant trigger-activated backdoors during fine-tuning. The fine-tuned model passes all standard evaluation tests because the backdoor activates only on a specific trigger — invisible in testing but exploitable in production by anyone who knows the trigger.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" tabindex="0" onclick="this.classList.toggle('flipped')" onkeydown="if(event.key==='Enter'||event.key===' ')this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="flip-icon">🔍</div><div class="flip-label">Model Extraction via API</div><div class="flip-hint">Click to flip</div></div>
+        <div class="flip-back"><div class="back-label">Supply Chain Implication</div><div class="back-text">Repeated API queries to a vendor's model can reconstruct a functional approximation of the model's behavior — stealing proprietary training, fine-tuning investment, and potentially exposing training data patterns. If a deployer's API key is compromised, the attacker can use the deployer's quota to execute extraction attacks against the provider.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" tabindex="0" onclick="this.classList.toggle('flipped')" onkeydown="if(event.key==='Enter'||event.key===' ')this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="flip-icon">🔄</div><div class="flip-label">Prompt Injection Through Integration</div><div class="flip-hint">Click to flip</div></div>
+        <div class="flip-back gold-back"><div class="back-label">Supply Chain Implication</div><div class="back-text">When an application developer (Layer 4) builds a RAG pipeline that retrieves external content, adversarial content in retrieved documents can inject instructions into the model's context. The deployer (Layer 5) has no control over the external content the vendor's retrieval system ingests — creating an indirect prompt injection surface outside the deployer's security perimeter.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" tabindex="0" onclick="this.classList.toggle('flipped')" onkeydown="if(event.key==='Enter'||event.key===' ')this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="flip-icon">🔒</div><div class="flip-label">Vendor Lock-In &amp; Dependency Risk</div><div class="flip-hint">Click to flip</div></div>
+        <div class="flip-back purple-back"><div class="back-label">Supply Chain Implication</div><div class="back-text">Enterprises building agentic workflows on cloud AI runtimes (AWS AgentCore, Azure AI, GCP Vertex) embed their agent architecture into the vendor's runtime, governance, and observability stack — in ways that compound over time and become increasingly difficult to unwind. Vendor failure, price changes, or policy changes become operational crises with no exit path.</div></div>
+      </div>
+    </div>
+    <div class="flip-card" tabindex="0" onclick="this.classList.toggle('flipped')" onkeydown="if(event.key==='Enter'||event.key===' ')this.classList.toggle('flipped')">
+      <div class="flip-card-inner">
+        <div class="flip-front"><div class="flip-icon">👻</div><div class="flip-label">Model Inversion Attack</div><div class="flip-hint">Click to flip</div></div>
+        <div class="flip-back teal-back"><div class="back-label">Supply Chain Implication</div><div class="back-text">Model inversion attacks reconstruct sensitive training data from model outputs — revealing what PII, PHI, or confidential business data was in the training set. If your data was used to fine-tune a vendor's model (intentionally or through shadow AI upload), model inversion can expose that data to anyone with API access. The deployer bears the regulatory liability for the data exposure.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     MODULE 2 — ROLES & OBLIGATIONS
+============================================================ -->
+<section id="m2">
+  <h2><span class="sec-num">Module 2 · 40 min</span>Provider, Deployer, Importer, Distributor — Who Owes What to Whom</h2>
+
+  <p>The EU AI Act introduced a four-role taxonomy that defines different legal obligations based on where an organization sits in the AI value chain. These roles are not mutually exclusive — a single organization can be a provider for some AI systems and a deployer for others, or both simultaneously for the same system if they substantially modify it. Understanding which role applies determines which Articles of the EU AI Act bind the organization.</p>
+
+  <div class="callout callout-warn">
+    <p class="callout-title">⚠️ The Role-Morphing Trap — EU AI Act Article 25</p>
+    <p>Article 25 of the EU AI Act states that <strong>anyone who distributes, imports, deploys, or modifies a high-risk AI system can become a provider of that system</strong> — with full provider obligations — if they: put their own name or trademark on an existing system; make a substantial modification to the system; or alter the intended purpose of a system to make it high-risk. Organizations assuming they are "merely deployers" with lighter obligations need to assess whether their customization, fine-tuning, or repurposing has crossed the Article 25 threshold and triggered provider obligations.</p>
+  </div>
+
+  <h3>The Four Primary Roles — Compare Obligations</h3>
+  <div class="role-grid">
+    <div class="role-card rc-provider">
+      <div class="role-card-header">🏭 Provider</div>
+      <div class="role-card-body">
+        <p style="font-size:.8rem;color:var(--c-text-soft);margin-bottom:.5rem;">Develops, places on market, or puts into service an AI system under their name or trademark.</p>
+        <ul>
+          <li>Full technical documentation (Art. 11)</li>
+          <li>Risk management system (Art. 9)</li>
+          <li>Data governance procedures (Art. 10)</li>
+          <li>Transparency &amp; instructions for use (Art. 13)</li>
+          <li>Human oversight measures designed in (Art. 14)</li>
+          <li>Accuracy, robustness, cybersecurity (Art. 15)</li>
+          <li>Quality management system (Art. 17)</li>
+          <li>Conformity assessment &amp; CE marking (Art. 43)</li>
+          <li>Post-market monitoring (Art. 72)</li>
+          <li>Serious incident reporting (Art. 73)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="role-card rc-deployer">
+      <div class="role-card-header">🏢 Deployer</div>
+      <div class="role-card-body">
+        <p style="font-size:.8rem;color:var(--c-text-soft);margin-bottom:.5rem;">Uses an AI system under their own authority in a professional context. Most enterprise customers are deployers.</p>
+        <ul>
+          <li>Use system per provider's instructions (Art. 26)</li>
+          <li>Human oversight implementation (Art. 26)</li>
+          <li>Monitor for risks; report to provider (Art. 26)</li>
+          <li>Inform affected natural persons (Art. 26)</li>
+          <li>Data Protection Impact Assessment where needed</li>
+          <li>AI literacy for staff (Art. 4, effective Feb 2025)</li>
+          <li>Log retention for high-risk systems (Art. 26)</li>
+          <li>Register high-risk AI use (EU database, Art. 49)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="role-card rc-importer">
+      <div class="role-card-header">🚢 Importer</div>
+      <div class="role-card-body">
+        <p style="font-size:.8rem;color:var(--c-text-soft);margin-bottom:.5rem;">Places an AI system from a third-country provider on the EU market. Often overlooked — but carries heavy obligations.</p>
+        <ul>
+          <li>Verify provider has completed conformity assessment</li>
+          <li>Verify technical documentation exists and is accessible</li>
+          <li>Verify CE marking is affixed correctly</li>
+          <li>Ensure provider has designated EU representative</li>
+          <li>Identify importer on system or packaging</li>
+          <li>Verify storage/transport conditions maintained</li>
+          <li>Keep copy of Declaration of Conformity (10 years)</li>
+          <li>Report non-compliance and serious incidents</li>
+        </ul>
+      </div>
+    </div>
+    <div class="role-card rc-distributor">
+      <div class="role-card-header">📦 Distributor</div>
+      <div class="role-card-body">
+        <p style="font-size:.8rem;color:var(--c-text-soft);margin-bottom:.5rem;">Makes a high-risk AI system available on the EU market without placing it under their own name.</p>
+        <ul>
+          <li>Verify CE marking on high-risk systems</li>
+          <li>Verify Declaration of Conformity available</li>
+          <li>Verify required documentation accompanies system</li>
+          <li>Report non-compliant systems to market authority</li>
+          <li>Cooperate with regulatory investigations</li>
+          <li>Do not supply if compliance not verifiable</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h3>Role Determination — Expandable Scenarios</h3>
+  <div class="accordion">
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>🏫 Scenario: MVCC Deploys a Commercial AI Tutoring Platform</span>
+        <span class="trigger-meta"><span class="trigger-tag green">Deployer</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>Situation:</strong> MVCC licenses an AI tutoring platform from a US edtech vendor (Khanmigo-style). MVCC uses it as-is for developmental math students. MVCC does not modify the model, does not add its own branding to the AI system, and does not alter its intended purpose.</p>
+        <p><strong>Role determination:</strong> MVCC is a <strong>Deployer</strong>. The vendor is the Provider. MVCC's obligations: implement human oversight, train staff on AI literacy, retain logs, monitor for risks, inform students when they are interacting with AI (EU AI Act Art. 50 transparency requirement if system is in scope), and use the system per the provider's instructions for use.</p>
+        <p><strong>The governance gap:</strong> MVCC is obligated to implement human oversight — but can it actually do so if the vendor's platform does not expose the outputs or flagging mechanisms needed? This is a <em>contractual</em> question as much as a technical one. The vendor contract must include provisions for oversight access, audit rights, and incident notification.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>🔬 Scenario: MVCC Fine-Tunes a Foundation Model on Internal Data</span>
+        <span class="trigger-meta"><span class="trigger-tag warn">Provider (Art. 25)</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>Situation:</strong> MVCC's IT department fine-tunes an open-source LLM (Llama 3) on internal student success records to predict at-risk students and automatically generate advising interventions. MVCC deploys this system for use by advisors.</p>
+        <p><strong>Role determination:</strong> MVCC is now a <strong>Provider</strong> under Article 25. By fine-tuning and deploying a purpose-built AI system under MVCC's own authority for a high-risk use case (education AI, Annex III category 3), MVCC has crossed the provider threshold. This means MVCC now carries all provider obligations: risk management system, data governance, technical documentation, conformity assessment, post-market monitoring, and incident reporting — obligations that were designed for commercial AI companies with dedicated compliance teams, not a community college IT department.</p>
+        <p><strong>The governance lesson:</strong> Fine-tuning on internal data for a purpose-specific use case is the most common way a deployer accidentally becomes a provider. Organizations must assess the Article 25 trigger before any fine-tuning project begins.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>🌍 Scenario: A US Company Reselling an EU AI Product in the US</span>
+        <span class="trigger-meta"><span class="trigger-tag">Importer</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>Situation:</strong> A US technology reseller distributes a high-risk AI hiring screening tool built by a German company. The tool is used by US employers. The EU AI Act has extraterritorial reach if the system produces outputs used in the EU — but in this scenario the outputs are used only in the US.</p>
+        <p><strong>Role determination:</strong> This scenario illustrates the extraterritoriality question. If the tool's outputs affect EU persons (e.g., EU citizens applying for jobs), EU AI Act obligations may apply regardless of the jurisdiction of deployment. The US reseller should conduct a jurisdictional assessment and obtain the provider's declaration of conformity as a precaution — especially if any EU persons may interact with the system as job applicants. Even outside the EU, the EU AI Act's documentation standards are becoming a de facto global baseline that enterprise procurement teams require.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>⚠️ The Deployer-to-Provider Trap: When "Customization" Crosses the Line</span>
+        <span class="trigger-meta"><span class="trigger-tag warn">Role Shift Risk</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p>Organizations commonly perform the following actions believing they remain deployers. Each of these can trigger Article 25 provider obligations:</p>
+        <table class="data-table" style="margin:.6rem 0;">
+          <thead><tr><th>Action</th><th>Remains Deployer?</th><th>Trigger for Provider Role</th></tr></thead>
+          <tbody>
+            <tr><td>Using system exactly as licensed</td><td><span class="tag-pill pill-g">✓ Yes</span></td><td>No trigger</td></tr>
+            <tr><td>Adding a company logo to the AI interface</td><td><span class="tag-pill pill-y">⚠ Maybe</span></td><td>Branding may constitute "placing under own name" (Art. 25)</td></tr>
+            <tr><td>Fine-tuning on internal data</td><td><span class="tag-pill pill-r">✗ No</span></td><td>Substantial modification → provider obligations</td></tr>
+            <tr><td>Changing system prompt / instructions</td><td><span class="tag-pill pill-y">⚠ Maybe</span></td><td>Depends on whether it constitutes "substantial modification"</td></tr>
+            <tr><td>Deploying for a new high-risk purpose</td><td><span class="tag-pill pill-r">✗ No</span></td><td>Changing intended purpose → provider obligations</td></tr>
+            <tr><td>Integrating with internal data via RAG</td><td><span class="tag-pill pill-y">⚠ Maybe</span></td><td>Adds new capabilities; legal opinion recommended</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     MODULE 3 — EMBEDDED AI RISK
+============================================================ -->
+<section id="m3">
+  <h2><span class="sec-num">Module 3 · 30 min</span>Embedded &amp; Hidden AI — The Risk You Didn't Know You Deployed</h2>
+
+  <p>The most governable AI risk is the AI you knowingly deployed. The most dangerous AI risk is the AI that arrived inside software you purchased for entirely different reasons. <strong>Embedded AI</strong> refers to AI capabilities integrated by vendors into products without the deploying organization making a deliberate choice to adopt AI. This includes Copilot features added to Microsoft 365, "AI-powered insights" added to your HRIS, automated summarization in your document management system, and sentiment analysis built into your CRM.</p>
+
+  <div class="callout callout-warn">
+    <p class="callout-title">⚠️ The Hidden Deployment Problem</p>
+    <p>A 2025 enterprise AI governance report found that organizations cannot govern what they have not catalogued — and <strong>an AI inventory requires actively auditing vendor products for newly added AI features, not just tracking intentional AI deployments.</strong> Major SaaS vendors now routinely activate AI features in product updates that appear in user interfaces without any procurement review or governance assessment. The deployer's regulatory obligations apply immediately — regardless of whether the deployment was intentional.</p>
+  </div>
+
+  <h3>Categories of Embedded AI Risk — Expand Each</h3>
+  <div class="accordion">
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>📊 AI in Analytics &amp; Business Intelligence Tools</span>
+        <span class="trigger-meta"><span class="trigger-tag warn">High Data Exposure</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>Examples:</strong> Tableau AI, Power BI Copilot, Salesforce Einstein, SAP AI, Oracle Analytics AI.</p>
+        <p><strong>Embedded risks:</strong> These tools process your most sensitive business data — financial records, customer PII, employee data, strategic plans — and send queries or full data context to foundation model APIs to generate natural-language summaries, anomaly explanations, and forecasts. The data processing agreement you signed for "analytics" may not cover AI model training or cross-tenant data use.</p>
+        <p><strong>Questions to ask your vendor:</strong> Does AI processing occur within your tenant or in a shared environment? Is your data used to improve the vendor's AI model? What data is retained by the AI inference system? Is the AI inference endpoint covered by your existing DPA?</p>
+        <p><strong>Governance response:</strong> Audit all analytics tools for embedded AI features. Require data processing addendum updates that explicitly cover AI inference. Disable AI features in tools processing regulated data (FERPA, HIPAA, GLBA) until the DPA is updated and validated.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>📧 AI in Productivity &amp; Collaboration Platforms</span>
+        <span class="trigger-meta"><span class="trigger-tag warn">Shadow AI Amplifier</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>Examples:</strong> Microsoft 365 Copilot, Google Workspace Gemini, Zoom AI Companion, Slack AI, Notion AI.</p>
+        <p><strong>Embedded risks:</strong> These tools have access to the broadest possible organizational data surface — email, calendar, documents, chat history, meeting transcripts. AI features summarize, draft, and search across all data the user can access. A misconfigured permission model means Copilot can surface data the user shouldn't see — creating an AI-amplified privilege escalation path.</p>
+        <p><strong>The MVCC example:</strong> If MVCC activates Microsoft 365 Copilot without first auditing SharePoint permissions, student FERPA-protected data stored in poorly scoped SharePoint folders becomes discoverable by any faculty member whose Copilot query touches that content. The AI didn't create the permission problem — it made an existing permission problem catastrophically efficient.</p>
+        <p><strong>Governance response:</strong> Audit and remediate data permissions before activating productivity AI features. Configure AI feature scope — most enterprise AI platforms allow restriction to specific data domains. Include AI feature scope in change management review for all major SaaS product updates.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>👥 AI in HR, Hiring &amp; Student Systems</span>
+        <span class="trigger-meta"><span class="trigger-tag pill-r">EU AI Act High Risk</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>Examples:</strong> AI-powered applicant tracking (Workday, iCIMS AI), AI resume screening, student risk prediction, automated advising flags.</p>
+        <p><strong>Embedded risks:</strong> AI in HR and education decisions falls squarely within EU AI Act Annex III high-risk categories: employment and workers management (Annex III, pt. 4) and education and vocational training (Annex III, pt. 3). A vendor who adds AI screening features to their ATS is now providing a high-risk AI system — and the deploying organization becomes a deployer of that high-risk AI system, with all associated obligations.</p>
+        <p><strong>The bias liability:</strong> AI hiring tools have documented disparate impact across protected characteristics. The EEOC and multiple state laws (Illinois, New York City) already require disclosure and bias auditing of AI in hiring. An organization that unknowingly uses an AI-powered feature in their ATS is still liable under these laws.</p>
+        <p><strong>Governance response:</strong> Require vendors providing HR or student systems to identify and document every AI feature that influences decisions about individuals. Conduct bias audits on any AI feature used in high-stakes decisions. Ensure vendor contracts require notification of new AI features before activation.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>🔐 AI in Security &amp; Monitoring Tools</span>
+        <span class="trigger-meta"><span class="trigger-tag">Dual-Use Risk</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>Examples:</strong> AI-powered SIEM (Microsoft Sentinel AI, Splunk AI), endpoint detection, network anomaly detection, AI-assisted vulnerability management.</p>
+        <p><strong>Embedded risks:</strong> Security AI tools process the most sensitive internal data: network traffic, authentication logs, user behavior patterns, incident data. If the vendor's AI model is cloud-hosted, this data leaves your perimeter for inference. A poisoning attack against the security AI could suppress detection of specific attack patterns — creating a blind spot in your security monitoring precisely where an attacker wants one.</p>
+        <p><strong>Governance response:</strong> Require security AI vendors to document data residency for AI inference. Assess whether AI model updates could introduce new blind spots. Maintain a baseline of manual detection rules that do not depend on AI — so that a compromised security AI does not eliminate all detection capability.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     MODULE 4 — VENDOR TIERING
+============================================================ -->
+<section id="m4">
+  <h2><span class="sec-num">Module 4 · 25 min</span>Vendor Tiering — Not All AI Vendors Require the Same Scrutiny</h2>
+
+  <p>A third-party risk program that applies the same assessment rigor to every vendor is operationally unsustainable and strategically incoherent. An organization with 200 SaaS vendors cannot conduct full AI risk assessments on all of them simultaneously. The solution is a tiering framework that allocates assessment intensity proportionally to risk — identifying the vendors whose AI use creates the greatest potential harm if something goes wrong.</p>
+
+  <div class="callout callout-analogy">
+    <p class="callout-title">🏥 Analogy: Hospital Supplier Tiering</p>
+    <p>A hospital doesn't subject its paper towel supplier to the same scrutiny as its medical device supplier. Both are vendors; both matter; but the consequences of failure are categorically different. Medical device suppliers undergo rigorous qualification, ongoing audits, and regulatory oversight. Paper suppliers undergo standard procurement checks. <strong>AI vendor tiering applies the same logic:</strong> a vendor whose AI makes decisions about your students' academic futures warrants Tier 1 scrutiny; a vendor whose AI autocompletes internal search queries warrants Tier 3.</p>
+  </div>
+
+  <h3>Three-Tier AI Vendor Classification Framework — Click to Expand</h3>
+  <p>The tiering matrix below classifies vendors by <strong>AI Decision Influence</strong> (how significantly does the AI affect decisions about people?) and <strong>Data Sensitivity</strong> (how sensitive is the data the AI processes?). Click any tier row to see the assessment requirements.</p>
+
+  <div class="tier-matrix">
+
+    <div class="tier-row tier-1" onclick="toggleTier(this)" tabindex="0" onkeydown="if(event.key==='Enter')toggleTier(this)">
+      <span class="tier-badge tb-1">TIER 1</span>
+      <div>
+        <div class="tier-name">Critical AI Vendor</div>
+        <div class="tier-desc">High AI Decision Influence + High Data Sensitivity. AI directly drives decisions affecting individuals; processes PII, PHI, FERPA, or CUI data.</div>
+      </div>
+      <span class="tier-cadence">Quarterly review</span>
+      <span class="tier-expand">▼ Details</span>
+      <div class="tier-detail">
+        <p><strong>Examples at MVCC:</strong> AI-powered student risk prediction system; AI hiring/screening tool for staff recruitment; AI tutoring that records and analyzes student learning data; AI proctoring system.</p>
+        <p><strong>Required assessments:</strong> Full AI-specific vendor questionnaire (all domains); on-site or documented audit; model card review; AIBOM request; contractual audit rights; annual penetration testing evidence; EU AI Act role determination; bias audit evidence; incident notification SLA ≤24 hours.</p>
+        <p><strong>Contractual requirements:</strong> Data processing agreement with AI-specific provisions; AIBOM delivery requirement; 30-day notice of material AI changes; audit rights; liability clauses covering AI-specific harms; AI feature change management process; incident notification SLA.</p>
+        <p><strong>Ongoing monitoring:</strong> Quarterly governance review; continuous monitoring for regulatory changes; anomaly detection on AI outputs; periodic bias re-evaluation.</p>
+      </div>
+    </div>
+
+    <div class="tier-row tier-2" onclick="toggleTier(this)" tabindex="0" onkeydown="if(event.key==='Enter')toggleTier(this)">
+      <span class="tier-badge tb-2">TIER 2</span>
+      <div>
+        <div class="tier-name">Significant AI Vendor</div>
+        <div class="tier-desc">High AI Influence + Low Sensitivity, or Low Influence + High Sensitivity. AI assists decisions but human reviews; or processes sensitive data for low-stakes purposes.</div>
+      </div>
+      <span class="tier-cadence">Semi-annual review</span>
+      <span class="tier-expand">▼ Details</span>
+      <div class="tier-detail">
+        <p><strong>Examples at MVCC:</strong> Microsoft 365 Copilot (productivity AI accessing broad organizational data); AI-powered analytics platform processing financial data; LMS with AI-generated insights on student engagement.</p>
+        <p><strong>Required assessments:</strong> Standard AI vendor questionnaire (priority domains: data handling, model transparency, incident response); documentation review; DPA verification with AI provisions; reference checks; evidence of security certifications (SOC 2 Type II, ISO 27001).</p>
+        <p><strong>Contractual requirements:</strong> DPA with AI provisions; 60-day notice of material AI changes; security incident notification SLA ≤72 hours; right to disable AI features; data retention and deletion commitments for AI inference data.</p>
+        <p><strong>Ongoing monitoring:</strong> Semi-annual governance review; annual security questionnaire update; monitoring of vendor regulatory filings and public AI disclosures.</p>
+      </div>
+    </div>
+
+    <div class="tier-row tier-3" onclick="toggleTier(this)" tabindex="0" onkeydown="if(event.key==='Enter')toggleTier(this)">
+      <span class="tier-badge tb-3">TIER 3</span>
+      <div>
+        <div class="tier-name">Standard AI Vendor</div>
+        <div class="tier-desc">Low AI Decision Influence + Low Data Sensitivity. AI provides convenience features; processes no sensitive data; decisions are easily reversible.</div>
+      </div>
+      <span class="tier-cadence">Annual review</span>
+      <span class="tier-expand">▼ Details</span>
+      <div class="tier-detail">
+        <p><strong>Examples at MVCC:</strong> AI autocomplete in internal search tools; AI grammar suggestions in writing tools; AI scheduling assistants processing only calendar metadata; AI-generated image tools for marketing materials.</p>
+        <p><strong>Required assessments:</strong> Self-assessment questionnaire (abbreviated); review of vendor's published AI transparency statement; confirmation that AI features do not process regulated data categories; standard security questionnaire.</p>
+        <p><strong>Contractual requirements:</strong> Standard terms with data processing addendum; confirmation of no regulated data processing; security incident notification (standard SLA); right to disable AI features if risk tier changes.</p>
+        <p><strong>Ongoing monitoring:</strong> Annual review as part of standard vendor renewal; triggered reassessment if vendor adds new AI capabilities that change data sensitivity or decision influence.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <h3>Tiering Decision Matrix</h3>
+  <table class="data-table">
+    <thead>
+      <tr><th>AI Decision Influence →<br>Data Sensitivity ↓</th><th>High Influence<br>(Affects individual outcomes)</th><th>Medium Influence<br>(Informs, but human decides)</th><th>Low Influence<br>(Convenience only)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>High Sensitivity</strong><br>(PII, PHI, FERPA, CUI)</td><td><span class="tag-pill pill-r">TIER 1 — Critical</span></td><td><span class="tag-pill pill-r">TIER 1 — Critical</span></td><td><span class="tag-pill pill-y">TIER 2 — Significant</span></td></tr>
+      <tr><td><strong>Medium Sensitivity</strong><br>(Internal business data)</td><td><span class="tag-pill pill-r">TIER 1 — Critical</span></td><td><span class="tag-pill pill-y">TIER 2 — Significant</span></td><td><span class="tag-pill pill-g">TIER 3 — Standard</span></td></tr>
+      <tr><td><strong>Low Sensitivity</strong><br>(Public or aggregated data)</td><td><span class="tag-pill pill-y">TIER 2 — Significant</span></td><td><span class="tag-pill pill-g">TIER 3 — Standard</span></td><td><span class="tag-pill pill-g">TIER 3 — Standard</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================
+     ACTIVITY A
+============================================================ -->
+<section id="activity-a">
+  <div class="activity-header">
+    <div>
+      <div class="act-badge">Activity A · Part A · 25 min</div>
+      <h3>Vendor Tiering Exercise — MVCC Vendor Portfolio</h3>
+    </div>
+    <span class="act-time">⏱ 15 min individual + 10 min share-out</span>
+  </div>
+  <div class="activity-body">
+    <p>Using the tiering matrix from Module 4, classify each of the following MVCC vendors. For each vendor, assign a tier, identify the <strong>primary risk driver</strong> (data sensitivity or decision influence), and name <strong>one specific assessment requirement</strong> that applies at that tier.</p>
+
+    <div id="tier-activity-vendors"></div>
+
+    <div style="margin-top:1.2rem;display:flex;gap:.5rem;flex-wrap:wrap;">
+      <button class="btn-primary" onclick="checkTierActivity()">Check Classifications</button>
+      <button class="btn-secondary" onclick="resetTierActivity()">Reset</button>
+    </div>
+    <div id="tier-result" class="result-box"></div>
+
+    <p style="margin-top:1.2rem;font-size:.88rem;"><strong>Share-Out (10 min):</strong> Which vendor was hardest to tier? Were there any vendors you initially classified differently — and what changed your thinking? The instructor will capture the class's consensus tier for each vendor on the whiteboard.</p>
+  </div>
+</section>
+
+<!-- Part B Header -->
+<div class="part-header">
+  <div>
+    <div class="part-label">Part B · Deep Dive &amp; Lab</div>
+    <h2>Vendor Assessment &amp; Contract Governance Lab</h2>
+  </div>
+  <span class="part-time">⏱ ~2 hours</span>
+</div>
+
+<!-- ============================================================
+     MODULE 5 — VENDOR ASSESSMENT
+============================================================ -->
+<section id="m5">
+  <h2><span class="sec-num">Module 5 · 50 min</span>AI Vendor Risk Assessment — The Questions That Actually Matter</h2>
+
+  <p>Standard vendor security questionnaires (CAIQ, SIG, VSA) were not designed for AI systems. They ask about encryption, access controls, and patch management — all relevant, but insufficient. An AI vendor can earn a perfect score on a traditional security questionnaire while using a foundation model trained on data that contains your customers' information, operating an inference pipeline that logs every query, and having no model rollback capability. The questions that matter for AI risk require an entirely different domain coverage.</p>
+
+  <div class="callout callout-key">
+    <p class="callout-title">🔑 The NSA 2026 Guidance Standard</p>
+    <p>The NSA's 2026 digital supply chain guidance for AI systems specifies that vendor contracts and assessments must address: <strong>AIBOM provision, third-party service governance, access control and segregation of duties, testing and red teaming evidence, and incident response and lifecycle management commitments.</strong> Organizations that rely solely on vendors' self-declared security posture — without requiring evidence — are accepting unverified risk as fact.</p>
+  </div>
+
+  <h3>Interactive Vendor Assessment Questionnaire — Check Items Your Vendor Must Answer</h3>
+  <p>The questionnaire below covers the six domains of AI vendor risk. Check each item that you have confirmed with your Tier 1 or Tier 2 vendor. Items marked <span class="vq-risk vq-r-h">HIGH</span> are essential — missing answers to these represent critical governance gaps.</p>
+
+  <div id="vq-container"></div>
+
+  <div style="margin:.8rem 0;display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;">
+    <button class="btn-primary" onclick="scoreVQ()">Calculate Assessment Score</button>
+    <button class="btn-secondary" onclick="resetVQ()">Reset All</button>
+    <span id="vq-live-score" style="font-size:.85rem;color:var(--c-text-soft);"></span>
+  </div>
+  <div id="vq-result" class="result-box"></div>
+
+  <h3>Contract Clauses — What Must Be in Your AI Vendor Contracts</h3>
+  <p>Assessment questionnaires reveal the vendor's posture. Contracts create legally enforceable obligations. The following clauses are essential for Tier 1 vendors and strongly recommended for Tier 2. Expand each to see the clause language and negotiation notes.</p>
+
+  <div class="accordion">
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>📄 AIBOM Delivery &amp; Update Clause</span>
+        <span class="trigger-meta"><span class="trigger-tag">Tier 1 Required</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>Purpose:</strong> Requires the vendor to provide an AI Bill of Materials (AIBOM) at contract execution and on every material change to the AI system — enabling the deployer to inventory AI components, track vulnerabilities, and meet regulatory documentation obligations.</p>
+        <p><strong>Sample language:</strong> <em>"Vendor shall provide Customer with a complete AI Bill of Materials (AIBOM) in CycloneDX ML-BOM v1.7 or SPDX 3.0 AI Profile format within 30 days of contract execution and within 15 business days of any material change to the AI system, including model version changes, dataset changes, or infrastructure changes that affect the AI inference pipeline."</em></p>
+        <p><strong>Negotiation note:</strong> Vendors relying on third-party foundation models (OpenAI, Anthropic, Google) may argue they cannot provide AIBOM fields for the foundation model layer. Accept this limitation but require documentation of the specific model version, API endpoint, and any fine-tuning performed on your organization's data.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>🔔 Material AI Change Notification Clause</span>
+        <span class="trigger-meta"><span class="trigger-tag">Tier 1 &amp; 2 Required</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>Purpose:</strong> Requires the vendor to notify the deployer before making material changes to AI systems — including model updates, new AI features, changes to data processing, or changes to the inference provider. Prevents vendors from silently upgrading foundation models or activating new AI capabilities without deployer review.</p>
+        <p><strong>Sample language:</strong> <em>"Vendor shall provide Customer with not less than [30/60] calendar days' prior written notice of any material change to the AI features of the Services, including but not limited to: changes to the underlying AI model or model version; changes to training data or fine-tuning datasets; changes to the AI inference provider or data processing location; and activation of new AI capabilities that process Customer Data."</em></p>
+        <p><strong>Negotiation note:</strong> Vendors often resist long notice periods for AI changes, arguing that rapid AI development requires faster iteration. A reasonable compromise: 30-day notice for changes affecting regulated data processing; 14-day notice for other AI capability changes; emergency changes with retroactive notification within 72 hours plus a root-cause summary.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>🔍 Audit Rights &amp; AI Testing Clause</span>
+        <span class="trigger-meta"><span class="trigger-tag">Tier 1 Required</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>Purpose:</strong> Grants the deployer the right to audit or commission audits of the vendor's AI system — including third-party bias audits, red team assessments, and security penetration testing of AI components. Also requires vendors to provide evidence of their own AI testing programs.</p>
+        <p><strong>Sample language:</strong> <em>"Vendor shall (a) maintain a program of regular adversarial testing and bias evaluation for the AI systems provided under this Agreement; (b) provide Customer with a summary of testing results annually upon request; and (c) permit Customer or Customer's designated third-party auditor to conduct or commission AI-specific assessments, including bias audits and security assessments of AI inference pipelines, no more than once per year upon [30] days' written notice."</em></p>
+        <p><strong>Negotiation note:</strong> Most enterprise AI vendors will resist direct audits of their core AI systems (citing IP protection and multi-tenant security). Acceptable compromise: accept SOC 2 Type II reports that include AI-specific trust service criteria, third-party bias audit reports, and the vendor's published penetration testing schedule — while retaining the right to conduct your own assessment of the integration layer that processes your specific data.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>🚨 AI Incident Notification &amp; Response Clause</span>
+        <span class="trigger-meta"><span class="trigger-tag">Tier 1 &amp; 2 Required</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>Purpose:</strong> Defines the vendor's obligations when an AI-specific incident occurs — including model compromise, data poisoning discovery, significant performance degradation, or AI-generated output causing documented harm.</p>
+        <p><strong>Sample language:</strong> <em>"Vendor shall notify Customer within [24/72] hours of discovering any AI-specific security incident, including: (a) evidence of unauthorized access to or modification of AI model artifacts; (b) discovery of data poisoning affecting AI system behavior; (c) AI system outputs that have caused or are likely to cause documented harm to individuals; and (d) regulatory investigations or enforcement actions related to the AI systems provided under this Agreement. Vendor shall provide rollback capability for AI model changes and shall document rollback procedures in the Service Level Agreement."</em></p>
+        <p><strong>Negotiation note:</strong> The definition of "AI-specific incident" is the critical negotiation point. Vendors prefer to limit notification to traditional security incidents (breaches, unauthorized access). Push for explicit inclusion of model behavior changes, bias discoveries, and regulatory investigations — all of which affect the deployer's governance obligations.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(this)">
+        <span>🚫 Data Use Restrictions for AI Training Clause</span>
+        <span class="trigger-meta"><span class="trigger-tag">All Tiers Critical</span><span class="trigger-icon">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>Purpose:</strong> Explicitly prohibits the vendor from using the deployer's data — including user queries, uploaded documents, and inferred behavioral signals — to train or improve the vendor's AI models. Prevents the organization's proprietary or regulated data from becoming training data for a shared model.</p>
+        <p><strong>Sample language:</strong> <em>"Vendor shall not use Customer Data, Customer User Data, or any data derived from Customer's use of the Services (including but not limited to: user queries submitted to AI features, documents processed by AI features, and output feedback signals) to train, fine-tune, evaluate, or improve Vendor's AI models, except with Customer's express written consent and subject to Customer's review and approval of the training methodology and data governance documentation."</em></p>
+        <p><strong>Negotiation note:</strong> This clause is frequently pre-included in enterprise AI contracts at the request of large customers. If the vendor resists, treat this as a Tier 1 red flag — a vendor that insists on the right to train on your data is prioritizing their model improvement over your data governance obligations. For FERPA-protected data, this restriction is not negotiable; it is a legal requirement.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     ACTIVITY B — THINK-PAIR-SHARE
+============================================================ -->
+<section id="activity-b">
+  <div class="activity-header">
+    <div>
+      <div class="act-badge">Activity B · Think-Pair-Share · 30 min</div>
+      <h3>MVCC Vendor Portfolio — Supply Chain Risk Analysis</h3>
+    </div>
+    <span class="act-time">⏱ 5+10+10+5 min</span>
+  </div>
+  <div class="activity-body">
+    <p>MVCC has the following vendor relationships, each of which has recently added or is considering AI capabilities:</p>
+
+    <div style="display:grid;gap:.8rem;margin:1rem 0;">
+      <div class="scenario-card">
+        <strong>Vendor A — Student Information System (SIS):</strong> Ellucian Banner has added an AI feature that analyzes enrollment patterns and automatically flags students for early alert advising intervention. The flag triggers an advising email without human review. FERPA-protected academic records feed the model.
+      </div>
+      <div class="scenario-card">
+        <strong>Vendor B — Microsoft 365 Copilot:</strong> MVCC is evaluating Microsoft 365 Copilot for faculty productivity. The system would have access to faculty email, SharePoint documents (including some containing student records in unstructured form), and Teams meeting transcripts. Microsoft offers an "enterprise data protection" tier.
+      </div>
+      <div class="scenario-card">
+        <strong>Vendor C — Curriculum Design Tool:</strong> A small edtech startup offers an AI curriculum alignment tool that MVCC's academic affairs team wants to use. The tool uses a publicly available LLM API, stores alignment data on the vendor's shared cloud infrastructure, and has no SOC 2 certification. The vendor is based in Canada.
+      </div>
+    </div>
+
+    <p><strong>Instructions:</strong></p>
+    <ol style="font-size:.92rem;padding-left:1.2rem;line-height:1.9;">
+      <li><strong>Think (5 min):</strong> For each vendor, identify: (a) what tier they belong in, (b) the single most critical risk, and (c) one contract clause or assessment requirement that directly addresses that risk. Write individually.</li>
+      <li><strong>Pair (10 min):</strong> Compare with a partner. Did you reach the same tier for each vendor? If you differed, what was the deciding factor?</li>
+      <li><strong>Share (10 min):</strong> Class share-out. Focus on Vendor C — the startup with no SOC 2. What does the class recommend: proceed with enhanced requirements, hold pending certification, or decline?</li>
+      <li><strong>Debrief (5 min):</strong> Which role (provider, deployer, importer) does MVCC occupy for each vendor relationship? Does the Article 25 analysis change for any vendor if MVCC customizes the tool?</li>
+    </ol>
+
+    <div class="callout callout-green" style="margin-top:1rem;">
+      <p class="callout-title">🎓 Instructor Note</p>
+      <p>Vendor A is designed to surface the most consequential discussion: an automated AI flag triggering an action affecting a student, without human review, using FERPA-protected data. This is likely a Tier 1 system that may qualify as high-risk under EU AI Act Annex III if the college enrolls any EU-national students. The automated action without human review may violate both FERPA and MVCC's own policies. The class should debate whether the vendor's AI feature should be disabled until human-in-the-loop requirements are met — and who makes that decision: IT, legal, academic affairs, or a cross-functional AI governance committee.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     ACTIVITY C — INTERACTIVE LAB
+============================================================ -->
+<section id="activity-c">
+  <div class="activity-header">
+    <div>
+      <div class="act-badge">Activity C · Contract Clause Builder Lab · 40 min</div>
+      <h3>Build the Vendor Contract — Select the Right Clauses</h3>
+    </div>
+    <span class="act-time">⏱ 40 min · Scored</span>
+  </div>
+  <div class="activity-body">
+    <p>For each vendor scenario below, select the contract clauses that are <strong>essential</strong> (not just helpful) for governing the AI risk in that relationship. Click clauses to select them, then score your choices. This exercise feeds into your assessment artifact.</p>
+
+    <div id="clause-lab-container"></div>
+
+    <div style="margin-top:1.2rem;display:flex;gap:.5rem;flex-wrap:wrap;">
+      <button class="btn-primary" onclick="scoreClauseLab()">Score My Contract</button>
+      <button class="btn-secondary" onclick="resetClauseLab()">New Scenario</button>
+    </div>
+    <div id="clause-result" class="result-box"></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     ASSESSMENT ARTIFACT
+============================================================ -->
+<section id="artifact">
+  <h2><span class="sec-num">📝 Assessment Artifact · Due: End of Class</span>AI Vendor Risk Assessment Report</h2>
+
+  <div class="callout callout-accent">
+    <p class="callout-title">📋 Day 12 Assessment Artifact</p>
+    <h3 style="font-family:var(--font-serif);margin:.3rem 0 .6rem;">Mini-Project Component: MVCC Vendor Risk Assessment (Part 1 of 2)</h3>
+    <p>This artifact is the first component of the AI AUP + Vendor Risk Assessment Mini-Project (20% of course grade). Produce a structured vendor risk assessment document for <strong>one of the three MVCC vendors</strong> from Activity B. The document must include:</p>
+    <ol style="padding-left:1.2rem;line-height:2;margin:.6rem 0;">
+      <li><strong>Vendor classification:</strong> Assigned tier with documented rationale using the Data Sensitivity × AI Decision Influence matrix. Include the specific data categories processed and the nature of AI-influenced decisions.</li>
+      <li><strong>EU AI Act role determination:</strong> Identify MVCC's role (provider, deployer, importer, or distributor) for this vendor relationship. Address whether any MVCC customization of the vendor's tool could trigger an Article 25 role shift.</li>
+      <li><strong>Top 5 risk findings:</strong> Identify the five most significant AI-specific risks in this vendor relationship, using the assessment questionnaire domains as a framework. For each risk, state the risk, the evidence basis (what the vendor has or has not disclosed), and the recommended treatment.</li>
+      <li><strong>Three required contract clauses:</strong> Identify the three contract clauses most critical for this specific vendor relationship. For each clause, explain why it addresses this vendor's specific risk profile rather than generic AI vendor risk.</li>
+      <li><strong>Assessment gap:</strong> Identify one significant question about this vendor's AI practices that you cannot answer from publicly available information — and state what assessment activity (audit, questionnaire, certification review) would close that gap.</li>
+    </ol>
+    <p><strong>Format:</strong> Professional memo with section headers and, where appropriate, a one-row summary table at the top (vendor name, tier, MVCC role, primary risk). Prose throughout — bullet points only for the five risk findings.</p>
+    <p><strong>Note:</strong> This artifact will be combined with the AI AUP document produced in Lesson 13 as the full Mini-Project submission due Day 13.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     QUIZ
+============================================================ -->
+<section id="quiz">
+  <h2><span class="sec-num">❓ Day 12 Knowledge Check · 6 Questions · Instant Feedback</span>Test Your Mastery</h2>
+  <p>Formative check — does not affect your grade. Predicts performance on the week's assessment.</p>
+
+  <div id="quiz-container">
+
+    <div class="quiz-q" data-correct="c">
+      <div class="q-text">Q1. An organization licenses a commercial AI hiring screening tool from a US vendor and uses it as-is to screen applicants. The vendor's documentation includes a completed conformity assessment and model card. Under the EU AI Act, which role does the licensing organization occupy?</div>
+      <ul class="quiz-opts">
+        <li><label><input type="radio" name="q1" value="a"> Provider — because they are deploying the AI system to screen their own applicants.</label></li>
+        <li><label><input type="radio" name="q1" value="b"> Importer — because they are bringing a non-EU AI system into use within their organization.</label></li>
+        <li><label><input type="radio" name="q1" value="c"> Deployer — because they are using the AI system under their own authority without substantially modifying it or placing their own name on it.</label></li>
+        <li><label><input type="radio" name="q1" value="d"> Distributor — because they are making the AI system available within their organization.</label></li>
+      </ul>
+      <div class="quiz-feedback" id="qfb-1"></div>
+    </div>
+
+    <div class="quiz-q" data-correct="b">
+      <div class="q-text">Q2. A community college IT team fine-tunes an open-source LLM on internal student records to build a student success prediction tool and deploys it for advisor use. Under EU AI Act Article 25, this organization has most likely:</div>
+      <ul class="quiz-opts">
+        <li><label><input type="radio" name="q2" value="a"> Remained a deployer — because the underlying foundation model was not developed by the college.</label></li>
+        <li><label><input type="radio" name="q2" value="b"> Become a provider — because fine-tuning on institutional data for a specific high-risk purpose constitutes a substantial modification that triggers provider obligations.</label></li>
+        <li><label><input type="radio" name="q2" value="c"> Become an importer — because the open-source model originated outside the institution.</label></li>
+        <li><label><input type="radio" name="q2" value="d"> Remained a deployer — because deployer obligations cover internal AI deployments regardless of modification level.</label></li>
+      </ul>
+      <div class="quiz-feedback" id="qfb-2"></div>
+    </div>
+
+    <div class="quiz-q" data-correct="d">
+      <div class="q-text">Q3. A SaaS HR platform activates an "AI-powered performance review assistant" feature in a product update without notifying its enterprise customers. The feature processes employee performance data to suggest review language. Which statement BEST describes the enterprise customers' governance situation?</div>
+      <ul class="quiz-opts">
+        <li><label><input type="radio" name="q3" value="a"> The enterprise customers are not responsible because the AI feature was activated by the vendor, not by a deliberate customer choice.</label></li>
+        <li><label><input type="radio" name="q3" value="b"> The enterprise customers need only disable the feature if it violates their AUP — no additional assessment is required.</label></li>
+        <li><label><input type="radio" name="q3" value="c"> The enterprise customers should request a refund since the vendor changed the product without consent.</label></li>
+        <li><label><input type="radio" name="q3" value="d"> The enterprise customers are now deployers of a potentially high-risk AI system (employment decisions, Annex III) regardless of whether the deployment was intentional — and their governance obligations (human oversight, monitoring, incident reporting) apply immediately.</label></li>
+      </ul>
+      <div class="quiz-feedback" id="qfb-3"></div>
+    </div>
+
+    <div class="quiz-q" data-correct="a">
+      <div class="q-text">Q4. Using the tiering framework from Module 4, which vendor should receive a Tier 1 (Critical) classification?</div>
+      <ul class="quiz-opts">
+        <li><label><input type="radio" name="q4" value="a"> An AI tutoring platform that processes individual students' learning records, generates adaptive feedback, and influences course progression recommendations — with no human review of the AI's recommendations before they are shown to students.</label></li>
+        <li><label><input type="radio" name="q4" value="b"> An AI writing assistant that provides grammar and style suggestions on documents the faculty member is drafting, with no external data storage.</label></li>
+        <li><label><input type="radio" name="q4" value="c"> An AI scheduling tool that optimizes classroom assignments based on aggregate enrollment numbers, with no individual student data processed.</label></li>
+        <li><label><input type="radio" name="q4" value="d"> An AI image generation tool used by the marketing department to create social media graphics, with no student or employee data involved.</label></li>
+      </ul>
+      <div class="quiz-feedback" id="qfb-4"></div>
+    </div>
+
+    <div class="quiz-q" data-correct="c">
+      <div class="q-text">Q5. Which contract clause is MOST directly designed to prevent a vendor from using an organization's proprietary data to improve the vendor's own AI models?</div>
+      <ul class="quiz-opts">
+        <li><label><input type="radio" name="q5" value="a"> The AIBOM delivery clause — by requiring the vendor to document all training data, unauthorized use of customer data would be visible in the AIBOM.</label></li>
+        <li><label><input type="radio" name="q5" value="b"> The material change notification clause — the vendor would need to notify the customer before training on their data.</label></li>
+        <li><label><input type="radio" name="q5" value="c"> The data use restriction for AI training clause — which explicitly prohibits the vendor from using customer data to train, fine-tune, or evaluate AI models without express written consent.</label></li>
+        <li><label><input type="radio" name="q5" value="d"> The audit rights clause — by permitting the customer to audit the vendor's AI training processes, unauthorized use could be detected.</label></li>
+      </ul>
+      <div class="quiz-feedback" id="qfb-5"></div>
+    </div>
+
+    <div class="quiz-q" data-correct="b">
+      <div class="q-text">Q6. A backdoor implanted by a malicious actor at the model adapter layer (Layer 3 of the AI value chain) is MOST difficult to detect because:</div>
+      <ul class="quiz-opts">
+        <li><label><input type="radio" name="q6" value="a"> Layer 3 actors operate outside the EU AI Act's jurisdiction, so no regulatory reporting is required.</label></li>
+        <li><label><input type="radio" name="q6" value="b"> Backdoors activate only on a specific trigger pattern that is typically absent from standard evaluation datasets — so the compromised model passes all routine testing and appears safe until the trigger is encountered in production.</label></li>
+        <li><label><input type="radio" name="q6" value="c"> The deployer (Layer 5) does not have access to the model adapter's source code, making auditing impossible.</label></li>
+        <li><label><input type="radio" name="q6" value="d"> Standard penetration testing tools cannot detect AI backdoors because they test network rather than model behavior.</label></li>
+      </ul>
+      <div class="quiz-feedback" id="qfb-6"></div>
+    </div>
+
+    <div style="margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap;">
+      <button class="btn-primary" onclick="gradeQuiz()">Grade My Quiz</button>
+      <button class="btn-secondary" onclick="resetQuiz()">Reset</button>
+    </div>
+    <div class="quiz-score-panel" id="quiz-score-panel"></div>
+  </div>
+</section>
+
+<!-- Bottom nav -->
+<div class="lesson-nav-bottom">
+  <a href="https://sands-mvcc.github.io/aicyber/lesson11.html" class="nav-btn">← Day 11: Secure Architecture</a>
+  <a href="https://sands-mvcc.github.io/aicyber/lesson13.html" class="nav-btn primary">Day 13: AI Policies &amp; AUPs →</a>
+</div>
+
+</div><!-- end main col -->
+
+<!-- ===== RAIL ===== -->
+<aside class="rail" aria-label="On-page navigation and key terms">
+  <h4>On This Page</h4>
+  <ul class="rail-nav">
+    <li><a href="#overview">→ Lesson Overview</a></li>
+    <li><a href="#m1">1 AI Value Chain</a></li>
+    <li><a href="#m2">2 Roles &amp; Obligations</a></li>
+    <li><a href="#m3">3 Embedded AI Risk</a></li>
+    <li><a href="#m4">4 Vendor Tiering</a></li>
+    <li><a href="#activity-a">A Tiering Exercise</a></li>
+    <li><a href="#m5">5 Vendor Assessment</a></li>
+    <li><a href="#activity-b">B Think-Pair-Share</a></li>
+    <li><a href="#activity-c">C Contract Builder</a></li>
+    <li><a href="#artifact">✏ Assessment</a></li>
+    <li><a href="#quiz">? Knowledge Check</a></li>
+  </ul>
+
+  <div class="rail-section">
+    <h4>Objectives Progress</h4>
+    <div style="font-size:.78rem;color:var(--c-text-soft);margin-bottom:.3rem;" id="rail-obj-count">0 of 6 completed</div>
+    <ul style="list-style:none;font-size:.78rem;" id="rail-obj-list">
+      <li>☐ Map the AI value chain</li>
+      <li>☐ Distinguish provider/deployer/importer roles</li>
+      <li>☐ Identify embedded AI risks</li>
+      <li>☐ Apply vendor tiering framework</li>
+      <li>☐ Conduct AI vendor assessment</li>
+      <li>☐ Identify governance contract clauses</li>
+    </ul>
+  </div>
+
+  <div class="rail-section">
+    <h4>Key Terms — Day 12</h4>
+    <div class="term">AI Value Chain</div><div class="def">Six layers from data provider through end user; risk propagates downward</div>
+    <div class="term">Provider (EU AI Act)</div><div class="def">Develops or places AI system on market under own name; heaviest obligations</div>
+    <div class="term">Deployer (EU AI Act)</div><div class="def">Uses AI under own authority without modification; lighter but real obligations</div>
+    <div class="term">Importer</div><div class="def">Places third-country AI system on EU market; must verify provider compliance</div>
+    <div class="term">Article 25</div><div class="def">EU AI Act provision: fine-tuning or rebranding AI makes deployer into provider</div>
+    <div class="term">Embedded AI</div><div class="def">AI capabilities added by vendors to products without deployer's active choice</div>
+    <div class="term">Vendor Tiering</div><div class="def">Risk-based classification determining assessment intensity and cadence</div>
+    <div class="term">TPRM</div><div class="def">Third-Party Risk Management — now requires AI-specific assessment domains</div>
+    <div class="term">Data Poisoning via Upstream</div><div class="def">Training data tampered at Layer 1/2 propagates silently through all downstream models</div>
+    <div class="term">Model Extraction</div><div class="def">Reverse-engineering vendor model behavior via repeated API queries</div>
+  </div>
+
+  <div class="rail-section">
+    <h4>Lesson Navigation</h4>
+    <a href="https://sands-mvcc.github.io/aicyber/index.html" class="nav-btn" style="display:block;text-align:center;margin-bottom:.4rem;font-size:.82rem;">← Course Home</a>
+    <a href="https://sands-mvcc.github.io/aicyber/lesson11.html" class="nav-btn" style="display:block;text-align:center;margin-bottom:.4rem;font-size:.82rem;">← Day 11</a>
+    <a href="https://sands-mvcc.github.io/aicyber/lesson13.html" class="nav-btn primary" style="display:block;text-align:center;font-size:.82rem;">Day 13 →</a>
+  </div>
+</aside>
+
+</div><!-- end page-with-rail -->
+</main>
+
+<footer>
+  <p><strong>AI-103: AI Cybersecurity Foundations · Day 12</strong> · Moraine Valley Community College · Department of Engineering &amp; Technology · Dr. John L. Sands · 2026</p>
+  <p>Day 13 covers AI Policies, AUPs &amp; Governance Documents — the written artifacts that make AI governance auditable.</p>
+</footer>
+
+<script>
+/* ============================================================
+   VALUE CHAIN DATA
+============================================================ */
+const vcNodes = [
+  {
+    name:"Data & Compute Providers",
+    desc:"Cloud compute providers (AWS, Azure, GCP), GPU infrastructure (NVIDIA, AMD), public dataset hosts (Hugging Face, Common Crawl, Wikipedia), licensed data brokers, and web crawl providers. These entities supply the raw material and compute power that makes AI training possible.",
+    risks:["Training data poisoning at source","Compute side-channel attacks","Dataset copyright and consent violations","Data provenance opacity","Cloud provider access to model weights during training"],
+    govAction:"Deployers at Layer 5 have essentially no direct governance leverage at Layer 1. Control is exercised by contract terms with Layer 2 providers, who must in turn govern their own data and compute supply chains. The key deployer question: does my foundation model provider document their data provenance and compute security practices?"
+  },
+  {
+    name:"Foundation Model Providers",
+    desc:"Organizations that train and operate large-scale foundation models: OpenAI (GPT series), Anthropic (Claude), Google DeepMind (Gemini), Meta (Llama open-source), Mistral, Cohere, AI21, and others. These providers make models available via API or open-source release.",
+    risks:["Training data memorization (PII/proprietary data in outputs)","Model capability changes in API updates without notice","API terms allowing training on user data","Inference data logging and retention","Model alignment failures with downstream harm","Vendor lock-in: API dependency without portability"],
+    govAction:"Request model cards for the specific model version in use. Confirm that enterprise API terms prohibit training on query data. Require model version pinning in contracts so that capability changes require deployer review. Assess the provider's security program (SOC 2 Type II, ISO 27001). AIBOM fields for the foundation model layer will be limited — accept documented model version and API endpoint as minimum."
+  },
+  {
+    name:"Model Adapters & Fine-Tuners",
+    desc:"Organizations or individuals that take a foundation model and fine-tune, quantize, distill, or adapt it for specific domains or tasks. Includes edtech companies fine-tuning on curriculum data, healthcare AI vendors adapting clinical models, and enterprise software companies building domain-specific models on foundation model bases.",
+    risks:["Backdoor implantation during fine-tuning","Malicious or careless training data inclusion","Fine-tuning on regulated data without consent","Inadequate security of fine-tuning pipelines","Loss of alignment properties from base model","No documentation of fine-tuning changes in AIBOM"],
+    govAction:"Fine-tuners are often small organizations with limited security programs. Require documentation of fine-tuning methodology, training data provenance, and post-fine-tune evaluation results. Model cards should document what changed from the base model and what safety evaluations were re-run after fine-tuning. A backdoor introduced at this layer is extremely difficult for downstream deployers to detect."
+  },
+  {
+    name:"Application Developers",
+    desc:"Software companies that build applications using foundation models or fine-tuned models via API — including SaaS vendors, enterprise software companies, and system integrators. This is the layer that adds RAG pipelines, tool integrations, system prompts, and user-facing interfaces.",
+    risks:["Prompt injection via external content in RAG pipelines","System prompt exposure or manipulation","Insecure output handling (XSS, code execution from AI output)","Shadow data processing: inference data sent to foundation model provider","Insufficient input/output filtering","No audit logging of AI interactions"],
+    govAction:"This is the primary layer where deployers can exert governance leverage. Require SOC 2 Type II with AI-specific trust service criteria. Review the application's security architecture: is RAG retrieval from external sources sanitized? Are system prompts protected? Is inference data retained and for how long? Does the application forward your data to a third-party inference provider without disclosure?"
+  },
+  {
+    name:"Enterprise Deployers",
+    desc:"Organizations that procure AI-powered applications and deploy them to their own users — schools, hospitals, banks, government agencies, enterprises. This is where most organizations encounter AI governance obligations: as the entity responsible to their users for the AI behavior.",
+    risks:["Embedded AI activated without governance review","FERPA/HIPAA/GLBA violations from AI processing regulated data","Deployer-to-provider role shift via customization","Staff using AI tools outside approved workflows (shadow AI)","No inventory of AI systems in production","Deployer obligations not understood or resourced"],
+    govAction:"This is where today's lesson applies most directly. The deployer must: maintain an AI system inventory, conduct vendor tiering and assessment, establish contracts with AI governance provisions, implement human oversight for high-risk AI, monitor AI behavior continuously, and understand their EU AI Act role determination for each AI system in the portfolio."
+  },
+  {
+    name:"End Users & Affected Persons",
+    desc:"Individuals who interact with AI systems or are affected by AI-driven decisions — students, patients, job applicants, customers, citizens. Under the EU AI Act, these persons have rights: to be informed when interacting with AI, to have significant decisions explained, to contest automated decisions, and to have human review of high-stakes AI outputs.",
+    risks:["No disclosure that decisions are AI-assisted","No recourse mechanism for AI errors","Privacy violations from data used without consent","Discriminatory outcomes from biased AI","Manipulation via AI-generated content","No meaningful human oversight of consequential decisions"],
+    govAction:"Deployer obligations include: transparency to affected persons (EU AI Act Art. 50), human oversight mechanisms (Art. 14 and Art. 26), explanation of AI-influenced decisions on request, and complaint and redress mechanisms. From a supply chain perspective: if the deployer's vendor contract does not require these capabilities (audit trail, explanation, human override), the deployer cannot meet their obligations to end users."
+  }
+];
+
+let activeVC = 0;
+function renderVC(){
+  const n = vcNodes[activeVC];
+  document.getElementById('vc-detail').innerHTML = `
+    <h4>${n.name} — Governance Perspective</h4>
+    <p style="font-size:.88rem;margin-bottom:.7rem;">${n.desc}</p>
+    <p style="font-size:.82rem;font-weight:600;color:var(--c-text-soft);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.35rem;">Key Risks at This Layer</p>
+    <div class="vc-risk-tags">${n.risks.map(r=>`<span class="risk-tag">${r}</span>`).join('')}</div>
+    <div class="callout callout-teal" style="margin-top:.8rem;">
+      <p class="callout-title" style="font-size:.82rem;">🏛️ Deployer Governance Action</p>
+      <p style="font-size:.84rem;">${n.govAction}</p>
+    </div>
+  `;
+  markObjective(0);
+}
+function selectVC(i){
+  activeVC=i;
+  document.querySelectorAll('.vc-node').forEach((el,idx)=>el.classList.toggle('active',idx===i));
+  document.getElementById('vc-detail').classList.add('open');
+  renderVC();
+}
+renderVC();
+
+/* ============================================================
+   ACCORDION
+============================================================ */
+function toggleAccordion(btn){
+  const body=btn.nextElementSibling;
+  const isOpen=btn.getAttribute('aria-expanded')==='true';
+  document.querySelectorAll('.accordion-trigger[aria-expanded="true"]').forEach(b=>{
+    b.setAttribute('aria-expanded','false');b.nextElementSibling.classList.remove('open');
+  });
+  if(!isOpen){btn.setAttribute('aria-expanded','true');body.classList.add('open');}
+  markObjective(1);
+}
+
+/* ============================================================
+   TIER TOGGLE
+============================================================ */
+function toggleTier(row){
+  const detail=row.querySelector('.tier-detail');
+  const isOpen=detail.classList.contains('open');
+  document.querySelectorAll('.tier-detail.open').forEach(d=>d.classList.remove('open'));
+  document.querySelectorAll('.tier-expand').forEach(e=>e.textContent='▼ Details');
+  if(!isOpen){
+    detail.classList.add('open');
+    row.querySelector('.tier-expand').textContent='▲ Close';
+  }
+  markObjective(3);
+}
+
+/* ============================================================
+   ACTIVITY A — VENDOR TIERING
+============================================================ */
+const tierVendors = [
+  {name:"Ellucian Banner AI Early Alert (SIS)", desc:"Analyzes FERPA-protected enrollment and grade data to auto-flag at-risk students without human review.", correctTier:"1", options:["1","2","3"]},
+  {name:"Microsoft 365 Copilot (Productivity)", desc:"AI features across email, documents, and Teams; optional enterprise data protection tier available.", correctTier:"2", options:["1","2","3"]},
+  {name:"Grammarly Business (Writing Assistant)", desc:"Grammar and style AI for institutional communications; processes only document content, no student records.", correctTier:"3", options:["1","2","3"]},
+  {name:"Proctorio AI Remote Proctoring", desc:"Computer vision and behavioral AI to monitor students during exams; processes biometric and behavioral data; auto-flags for instructors.", correctTier:"1", options:["1","2","3"]},
+  {name:"Google Analytics 4 (Website Analytics)", desc:"Aggregated website traffic analytics with basic ML for audience insights; no PII processed for AI features.", correctTier:"3", options:["1","2","3"]}
+];
+const tierSelections = {};
+
+function buildTierActivity(){
+  const c = document.getElementById('tier-activity-vendors');
+  c.innerHTML = tierVendors.map((v,i)=>`
+    <div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--radius);padding:.9rem 1.1rem;margin:.6rem 0;">
+      <div style="font-weight:600;font-size:.93rem;margin-bottom:.25rem;">${v.name}</div>
+      <div style="font-size:.83rem;color:var(--c-text-mid);margin-bottom:.6rem;">${v.desc}</div>
+      <div style="display:flex;gap:.4rem;align-items:center;flex-wrap:wrap;">
+        <span style="font-size:.8rem;font-weight:600;color:var(--c-text-soft);">Assign tier:</span>
+        ${v.options.map(t=>`<button class="clause-chip" data-vidx="${i}" data-tier="${t}" onclick="selectTierVendor(this,${i},'${t}')" style="min-width:70px;">Tier ${t}</button>`).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+function selectTierVendor(btn,vidx,tier){
+  document.querySelectorAll(`[data-vidx="${vidx}"]`).forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  tierSelections[vidx]=tier;
+}
+function checkTierActivity(){
+  let correct=0;
+  tierVendors.forEach((v,i)=>{
+    const sel=tierSelections[i];
+    document.querySelectorAll(`[data-vidx="${i}"]`).forEach(b=>{
+      b.classList.remove('correct','incorrect');
+      if(b.dataset.tier===v.correctTier) b.classList.add('correct');
+      else if(b.classList.contains('selected')) b.classList.add('incorrect');
+    });
+    if(sel===v.correctTier) correct++;
+  });
+  const rb=document.getElementById('tier-result');
+  rb.classList.add('show');
+  if(correct===tierVendors.length){
+    rb.className='result-box show result-ok';
+    rb.innerHTML=`<span class="score-big">✓ ${correct}/${tierVendors.length}</span><br>Perfect tiering. You correctly classified every vendor. The green buttons show the correct tier for each.`;
+    markObjective(3);
+  } else if(correct>=3){
+    rb.className='result-box show result-partial';
+    rb.innerHTML=`<span class="score-big">${correct}/${tierVendors.length}</span><br>Mostly correct. Review the Data Sensitivity × AI Decision Influence matrix for the vendors you missed.`;
+  } else {
+    rb.className='result-box show result-miss';
+    rb.innerHTML=`<span class="score-big">${correct}/${tierVendors.length}</span><br>Review the tiering matrix in Module 4 — focus on what makes a system Tier 1 (high influence AND high sensitivity).`;
+  }
+}
+function resetTierActivity(){
+  Object.keys(tierSelections).forEach(k=>delete tierSelections[k]);
+  document.querySelectorAll('.clause-chip[data-vidx]').forEach(b=>b.classList.remove('selected','correct','incorrect'));
+  const rb=document.getElementById('tier-result');
+  rb.className='result-box';rb.innerHTML='';
+}
+buildTierActivity();
+
+/* ============================================================
+   VENDOR ASSESSMENT QUESTIONNAIRE
+============================================================ */
+const vqDomains = [
+  {
+    name:"🤖 AI Model Transparency",
+    color:var(--c-accent),
+    qs:[
+      {text:"What specific AI model (name, version, provider) powers the AI features in this product?", risk:"h"},
+      {text:"Does the vendor provide or commit to providing an AIBOM for the AI system?", risk:"h"},
+      {text:"Is a model card or equivalent documentation available for each AI model used?", risk:"h"},
+      {text:"What was the training data for the AI model? Is provenance documented?", risk:"h"},
+      {text:"Has the AI model been evaluated for bias across demographic subgroups relevant to our use case?", risk:"h"},
+      {text:"What is the model version pinning policy — can we lock to a specific version?", risk:"m"}
+    ]
+  },
+  {
+    name:"📊 Data Handling & Privacy",
+    qs:[
+      {text:"Is customer data used to train, fine-tune, or improve the vendor's AI models?", risk:"h"},
+      {text:"Where does AI inference occur — within the customer's tenant or on shared infrastructure?", risk:"h"},
+      {text:"What data is retained from AI queries, and for how long?", risk:"h"},
+      {text:"Is the existing data processing agreement (DPA) updated to cover AI inference processing?", risk:"h"},
+      {text:"Does the vendor use a third-party inference provider (e.g., OpenAI API)? If so, does the sub-processor agreement cover AI data handling?", risk:"h"},
+      {text:"How does the vendor handle data subject deletion requests that affect AI model training data?", risk:"m"}
+    ]
+  },
+  {
+    name:"🔐 Security & Architecture",
+    qs:[
+      {text:"Does the vendor have a SOC 2 Type II report? Does it include AI-specific trust service criteria?", risk:"h"},
+      {text:"Has the AI system undergone adversarial testing (red teaming, prompt injection testing)?", risk:"h"},
+      {text:"How is the AI model protected from unauthorized access or modification (model weight security)?", risk:"m"},
+      {text:"Is there a content filtering layer between user inputs and the AI model?", risk:"m"},
+      {text:"What AI-specific security controls are in place for the inference pipeline?", risk:"m"},
+      {text:"What is the vendor's penetration testing cadence for AI components?", risk:"l"}
+    ]
+  },
+  {
+    name:"🔔 Incident Response & Change Management",
+    qs:[
+      {text:"What is the vendor's SLA for notifying customers of AI-specific security incidents?", risk:"h"},
+      {text:"Does the vendor have rollback capability for AI model changes?", risk:"h"},
+      {text:"What is the vendor's process for notifying customers of material AI feature changes or model updates?", risk:"h"},
+      {text:"Has the vendor experienced any AI-related security incidents in the past 24 months? If so, what was disclosed?", risk:"m"},
+      {text:"Does the vendor have an AI-specific incident response plan?", risk:"m"},
+      {text:"What regulatory reporting obligations does the vendor carry for AI incidents affecting customers?", risk:"l"}
+    ]
+  },
+  {
+    name:"⚖️ Regulatory Compliance & Role Determination",
+    qs:[
+      {text:"Has the vendor completed a EU AI Act risk tier classification for the AI system used in our deployment context?", risk:"h"},
+      {text:"If the system is high-risk under EU AI Act, has the vendor completed a conformity assessment?", risk:"h"},
+      {text:"Can the vendor provide a Declaration of Conformity for Annex III high-risk systems?", risk:"m"},
+      {text:"Does the vendor's contract address FERPA, HIPAA, or other sector-specific regulations applicable to our use case?", risk:"h"},
+      {text:"Has the vendor assessed whether their AI system triggers any US state AI regulation obligations (Illinois, Colorado, Texas, New York)?", risk:"m"},
+      {text:"Does the vendor maintain technical documentation per EU AI Act Article 11 requirements?", risk:"m"}
+    ]
+  },
+  {
+    name:"🏛️ Governance & Oversight",
+    qs:[
+      {text:"Does the vendor provide human oversight mechanisms — e.g., ability for the deployer to review, override, or disable AI decisions?", risk:"h"},
+      {text:"Is there an audit trail for AI-influenced decisions affecting individuals?", risk:"h"},
+      {text:"Does the vendor provide explainability for AI-generated outputs in high-stakes use cases?", risk:"m"},
+      {text:"What AI literacy or training does the vendor provide for deploying organizations?", risk:"l"},
+      {text:"Does the vendor have an AI ethics committee or governance board?", risk:"l"},
+      {text:"Does the vendor publish an AI transparency report or AI system card?", risk:"l"}
+    ]
+  }
+];
+
+const vqChecked = {};
+
+function buildVQ(){
+  const c=document.getElementById('vq-container');
+  c.innerHTML=vqDomains.map((d,di)=>`
+    <div class="vq-domain">
+      <div class="vq-domain-header" onclick="toggleVQDomain(this)">
+        <span>${d.name}</span>
+        <span style="font-size:.8rem;color:var(--c-text-soft);" id="vq-dom-score-${di}">0/${d.qs.length} confirmed</span>
+      </div>
+      <div class="vq-domain-body" id="vq-body-${di}">
+        ${d.qs.map((q,qi)=>`
+          <div class="vq-q">
+            <input type="checkbox" class="vq-check" id="vqc-${di}-${qi}"
+              onchange="updateVQScore(${di},${qi},this.checked)"
+              aria-label="${q.text}">
+            <span class="vq-q-text">${q.text}
+              <span class="vq-risk ${q.risk==='h'?'vq-r-h':q.risk==='m'?'vq-r-m':'vq-r-l'}">${q.risk.toUpperCase()} RISK</span>
+            </span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+function toggleVQDomain(header){
+  const body=header.nextElementSibling;
+  body.classList.toggle('open');
+  markObjective(4);
+}
+function updateVQScore(di,qi,checked){
+  if(!vqChecked[di]) vqChecked[di]={};
+  vqChecked[di][qi]=checked;
+  const confirmed=Object.values(vqChecked[di]||{}).filter(Boolean).length;
+  document.getElementById(`vq-dom-score-${di}`).textContent=`${confirmed}/${vqDomains[di].qs.length} confirmed`;
+  const total=Object.values(vqChecked).reduce((a,d)=>a+Object.values(d).filter(Boolean).length,0);
+  const max=vqDomains.reduce((a,d)=>a+d.qs.length,0);
+  document.getElementById('vq-live-score').textContent=`Total confirmed: ${total} of ${max} items`;
+  markObjective(4);
+}
+function scoreVQ(){
+  const total=Object.values(vqChecked).reduce((a,d)=>a+Object.values(d).filter(Boolean).length,0);
+  const max=vqDomains.reduce((a,d)=>a+d.qs.length,0);
+  const highRiskTotal=vqDomains.reduce((a,d)=>a+d.qs.filter(q=>q.risk==='h').length,0);
+  const highConfirmed=vqDomains.reduce((a,d,di)=>a+d.qs.filter((q,qi)=>q.risk==='h'&&vqChecked[di]&&vqChecked[di][qi]).length,0);
+  const pct=Math.round(total/max*100);
+  const rb=document.getElementById('vq-result');rb.classList.add('show');
+  if(pct>=85&&highConfirmed>=highRiskTotal*0.9){
+    rb.className='result-box show result-ok';
+    rb.innerHTML=`<span class="score-big">${total}/${max} (${pct}%)</span><br>Comprehensive assessment. ${highConfirmed}/${highRiskTotal} high-risk items confirmed. This vendor has provided adequate evidence for a Tier 1 assessment. Screenshot for your artifact.`;
+    markObjective(4);
+  } else if(highConfirmed<Math.ceil(highRiskTotal*0.7)){
+    rb.className='result-box show result-miss';
+    rb.innerHTML=`<span class="score-big">${total}/${max} (${pct}%)</span><br>⚠ Critical gaps: Only ${highConfirmed}/${highRiskTotal} HIGH RISK items confirmed. A vendor that cannot answer these questions should not be approved for Tier 1 deployment without remediation plan.`;
+  } else {
+    rb.className='result-box show result-partial';
+    rb.innerHTML=`<span class="score-big">${total}/${max} (${pct}%)</span><br>Partial evidence: ${highConfirmed}/${highRiskTotal} high-risk items confirmed. The unconfirmed high-risk items represent open governance gaps that should be tracked to closure before or shortly after deployment.`;
+  }
+}
+function resetVQ(){
+  Object.keys(vqChecked).forEach(k=>delete vqChecked[k]);
+  document.querySelectorAll('.vq-check').forEach(c=>c.checked=false);
+  vqDomains.forEach((_,di)=>{ const el=document.getElementById(`vq-dom-score-${di}`); if(el) el.textContent=`0/${vqDomains[di].qs.length} confirmed`; });
+  document.getElementById('vq-live-score').textContent='';
+  const rb=document.getElementById('vq-result');rb.className='result-box';rb.innerHTML='';
+}
+buildVQ();
+
+/* ============================================================
+   CONTRACT CLAUSE LAB
+============================================================ */
+const clauseScenarios = [
+  {
+    title:"Scenario: Tier 1 — AI Student Risk Prediction System",
+    desc:"MVCC is contracting with an edtech vendor to deploy an AI system that analyzes FERPA-protected student data to predict dropout risk and automatically generate advising interventions. The vendor uses a proprietary fine-tuned model.",
+    allClauses:[
+      {text:"AIBOM Delivery & Update",correct:true},
+      {text:"Data Use Restriction for AI Training",correct:true},
+      {text:"Material AI Change Notification (30 days)",correct:true},
+      {text:"Audit Rights & AI Testing",correct:true},
+      {text:"AI Incident Notification SLA (24hr)",correct:true},
+      {text:"Standard SLA & Uptime Guarantee",correct:false},
+      {text:"Volume Discount Pricing Schedule",correct:false},
+      {text:"UI Customization Rights",correct:false},
+    ],
+    rationale:"For a Tier 1 FERPA-touching AI system with automated interventions, all five AI-governance clauses are essential. AIBOM confirms model provenance; data use restriction prevents FERPA data from training shared models; change notification ensures governance review before model updates affect students; audit rights enable bias verification; incident SLA of 24hr applies because AI errors affecting student records require urgent response."
+  },
+  {
+    title:"Scenario: Tier 2 — Microsoft 365 Copilot Deployment",
+    desc:"MVCC is activating Microsoft 365 Copilot for faculty. The system will access email, SharePoint documents, and Teams transcripts. Microsoft offers an enterprise data protection tier that restricts training on customer data.",
+    allClauses:[
+      {text:"Data Use Restriction for AI Training",correct:true},
+      {text:"Material AI Change Notification",correct:true},
+      {text:"AI Incident Notification SLA (72hr)",correct:true},
+      {text:"Data Scope Restriction (AI features limited to non-FERPA data)",correct:true},
+      {text:"AIBOM Delivery",correct:false},
+      {text:"On-Site Audit Rights",correct:false},
+      {text:"Marketing Co-Branding Rights",correct:false},
+      {text:"Hardware Warranty",correct:false},
+    ],
+    rationale:"For Tier 2, data use restriction is essential (prevent Microsoft from training on institutional data), material change notification is essential (new Copilot features could process regulated data without warning), and incident notification SLA (72hr is appropriate for Tier 2). Data scope restriction (limiting AI to non-FERPA SharePoint folders) is operationally critical. Full AIBOM and on-site audit rights are impractical for a hyperscale vendor; Microsoft's published AI transparency reports and enterprise terms substitute."
+  }
+];
+let clauseScenarioIdx = 0;
+const clauseSelections = new Set();
+
+function buildClauseLab(){
+  const s = clauseScenarios[clauseScenarioIdx];
+  const shuffled = [...s.allClauses].sort(()=>Math.random()-.5);
+  document.getElementById('clause-lab-container').innerHTML = `
+    <div class="scenario-card"><strong>${s.title}:</strong> ${s.desc}</div>
+    <p style="font-size:.88rem;margin:.6rem 0;"><strong>Select all clauses that are ESSENTIAL (not merely helpful) for this vendor relationship:</strong></p>
+    <div class="clause-palette" id="clause-palette">
+      ${shuffled.map((cl,i)=>`<span class="clause-chip" data-idx="${i}" data-correct="${cl.correct}" onclick="toggleClause(this)">${cl.text}</span>`).join('')}
+    </div>
+  `;
+  clauseSelections.clear();
+  markObjective(5);
+}
+function toggleClause(chip){
+  const idx=chip.dataset.idx;
+  if(chip.classList.contains('selected')){chip.classList.remove('selected');clauseSelections.delete(idx);}
+  else{chip.classList.add('selected');clauseSelections.add(idx);}
+}
+function scoreClauseLab(){
+  const s=clauseScenarios[clauseScenarioIdx];
+  const shuffled=[...s.allClauses].sort(()=>Math.random()-.5); // need same order as rendered
+  // re-gather by data-correct attribute
+  const chips=document.querySelectorAll('#clause-palette .clause-chip');
+  let correct=0,total=0;
+  chips.forEach(chip=>{
+    const isCorrect=chip.dataset.correct==='true';
+    const selected=chip.classList.contains('selected');
+    chip.classList.remove('correct','incorrect');
+    if(isCorrect){
+      total++;
+      chip.classList.add('correct');
+      if(selected) correct++;
+    } else if(selected){
+      chip.classList.add('incorrect');
+    }
+  });
+  const rb=document.getElementById('clause-result');rb.classList.add('show');
+  if(correct===total&&![...chips].some(c=>c.dataset.correct==='false'&&c.classList.contains('selected'))){
+    rb.className='result-box show result-ok';
+    rb.innerHTML=`<span class="score-big">✓ ${correct}/${total} essential clauses selected — no false positives.</span><br>${s.rationale}`;
+    markObjective(5);
+  } else {
+    const fp=[...chips].filter(c=>c.dataset.correct==='false'&&c.classList.contains('selected')).length;
+    rb.className='result-box show result-partial';
+    rb.innerHTML=`<span class="score-big">${correct}/${total} essential clauses (${fp} incorrect inclusions).</span><br>${s.rationale}`;
+  }
+}
+function resetClauseLab(){
+  clauseScenarioIdx=(clauseScenarioIdx+1)%clauseScenarios.length;
+  const rb=document.getElementById('clause-result');rb.className='result-box';rb.innerHTML='';
+  buildClauseLab();
+}
+buildClauseLab();
+
+/* ============================================================
+   QUIZ
+============================================================ */
+const quizAnswers={
+  q1:{correct:'c',feedback:{c:'✓ Correct. A deployer uses an AI system under their own authority without substantially modifying it or placing their own brand on it. The vendor remains the provider. The deployer still has obligations — human oversight, AI literacy, log retention, monitoring — but the full conformity assessment burden remains with the provider.',default:'✗ The correct answer is C. A deployer is the entity that uses the AI system as-is, under their own authority. Provider obligations apply to the entity that developed the system and placed it on the market.'}},
+  q2:{correct:'b',feedback:{b:'✓ Correct. Fine-tuning on institutional student data for a specific high-risk purpose (student success prediction) is a substantial modification that triggers Article 25 provider obligations. The college is now responsible for full technical documentation, risk management, conformity assessment, post-market monitoring, and incident reporting — obligations designed for commercial AI companies, not community college IT departments.',default:'✗ The correct answer is B. Article 25 triggers provider status when an organization substantially modifies a high-risk AI system. Fine-tuning on regulated data for a specific high-risk purpose meets this threshold.'}},
+  q3:{correct:'d',feedback:{d:'✓ Correct. EU AI Act deployer obligations apply when you are using a high-risk AI system under your own authority — regardless of whether the deployment was intentional. An HR AI tool that influences employment decisions falls within Annex III high-risk categories. The enterprise customers must now implement human oversight, retain logs, and meet all other deployer obligations even if they never asked for the feature.',default:'✗ The correct answer is D. Regulatory obligations are triggered by the deployment fact, not by intent. An AI system processing employee data for performance decisions is likely high-risk under Annex III — and deployer obligations apply from the moment of deployment.'}},
+  q4:{correct:'a',feedback:{a:'✓ Correct. An AI tutoring platform that processes individual student learning records, generates adaptive feedback, and influences course progression falls squarely in the Tier 1 (Critical) classification: high AI decision influence on individuals + high data sensitivity (FERPA-protected learning records). The absence of human review before recommendations reach students amplifies the risk.',default:'✗ The correct answer is A. Tier 1 classification requires high AI decision influence on individuals AND high data sensitivity. The tutoring platform meets both criteria; the other options involve low influence, low sensitivity, or both.'}},
+  q5:{correct:'c',feedback:{c:'✓ Correct. The data use restriction for AI training clause is the only clause that directly and explicitly prohibits the vendor from using customer data to train AI models. The AIBOM clause documents what training data was used (detection after the fact); the change notification clause requires prior notice (but only if the vendor plans to notify); the audit rights clause may detect unauthorized use — but after it has already occurred.',default:'✗ The correct answer is C. Prevention requires an explicit contractual prohibition. The data use restriction clause directly prohibits the training use; other clauses may enable detection but not prevention.'}},
+  q6:{correct:'b',feedback:{b:'✓ Correct. AI backdoors are specifically designed to be undetectable during standard evaluation: the trigger pattern is absent from evaluation datasets, so the model performs correctly in all routine testing. The backdoor only activates when the specific trigger is encountered in production — which may not occur until the attacker deliberately introduces the trigger through a user input or a poisoned document in a RAG pipeline.',default:'✗ The correct answer is B. The stealth of AI backdoors comes from trigger-based activation — the backdoor is dormant during evaluation and activates only on a specific input pattern that evaluators are not testing for. This is what makes Layer 3 supply chain attacks particularly dangerous.'}}
+};
+
+function gradeQuiz(){
+  const qs=document.querySelectorAll('#quiz-container .quiz-q');
+  let score=0;
+  qs.forEach(q=>{
+    const qname=q.querySelector('input[type=radio]').name;
+    const qdata=quizAnswers[qname];
+    const selected=q.querySelector(`input[name="${qname}"]:checked`);
+    const feedback=document.getElementById(`qfb-${qname.replace('q','')}`);
+    q.querySelectorAll('li').forEach(li=>li.classList.remove('correct','wrong'));
+    if(selected){
+      const val=selected.value;
+      if(val===qdata.correct){
+        score++;
+        selected.closest('li').classList.add('correct');
+        feedback.className='quiz-feedback show';feedback.style.background='var(--c-green-light)';feedback.style.color='var(--c-green)';
+        feedback.textContent=qdata.feedback[val]||qdata.feedback.default;
+      } else {
+        selected.closest('li').classList.add('wrong');
+        q.querySelector(`input[value="${qdata.correct}"]`).closest('li').classList.add('correct');
+        feedback.className='quiz-feedback show';feedback.style.background='#fff0f0';feedback.style.color='#c00';
+        feedback.textContent=qdata.feedback[val]||qdata.feedback.default;
+      }
+    } else {
+      feedback.className='quiz-feedback show';feedback.style.background='#fff0f0';feedback.style.color='#c00';
+      feedback.textContent='— No answer selected. '+qdata.feedback.default;
+    }
+  });
+  const panel=document.getElementById('quiz-score-panel');
+  panel.className='quiz-score-panel show';
+  const pct=Math.round(score/6*100);
+  const msg=score>=5?'🏆 Excellent — strong mastery of Day 12 content.':score>=4?'✅ Good — review questions you missed before the assessment.':'📚 Review Modules 2, 4, and 5 before attempting the assessment artifact.';
+  panel.innerHTML=`<div class="qs-big">${score} / 6</div><div class="qs-label">${pct}% — ${msg}</div>`;
+  if(score>=5) markObjective(4);
+}
+function resetQuiz(){
+  document.querySelectorAll('#quiz-container input[type=radio]').forEach(r=>r.checked=false);
+  document.querySelectorAll('#quiz-container li').forEach(li=>li.classList.remove('correct','wrong'));
+  document.querySelectorAll('.quiz-feedback').forEach(fb=>{fb.className='quiz-feedback';fb.textContent='';});
+  document.getElementById('quiz-score-panel').className='quiz-score-panel';
+}
+
+/* ============================================================
+   OBJECTIVE TRACKER
+============================================================ */
+const completedObjs=new Set();
+const objLabels=['Map the AI value chain','Distinguish provider/deployer/importer roles','Identify embedded AI risks','Apply vendor tiering framework','Conduct AI vendor assessment','Identify governance contract clauses'];
+function markObjective(idx){
+  completedObjs.add(idx);
+  const count=completedObjs.size;
+  document.getElementById('obj-count').textContent=count;
+  document.getElementById('obj-bar').style.width=Math.round(count/6*100)+'%';
+  document.getElementById('rail-obj-count').textContent=count+' of 6 completed';
+  const railList=document.getElementById('rail-obj-list');
+  if(railList) railList.querySelectorAll('li').forEach((li,i)=>{ li.textContent=(completedObjs.has(i)?'✅ ':'☐ ')+objLabels[i]; });
+}
+// Auto-mark on flip card interactions
+document.querySelectorAll('#m1 .flip-card').forEach(c=>c.addEventListener('click',()=>markObjective(0)));
+document.querySelectorAll('#m3 .accordion-trigger').forEach(b=>b.addEventListener('click',()=>markObjective(2)));
+</script>
+</body>
+</html>
