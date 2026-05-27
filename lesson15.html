@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI-103 Lesson 15 — Synthesis & Final Capstone Presentations. AI Security Program Pack presentation integrating all 15 days: NIST AI RMF, EU AI Act, threat landscape, architecture, governance, vendor risk, IR, and red teaming.">
+<title>AI-103 · Day 15: Synthesis &amp; Final Capstone Presentations</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,300&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root {
+    --c-bg:#ffffff;--c-surface:#f8f7f5;--c-surface2:#f0ede8;--c-border:#ddd8d0;
+    --c-text:#1a1714;--c-text-mid:#4a4440;--c-text-soft:#7a7370;
+    --c-accent:#7c1c1c;--c-accent-light:#f5eded;--c-accent-mid:#b85c5c;
+    --c-green:#1a5c3a;--c-green-light:#eef7f2;
+    --c-blue:#1a3a5c;--c-blue-light:#eef3f8;
+    --c-gold:#8a6a10;--c-gold-light:#fdf7e8;
+    --c-purple:#4a1a7c;--c-purple-light:#f2eef8;
+    --c-warn:#7a3c00;--c-warn-light:#fdf0e8;
+    --c-teal:#0d5c5c;--c-teal-light:#eaf6f6;
+    --font-serif:'Fraunces',Georgia,serif;
+    --font-sans:'IBM Plex Sans',system-ui,sans-serif;
+    --font-mono:'IBM Plex Mono',monospace;
+    --radius:8px;--shadow:0 2px 12px rgba(0,0,0,.08);--shadow-lg:0 8px 32px rgba(0,0,0,.14);--max-w:900px;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--font-sans);background:var(--c-bg);color:var(--c-text);font-size:16px;line-height:1.7;}
+  .skip{position:absolute;left:-9999px;top:0;}.skip:focus{left:0;padding:.5rem 1rem;background:var(--c-accent);color:#fff;z-index:999;}
+
+  .site-bar{background:var(--c-surface);border-bottom:1px solid var(--c-border);padding:.6rem 1.5rem;font-size:.78rem;color:var(--c-text-soft);display:flex;flex-wrap:wrap;gap:.4rem .8rem;align-items:center;}
+  .site-bar a{color:var(--c-accent);text-decoration:none;}
+  .site-bar a:hover{text-decoration:underline;}
+
+  .lesson-nav{background:var(--c-surface);border-bottom:1px solid var(--c-border);padding:.6rem 1.5rem;display:flex;flex-wrap:wrap;gap:.4rem .2rem;align-items:center;font-size:.82rem;position:sticky;top:0;z-index:40;}
+  .lesson-nav a{color:var(--c-text-mid);text-decoration:none;padding:.2rem .5rem;border-radius:4px;transition:background .15s;}
+  .lesson-nav a:hover{background:var(--c-border);color:var(--c-accent);}
+  .lesson-nav .sep{color:var(--c-border);user-select:none;}
+
+  /* Hero — celebratory final-lesson treatment */
+  .lesson-hero{padding:3.5rem 1.5rem 2.5rem;border-bottom:3px solid var(--c-accent);background:linear-gradient(150deg,#1a1714 0%,#3a2020 50%,#1a1714 100%);position:relative;overflow:hidden;}
+  .lesson-hero::after{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='1' fill='rgba(255,255,255,0.04)'/%3E%3C/svg%3E") repeat;pointer-events:none;}
+  .lesson-meta-top{font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--c-accent-mid);font-weight:600;margin-bottom:1rem;position:relative;z-index:1;}
+  .lesson-hero h1{font-family:var(--font-serif);font-size:clamp(2rem,4vw,3rem);font-weight:700;line-height:1.15;color:#fff;max-width:780px;margin-bottom:.8rem;position:relative;z-index:1;}
+  .lesson-hero .subtitle{font-size:1.05rem;color:rgba(255,255,255,.7);max-width:720px;font-style:italic;font-family:var(--font-serif);font-weight:300;margin-bottom:1.5rem;position:relative;z-index:1;}
+  .meta-badges{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem;position:relative;z-index:1;}
+  .badge{display:inline-flex;align-items:center;gap:.3rem;background:rgba(255,255,255,.1);color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:.25rem .75rem;font-size:.78rem;font-weight:600;}
+
+  main{padding:0 1.5rem;}
+  .page-with-rail{display:grid;grid-template-columns:1fr 220px;gap:2.5rem;align-items:start;}
+  section{padding:3rem 0 2rem;border-bottom:1px solid var(--c-border);}
+  section:last-child{border-bottom:none;}
+  h2{font-family:var(--font-serif);font-size:1.7rem;font-weight:700;color:var(--c-text);margin-bottom:.3rem;}
+  h2 .sec-num{font-family:var(--font-sans);font-size:.78rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--c-accent);display:block;margin-bottom:.3rem;}
+  h3{font-family:var(--font-serif);font-size:1.2rem;font-weight:600;color:var(--c-text);margin:1.8rem 0 .6rem;}
+  p{margin-bottom:1rem;}p:last-child{margin-bottom:0;}
+  strong{font-weight:600;}em{font-style:italic;}
+
+  /* Part headers */
+  .part-header{background:var(--c-text);color:#fff;border-radius:var(--radius);padding:1.2rem 1.5rem;margin:2rem -1.5rem 1rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;}
+  .part-header .part-label{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;opacity:.7;}
+  .part-header h2{font-size:1.2rem;color:#fff;font-family:var(--font-sans);margin:0;}
+  .part-header .part-time{font-size:.85rem;opacity:.8;background:rgba(255,255,255,.15);padding:.2rem .7rem;border-radius:999px;}
+
+  /* Callouts */
+  .callout{border-radius:var(--radius);padding:1.2rem 1.5rem;margin:1.5rem 0;border-left:4px solid;}
+  .callout-analogy{background:var(--c-gold-light);border-color:var(--c-gold);}
+  .callout-key{background:var(--c-blue-light);border-color:var(--c-blue);}
+  .callout-warn{background:var(--c-warn-light);border-color:var(--c-warn);}
+  .callout-green{background:var(--c-green-light);border-color:var(--c-green);}
+  .callout-accent{background:var(--c-accent-light);border-color:var(--c-accent);}
+  .callout-teal{background:var(--c-teal-light);border-color:var(--c-teal);}
+  .callout-dark{background:var(--c-surface);border-color:var(--c-text);}
+  .callout-title{font-weight:700;margin-bottom:.4rem;display:flex;align-items:center;gap:.5rem;}
+
+  /* Course map — 15-day visual */
+  .course-map{display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem;margin:1.5rem 0;}
+  .cm-day{border-radius:var(--radius);padding:.7rem .5rem;text-align:center;cursor:pointer;transition:box-shadow .2s,transform .15s;border:2px solid transparent;}
+  .cm-day:hover,.cm-day.active{box-shadow:var(--shadow-lg);transform:translateY(-2px);border-color:var(--c-accent);}
+  .cm-day .cm-num{font-family:var(--font-serif);font-size:1.4rem;font-weight:700;line-height:1;color:#fff;}
+  .cm-day .cm-label{font-size:.65rem;font-weight:600;color:rgba(255,255,255,.8);margin-top:.25rem;line-height:1.2;}
+  .cm-unit1{background:linear-gradient(135deg,#1a5c3a,#0d3a22);}
+  .cm-unit2{background:linear-gradient(135deg,#1a3a5c,#0d2238);}
+  .cm-unit3{background:linear-gradient(135deg,#7c1c1c,#4a0e0e);}
+  .cm-unit4{background:linear-gradient(135deg,#4a1a7c,#2d0d4a);}
+  .cm-unit5{background:linear-gradient(135deg,#1a1714,#3a2020);}
+  .cm-tooltip{display:none;background:var(--c-text);color:#fff;border-radius:var(--radius);padding:1rem 1.2rem;margin-top:.6rem;font-size:.83rem;grid-column:1/-1;animation:fadeIn .2s ease;}
+  .cm-tooltip.show{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+
+  /* Trustworthiness wheel */
+  .trustworthy-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin:1.5rem 0;}
+  .tw-card{border-radius:var(--radius);padding:1.1rem 1.2rem;border:2px solid var(--c-border);cursor:pointer;transition:all .2s;}
+  .tw-card:hover{border-color:var(--c-accent);box-shadow:var(--shadow);}
+  .tw-card.expanded{border-color:var(--c-accent);background:var(--c-accent-light);}
+  .tw-icon{font-size:1.6rem;margin-bottom:.4rem;}
+  .tw-name{font-weight:700;font-size:.95rem;margin-bottom:.2rem;}
+  .tw-tagline{font-size:.78rem;color:var(--c-text-soft);}
+  .tw-detail{display:none;margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--c-border);font-size:.83rem;line-height:1.6;}
+  .tw-detail.open{display:block;animation:fadeIn .2s ease;}
+  .tw-lesson-ref{display:inline-block;background:var(--c-accent);color:#fff;font-size:.7rem;border-radius:4px;padding:.1rem .4rem;margin-top:.4rem;font-weight:600;}
+
+  /* Capstone pack components */
+  .pack-grid{display:grid;gap:1rem;margin:1.5rem 0;}
+  .pack-item{border:2px solid var(--c-border);border-radius:var(--radius);overflow:hidden;display:grid;grid-template-columns:auto 1fr;}
+  .pack-num{background:var(--c-accent);color:#fff;font-family:var(--font-serif);font-size:1.6rem;font-weight:700;width:3rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .pack-body{padding:1rem 1.2rem;}
+  .pack-title{font-weight:700;font-size:.95rem;margin-bottom:.2rem;}
+  .pack-desc{font-size:.85rem;color:var(--c-text-mid);margin-bottom:.4rem;}
+  .pack-req{font-size:.8rem;font-family:var(--font-mono);background:var(--c-surface);border:1px solid var(--c-border);border-radius:4px;padding:.25rem .5rem;display:inline-block;}
+  .pack-lesson-tags{display:flex;flex-wrap:wrap;gap:.25rem;margin-top:.4rem;}
+  .pack-lesson-tag{background:var(--c-surface2);border:1px solid var(--c-border);border-radius:4px;padding:.1rem .35rem;font-size:.7rem;font-weight:600;color:var(--c-text-mid);}
+
+  /* Self-assessment rubric */
+  .rubric-table{width:100%;border-collapse:collapse;font-size:.84rem;margin:1.2rem 0;}
+  .rubric-table th{background:var(--c-text);color:#fff;padding:.6rem .8rem;text-align:left;font-size:.8rem;font-weight:600;}
+  .rubric-table td{padding:.6rem .8rem;border-bottom:1px solid var(--c-border);vertical-align:top;}
+  .rubric-table tr:nth-child(even) td{background:var(--c-surface);}
+  .rubric-table td:first-child{font-weight:600;width:20%;}
+  .rb-ex{background:var(--c-green-light);color:var(--c-green);border-radius:4px;padding:.1rem .3rem;font-size:.72rem;font-weight:700;}
+  .rb-pr{background:var(--c-blue-light);color:var(--c-blue);border-radius:4px;padding:.1rem .3rem;font-size:.72rem;font-weight:700;}
+  .rb-de{background:var(--c-gold-light);color:var(--c-gold);border-radius:4px;padding:.1rem .3rem;font-size:.72rem;font-weight:700;}
+  .rb-be{background:var(--c-accent-light);color:var(--c-accent);border-radius:4px;padding:.1rem .3rem;font-size:.72rem;font-weight:700;}
+
+  /* Peer review form */
+  .peer-card{background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--radius);padding:1.2rem;margin:.8rem 0;}
+  .peer-card h4{font-family:var(--font-serif);font-size:1rem;font-weight:600;margin-bottom:.8rem;}
+  .peer-field{margin-bottom:.8rem;}
+  .peer-field label{display:block;font-size:.78rem;font-weight:700;color:var(--c-text-soft);text-transform:uppercase;letter-spacing:.04em;margin-bottom:.25rem;}
+  .peer-field textarea,.peer-field input{width:100%;border:1px solid var(--c-border);border-radius:6px;padding:.45rem .7rem;font-family:var(--font-sans);font-size:.87rem;background:var(--c-bg);color:var(--c-text);transition:border-color .15s;}
+  .peer-field textarea{min-height:70px;resize:vertical;}
+  .peer-field textarea:focus,.peer-field input:focus{outline:none;border-color:var(--c-accent);}
+  .star-row{display:flex;gap:.3rem;margin-top:.2rem;}
+  .star{font-size:1.3rem;cursor:pointer;opacity:.3;transition:opacity .15s;}
+  .star.lit{opacity:1;}
+
+  /* Synthesis self-check */
+  .synthesis-check{background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--radius);padding:1.2rem;margin:1rem 0;}
+  .sc-item{display:flex;align-items:flex-start;gap:.7rem;padding:.4rem 0;border-bottom:1px dashed var(--c-border);font-size:.88rem;}
+  .sc-item:last-child{border-bottom:none;}
+  .sc-item input[type=checkbox]{flex-shrink:0;margin-top:.2rem;accent-color:var(--c-accent);width:16px;height:16px;}
+  .sc-progress{margin-top:.8rem;font-size:.82rem;color:var(--c-text-soft);}
+  .sc-bar-wrap{background:var(--c-surface2);border-radius:999px;height:6px;margin-top:.3rem;}
+  .sc-bar{background:var(--c-accent);height:6px;border-radius:999px;transition:width .4s;width:0%;}
+
+  /* Next steps cards */
+  .next-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin:1.5rem 0;}
+  .next-card{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--c-border);}
+  .next-card-header{padding:.9rem 1.1rem;color:#fff;font-weight:700;font-size:.9rem;display:flex;align-items:center;gap:.5rem;}
+  .next-card-body{padding:.8rem 1.1rem;background:var(--c-bg);font-size:.83rem;border-top:none;}
+  .next-card-body ul{padding-left:1.1rem;}
+  .next-card-body li{margin-bottom:.3rem;}
+  .nc-green .next-card-header{background:var(--c-green);}
+  .nc-blue .next-card-header{background:var(--c-blue);}
+  .nc-purple .next-card-header{background:var(--c-purple);}
+  .nc-gold .next-card-header{background:var(--c-gold);}
+  .nc-teal .next-card-header{background:var(--c-teal);}
+
+  /* Accordion */
+  .accordion{margin:1rem 0;border-radius:var(--radius);overflow:hidden;border:1px solid var(--c-border);}
+  .accordion-item{border-bottom:1px solid var(--c-border);}
+  .accordion-item:last-child{border-bottom:none;}
+  .accordion-trigger{width:100%;text-align:left;background:var(--c-surface);border:none;padding:1rem 1.2rem;font-family:var(--font-sans);font-size:.95rem;font-weight:600;color:var(--c-text);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:.5rem;transition:background .15s;}
+  .accordion-trigger:hover{background:var(--c-surface2);}
+  .accordion-trigger .ti{font-size:.8rem;color:var(--c-accent);transition:transform .3s;}
+  .accordion-trigger[aria-expanded="true"] .ti{transform:rotate(180deg);}
+  .accordion-trigger[aria-expanded="true"]{background:var(--c-accent-light);color:var(--c-accent);}
+  .trigger-meta{display:flex;align-items:center;gap:.5rem;}
+  .t-tag{font-size:.72rem;font-weight:600;background:var(--c-accent);color:#fff;border-radius:999px;padding:.1rem .5rem;}
+  .t-tag.green{background:var(--c-green);}
+  .t-tag.blue{background:var(--c-blue);}
+  .accordion-body{display:none;padding:1.2rem 1.5rem;background:var(--c-bg);border-top:2px solid var(--c-accent);font-size:.93rem;}
+  .accordion-body.open{display:block;animation:fadeIn .2s ease;}
+
+  /* Stat grid */
+  .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.8rem;margin:1.2rem 0;}
+  .stat-block{text-align:center;background:var(--c-surface);border-radius:var(--radius);padding:1rem;border:1px solid var(--c-border);}
+  .stat-num{font-family:var(--font-serif);font-size:2rem;font-weight:700;color:var(--c-accent);line-height:1;}
+  .stat-desc{font-size:.75rem;color:var(--c-text-soft);margin-top:.3rem;}
+
+  /* Buttons */
+  .btn-primary{background:var(--c-accent);color:#fff;border:none;border-radius:var(--radius);padding:.55rem 1.3rem;font-family:var(--font-sans);font-size:.9rem;font-weight:600;cursor:pointer;transition:filter .15s;}
+  .btn-primary:hover{filter:brightness(.85);}
+  .btn-secondary{background:var(--c-surface);color:var(--c-text);border:1px solid var(--c-border);border-radius:var(--radius);padding:.55rem 1.3rem;font-family:var(--font-sans);font-size:.9rem;font-weight:600;cursor:pointer;transition:background .15s;margin-left:.5rem;}
+  .btn-secondary:hover{background:var(--c-surface2);}
+
+  /* Final quiz */
+  .fq-q{background:var(--c-surface);border-radius:var(--radius);padding:1.2rem 1.4rem;margin-bottom:1rem;}
+  .fq-q .q-text{font-weight:600;margin-bottom:.8rem;font-size:.95rem;}
+  .fq-opts{list-style:none;display:grid;gap:.45rem;}
+  .fq-opts li label{display:flex;align-items:flex-start;gap:.6rem;padding:.5rem .8rem;border-radius:6px;border:1px solid var(--c-border);background:var(--c-bg);cursor:pointer;font-size:.87rem;transition:background .15s;}
+  .fq-opts li label:hover{background:var(--c-accent-light);}
+  .fq-opts li input[type=radio]{flex-shrink:0;margin-top:.2rem;accent-color:var(--c-accent);}
+  .fq-opts li.correct label{background:var(--c-green-light);border-color:var(--c-green);color:var(--c-green);}
+  .fq-opts li.wrong label{background:#fff0f0;border-color:#c00;color:#c00;}
+  .fq-feedback{font-size:.84rem;padding:.6rem .8rem;border-radius:6px;margin-top:.5rem;display:none;}
+  .fq-feedback.show{display:block;}
+  .quiz-score-panel{background:var(--c-text);color:#fff;border-radius:var(--radius);padding:2rem 1.5rem;text-align:center;display:none;margin-top:1rem;}
+  .quiz-score-panel.show{display:block;}
+  .qs-big{font-family:var(--font-serif);font-size:3rem;font-weight:700;}
+  .qs-label{font-size:.95rem;opacity:.75;margin-top:.3rem;}
+  .qs-message{margin-top:1rem;font-size:.9rem;line-height:1.6;opacity:.85;}
+
+  /* Data table */
+  .data-table{width:100%;border-collapse:collapse;font-size:.87rem;margin:1.2rem 0;}
+  .data-table th{background:var(--c-text);color:#fff;padding:.6rem .8rem;text-align:left;font-weight:600;font-size:.82rem;}
+  .data-table td{padding:.6rem .8rem;border-bottom:1px solid var(--c-border);vertical-align:top;}
+  .data-table tr:nth-child(even) td{background:var(--c-surface);}
+
+  /* Rail */
+  .rail{position:sticky;top:4rem;padding:1.2rem;background:var(--c-surface);border-radius:var(--radius);border:1px solid var(--c-border);font-size:.82rem;}
+  .rail h4{font-family:var(--font-serif);font-size:.95rem;margin-bottom:.8rem;color:var(--c-text);}
+  .rail-nav{list-style:none;}
+  .rail-nav li{margin-bottom:.3rem;}
+  .rail-nav a{color:var(--c-text-mid);text-decoration:none;display:block;padding:.2rem .3rem;border-radius:4px;}
+  .rail-nav a:hover{color:var(--c-accent);background:var(--c-accent-light);}
+  .rail-section{margin-top:1.2rem;padding-top:1rem;border-top:1px solid var(--c-border);}
+
+  /* Complete badge */
+  .course-complete{background:linear-gradient(135deg,#1a5c3a,#0d3a22);color:#fff;border-radius:var(--radius);padding:2rem 1.5rem;text-align:center;margin:2rem 0;}
+  .course-complete h3{font-family:var(--font-serif);font-size:1.6rem;font-weight:700;margin-bottom:.5rem;}
+  .course-complete p{font-size:.92rem;opacity:.85;max-width:600px;margin:0 auto;}
+  .complete-badge{font-size:3rem;margin-bottom:.8rem;display:block;}
+
+  .lesson-nav-bottom{display:flex;justify-content:center;align-items:center;padding:1.5rem 0;gap:1rem;flex-wrap:wrap;}
+  .nav-btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--radius);padding:.6rem 1.1rem;text-decoration:none;color:var(--c-text);font-size:.88rem;font-weight:500;transition:background .15s;}
+  .nav-btn:hover{background:var(--c-surface2);}
+  .nav-btn.primary{background:var(--c-accent);color:#fff;border-color:var(--c-accent);}
+  .nav-btn.primary:hover{filter:brightness(.85);}
+
+  @media(max-width:720px){.page-with-rail{grid-template-columns:1fr;}.rail{display:none;}.course-map{grid-template-columns:repeat(3,1fr);}.trustworthy-grid{grid-template-columns:1fr 1fr;}.next-grid{grid-template-columns:1fr;}}
+  @media(max-width:480px){.course-map{grid-template-columns:repeat(3,1fr);}h2{font-size:1.4rem;}.lesson-hero h1{font-size:1.8rem;}}
+  footer{background:var(--c-text);border-top:1px solid var(--c-border);padding:2rem 1.5rem;font-size:.85rem;color:rgba(255,255,255,.65);text-align:center;margin-top:3rem;}
+  footer p{margin:.3rem;}
+  footer strong{color:#fff;}
+</style>
+</head>
+<body>
+<a href="#main" class="skip">Skip to main content</a>
+
+<div class="site-bar" role="banner">
+  <a href="https://sands-mvcc.github.io/aicyber/index.html">← AI-103 Course Home</a>
+  <span class="sep">·</span>
+  <span>MVCC · Dept. of Engineering &amp; Technology · Dr. John L. Sands</span>
+</div>
+
+<nav class="lesson-nav" aria-label="Lesson navigation">
+  <a href="#overview">Overview</a><span class="sep">·</span>
+  <a href="#synthesis">Synthesis</a><span class="sep">·</span>
+  <a href="#trustworthiness">Trustworthiness</a><span class="sep">·</span>
+  <a href="#capstone-pack">Capstone Pack</a><span class="sep">·</span>
+  <a href="#presentations">Presentations</a><span class="sep">·</span>
+  <a href="#peer-review">Peer Review</a><span class="sep">·</span>
+  <a href="#careers">Careers</a><span class="sep">·</span>
+  <a href="#final-quiz">Final Quiz</a>
+</nav>
+
+<header class="lesson-hero">
+  <p class="lesson-meta-top">AI-103: AI Cybersecurity Foundations · Day 15 of 15 · 4 Contact Hours · Final Day</p>
+  <h1>Synthesis &amp; Final Capstone Presentations</h1>
+  <p class="subtitle">Fifteen days of frameworks, threat landscapes, architecture, governance, vendor risk, incident response, and red teaming — assembled today into a single coherent AI security program that would work in the real world.</p>
+  <div class="meta-badges">
+    <span class="badge">🎓 Final Day</span>
+    <span class="badge">⏱ 4 hrs · Synthesis + Capstone Presentations</span>
+    <span class="badge">🎯 All 18 Learning Objectives</span>
+    <span class="badge">📝 AI Security Program Pack — Final Submission</span>
+  </div>
+  <nav aria-label="Section quick links" style="font-size:.84rem;color:rgba(255,255,255,.6);position:relative;z-index:1;">
+    <a href="#synthesis" style="color:rgba(255,255,255,.85);text-decoration:none;margin-right:.8rem;">Synthesis</a>
+    <a href="#capstone-pack" style="color:rgba(255,255,255,.85);text-decoration:none;margin-right:.8rem;">Capstone Pack</a>
+    <a href="#presentations" style="color:rgba(255,255,255,.85);text-decoration:none;margin-right:.8rem;">Presentations</a>
+    <a href="#careers" style="color:rgba(255,255,255,.85);text-decoration:none;margin-right:.8rem;">Careers</a>
+    <a href="#final-quiz" style="color:rgba(255,255,255,.85);text-decoration:none;">Final Quiz</a>
+  </nav>
+</header>
+
+<main id="main">
+<div class="page-with-rail">
+<div>
+
+<!-- ============================================================
+     OVERVIEW
+============================================================ -->
+<section id="overview">
+  <h2><span class="sec-num">🧭 Final Day — Bringing It All Together</span>The Architecture of a Complete AI Security Program</h2>
+
+  <p>You have spent 14 days building the knowledge, frameworks, skills, and governance artifacts of AI cybersecurity. Today is the day those pieces are assembled into a coherent program — not a collection of lessons, but a working design for an organization that takes AI security seriously. The capstone presentation is the test of whether you can explain, defend, and connect every element you have learned.</p>
+
+  <p>The organizing question for today's synthesis: <strong>What does a trustworthy AI system actually require?</strong> NIST AI RMF 1.0 defines seven trustworthiness characteristics — valid and reliable, safe, secure and resilient, explainable and interpretable, accountable and transparent, privacy-enhanced, and fair with bias managed. Every lesson in AI-103 maps to one or more of these characteristics. The capstone presentation demonstrates that you can build a program that addresses all seven — not just the ones that look like traditional cybersecurity.</p>
+
+  <div class="callout callout-analogy">
+    <p class="callout-title">🏗️ Final Analogy: The Structural Engineer's Stamp</p>
+    <p>A structural engineer who stamps a set of building plans is certifying that every element — foundation, framing, load paths, connections, materials — has been designed to work together as a system. No individual element is correct in isolation; correctness is a property of the whole design. An engineer who stamps plans without understanding how the load paths connect isn't an engineer — they're a rubber stamp.</p>
+    <p><strong>The capstone presentation is your engineer's stamp.</strong> It certifies that you understand how governance connects to architecture, how architecture connects to vendor risk, how vendor risk connects to incident response, and how incident response connects back to governance improvement. A presentation that covers each domain in isolation — "here is the AUP, here is the vendor assessment, here are the architecture layers" — without showing how they interact is not a program. It is a stack of documents. <em>The program is the connections.</em></p>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat-block"><div class="stat-num">15</div><div class="stat-desc">Days of structured learning</div></div>
+    <div class="stat-block"><div class="stat-num">18</div><div class="stat-desc">Course-level learning objectives</div></div>
+    <div class="stat-block"><div class="stat-num">7</div><div class="stat-desc">NIST AI RMF trustworthiness characteristics</div></div>
+    <div class="stat-block"><div class="stat-num">4</div><div class="stat-desc">Frameworks mastered (NIST, ISO 42001, EU AI Act, OWASP)</div></div>
+    <div class="stat-block"><div class="stat-num">4.8M</div><div class="stat-desc">Unfilled global cybersecurity roles (2025)</div></div>
+  </div>
+</section>
+
+<!-- Part A Header -->
+<div class="part-header">
+  <div><div class="part-label">Part A · Synthesis &amp; Reflection</div>
+  <h2>Connecting All 15 Days — The Knowledge Architecture</h2></div>
+  <span class="part-time">⏱ ~90 min</span>
+</div>
+
+<!-- ============================================================
+     SYNTHESIS — COURSE MAP
+============================================================ -->
+<section id="synthesis">
+  <h2><span class="sec-num">Synthesis · 30 min</span>The 15-Day Knowledge Architecture — Click Any Day to Review</h2>
+
+  <p>The 15 days of AI-103 are organized into five units, each building on the previous. Click any day tile below to review the core concept, its framework connections, and its relationship to adjacent days — this is the synthesis map you will draw on during your capstone presentation.</p>
+
+  <div class="course-map" id="course-map" role="list" aria-label="15-day course map"></div>
+  <div class="cm-tooltip" id="cm-tooltip"></div>
+
+  <h3>The Three Threads Running Through All 15 Days</h3>
+  <p>No matter which day you are synthesizing, three threads appear in every lesson. Understanding these threads is the key to a coherent capstone presentation.</p>
+
+  <div class="accordion">
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAcc(this)">
+        <span>🔴 Thread 1: Security Cannot Be Retrofitted — Build It In</span>
+        <span class="trigger-meta"><span class="t-tag">Days 1, 9, 11, 14</span><span class="ti">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p>Every lesson reinforces a single architectural principle: security controls designed into an AI system from inception produce fundamentally better outcomes than controls added after deployment. This appears in Day 1 (why traditional security fails AI), Day 9 (ML pipeline security — the preprocessing script is an attack surface), Day 11 (defense in depth must be designed before the model is deployed), and Day 14 (red team testing before deployment costs orders of magnitude less than incident response after).</p>
+        <p>In your capstone, this thread manifests in the Use Case Register's pre-deployment gate, the Architecture Design Document's seven-layer control model, and the red team testing requirement before any system reaches production. An evaluator who asks "why do you require pre-deployment red team testing?" is asking about this thread — and the answer is not "because the framework says so" but "because the cost of finding a vulnerability in testing is always lower than the cost of discovering it through an incident."</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAcc(this)">
+        <span>🔵 Thread 2: Governance Documents Make Programs Auditable</span>
+        <span class="trigger-meta"><span class="t-tag blue">Days 2, 4, 5, 13</span><span class="ti">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p>The governance thread appears first in Day 2 (frameworks as the language auditors speak), deepens in Days 4 and 5 (NIST AI RMF MANAGE and EU AI Act obligations), and culminates in Day 13 (the documents themselves). The insight that runs through all four: a security program that exists only in engineers' heads is tribal custom, not governance. Governance is the act of making security legible to outsiders — auditors, regulators, insurers, board members — who were not in the room when the decisions were made.</p>
+        <p>In your capstone, this thread manifests as the explicit connection between technical controls and their governing documents. The architecture layer controls in the Architecture Design Document are not free-floating — they are governed by the AI AUP (which prohibits certain data uses), tracked in the Use Case Register (which records the risk tier and review cadence), and evidenced by the records layer in the ISO 42001 document hierarchy. An evaluator who asks "how would an auditor verify this control is operating?" is testing whether you understand this thread.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAcc(this)">
+        <span>🟢 Thread 3: The Deployer Owns the Risk They Cannot See</span>
+        <span class="trigger-meta"><span class="t-tag green">Days 6, 12, 13, 14</span><span class="ti">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p>The vendor/deployer thread runs from Day 6 (shadow AI — employees bring AI the organization doesn't know about), through Day 12 (vendor supply chain — the AI your vendors deployed in your sanctioned tools), into Day 13 (the AUP must address shadow AI and vendor AI simultaneously), and surfaces in Day 14 (tabletop scenario 2 — the vulnerability existed in a vendor's system that MVCC didn't know about). The unifying insight: regulatory and governance obligations fall on the deployer regardless of whether the AI was intentionally deployed.</p>
+        <p>In your capstone, this thread manifests as the explicit connection between the AI Use Case Register (which must capture embedded vendor AI, not just intentional deployments), the vendor assessment (Lesson 12 framework), the AUP's shadow AI section, and the AIBOM requirement. An evaluator who asks "how does your program handle AI you didn't choose to deploy?" is testing this thread — and the answer requires the Use Case Register, AUP, and vendor contract clause to work together as a system, not in isolation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     TRUSTWORTHINESS
+============================================================ -->
+<section id="trustworthiness">
+  <h2><span class="sec-num">Trustworthiness Deep Dive · 30 min</span>NIST AI RMF's Seven Trustworthiness Characteristics — Where Each Lives in AI-103</h2>
+
+  <p>NIST AI RMF defines seven characteristics that AI systems must exhibit to be considered trustworthy. These are not seven separate programs — they are seven properties that a single, coherent AI security program must produce simultaneously. Click each characteristic to see which lessons, frameworks, and governance documents address it — and where the hardest tradeoffs arise.</p>
+
+  <div class="trustworthy-grid" id="tw-grid"></div>
+</section>
+
+<!-- ============================================================
+     CAPSTONE PACK
+============================================================ -->
+<section id="capstone-pack">
+  <h2><span class="sec-num">Capstone Requirements · 20 min</span>The AI Security Program Pack — What You Are Presenting</h2>
+
+  <p>The AI Security Program Pack is the final deliverable of AI-103. It integrates the work products from every lesson into a single, coherent AI security program designed for a specified organizational context. Each component has been partially built across the course; today you integrate them and present the unified program.</p>
+
+  <div class="callout callout-key">
+    <p class="callout-title">🔑 What "Coherent" Means in the Evaluation Rubric</p>
+    <p>A coherent program is not a collection of independently produced documents. It is a program where each component explicitly references the others. The AUP's data classification matrix determines what the Use Case Register flags as requiring vendor assessment. The vendor assessment findings determine which contract clauses the program requires. The contract clauses determine what evidence the IR Annex can call on during an incident. The IR Annex's lessons-learned output feeds back into the governance program as improvements. <strong>An evaluator reading your program pack should be able to trace this chain in both directions.</strong></p>
+  </div>
+
+  <div class="pack-grid" id="pack-grid"></div>
+
+  <h3>Integration Requirements — The Connections That Make It Coherent</h3>
+  <p>Beyond the individual components, your program pack must demonstrate three explicit cross-document connections that an evaluator can verify:</p>
+  <div class="accordion">
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAcc(this)">
+        <span>🔗 Connection 1: AUP → Use Case Register → Architecture</span>
+        <span class="trigger-meta"><span class="t-tag">Integration Required</span><span class="ti">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p>The AI AUP's data classification matrix (which data categories are prohibited in which AI tool tiers) must drive the Use Case Register's data classification field for each AI system. The Use Case Register's EU AI Act risk tier must determine which Architecture Design Document layers receive mandatory controls versus optional controls. An evaluator should be able to take one AI system from your Use Case Register, trace its data classification to the AUP, and confirm that the architecture controls align with both.</p>
+        <p><strong>Where to make this explicit:</strong> Add a footnote in the Use Case Register that says "Data classification derived from AI AUP Section 2, Data Classification Matrix." Add a sentence in the Architecture Design Document that says "Control requirements at each layer are calibrated to the system's EU AI Act risk tier as documented in the Use Case Register."</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAcc(this)">
+        <span>🔗 Connection 2: Vendor Assessment → Contract Clauses → AIBOM</span>
+        <span class="trigger-meta"><span class="t-tag">Integration Required</span><span class="ti">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p>The vendor risk assessment findings for a Tier 1 vendor must generate specific contract clause requirements. The AIBOM delivered under the contract must be referenced in the Use Case Register's linked documents field for the system that vendor provides. An evaluator should be able to name a vendor from your program and trace the tier classification → assessment findings → contract requirements → AIBOM reference chain.</p>
+        <p><strong>Where to make this explicit:</strong> The Vendor Risk Assessment Report (Lesson 12 artifact) should end with a "Required Contract Clauses" section that explicitly lists the clauses triggered by the findings. The Use Case Register entry for the vendor's system should include a field: "Vendor contract reference: [contract ID, date]" and "AIBOM on file: [yes/no, date]."</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAcc(this)">
+        <span>🔗 Connection 3: IR Annex → Lessons Learned → AUP/Register Update</span>
+        <span class="trigger-meta"><span class="t-tag">Integration Required</span><span class="ti">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p>The AI IR Annex (Lesson 13) specifies that every incident produces a lessons-learned report (Lesson 14). That report must identify which governance document requires updating as a result of the incident. An evaluator should be able to take a tabletop exercise outcome and trace it to a specific change in the AUP, Use Case Register, or IR Annex itself. This is the ISO 42001 Clause 10 (continual improvement) cycle made explicit.</p>
+        <p><strong>Where to make this explicit:</strong> The lessons-learned report template in your IR Annex should include a mandatory field: "Documents requiring update as a result of this incident: [AUP / Use Case Register / IR Annex / Vendor Contract / Architecture Doc / None]." The AUP should include a review trigger: "Following a significant AI security incident at MVCC or at a peer institution, as documented in the lessons-learned report."</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Capstone Grading Rubric — Four Dimensions</h3>
+  <table class="rubric-table">
+    <thead>
+      <tr>
+        <th>Dimension</th>
+        <th><span class="rb-ex">Exemplary (A)</span></th>
+        <th><span class="rb-pr">Proficient (B)</span></th>
+        <th><span class="rb-de">Developing (C)</span></th>
+        <th><span class="rb-be">Beginning (D)</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Technical Accuracy</td>
+        <td>All framework citations are precise (specific articles, subcategories); all control descriptions are accurate and deployment-context-specific.</td>
+        <td>Most framework citations are accurate; minor imprecision in 1–2 control descriptions.</td>
+        <td>Some framework confusion (e.g., citing GOVERN when MAP applies); controls generic rather than context-specific.</td>
+        <td>Multiple framework errors; controls are copied from course materials without adaptation to the scenario.</td>
+      </tr>
+      <tr>
+        <td>Program Coherence</td>
+        <td>All three integration connections explicit and verifiable; evaluator can trace any chain end-to-end without ambiguity.</td>
+        <td>Two of three connections explicit; one requires inference.</td>
+        <td>One connection explicit; program components feel loosely related.</td>
+        <td>Components presented in isolation; no explicit cross-document connections.</td>
+      </tr>
+      <tr>
+        <td>Risk Reasoning</td>
+        <td>Risk judgments are explained with specific evidence and stakeholder impact; the presenter can defend every prioritization choice.</td>
+        <td>Risk judgments stated with some rationale; most choices defensible.</td>
+        <td>Risk judgments stated without rationale; presenter defaults to "the framework requires it."</td>
+        <td>No risk reasoning visible; program appears compliance-driven rather than risk-driven.</td>
+      </tr>
+      <tr>
+        <td>Presentation Clarity</td>
+        <td>Non-specialist evaluator could understand what the program does and why it matters; questions answered precisely and concisely.</td>
+        <td>Clear to a technical audience; some jargon unexplained for non-specialists.</td>
+        <td>Understandable to classmates; struggled with evaluator questions on connections.</td>
+        <td>Difficult to follow; significant Q&amp;A gaps.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- Part B -->
+<div class="part-header">
+  <div><div class="part-label">Part B · Capstone Presentations &amp; Peer Review</div>
+  <h2>AI Security Program Pack Presentations</h2></div>
+  <span class="part-time">⏱ ~2 hours</span>
+</div>
+
+<!-- ============================================================
+     PRESENTATIONS
+============================================================ -->
+<section id="presentations">
+  <h2><span class="sec-num">Presentations · 90 min</span>Presentation Format &amp; Evaluation Protocol</h2>
+
+  <p>Each team or individual presents their AI Security Program Pack to the class. The instructor and two designated peer evaluators assess using the rubric above. The presentation order is randomized. Each presenter receives written peer review feedback from the two designated reviewers.</p>
+
+  <h3>Presentation Structure — 12 Minutes Per Team</h3>
+  <div class="accordion">
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAcc(this)">
+        <span>⏱ Minutes 0–2: Context &amp; Organization Profile</span>
+        <span class="trigger-meta"><span class="t-tag green">Opening</span><span class="ti">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>What to cover:</strong> Name the organization (MVCC or another institution your team selected). State the organization's AI risk appetite — what kinds of AI deployments exist or are planned, what data is involved, what the highest-risk AI system is. State which EU AI Act risk tier classifications apply to the organization's highest-risk systems. Explain why those tier classifications matter for the program design you are about to present.</p>
+        <p><strong>Evaluation signal:</strong> Does the presenter understand that risk tier drives governance obligations, or are they treating compliance as a checkbox? An evaluator will ask: "If your highest-risk system were reclassified from High Risk to Limited Risk tomorrow, what in your program would change?"</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAcc(this)">
+        <span>⏱ Minutes 2–5: Governance Foundation (AUP, Register, ISO 42001)</span>
+        <span class="trigger-meta"><span class="t-tag blue">Core</span><span class="ti">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>What to cover:</strong> Describe the AI AUP's three most important provisions for this organization — not all eight components, but the three that do the most work given this organization's risk profile. Show the Use Case Register with at least two entries, highlighting the EU AI Act tier and data classification fields. Identify which ISO 42001 document level each governance artifact belongs to (Policy, Procedure, Record).</p>
+        <p><strong>Evaluation signal:</strong> Can the presenter explain <em>why</em> those three AUP provisions are the most important for this specific organization, rather than reciting the generic list? An evaluator will ask: "Why did you prioritize the shadow AI section over the data classification matrix?" The answer must reference the organization's specific risk profile, not a generic statement about best practices.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAcc(this)">
+        <span>⏱ Minutes 5–8: Architecture, Vendor Risk &amp; Threat Landscape</span>
+        <span class="trigger-meta"><span class="t-tag">Technical</span><span class="ti">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>What to cover:</strong> For the organization's highest-risk AI system, name the three most critical architecture layers and the specific control at each. Identify the system's vendor tier classification and the one contract clause most critical for this specific vendor relationship (not the generic list — the specific one that addresses this vendor's specific risk). Name the two OWASP LLM Top 10 items most relevant to this deployment context and describe the control that addresses each.</p>
+        <p><strong>Evaluation signal:</strong> Is the presenter matching controls to threats, or listing controls from memory? An evaluator will ask: "LLM06 (Excessive Agency) — does your program address this for the system you described?" If the system doesn't have agentic capabilities, the answer is "not applicable for this system — but the AUP prohibits deploying agentic AI without governance committee approval, so this would be addressed at intake if agentic capabilities are added." That is a correct answer. "Yes, we have defense in depth" is not.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAcc(this)">
+        <span>⏱ Minutes 8–10: IR, Red Team &amp; Continuous Improvement</span>
+        <span class="trigger-meta"><span class="t-tag">Operational</span><span class="ti">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>What to cover:</strong> State which AI-specific incident types your program's detection layer addresses, and which one was hardest to design detection for and why. Name the two red team attack categories most important for pre-deployment testing of this system. Describe how a tabletop exercise finding would flow back into the program — which document gets updated, who approves the update, and what evidence would an auditor find?</p>
+        <p><strong>Evaluation signal:</strong> Can the presenter demonstrate the ISO 42001 Clause 10 (continual improvement) loop, or do they treat incident response as a terminal process? An evaluator will ask: "Walk me through what happens after the tabletop exercise identifies an authority vacuum." The answer should trace: hot wash → action item → AUP/governance charter update → AI Governance Committee approval → version-controlled document update → next TTX tests the fix.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-trigger" aria-expanded="false" onclick="toggleAcc(this)">
+        <span>⏱ Minutes 10–12: Q&amp;A</span>
+        <span class="trigger-meta"><span class="t-tag">Synthesis Test</span><span class="ti">▼</span></span>
+      </button>
+      <div class="accordion-body">
+        <p><strong>Standard evaluator questions (instructor draws 2 from this list per presenter):</strong></p>
+        <ul style="padding-left:1.2rem;font-size:.88rem;line-height:2;">
+          <li>Your program assumes MVCC is a Deployer for this system. What would change if MVCC decided to fine-tune the model on its own student data?</li>
+          <li>A red team test finds a prompt injection vulnerability in the RAG pipeline 2 days before the scheduled launch date. Walk me through the decision process.</li>
+          <li>The vendor that provides your highest-risk AI system just announced they are switching their underlying foundation model from GPT-4o to a new model. What does your program require to happen before the system continues in production?</li>
+          <li>The Illinois Attorney General's office sends a letter requesting your AI governance documentation following a student complaint. What do you send, and what does the absence of which document create the most legal risk?</li>
+          <li>NIST released an AI RMF Profile on Trustworthy AI in Critical Infrastructure in April 2026. Does this apply to MVCC? How would you determine that?</li>
+          <li>Rank the four frameworks covered in this course (NIST AI RMF, ISO 42001, EU AI Act, OWASP LLM Top 10) by the amount of legal enforcement risk they carry for MVCC. Defend your ranking.</li>
+          <li>Your program requires quarterly red team testing for Tier 1 systems. A Tier 1 system just added a new agentic capability between scheduled tests. Does your program's scheduled testing requirement apply, or is an immediate test triggered?</li>
+          <li>Your AI Use Case Register has 8 entries. Three of them have "Next Review Date" fields that are overdue by 3–6 months. What does this tell an ISO 42001 auditor about your program?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PEER REVIEW
+============================================================ -->
+<section id="peer-review">
+  <h2><span class="sec-num">Peer Review · During Presentations</span>Structured Peer Feedback Form</h2>
+
+  <p>Each student completes the peer review form below for the two presentations they are assigned to evaluate. The form generates specific, actionable feedback — not vague praise. Completed forms are submitted to the presenter and instructor at the end of class.</p>
+
+  <div class="peer-card" id="peer-form">
+    <h4>📋 Peer Review Form — AI Security Program Pack Presentation</h4>
+    <div class="peer-field">
+      <label>Presenter / Team Name</label>
+      <input type="text" id="peer-name" placeholder="Enter presenter or team name">
+    </div>
+    <div class="peer-field">
+      <label>Strongest Element — What specific part of the program demonstrated the deepest understanding?</label>
+      <textarea id="peer-strong" placeholder="e.g. 'The connection between the Use Case Register's EU AI Act tier and the vendor contract clauses was explicitly traced — I could follow the logic without inference.'"></textarea>
+    </div>
+    <div class="peer-field">
+      <label>Most Significant Gap — What specific connection or element was absent or unclear?</label>
+      <textarea id="peer-gap" placeholder="e.g. 'The IR Annex was described but the lessons-learned → AUP update loop was not demonstrated. After a tabletop finding, what specifically gets updated and who approves it?'"></textarea>
+    </div>
+    <div class="peer-field">
+      <label>One Specific Improvement — Describe exactly what the presenter could add or change (be constructive and precise):</label>
+      <textarea id="peer-improve" placeholder="e.g. 'Add a one-sentence note to each Use Case Register entry indicating which AUP section and which vendor contract clause governs that system — this would make the three integration connections immediately visible to an evaluator.'"></textarea>
+    </div>
+    <div class="peer-field">
+      <label>Technical Accuracy Rating — Overall accuracy of framework citations and control descriptions:</label>
+      <div class="star-row" id="tech-stars">
+        <span class="star" data-group="tech" data-val="1" onclick="rateStar('tech',1)">★</span>
+        <span class="star" data-group="tech" data-val="2" onclick="rateStar('tech',2)">★</span>
+        <span class="star" data-group="tech" data-val="3" onclick="rateStar('tech',3)">★</span>
+        <span class="star" data-group="tech" data-val="4" onclick="rateStar('tech',4)">★</span>
+        <span class="star" data-group="tech" data-val="5" onclick="rateStar('tech',5)">★</span>
+      </div>
+      <div style="font-size:.75rem;color:var(--c-text-soft);margin-top:.2rem;">1 = Many errors · 5 = Precise and accurate throughout</div>
+    </div>
+    <div class="peer-field">
+      <label>Program Coherence Rating — How well do the components work as a connected system?</label>
+      <div class="star-row" id="coh-stars">
+        <span class="star" data-group="coh" data-val="1" onclick="rateStar('coh',1)">★</span>
+        <span class="star" data-group="coh" data-val="2" onclick="rateStar('coh',2)">★</span>
+        <span class="star" data-group="coh" data-val="3" onclick="rateStar('coh',3)">★</span>
+        <span class="star" data-group="coh" data-val="4" onclick="rateStar('coh',4)">★</span>
+        <span class="star" data-group="coh" data-val="5" onclick="rateStar('coh',5)">★</span>
+      </div>
+      <div style="font-size:.75rem;color:var(--c-text-soft);margin-top:.2rem;">1 = Documents feel isolated · 5 = All three integration connections explicit and verifiable</div>
+    </div>
+    <div style="margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap;">
+      <button class="btn-primary" onclick="previewPeerFeedback()">Preview My Feedback</button>
+      <button class="btn-secondary" onclick="clearPeerForm()">Clear &amp; Start New</button>
+    </div>
+    <div id="peer-preview" style="display:none;margin-top:1rem;background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--radius);padding:1.2rem;font-size:.85rem;"></div>
+  </div>
+
+  <div class="callout callout-green" style="margin-top:1rem;">
+    <p class="callout-title">🎓 Instructor Note on Peer Review Culture</p>
+    <p>The peer review form is structured to produce useful feedback, not social validation. Students who rate everything 5 stars and write "great presentation!" are not completing the assignment — they are providing a disservice to their peers. The most valuable peer feedback names a specific gap and proposes a specific fix. That is what security professionals do in code reviews, architecture reviews, and red team debrief sessions. <strong>Learning to give precise, constructive technical feedback is itself a career skill this course teaches.</strong></p>
+  </div>
+</section>
+
+<!-- ============================================================
+     SYNTHESIS SELF-CHECK
+============================================================ -->
+<section id="selfcheck">
+  <h2><span class="sec-num">Self-Assessment · 15 min</span>18 Learning Objectives — How Did You Do?</h2>
+
+  <p>Before leaving today, complete the self-assessment checklist below. This is not a quiz — there is no score and it does not affect your grade. It is an honest inventory of where you are confident and where you would benefit from continued study. The items where you hesitate are the items to revisit before applying this knowledge professionally.</p>
+
+  <div class="synthesis-check" id="synth-check">
+    <!-- filled by JS -->
+  </div>
+
+  <div id="sc-progress-wrap" style="margin-top:1rem;">
+    <div class="sc-progress">Self-assessed: <span id="sc-count">0</span> of 18 objectives</div>
+    <div class="sc-bar-wrap"><div class="sc-bar" id="sc-bar"></div></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CAREERS
+============================================================ -->
+<section id="careers">
+  <h2><span class="sec-num">🚀 Career Pathways · 15 min</span>What AI-103 Qualifies You For — and What Comes Next</h2>
+
+  <p>AI cybersecurity is the fastest-growing specialty in an already fast-growing field. The global cybersecurity workforce gap stands at 4.8 million unfilled roles as of 2025. AI is cited as the single most-needed skill for the second consecutive year, and the integration of AI into security practice is accelerating faster than programs can update their curricula. <strong>AI-103 positions you at the intersection of two of the most demand-driven skill sets in technology.</strong></p>
+
+  <div class="next-grid">
+    <div class="next-card nc-green">
+      <div class="next-card-header">🛡️ AI Security Roles</div>
+      <div class="next-card-body">
+        <p style="font-size:.8rem;color:var(--c-text-soft);margin-bottom:.5rem;">Directly enabled by AI-103</p>
+        <ul>
+          <li>AI Risk Analyst</li>
+          <li>AI Governance Specialist</li>
+          <li>ML Security Engineer</li>
+          <li>AI Red Team Analyst</li>
+          <li>AI Compliance Officer</li>
+          <li>AI Vendor Risk Assessor</li>
+        </ul>
+      </div>
+    </div>
+    <div class="next-card nc-blue">
+      <div class="next-card-header">📜 Certifications to Pursue</div>
+      <div class="next-card-body">
+        <p style="font-size:.8rem;color:var(--c-text-soft);margin-bottom:.5rem;">AI-103 provides foundation for:</p>
+        <ul>
+          <li>ISACA AAISM (AI Security Mgmt)</li>
+          <li>ISACA CISM (AI context now required)</li>
+          <li>CompTIA Security AI+ (emerging)</li>
+          <li>ISO 42001 Lead Implementer</li>
+          <li>NIST AI RMF Practitioner</li>
+          <li>AWS/Azure AI Security specialty</li>
+        </ul>
+      </div>
+    </div>
+    <div class="next-card nc-purple">
+      <div class="next-card-header">📚 Continuing Education</div>
+      <div class="next-card-body">
+        <p style="font-size:.8rem;color:var(--c-text-soft);margin-bottom:.5rem;">Next steps at MVCC &amp; beyond</p>
+        <ul>
+          <li>MVCC CYB-201: Advanced Threat Analysis</li>
+          <li>MVCC AI-201: AI Ethics &amp; Policy</li>
+          <li>NSF CyberAI SFS Scholarship</li>
+          <li>SANS SEC595: AI/ML Security</li>
+          <li>Coursera: DeepLearning.AI security tracks</li>
+          <li>Hugging Face: ML Security course</li>
+        </ul>
+      </div>
+    </div>
+    <div class="next-card nc-gold">
+      <div class="next-card-header">🤝 Professional Networks</div>
+      <div class="next-card-body">
+        <p style="font-size:.8rem;color:var(--c-text-soft);margin-bottom:.5rem;">Communities to join now</p>
+        <ul>
+          <li>ISACA (student membership)</li>
+          <li>OWASP local chapter</li>
+          <li>CoSAI (Coalition for Secure AI)</li>
+          <li>(ISC)² Student Chapter</li>
+          <li>AACC / National ATE Network</li>
+          <li>Illinois CISA Region 5 events</li>
+        </ul>
+      </div>
+    </div>
+    <div class="next-card nc-teal">
+      <div class="next-card-header">🔭 Where the Field Is Going</div>
+      <div class="next-card-body">
+        <p style="font-size:.8rem;color:var(--c-text-soft);margin-bottom:.5rem;">Watch these developments in 2026–27</p>
+        <ul>
+          <li>NIST AI RMF 1.1 &amp; CI Profile (2026)</li>
+          <li>EU AI Act high-risk enforcement (Aug 2026)</li>
+          <li>US state AI laws: CO, TX, IL, NY</li>
+          <li>Agentic AI governance standards</li>
+          <li>AIBOM standardization (CycloneDX 1.8)</li>
+          <li>CoSAI AI IR Framework v2.0</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout-dark">
+    <p class="callout-title">📣 A Note from Dr. Sands</p>
+    <p>AI cybersecurity is not a specialty that developed slowly and announced its arrival. It arrived all at once, in the middle of an already intense talent shortage. The professionals who will define how AI is secured in the next decade are being trained right now — in programs like this one, in community colleges that are the most responsive part of the education ecosystem, in intensive courses that do not wait three years for a curriculum committee to approve a textbook.</p>
+    <p style="margin-top:.8rem;">You have spent 15 days building a foundation that most working professionals — including many who have been in the field for years — do not have. That is not a boast; it is the reality of how fast this area has moved. What you do with that foundation is up to you. The field needs people who can govern AI well, who can build it securely, who can respond when it fails, and who can explain what trustworthiness actually requires to decision-makers who need to hear it. <em>That is the work. Go do it.</em></p>
+  </div>
+</section>
+
+<!-- ============================================================
+     FINAL QUIZ — COURSE SYNTHESIS
+============================================================ -->
+<section id="final-quiz">
+  <h2><span class="sec-num">❓ Course Synthesis Quiz · 8 Questions · Connecting All 15 Days</span>The Questions That Require the Whole Course to Answer</h2>
+
+  <p>These questions are designed to require synthesis — each one connects content from multiple lessons. They are the kind of questions an AAISM or CISM exam would ask, and the kind of questions a hiring manager conducting a technical interview would use to distinguish someone who has memorized frameworks from someone who understands them.</p>
+
+  <div id="final-quiz-container">
+
+    <div class="fq-q" data-correct="c">
+      <div class="q-text">Q1. A community college deploys an AI tutoring system (Annex III High Risk), an AI scheduling optimizer (Minimal Risk), and Microsoft 365 Copilot (enterprise tier). Which combination of EU AI Act obligations applies to the college as a Deployer across these three systems?</div>
+      <ul class="fq-opts">
+        <li><label><input type="radio" name="fq1" value="a"> All three systems carry identical Deployer obligations — EU AI Act treats all AI deployments uniformly.</label></li>
+        <li><label><input type="radio" name="fq1" value="b"> Only the tutoring system carries Deployer obligations — the scheduling optimizer and Copilot are below the governance threshold.</label></li>
+        <li><label><input type="radio" name="fq1" value="c"> The tutoring system carries full high-risk Deployer obligations (Art. 26: human oversight, log retention, monitoring, registration, FERPA-aligned data provisions). The scheduling optimizer carries minimal obligations. Copilot carries limited-risk transparency obligations — including the Art. 4 AI literacy requirement that applies to all AI deployments from February 2025.</label></li>
+        <li><label><input type="radio" name="fq1" value="d"> The college has no obligations for Copilot because Microsoft holds all provider obligations as the EU AI Act-registered entity.</label></li>
+      </ul>
+      <div class="fq-feedback" id="fqfb-1"></div>
+    </div>
+
+    <div class="fq-q" data-correct="b">
+      <div class="q-text">Q2. NIST AI RMF Generative AI Profile (NIST AI 600-1, July 2024) identifies 12 unique risks of generative AI systems. A CISO argues that these risks are already covered by the OWASP LLM Top 10 and no additional framework guidance is needed. The MOST accurate response is:</div>
+      <ul class="fq-opts">
+        <li><label><input type="radio" name="fq2" value="a"> The CISO is correct — OWASP LLM Top 10 and NIST AI 600-1 are redundant frameworks covering the same risk categories.</label></li>
+        <li><label><input type="radio" name="fq2" value="b"> The OWASP LLM Top 10 is a practitioner threat reference organized around attack types; NIST AI 600-1 is a governance framework organized around AI system properties and management functions. They are complementary: OWASP tells you what can go wrong; AI 600-1 tells you how to build the governance program that addresses it. Both are necessary; neither is sufficient alone.</label></li>
+        <li><label><input type="radio" name="fq2" value="c"> NIST AI 600-1 supersedes OWASP LLM Top 10 because it is a federal standard with regulatory weight, whereas OWASP is a practitioner community document.</label></li>
+        <li><label><input type="radio" name="fq2" value="d"> The CISO is partially correct — OWASP LLM Top 10 covers technical risks, but NIST AI 600-1 adds non-technical risks (fairness, transparency) that are outside the scope of cybersecurity programs.</label></li>
+      </ul>
+      <div class="fq-feedback" id="fqfb-2"></div>
+    </div>
+
+    <div class="fq-q" data-correct="d">
+      <div class="q-text">Q3. An AI system's AIBOM lists the foundation model as "GPT-4o-2024-11-20." Three months after deployment, OpenAI releases "GPT-4o-2025-03-15" with significant capability changes. Which governance action is triggered FIRST by the college's AI security program?</div>
+      <ul class="fq-opts">
+        <li><label><input type="radio" name="fq3" value="a"> The AI Governance Committee convenes an emergency session to assess whether to upgrade or remain on the previous version.</label></li>
+        <li><label><input type="radio" name="fq3" value="b"> The AIBOM is updated immediately to reflect the new model version, and the Use Case Register's "Next Review Date" is advanced to the current quarter.</label></li>
+        <li><label><input type="radio" name="fq3" value="c"> The red team is dispatched to test the new model version before the system automatically upgrades via the API.</label></li>
+        <li><label><input type="radio" name="fq3" value="d"> The vendor contract's Material AI Change Notification clause is checked: does the vendor have a 30/60-day notification obligation before switching model versions? If so, the college's program should have received prior notice — and the first action is confirming whether the clause was triggered and whether the vendor is in breach, before deciding on upgrade, hold, or rollback.</label></li>
+      </ul>
+      <div class="fq-feedback" id="fqfb-3"></div>
+    </div>
+
+    <div class="fq-q" data-correct="a">
+      <div class="q-text">Q4. An ISO 42001 auditor reviews a college's AI Management System. The AI Policy (Level 1) is excellent. The AI AUP (operational) is detailed and specific. The auditor gives the program a non-conformance. Why?</div>
+      <ul class="fq-opts">
+        <li><label><input type="radio" name="fq4" value="a"> The auditor found that records (Level 4) are absent — there are no documented risk assessments, training completion logs, vendor assessment evidence, or human oversight logs. Without records, every policy commitment is unverifiable assertion. An ISO 42001 audit cannot close without records that prove controls are operating, not just documented.</label></li>
+        <li><label><input type="radio" name="fq4" value="b"> The AI AUP is too specific — ISO 42001 Level 2 documents should be strategic, not operational, and the AUP has invaded the Procedure level's domain.</label></li>
+        <li><label><input type="radio" name="fq4" value="c"> The ISO 42001 Statement of Applicability (SoA) was not submitted as part of the audit package — without an SoA, the auditor cannot assess which Annex A controls are in scope.</label></li>
+        <li><label><input type="radio" name="fq4" value="d"> The program does not reference EU AI Act explicitly — ISO 42001 certification requires documented regulatory mapping as a prerequisite.</label></li>
+      </ul>
+      <div class="fq-feedback" id="fqfb-4"></div>
+    </div>
+
+    <div class="fq-q" data-correct="c">
+      <div class="q-text">Q5. A red team exercise finds that the college's AI tutoring chatbot, when given 12 turns of context establishing a "computer science teaching assistant" persona, will help students write code that includes SQL injection vulnerabilities. This finding should be classified as:</div>
+      <ul class="fq-opts">
+        <li><label><input type="radio" name="fq5" value="a"> A security failure (OWASP LLM01 Prompt Injection) — the model is being exploited through multi-turn context manipulation to execute unintended logic.</label></li>
+        <li><label><input type="radio" name="fq5" value="b"> An alignment failure — the model is behaving inconsistently with its intended purpose (math tutoring) by answering CS questions at all.</label></li>
+        <li><label><input type="radio" name="fq5" value="c"> A safety failure — the model is producing harmful content (vulnerable code that could expose systems to SQL injection attacks) through a jailbreaking technique (multi-turn persona injection). The remediation is system prompt hardening, RAG access restriction to math content only, and output filtering for code that matches known injection patterns.</label></li>
+        <li><label><input type="radio" name="fq5" value="d"> Not actionable — all LLMs can be jailbroken with sufficient context manipulation, and remediation would require restricting legitimate use cases.</label></li>
+      </ul>
+      <div class="fq-feedback" id="fqfb-5"></div>
+    </div>
+
+    <div class="fq-q" data-correct="b">
+      <div class="q-text">Q6. The NIST AI RMF's seven trustworthiness characteristics include "Valid and Reliable," which it places as the foundational characteristic from which others derive. From an AI security program perspective, why is validity and reliability foundational rather than safety or security?</div>
+      <ul class="fq-opts">
+        <li><label><input type="radio" name="fq6" value="a"> Because validity and reliability are easier to measure quantitatively than safety or security, making them the logical starting point for any governance program.</label></li>
+        <li><label><input type="radio" name="fq6" value="b"> Because an AI system that is not valid and reliable cannot be made trustworthy by adding safety and security controls — a model that consistently produces incorrect outputs is harmful regardless of whether it was built securely or aligns with policy. Safety and security controls protect a valid system from attack; they cannot compensate for a fundamentally unreliable one. Validity is the precondition for all other trustworthiness properties to be meaningful.</label></li>
+        <li><label><input type="radio" name="fq6" value="c"> Because federal agencies (NIST, DHS, DoD) prioritize operational reliability over privacy or fairness considerations in risk management frameworks.</label></li>
+        <li><label><input type="radio" name="fq6" value="d"> Because validity and reliability are the only characteristics that can be objectively tested through automated benchmark evaluation, while other characteristics require subjective human assessment.</label></li>
+      </ul>
+      <div class="fq-feedback" id="fqfb-6"></div>
+    </div>
+
+    <div class="fq-q" data-correct="d">
+      <div class="q-text">Q7. A college's AI security program includes all of the following: a detailed AI AUP, a populated Use Case Register, a vendor risk assessment for all Tier 1 vendors, a 7-layer architecture design document, and an AI IR Annex. A CISM-credentialed evaluator reviews the program and concludes it is not yet a functional AI security program. What is MOST likely missing?</div>
+      <ul class="fq-opts">
+        <li><label><input type="radio" name="fq7" value="a"> A formal ISO 42001 certification — without third-party certification, the program has no external validation.</label></li>
+        <li><label><input type="radio" name="fq7" value="b"> OWASP LLM Top 10 mapping — the program needs to explicitly map each control to an OWASP item to demonstrate coverage.</label></li>
+        <li><label><input type="radio" name="fq7" value="c"> A budget — without dedicated AI security budget, the program cannot sustain its controls through organizational changes.</label></li>
+        <li><label><input type="radio" name="fq7" value="d"> Operational integration — the documents exist but there is no evidence the program is running: no completed risk assessments, no training completion records, no vendor assessment evidence, no tabletop exercise reports, no lessons-learned outputs. Documents describe a program; records prove one is operating. The evaluator found documentation without operation.</label></li>
+      </ul>
+      <div class="fq-feedback" id="fqfb-7"></div>
+    </div>
+
+    <div class="fq-q" data-correct="a">
+      <div class="q-text">Q8. In April 2026, NIST released a concept note for an AI RMF Profile on Trustworthy AI in Critical Infrastructure. A student argues that MVCC — a community college — is not critical infrastructure and therefore this profile does not apply. The MOST accurate response is:</div>
+      <ul class="fq-opts">
+        <li><label><input type="radio" name="fq8" value="a"> The student is technically correct that the Critical Infrastructure Profile targets sectors like energy, healthcare, and finance. However, MVCC should monitor the profile because: (1) community colleges are increasingly considered education sector critical infrastructure under DHS frameworks; (2) the profile's trustworthiness requirements will likely influence the next update to the AI RMF core; and (3) students who transfer to or work with critical infrastructure employers will need to understand and apply this profile in their careers.</label></li>
+        <li><label><input type="radio" name="fq8" value="b"> The student is correct — the Critical Infrastructure Profile has no relevance to educational institutions, and monitoring it would be a distraction from MVCC's actual regulatory obligations.</label></li>
+        <li><label><input type="radio" name="fq8" value="c"> The student is wrong — MVCC is classified as critical infrastructure under CISA's 16 Critical Infrastructure Sectors (Education and Research Facilities sector) and must comply with the profile's requirements.</label></li>
+        <li><label><input type="radio" name="fq8" value="d"> The applicability question is less important than the fact that NIST AI RMF is voluntary — neither the core framework nor any profile carries legal enforcement weight for MVCC.</label></li>
+      </ul>
+      <div class="fq-feedback" id="fqfb-8"></div>
+    </div>
+
+    <div style="margin-top:1.2rem;display:flex;gap:.5rem;flex-wrap:wrap;">
+      <button class="btn-primary" onclick="gradeFinalQuiz()">Grade Final Quiz</button>
+      <button class="btn-secondary" onclick="resetFinalQuiz()">Reset</button>
+    </div>
+    <div class="quiz-score-panel" id="final-score-panel"></div>
+  </div>
+
+  <!-- Course complete -->
+  <div class="course-complete" id="course-complete" style="display:none;">
+    <span class="complete-badge">🎓</span>
+    <h3>AI-103: AI Cybersecurity Foundations — Complete</h3>
+    <p>You have completed all 15 days of AI-103. You now possess a working knowledge of AI governance frameworks, the AI threat landscape, secure architecture design, vendor and supply chain risk, governance documentation, incident response, and red teaming — the full stack of an AI security program. The field needs what you have built here. Go use it.</p>
+    <p style="margin-top:.8rem;font-size:.8rem;opacity:.7;">Moraine Valley Community College · Department of Engineering &amp; Technology · Dr. John L. Sands · 2026</p>
+  </div>
+</section>
+
+<div class="lesson-nav-bottom">
+  <a href="https://sands-mvcc.github.io/aicyber/lesson14.html" class="nav-btn">← Day 14: AI IR &amp; Red Teaming</a>
+  <a href="https://sands-mvcc.github.io/aicyber/index.html" class="nav-btn primary">↩ Return to Course Home</a>
+</div>
+
+</div><!-- end main col -->
+
+<!-- ===== RAIL ===== -->
+<aside class="rail" aria-label="On-page navigation">
+  <h4>On This Page</h4>
+  <ul class="rail-nav">
+    <li><a href="#overview">→ Overview</a></li>
+    <li><a href="#synthesis">Course Map</a></li>
+    <li><a href="#trustworthiness">Trustworthiness</a></li>
+    <li><a href="#capstone-pack">Capstone Pack</a></li>
+    <li><a href="#presentations">Presentation Format</a></li>
+    <li><a href="#peer-review">Peer Review Form</a></li>
+    <li><a href="#selfcheck">Self-Assessment</a></li>
+    <li><a href="#careers">Career Pathways</a></li>
+    <li><a href="#final-quiz">Final Quiz</a></li>
+  </ul>
+
+  <div class="rail-section">
+    <h4>Course Complete ✅</h4>
+    <div style="font-size:.78rem;color:var(--c-text-soft);line-height:1.6;">
+      <strong>15 lessons</strong><br>
+      18 learning objectives<br>
+      4 frameworks mastered<br>
+      10 OWASP LLM items<br>
+      3 tabletop scenarios<br>
+      1 complete AI security program<br>
+    </div>
+  </div>
+
+  <div class="rail-section">
+    <h4>7 Trustworthiness Properties</h4>
+    <div style="font-size:.78rem;color:var(--c-text-soft);">
+      <div style="margin-bottom:.2rem;">✓ Valid &amp; Reliable</div>
+      <div style="margin-bottom:.2rem;">✓ Safe</div>
+      <div style="margin-bottom:.2rem;">✓ Secure &amp; Resilient</div>
+      <div style="margin-bottom:.2rem;">✓ Explainable</div>
+      <div style="margin-bottom:.2rem;">✓ Accountable &amp; Transparent</div>
+      <div style="margin-bottom:.2rem;">✓ Privacy-Enhanced</div>
+      <div>✓ Fair — Bias Managed</div>
+    </div>
+  </div>
+
+  <div class="rail-section">
+    <h4>Final Navigation</h4>
+    <a href="https://sands-mvcc.github.io/aicyber/lesson14.html" class="nav-btn" style="display:block;text-align:center;margin-bottom:.4rem;font-size:.82rem;">← Day 14</a>
+    <a href="https://sands-mvcc.github.io/aicyber/index.html" class="nav-btn primary" style="display:block;text-align:center;font-size:.82rem;">Course Home →</a>
+  </div>
+</aside>
+
+</div><!-- end page-with-rail -->
+</main>
+
+<footer>
+  <p><strong>AI-103: AI Cybersecurity Foundations · Day 15 — Course Complete</strong></p>
+  <p>Moraine Valley Community College · Department of Engineering &amp; Technology · Dr. John L. Sands · 2026</p>
+  <p style="margin-top:.5rem;font-size:.78rem;opacity:.6;">Aligned to NIST AI RMF 1.0 · ISO/IEC 42001:2023 · EU AI Act 2024/1689 · OWASP LLM Top 10 2025 · ISACA AAISM · MITRE ATLAS v5.1 · CoSAI AI IR Framework v1.0 · NIST SP 800-61r3</p>
+</footer>
+
+<script>
+/* ============================================================
+   COURSE MAP DATA
+============================================================ */
+const days=[
+  {unit:1,label:"Why AI Changes Security",key:"CISM domains vs. AAISM; non-determinism; data as code; prompts as attack surface.",fw:"AAISM; NIST AI RMF (intro); OWASP LLM Top 10 (intro)",connects:"Lesson 1 establishes WHY every subsequent lesson is necessary — traditional cybersecurity is insufficient, and AAISM's three-domain extension (Governance, Risk, Technologies & Controls) is the organizing structure of the remaining 14 days."},
+  {unit:1,label:"AI Governance Frameworks",key:"NIST AI RMF, ISO 42001, EU AI Act, OWASP LLM Top 10 — how they fit together.",fw:"All four frameworks introduced",connects:"Lesson 2 builds the framework stack that is referenced in every lesson from 3–15. The analogy: Lesson 2 is the legend on a map — you need it before reading any other lesson."},
+  {unit:1,label:"NIST AI RMF: Govern & Map",key:"6 GOVERN categories, 5 MAP categories, 37 subcategories. Charter builder, MAP worksheet.",fw:"NIST AI RMF GOVERN 1–6, MAP 1–5",connects:"Lesson 3 operationalizes the GOVERN function. The AI Governance Committee charter, AI risk appetite, and use case intake procedures built here are referenced in Lessons 11–14 as the decision authority for every architectural, vendor, and IR decision."},
+  {unit:2,label:"NIST AI RMF: Measure & Manage",key:"22 MEASURE + 13 MANAGE subcategories. Risk register builder, scenario decision lab.",fw:"NIST AI RMF MEASURE 1–4, MANAGE 1–4",connects:"Lesson 4 completes the full AI RMF function set. The risk register format established here is used in the capstone program pack. The MANAGE function's continuous monitoring requirement connects directly to the behavioral monitoring discussed in Lesson 11."},
+  {unit:2,label:"EU AI Act Risk Tiers",key:"Four risk tiers, nine high-risk requirements, four stakeholder roles, GPAI obligations.",fw:"EU AI Act Art. 5, Annex III, Art. 9–15, 25, 73",connects:"Lesson 5 establishes the regulatory obligation framework that governs everything in the capstone. The risk tier classification determines: which architecture controls are mandatory (Lesson 11), which vendor assessment requirements apply (Lesson 12), which governance documents are required (Lesson 13), and which IR reporting obligations apply (Lesson 14)."},
+  {unit:2,label:"AI Risk Categories & Shadow AI",key:"Five AI risk categories; shadow AI patterns, detection, governance responses.",fw:"NIST AI RMF MAP; ISO 42001 Clause 6; EU AI Act Art. 4",connects:"Lesson 6 introduces shadow AI as the risk category that the AUP (Lesson 13) must explicitly address. The five risk categories (model, data, operational, ethical, third-party) are the organizing structure for the risk assessment in the capstone program pack."},
+  {unit:3,label:"AI Threat Landscape: ATLAS",key:"MITRE ATLAS v5.1 (16 tactics, 84 techniques), NIST AI 100-2, threat model lab.",fw:"MITRE ATLAS v5.1; NIST AI 100-2 E2025; OWASP",connects:"Lesson 7 maps the attack landscape that Architecture (Lesson 11), Red Teaming (Lesson 14), and the IR Annex (Lesson 13) are designed to defend against. ATLAS tactics are the threat reference for the red team attack categories in Lesson 14's Module 3."},
+  {unit:3,label:"OWASP LLM Top 10 Deep Dive",key:"All 10 items — attack paths, real incidents, defenses. Attack lab, defense builder.",fw:"OWASP LLM Top 10 2025 LLM01–LLM10",connects:"Lesson 8 provides the practitioner threat vocabulary used in the Architecture (Lesson 11's layer controls address specific OWASP items), Vendor Assessment (Lesson 12's questionnaire maps to OWASP exposures), Red Teaming (Lesson 14's eight categories map to OWASP items), and the final quiz."},
+  {unit:3,label:"Attacks on Data & Models",key:"Data poisoning taxonomy, backdoor mechanics, four drift types, MLOps security.",fw:"MITRE ATLAS; NIST AI 100-2; OWASP LLM03, LLM04",connects:"Lesson 9 establishes the technical depth behind the most dangerous AI attack types. Model poisoning (Lesson 14 tabletop), RAG poisoning (Lesson 14 red team category), and data lineage controls (Lesson 11 Module 2) all build on the foundation established here."},
+  {unit:4,label:"AI as a Weapon",key:"Deepfakes, AI phishing, influence operations. Detection lab, defense builder.",fw:"OWASP LLM09; MITRE ATLAS; EU AI Act Art. 5",connects:"Lesson 10 establishes AI-as-weapon threats that drive the deepfake tabletop exercise in Lesson 14 and the AI AUP's prohibited uses section in Lesson 13. The $1.1B deepfake fraud statistic from Lesson 14 originates from the threat research in Lesson 10."},
+  {unit:4,label:"Secure AI Architecture",key:"Defense in depth (7 layers), data lifecycle, AIBOM, model cards, least privilege.",fw:"NIST AI RMF MANAGE; ISO 42001 Clause 8; EU AI Act Art. 10–15",connects:"Lesson 11 is the technical core of the architecture component in the capstone program pack. The seven-layer stack, AIBOM, and model card are all referenced in the governance documents (Lesson 13) and vendor assessment (Lesson 12). This is the most heavily cross-referenced lesson in the course."},
+  {unit:4,label:"Vendor & Supply Chain Risk",key:"AI value chain, provider/deployer roles, embedded AI, vendor tiering, contract clauses.",fw:"EU AI Act Art. 25, 26; NIST AI RMF MAP 3; ISO 42001 A.9",connects:"Lesson 12 provides the vendor risk assessment framework and contract clause templates that are components of the capstone program pack (Vendor Risk Assessment Report + Mini-Project). The AIBOM delivery clause connects back to Lesson 11; the AI incident SLA connects forward to Lesson 14."},
+  {unit:5,label:"AI Policies & Governance Docs",key:"AI AUP (8 components), Use Case Register, ISO 42001 hierarchy, AI IR Annex.",fw:"ISO 42001 Clauses 5–10; NIST AI RMF GOVERN; EU AI Act Art. 4, 9, 13",connects:"Lesson 13 produces the governance documents that are the capstone program pack's foundation. The AUP and Use Case Register are the first two things an auditor or regulator requests. The IR Annex in Lesson 13 is extended and exercised in Lesson 14."},
+  {unit:5,label:"IR, Red Teaming & Tabletops",key:"6 IR gaps, adapted 800-61r3 lifecycle, 8 red team categories, 3 TTX exercises.",fw:"NIST SP 800-61r3; CoSAI AI IR v1.0; MITRE ATLAS; EU AI Act Art. 73",connects:"Lesson 14 operationalizes everything: it tests the architecture (red team), exercises the governance (tabletop surfaces gaps in AUP and IR Annex), produces lessons-learned that feed back into the governance documents (ISO 42001 Clause 10), and generates regulatory notification decisions (EU AI Act Art. 73)."},
+  {unit:5,label:"Synthesis & Capstone",key:"Full program integration, 7 trustworthiness properties, presentations, peer review.",fw:"All frameworks · All 18 Learning Objectives",connects:"Lesson 15 closes the loop by showing how all 14 previous lessons connect through the three synthesis threads and seven trustworthiness characteristics. The capstone program pack is the evidence that a student can not only recall each lesson but integrate them into a functioning AI security program."},
+];
+const unitColors=["cm-unit1","cm-unit2","cm-unit3","cm-unit4","cm-unit5"];
+let activeCMDay=-1;
+function buildCourseMap(){
+  const m=document.getElementById('course-map');
+  m.innerHTML=days.map((d,i)=>`
+    <div class="cm-day ${unitColors[d.unit-1]}" role="listitem" tabindex="0"
+      onclick="toggleCMDay(${i})" onkeydown="if(event.key==='Enter')toggleCMDay(${i})"
+      aria-label="Day ${i+1}: ${d.label}">
+      <div class="cm-num">${i+1}</div>
+      <div class="cm-label">${d.label}</div>
+    </div>
+  `).join('');
+}
+function toggleCMDay(i){
+  const tip=document.getElementById('cm-tooltip');
+  document.querySelectorAll('.cm-day').forEach((el,idx)=>el.classList.toggle('active',idx===i&&activeCMDay!==i));
+  if(activeCMDay===i){tip.className='cm-tooltip';activeCMDay=-1;return;}
+  activeCMDay=i;
+  const d=days[i];
+  tip.innerHTML=`<strong style="font-size:.95rem;">Day ${i+1} — ${d.label}</strong>
+    <p style="margin:.4rem 0 .3rem;font-size:.85rem;"><strong>Core Content:</strong> ${d.key}</p>
+    <p style="font-size:.82rem;color:var(--c-text-soft);margin-bottom:.3rem;"><strong>Frameworks:</strong> ${d.fw}</p>
+    <p style="font-size:.83rem;border-top:1px solid var(--c-border);padding-top:.4rem;margin-top:.4rem;"><strong>How it connects:</strong> ${d.connects}</p>`;
+  tip.className='cm-tooltip show';
+}
+buildCourseMap();
+
+/* ============================================================
+   TRUSTWORTHINESS CHARACTERISTICS
+============================================================ */
+const twData=[
+  {icon:"✅",name:"Valid & Reliable",tagline:"The system does what it claims — consistently.",color:"var(--c-green)",
+   detail:"A model that hallucinates 30% of the time is not trustworthy regardless of how securely it was built. Validity and reliability are the foundational property — all other trustworthiness characteristics assume the system is producing accurate outputs to begin with. Every performance evaluation, bias audit, and red team test checks whether validity is maintained.",
+   lessons:"Days 4 (MEASURE function), 9 (drift detection), 11 (model cards document reliability), 12 (vendor assessment questionnaire), 14 (red team reliability testing, drift as IR trigger)"},
+  {icon:"🛡️",name:"Safe",tagline:"Minimizes hazardous outputs and consequences.",color:"var(--c-accent)",
+   detail:"Safety means the system does not produce outputs that cause physical, psychological, financial, or societal harm. For an educational AI, this means the system does not provide academically dishonest assistance, does not produce content harmful to students' wellbeing, and does not make consequential academic decisions without appropriate human oversight.",
+   lessons:"Days 8 (OWASP LLM safety failures), 10 (AI-as-weapon — deepfakes used to harm), 11 (output filtering and content controls), 13 (AUP prohibited uses section), 14 (safety failure classification in red team findings)"},
+  {icon:"🔒",name:"Secure & Resilient",tagline:"Withstands attacks and recovers from failures.",color:"var(--c-blue)",
+   detail:"Security and resilience together span the full threat lifecycle: securing against attacks (prompt injection, poisoning, extraction, adversarial inputs) and recovering from failures (model rollback, retraining, behavioral monitoring). Resilience implies the system can continue operating — or gracefully degrade — when components fail or are attacked.",
+   lessons:"Days 7–9 (threat landscape: ATLAS, OWASP, poisoning), 11 (7-layer defense in depth, AIBOM), 12 (supply chain security), 14 (IR lifecycle, red teaming, tabletops)"},
+  {icon:"💡",name:"Explainable & Interpretable",tagline:"Outputs can be understood and examined.",color:"var(--c-gold)",
+   detail:"Explainability means the model's outputs can be traced and understood — at the level of the specific decision (why did this model produce this output?) and the system level (how was this model designed to work?). For high-risk systems under EU AI Act Art. 13, technical transparency is mandatory. For educational AI, explainability is what makes AI-assisted decisions contestable by students.",
+   lessons:"Days 3 (GOVERN 6.1 — transparent AI design), 5 (EU AI Act Art. 13 transparency), 11 (model cards — the explainability document), 13 (AUP human review requirements, Use Case Register)"},
+  {icon:"👁️",name:"Accountable & Transparent",tagline:"Clear ownership and audit trail for AI decisions.",color:"var(--c-purple)",
+   detail:"Accountability means named individuals own AI systems and their outcomes — not departments, committees, or vendors. Transparency means the organization can demonstrate to outsiders that its AI program is operating as documented. These are the governance characteristics — they require the document hierarchy (ISO 42001), the Use Case Register, the role assignments in the AUP, and the records layer that proves controls are operating.",
+   lessons:"Days 2–5 (governance frameworks establish accountability structure), 12 (deployer vs. provider roles — accountability under EU AI Act), 13 (ISO 42001 document hierarchy, governance roles, records layer)"},
+  {icon:"🔐",name:"Privacy-Enhanced",tagline:"Minimizes privacy risk throughout the AI lifecycle.",color:"var(--c-teal)",
+   detail:"Privacy-enhanced AI minimizes data collection, applies data minimization to training and inference, ensures consent for data use, enables data subject rights (deletion, access), and protects sensitive data from unauthorized disclosure through the AI interface (model inversion, memorization, exfiltration). For MVCC, FERPA is the dominant privacy framework — the AUP's data classification matrix is the primary privacy control.",
+   lessons:"Days 5 (EU AI Act Art. 10 data governance), 11 (data lifecycle controls, AIBOM data fields), 12 (Data Use Restriction for AI Training clause), 13 (AUP data classification matrix, FERPA provisions), 14 (PII exfiltration as red team category and tabletop scenario)"},
+  {icon:"⚖️",name:"Fair — Bias Managed",tagline:"Equitable outcomes across populations and contexts.",color:"var(--c-warn)",
+   detail:"Fairness in AI means the system does not produce systematically different outcomes for different demographic groups without justification. For educational AI, fairness means the tutoring system provides equally high-quality assistance regardless of the student's language, academic background, or demographic characteristics. The Amazon hiring tool (bias against women) and the MVCC AI Early Alert (bias against student-athletes in tabletop) are the canonical negative examples.",
+   lessons:"Days 5 (EU AI Act Art. 10 — representativeness and bias requirements), 9 (data poisoning as source of bias), 11 (bias evaluation in model cards), 12 (bias audit clause in vendor contracts), 14 (bias/fairness as red team category, model poisoning tabletop — the bias discovery scenario)"},
+];
+function buildTWGrid(){
+  const g=document.getElementById('tw-grid');
+  g.innerHTML=twData.map((tw,i)=>`
+    <div class="tw-card" tabindex="0" onclick="toggleTW(${i})" onkeydown="if(event.key==='Enter')toggleTW(${i})" id="tw-${i}">
+      <div class="tw-icon">${tw.icon}</div>
+      <div class="tw-name">${tw.name}</div>
+      <div class="tw-tagline">${tw.tagline}</div>
+      <div class="tw-detail" id="tw-det-${i}">
+        <p>${tw.detail}</p>
+        <p style="margin-top:.6rem;font-size:.78rem;font-weight:600;color:var(--c-text-soft);text-transform:uppercase;letter-spacing:.04em;">AI-103 Lessons:</p>
+        <p style="font-size:.8rem;">${tw.lessons}</p>
+      </div>
+    </div>
+  `).join('');
+}
+function toggleTW(i){
+  const card=document.getElementById(`tw-${i}`);
+  const det=document.getElementById(`tw-det-${i}`);
+  const isOpen=det.classList.contains('open');
+  document.querySelectorAll('.tw-card').forEach(c=>c.classList.remove('expanded'));
+  document.querySelectorAll('.tw-detail').forEach(d=>d.classList.remove('open'));
+  if(!isOpen){card.classList.add('expanded');det.classList.add('open');}
+}
+buildTWGrid();
+
+/* ============================================================
+   CAPSTONE PACK COMPONENTS
+============================================================ */
+const packItems=[
+  {num:"1",title:"AI Governance Charter",desc:"Establishes the AI Governance Committee, defines MVCC's AI risk appetite, and authorizes the full AI security program.",req:"1 page · Leadership approved",lessons:["Day 3","Day 4","Day 5"],detail:"Identifies named governance roles (Committee chair, policy owner, system owners). States risk appetite. Authorizes use case intake gate. References the AI Policy (ISO 42001 Level 1)."},
+  {num:"2",title:"AI Acceptable Use Policy",desc:"8-component operational policy governing tool use, data classification, prohibited uses, shadow AI pathway, and enforcement.",req:"500–700 words + Appendix A",lessons:["Day 6","Day 13"],detail:"Must include sanctioned tools list (Appendix A, Tier 1/2/3). Data classification matrix cross-referenced to institutional data classification standard. Shadow AI approval pathway with enforcement consequences. Named review triggers."},
+  {num:"3",title:"AI Use Case Register",desc:"Authoritative inventory of all AI systems — deployed, pilot, and pre-deployment — with EU AI Act tier, data classification, ownership, and review schedule.",req:"Table format · Min. 3 entries",lessons:["Day 3","Day 5","Day 13"],detail:"Includes EU AI Act risk tier field. Data classification links to AUP matrix. MVCC role (Deployer/Provider) field. Linked documents field for AIBOM, model card, and vendor contract. Review cadence driven by risk tier."},
+  {num:"4",title:"Architecture Design Document",desc:"Defense-in-depth architecture for the organization's highest-risk AI system — naming controls at each of the seven layers.",req:"1–2 pages · 7 layers addressed",lessons:["Day 11"],detail:"Each layer (Governance, Network, Input, Model, Output, Monitoring, IR) must name at least one specific control appropriate to the deployment context. Controls should reference the EU AI Act risk tier. AIBOM requirement stated. Model card requirement stated."},
+  {num:"5",title:"Vendor Risk Assessment Report",desc:"Tier 1 vendor assessment using the 6-domain questionnaire, EU AI Act role determination, and 3 required contract clauses.",req:"Structured memo format",lessons:["Day 12"],detail:"Vendor tier classification with rationale. EU AI Act role determination (MVCC as Deployer, Importer, or triggered provider under Art. 25). Top 5 risk findings with evidence basis. Three essential contract clauses with vendor-specific rationale. Assessment gap identified."},
+  {num:"6",title:"AI IR Annex",desc:"Supplement to NIST SP 800-61r3 defining AI-specific incident categories, detection signals, containment actions, and regulatory notification procedures.",req:"1–2 pages · 6 phases addressed",lessons:["Day 13","Day 14"],detail:"AI incident taxonomy (6 types minimum). Detection signals for each type. AI-specific containment procedures. EU AI Act Art. 73 notification decision framework (severity classification criteria). Model rollback authority assigned. Lessons-learned template included."},
+  {num:"7",title:"Red Team Plan",desc:"Pre-deployment red team exercise design for the highest-risk AI system — attack categories, test methods, reporting format.",req:"1 page · Min. 3 attack categories",lessons:["Day 14"],detail:"Scoped to specific model version and deployment configuration. Attack categories calibrated to system risk tier and deployment context (RAG, agentic, FERPA data). Tool selection rationale (automated + manual). Report format with severity classification. Authorization and legal review documented."},
+  {num:"8",title:"Tabletop Lessons Learned Report",desc:"AI incident lessons learned report from two tabletop exercise scenarios — with specific action items connected to governance document updates.",req:"600 words + action item table",lessons:["Day 14"],detail:"Two scenarios covered. Three decision points per scenario. Gap analysis mapped to specific governance documents. Four assigned, dated action items in [Action/Owner/Date/Success Criterion] format. Red team connection for one scenario (what pre-deployment test would have prevented this?)."},
+];
+function buildPackGrid(){
+  const g=document.getElementById('pack-grid');
+  g.innerHTML=packItems.map(p=>`
+    <div class="pack-item">
+      <div class="pack-num">${p.num}</div>
+      <div class="pack-body">
+        <div class="pack-title">${p.title}</div>
+        <div class="pack-desc">${p.desc}</div>
+        <div><span class="pack-req">${p.req}</span></div>
+        <div class="pack-lesson-tags">${p.lessons.map(l=>`<span class="pack-lesson-tag">${l}</span>`).join('')}</div>
+      </div>
+    </div>
+  `).join('');
+}
+buildPackGrid();
+
+/* ============================================================
+   SYNTHESIS SELF-CHECK
+============================================================ */
+const scItems=[
+  "Explain why traditional cybersecurity principles are insufficient for AI-enabled enterprises and where AAISM extends them",
+  "Identify NIST AI RMF, ISO/IEC 42001, EU AI Act, and OWASP LLM Top 10 and explain how they interrelate",
+  "Apply the four NIST AI RMF functions (Govern, Map, Measure, Manage) to enterprise AI deployment",
+  "Classify AI systems under EU AI Act's four risk tiers and identify the required obligations",
+  "Differentiate AI risk categories: model, data, operational, ethical, and third-party risk",
+  "Recognize shadow AI patterns and apply appropriate governance responses",
+  "Conduct vendor and supply-chain risk assessments for AI-enabled solutions",
+  "Distinguish provider, deployer, and importer responsibilities under emerging AI regulation",
+  "Develop an enterprise AI acceptable use policy that holds up under audit",
+  "Describe the AI threat landscape and how it differs from traditional cyber threats",
+  "Identify and explain each of the OWASP Top 10 for LLM Applications (2025 edition)",
+  "Match real-world attack scenarios to OWASP threat categories",
+  "Design a defense-in-depth architecture for an AI-enabled application",
+  "Apply controls across the AI data lifecycle — provenance, lineage, AIBOM, and model cards",
+  "Plan and conduct AI red-team exercises appropriate to system risk",
+  "Adapt the NIST SP 800-61 incident response lifecycle for AI-specific incidents",
+  "Execute a tabletop exercise for deepfake-enabled fraud, prompt injection, and model poisoning",
+  "Document AI incident lessons learned in a way that strengthens the AI governance program",
+];
+let scChecked=0;
+function buildSynthCheck(){
+  const c=document.getElementById('synth-check');
+  c.innerHTML=`<div style="font-size:.82rem;font-weight:700;color:var(--c-text-soft);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.8rem;">Check the objectives where you feel confident:</div>`+
+  scItems.map((item,i)=>`
+    <div class="sc-item">
+      <input type="checkbox" id="sc-${i}" onchange="updateSCProgress()">
+      <label for="sc-${i}" style="cursor:pointer;">${item}</label>
+    </div>
+  `).join('');
+}
+function updateSCProgress(){
+  const checked=document.querySelectorAll('.sc-item input:checked').length;
+  document.getElementById('sc-count').textContent=checked;
+  document.getElementById('sc-bar').style.width=Math.round(checked/18*100)+'%';
+}
+buildSynthCheck();
+
+/* ============================================================
+   PEER REVIEW
+============================================================ */
+const starRatings={tech:0,coh:0};
+function rateStar(group,val){
+  starRatings[group]=val;
+  document.querySelectorAll(`[data-group="${group}"]`).forEach(s=>{
+    s.classList.toggle('lit',parseInt(s.dataset.val)<=val);
+  });
+}
+function previewPeerFeedback(){
+  const name=document.getElementById('peer-name').value||'[Presenter not named]';
+  const strong=document.getElementById('peer-strong').value||'[Not completed]';
+  const gap=document.getElementById('peer-gap').value||'[Not completed]';
+  const improve=document.getElementById('peer-improve').value||'[Not completed]';
+  const div=document.getElementById('peer-preview');
+  div.innerHTML=`<p style="font-weight:700;margin-bottom:.7rem;">Peer Review: ${name}</p>
+    <p><strong>Strongest element:</strong> ${strong}</p>
+    <p style="margin-top:.5rem;"><strong>Most significant gap:</strong> ${gap}</p>
+    <p style="margin-top:.5rem;"><strong>One specific improvement:</strong> ${improve}</p>
+    <p style="margin-top:.5rem;"><strong>Technical Accuracy:</strong> ${'★'.repeat(starRatings.tech||0)+'☆'.repeat(5-(starRatings.tech||0))} &nbsp; <strong>Coherence:</strong> ${'★'.repeat(starRatings.coh||0)+'☆'.repeat(5-(starRatings.coh||0))}</p>`;
+  div.style.display='block';div.style.animation='fadeIn .2s ease';
+}
+function clearPeerForm(){
+  ['peer-name','peer-strong','peer-gap','peer-improve'].forEach(id=>document.getElementById(id).value='');
+  starRatings.tech=0;starRatings.coh=0;
+  document.querySelectorAll('.star').forEach(s=>s.classList.remove('lit'));
+  document.getElementById('peer-preview').style.display='none';
+}
+
+/* ============================================================
+   ACCORDION
+============================================================ */
+function toggleAcc(btn){
+  const body=btn.nextElementSibling;
+  const isOpen=btn.getAttribute('aria-expanded')==='true';
+  document.querySelectorAll('.accordion-trigger[aria-expanded="true"]').forEach(b=>{b.setAttribute('aria-expanded','false');b.nextElementSibling.classList.remove('open');});
+  if(!isOpen){btn.setAttribute('aria-expanded','true');body.classList.add('open');}
+}
+
+/* ============================================================
+   FINAL QUIZ
+============================================================ */
+const fqAnswers={
+  fq1:{correct:'c',feedback:{c:'✓ Correct. Each system carries different obligations based on its EU AI Act risk tier. The tutoring system (Annex III High Risk) carries full Art. 26 deployer obligations. The scheduling optimizer (Minimal Risk) has essentially no mandatory obligations beyond not actively causing prohibited harm. Copilot falls under the transparency obligations (Art. 50) and — critically — the Art. 4 AI literacy requirement that applies to ALL AI deployments from February 2025, regardless of risk tier. The key insight: the EU AI Act is a tiered framework, not a binary.',default:'✗ Correct answer: C. The EU AI Act is a tiered framework — different risk tiers carry different obligations. All three systems require the Art. 4 AI literacy requirement; only the high-risk system carries the full Art. 26 deployer suite.'}},
+  fq2:{correct:'b',feedback:{b:'✓ Correct. OWASP LLM Top 10 is a threat reference — it tells you what attacks to expect. NIST AI 600-1 is a governance framework organized around the AI RMF\'s four functions — it tells you how to build the program that identifies, measures, and manages those threats. The two frameworks address different questions and are complementary. Security practitioners need OWASP for operational threat knowledge; governance practitioners need NIST AI 600-1 for program structure.',default:'✗ Correct answer: B. They are complementary frameworks addressing different questions — OWASP answers "what can go wrong?" and NIST AI 600-1 answers "how do we build the program to manage it?" Neither is sufficient alone.'}},
+  fq3:{correct:'d',feedback:{d:'✓ Correct. The Material AI Change Notification clause (Lesson 12) is the governance mechanism designed for exactly this situation. Before taking any action on the new model version, the program checks whether the vendor had a notification obligation and whether they fulfilled it. If they did notify, the program\'s model change review process begins. If they did not notify, the vendor is potentially in breach of contract — which changes the response significantly (escalate to legal, document for next contract renewal). The first step is always: check what the contract requires.',default:'✗ Correct answer: D. The governance program\'s first action is checking the contract — specifically whether the Material AI Change Notification clause was triggered and honored. This is what distinguishes a program from a document: when something happens, the program tells you what to do first.'}},
+  fq4:{correct:'a',feedback:{a:'✓ Correct. Records (Level 4 of the ISO 42001 document hierarchy, covered in Lesson 13) are the audit evidence layer. An auditor does not accept policy documents as proof that controls are operating — they examine records: completed risk assessments, signed training completion logs, vendor assessment questionnaire responses, human oversight decision logs. Without records, every policy claim is assertion. This is the most common ISO 42001 audit failure mode: organizations build excellent policy documents and then don\'t operate the program, producing no records.',default:'✗ Correct answer: A. ISO 42001 audits are evidence-based — auditors examine records to verify controls are operating, not just documented. Excellent policies without records of implementation are a non-conformance.'}},
+  fq5:{correct:'c',feedback:{c:'✓ Correct. Safety failure — the model produces content (vulnerable code) that could facilitate real-world harm (SQL injection attacks on systems students deploy), through a jailbreaking technique (multi-turn persona injection to establish a false context). Note what makes this a safety failure rather than a security failure: no data was exfiltrated, no system was attacked. The harm is in the content produced. The remediation addresses the safety property: system prompt hardening, RAG content restriction, output filtering.',default:'✗ Correct answer: C. This is a safety failure (harmful content produced through jailbreaking), not a security failure (no data exfiltration or system compromise) or alignment failure (the model was manipulated into behavior outside scope through adversarial means, not simply misconfigured).'}},
+  fq6:{correct:'b',feedback:{b:'✓ Correct. Validity and reliability are foundational because all other trustworthiness properties assume the system is producing accurate outputs. A secure, transparent, privacy-enhanced, fair model that consistently hallucinates is not trustworthy — it is a well-governed system that reliably provides incorrect information. Safety controls protect a valid system from attack; they cannot compensate for fundamental unreliability. This is why NIST places Valid and Reliable at the base of the trustworthiness diagram rather than Safe or Secure.',default:'✗ Correct answer: B. Validity and reliability are the precondition for all other trustworthiness properties to be meaningful. An unreliable model cannot be made trustworthy by adding security or governance controls — the controls protect a valid output; they cannot validate an invalid one.'}},
+  fq7:{correct:'d',feedback:{d:'✓ Correct. This is the most common AI governance program failure mode: documentation without operation. The program exists as a paper artifact — policies are written, registers are structured, documents are formatted — but there is no evidence the program is running. No completed risk assessments. No vendor assessment questionnaire responses on file. No training completion records. No tabletop exercise reports. No model card review logs. The CISM evaluator\'s insight is that a program consists of both documents AND operations — and this program has only the former.',default:'✗ Correct answer: D. The gap is operational evidence — records proving the program is running, not just designed. Documents describe a program; records prove one is operating. This is the record-keeping gap that ISO 42001 auditors most commonly cite as a non-conformance.'}},
+  fq8:{correct:'a',feedback:{a:'✓ Correct. The student is technically right about direct applicability, but the nuanced answer accounts for: MVCC\'s potential CI classification (DHS includes education in some CI frameworks), the profile\'s likely influence on future RMF updates, and the career relevance for students who will work in or serve CI sectors. An AI security professional who cannot explain why a critical infrastructure AI governance profile matters to an educational institution — even indirectly — has not fully synthesized the field.',default:'✗ Correct answer: A. The critical infrastructure profile may not directly apply to MVCC today, but monitoring it is relevant because it will influence future RMF updates, and MVCC students will work with organizations where it does apply. The most defensible answer acknowledges the technical applicability question while explaining the indirect relevance.'}},
+};
+function gradeFinalQuiz(){
+  const qs=document.querySelectorAll('#final-quiz-container .fq-q');let score=0;
+  qs.forEach(q=>{
+    const qname=q.querySelector('input[type=radio]').name;
+    const qdata=fqAnswers[qname];
+    const selected=q.querySelector(`input[name="${qname}"]:checked`);
+    const fb=document.getElementById(`fqfb-${qname.replace('fq','')}`);
+    q.querySelectorAll('li').forEach(li=>li.classList.remove('correct','wrong'));
+    if(selected){
+      const val=selected.value;
+      if(val===qdata.correct){score++;selected.closest('li').classList.add('correct');fb.className='fq-feedback show';fb.style.background='var(--c-green-light)';fb.style.color='var(--c-green)';fb.textContent=qdata.feedback[val]||qdata.feedback.default;}
+      else{selected.closest('li').classList.add('wrong');q.querySelector(`input[value="${qdata.correct}"]`).closest('li').classList.add('correct');fb.className='fq-feedback show';fb.style.background='#fff0f0';fb.style.color='#c00';fb.textContent=qdata.feedback[val]||qdata.feedback.default;}
+    } else {fb.className='fq-feedback show';fb.style.background='#fff0f0';fb.style.color='#c00';fb.textContent='— No answer selected. '+qdata.feedback.default;}
+  });
+  const pct=Math.round(score/8*100);
+  const panel=document.getElementById('final-score-panel');panel.className='quiz-score-panel show';
+  let msg,sub;
+  if(score>=7){msg=`🏆 Exceptional — ${pct}%.`;sub="You have synthesized all 15 days of AI-103 content at a level that demonstrates genuine mastery. You are ready to begin applying this knowledge professionally and to pursue advanced certifications (AAISM, CISM with AI specialization, ISO 42001 Lead Implementer).";}
+  else if(score>=6){msg=`✅ Strong — ${pct}%.`;sub="You have demonstrated solid synthesis ability. Review the questions you missed — they likely represent a single conceptual area where your integration is not yet complete. Revisit the relevant lessons and retry.";}
+  else if(score>=5){msg=`📚 Developing — ${pct}%.`;sub="You have good foundational knowledge but the synthesis questions are revealing gaps in how you connect concepts across lessons. Focus on the three synthesis threads and the trustworthiness characteristics as organizing principles.";}
+  else{msg=`🔁 Review Needed — ${pct}%.`;sub="The synthesis questions require connecting content across multiple lessons. Return to the Course Map and work through the 'How it connects' section for each day — synthesis requires not just knowing each lesson but understanding how each one changes the others.";}
+  panel.innerHTML=`<div class="qs-big">${score} / 8</div><div class="qs-label">${msg}</div><div class="qs-message">${sub}</div>`;
+  if(score>=6){
+    document.getElementById('course-complete').style.display='block';
+    document.getElementById('course-complete').scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+}
+function resetFinalQuiz(){
+  document.querySelectorAll('#final-quiz-container input[type=radio]').forEach(r=>r.checked=false);
+  document.querySelectorAll('#final-quiz-container li').forEach(li=>li.classList.remove('correct','wrong'));
+  document.querySelectorAll('.fq-feedback').forEach(fb=>{fb.className='fq-feedback';fb.textContent='';});
+  document.getElementById('final-score-panel').className='quiz-score-panel';
+  document.getElementById('course-complete').style.display='none';
+}
+</script>
+</body>
+</html>
