@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Activity A Practice — Mapping AI Objectives to Security+</title>
+<style>
+/* ── Tokens ── */
+:root {
+  --bg:        #f7f6f3;
+  --surface:   #ffffff;
+  --surface2:  #f0ede8;
+  --border:    #ddd8d0;
+  --border-m:  #c8c0b4;
+  --ink:       #18161280;
+  --ink-1:     #1a1714;
+  --ink-2:     #4a4440;
+  --ink-3:     #7a7068;
+  --accent:    #1a3a6b;
+  --accent-lt: #eef2f8;
+  --gold:      #8a6010;
+  --gold-lt:   #fdf6e4;
+  --ok:        #1a5c34;
+  --ok-bg:     #eaf5ee;
+  --err:       #7c1c1c;
+  --err-bg:    #faeaea;
+  --warn:      #7a5000;
+  --warn-bg:   #fdf5e0;
+  --prog-bg:   #e2ddd6;
+  --prog-fill: #1a3a6b;
+  --shadow-sm: 0 1px 4px rgba(0,0,0,.07);
+  --shadow-md: 0 4px 20px rgba(0,0,0,.10);
+  --r:         10px;
+  --r-sm:      6px;
+  --ff-display:'Georgia', 'Times New Roman', serif;
+  --ff-body:   system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --ff-mono:   'Courier New', monospace;
+  --transition: .22s ease;
+}
+[data-theme="dark"] {
+  --bg:        #111318;
+  --surface:   #1c1f26;
+  --surface2:  #242830;
+  --border:    #30363e;
+  --border-m:  #444c58;
+  --ink-1:     #e8e4de;
+  --ink-2:     #a8a098;
+  --ink-3:     #6a6460;
+  --accent:    #7ca8dc;
+  --accent-lt: #1a2535;
+  --gold:      #d4a840;
+  --gold-lt:   #1e1a0a;
+  --ok:        #4caf76;
+  --ok-bg:     #0d2015;
+  --err:       #e07070;
+  --err-bg:    #1e0a0a;
+  --warn:      #e0b050;
+  --warn-bg:   #1e1504;
+  --prog-bg:   #2a2f38;
+  --prog-fill: #7ca8dc;
+  --shadow-sm: 0 1px 4px rgba(0,0,0,.3);
+  --shadow-md: 0 4px 20px rgba(0,0,0,.4);
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--ff-body);
+  background: var(--bg);
+  color: var(--ink-1);
+  font-size: 16px;
+  line-height: 1.65;
+  min-height: 100vh;
+  transition: background var(--transition), color var(--transition);
+}
+
+/* ── Skip link ── */
+.skip-link {
+  position: absolute; top: -50px; left: 1rem;
+  background: var(--accent); color: #fff;
+  padding: .4rem .9rem; border-radius: var(--r-sm);
+  font-size: .85rem; font-weight: 600; z-index: 9999;
+  transition: top .2s;
+}
+.skip-link:focus { top: .5rem; }
+
+/* ── Layout ── */
+.shell {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+}
+
+/* ── Top bar ── */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.breadcrumb {
+  font-size: .78rem;
+  color: var(--ink-3);
+  font-family: var(--ff-mono);
+  letter-spacing: .04em;
+}
+.controls-row {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+
+/* ── Buttons ── */
+button {
+  font-family: var(--ff-body);
+  cursor: pointer;
+  border: none;
+  border-radius: var(--r-sm);
+  transition: background var(--transition), color var(--transition),
+              box-shadow var(--transition), transform .1s;
+}
+button:active { transform: scale(.97); }
+button:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+.btn-mode {
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  padding: .35rem .8rem;
+  background: var(--surface2);
+  color: var(--ink-2);
+  border: 1px solid var(--border);
+}
+.btn-mode.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.btn-mode:hover:not(.active) { background: var(--border); }
+.btn-theme {
+  font-size: 1rem;
+  padding: .3rem .6rem;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--ink-2);
+  line-height: 1;
+}
+.btn-theme:hover { background: var(--border); }
+.btn-reset {
+  font-size: .78rem;
+  font-weight: 600;
+  padding: .35rem .8rem;
+  background: transparent;
+  border: 1px solid var(--border-m);
+  color: var(--ink-3);
+}
+.btn-reset:hover { border-color: var(--err); color: var(--err); }
+.btn-primary {
+  padding: .6rem 1.4rem;
+  background: var(--accent);
+  color: #fff;
+  font-size: .9rem;
+  font-weight: 700;
+  box-shadow: var(--shadow-sm);
+}
+.btn-primary:hover { filter: brightness(1.12); box-shadow: var(--shadow-md); }
+.btn-primary:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+  transform: none;
+}
+.btn-nav {
+  padding: .55rem 1.1rem;
+  font-size: .88rem;
+  font-weight: 600;
+  background: var(--surface2);
+  color: var(--ink-2);
+  border: 1px solid var(--border);
+}
+.btn-nav:hover:not(:disabled) { background: var(--border); }
+.btn-nav:disabled { opacity: .35; cursor: not-allowed; transform: none; }
+
+/* ── Intro ── */
+.intro-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 5px solid var(--accent);
+  border-radius: var(--r);
+  padding: 1.4rem 1.6rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-sm);
+}
+.intro-card h1 {
+  font-family: var(--ff-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--ink-1);
+  margin-bottom: .5rem;
+  line-height: 1.25;
+}
+.intro-card .kicker {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: .35rem;
+  font-family: var(--ff-mono);
+}
+.intro-card p {
+  font-size: .9rem;
+  color: var(--ink-2);
+  line-height: 1.6;
+}
+
+/* ── Progress ── */
+.progress-wrap {
+  margin-bottom: 1.5rem;
+}
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: .78rem;
+  color: var(--ink-3);
+  margin-bottom: .4rem;
+  font-family: var(--ff-mono);
+}
+.progress-bar {
+  height: 6px;
+  background: var(--prog-bg);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--prog-fill);
+  border-radius: 99px;
+  transition: width .4s ease;
+}
+.score-tag {
+  display: inline-block;
+  background: var(--accent-lt);
+  color: var(--accent);
+  font-weight: 700;
+  font-size: .78rem;
+  font-family: var(--ff-mono);
+  padding: .15rem .55rem;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--accent);
+  letter-spacing: .04em;
+}
+
+/* ── Quiz card ── */
+.quiz-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  animation: cardIn .25s ease;
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.card-header {
+  background: var(--accent);
+  color: #fff;
+  padding: .75rem 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
+}
+.card-header .item-label {
+  font-family: var(--ff-mono);
+  font-size: .75rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  opacity: .8;
+}
+.card-header .item-counter {
+  font-family: var(--ff-mono);
+  font-size: .8rem;
+  font-weight: 700;
+  opacity: .9;
+}
+.card-body { padding: 1.5rem 1.6rem; }
+.objective-text {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ink-1);
+  line-height: 1.5;
+  margin-bottom: 1.4rem;
+  font-family: var(--ff-display);
+}
+.fields-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+@media (max-width: 520px) {
+  .fields-row { grid-template-columns: 1fr; }
+}
+.field-group { display: flex; flex-direction: column; gap: .3rem; }
+.field-group label {
+  font-size: .75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--ink-3);
+  font-family: var(--ff-mono);
+}
+.field-group select {
+  font-family: var(--ff-body);
+  font-size: .9rem;
+  padding: .55rem .75rem;
+  background: var(--surface2);
+  color: var(--ink-1);
+  border: 1.5px solid var(--border-m);
+  border-radius: var(--r-sm);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7068' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right .75rem center;
+  padding-right: 2.2rem;
+  cursor: pointer;
+  transition: border-color var(--transition);
+}
+.field-group select:focus {
+  outline: 3px solid var(--accent);
+  outline-offset: 1px;
+  border-color: var(--accent);
+}
+.field-group select.correct { border-color: var(--ok); background-color: var(--ok-bg); }
+.field-group select.incorrect { border-color: var(--err); background-color: var(--err-bg); }
+
+/* ── Feedback box ── */
+.feedback-box {
+  border-radius: var(--r-sm);
+  padding: .9rem 1.1rem;
+  font-size: .88rem;
+  line-height: 1.55;
+  margin-bottom: 1.2rem;
+  display: none;
+  animation: fadeIn .2s ease;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.feedback-box.show { display: block; }
+.feedback-box.correct {
+  background: var(--ok-bg);
+  border: 1px solid var(--ok);
+  color: var(--ok);
+}
+.feedback-box.partial {
+  background: var(--warn-bg);
+  border: 1px solid var(--warn);
+  color: var(--warn);
+}
+.feedback-box.incorrect {
+  background: var(--err-bg);
+  border: 1px solid var(--err);
+  color: var(--err);
+}
+.feedback-result {
+  font-weight: 800;
+  font-size: .92rem;
+  margin-bottom: .3rem;
+}
+.feedback-answer { color: var(--ink-2); margin-top: .35rem; }
+.feedback-answer strong { color: var(--ink-1); }
+.feedback-explanation {
+  color: var(--ink-2);
+  margin-top: .45rem;
+  padding-top: .45rem;
+  border-top: 1px solid var(--border);
+  font-size: .85rem;
+}
+
+/* ── Action row ── */
+.action-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  flex-wrap: wrap;
+}
+.nav-group { display: flex; gap: .5rem; }
+
+/* ── Challenge Summary ── */
+.summary-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  display: none;
+}
+.summary-card.show { display: block; }
+.summary-header {
+  background: var(--accent);
+  color: #fff;
+  padding: 1.2rem 1.6rem;
+  text-align: center;
+}
+.summary-header h2 {
+  font-family: var(--ff-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: .3rem;
+}
+.summary-score {
+  font-family: var(--ff-mono);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--gold-lt);
+  line-height: 1;
+}
+.summary-denom { font-size: 1rem; opacity: .75; }
+.summary-body { padding: 1.4rem 1.6rem; }
+.summary-body h3 {
+  font-size: .8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--ink-3);
+  font-family: var(--ff-mono);
+  margin-bottom: .7rem;
+}
+.missed-list { list-style: none; display: flex; flex-direction: column; gap: .75rem; }
+.missed-item {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--err);
+  border-radius: var(--r-sm);
+  padding: .75rem .9rem;
+  font-size: .86rem;
+}
+.missed-item.ok { border-left-color: var(--ok); }
+.missed-obj { font-weight: 600; color: var(--ink-1); margin-bottom: .3rem; }
+.missed-yours { color: var(--err); font-size: .82rem; }
+.missed-correct { color: var(--ok); font-size: .82rem; margin-top: .15rem; }
+.summary-footer {
+  padding: 1rem 1.6rem 1.4rem;
+  text-align: center;
+  border-top: 1px solid var(--border);
+}
+.all-correct-msg {
+  background: var(--ok-bg);
+  border: 1px solid var(--ok);
+  border-radius: var(--r-sm);
+  padding: .8rem 1rem;
+  color: var(--ok);
+  font-weight: 600;
+  font-size: .92rem;
+  text-align: center;
+}
+
+/* ── Mode badge ── */
+.mode-badge {
+  display: inline-block;
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  padding: .15rem .55rem;
+  border-radius: 99px;
+  font-family: var(--ff-mono);
+}
+.mode-badge.practice { background: var(--gold-lt); color: var(--gold); border: 1px solid var(--gold); }
+.mode-badge.challenge { background: var(--accent-lt); color: var(--accent); border: 1px solid var(--accent); }
+[data-theme="dark"] .mode-badge.practice { background: var(--gold-lt); color: var(--gold); }
+[data-theme="dark"] .mode-badge.challenge { background: var(--accent-lt); color: var(--accent); }
+
+/* ── Answered indicators ── */
+.dot-row {
+  display: flex;
+  gap: .35rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+.dot {
+  width: .6rem;
+  height: .6rem;
+  border-radius: 50%;
+  background: var(--prog-bg);
+  transition: background var(--transition);
+}
+.dot.correct   { background: var(--ok); }
+.dot.incorrect { background: var(--err); }
+.dot.partial   { background: var(--warn); }
+.dot.current   { background: var(--accent); outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<div class="shell" id="main">
+
+  <!-- Top bar -->
+  <div class="top-bar">
+    <span class="breadcrumb">AI-103 · Day 1 · Activity A</span>
+    <div class="controls-row">
+      <button class="btn-mode active" id="btn-practice" onclick="setMode('practice')" aria-pressed="true">Practice</button>
+      <button class="btn-mode" id="btn-challenge" onclick="setMode('challenge')" aria-pressed="false">Challenge</button>
+      <button class="btn-reset" onclick="resetQuiz()" aria-label="Reset quiz and shuffle questions">↺ Reset</button>
+      <button class="btn-theme" id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">🌙</button>
+    </div>
+  </div>
+
+  <!-- Intro -->
+  <div class="intro-card" role="note">
+    <p class="kicker">Mapping Exercise</p>
+    <h1>Activity A Practice: Mapping AI Objectives to Security+</h1>
+    <p>For each course objective, identify which Security+ domain comes closest — and whether it <em>fully covers</em>, <em>partially covers</em>, or <em>does not cover</em> that objective. The goal: see exactly where traditional cybersecurity preparation still applies and where AI security genuinely extends it.</p>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-wrap" role="status" aria-live="polite" aria-label="Quiz progress">
+    <div class="progress-meta">
+      <span id="progress-label">Question 1 of 9</span>
+      <span id="score-tag" class="score-tag">Score: 0 / 0</span>
+    </div>
+    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="9" aria-valuenow="0" id="progress-bar-aria">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+    <div class="dot-row" id="dot-row" aria-hidden="true"></div>
+  </div>
+
+  <!-- Quiz card -->
+  <div class="quiz-card" id="quiz-card" role="form" aria-label="Quiz question">
+    <div class="card-header">
+      <span class="item-label">Objective</span>
+      <div style="display:flex;align-items:center;gap:.5rem;">
+        <span class="mode-badge practice" id="mode-badge">Practice</span>
+        <span class="item-counter" id="item-counter">1 / 9</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="objective-text" id="objective-text"></p>
+
+      <div class="fields-row">
+        <div class="field-group">
+          <label for="sel-domain">Security+ Domain</label>
+          <select id="sel-domain" aria-required="true">
+            <option value="">— Select domain —</option>
+            <option value="Threats &amp; Vulnerabilities">Threats &amp; Vulnerabilities</option>
+            <option value="Architecture &amp; Implementation">Architecture &amp; Implementation</option>
+            <option value="Identity &amp; Access Management">Identity &amp; Access Management</option>
+            <option value="Cryptography &amp; PKI">Cryptography &amp; PKI</option>
+            <option value="Governance, Risk &amp; Compliance">Governance, Risk &amp; Compliance</option>
+            <option value="Incident Response">Incident Response</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label for="sel-coverage">Coverage Level</label>
+          <select id="sel-coverage" aria-required="true">
+            <option value="">— Select coverage —</option>
+            <option value="Fully covered">Fully covered</option>
+            <option value="Partially covered">Partially covered</option>
+            <option value="Not covered">Not covered</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="feedback-box" id="feedback-box" role="alert" aria-live="assertive"></div>
+
+      <div class="action-row">
+        <button class="btn-primary" id="btn-check" onclick="checkAnswer()">Check Answer</button>
+        <div class="nav-group">
+          <button class="btn-nav" id="btn-prev" onclick="navigate(-1)" aria-label="Previous question">← Prev</button>
+          <button class="btn-nav" id="btn-next" onclick="navigate(1)" aria-label="Next question">Next →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Challenge summary -->
+  <div class="summary-card" id="summary-card" role="region" aria-label="Challenge results" aria-live="polite">
+    <div class="summary-header">
+      <h2>Challenge Complete</h2>
+      <div class="summary-score">
+        <span id="summary-num">0</span><span class="summary-denom"> / 9</span>
+      </div>
+    </div>
+    <div class="summary-body">
+      <h3 id="missed-heading">Review</h3>
+      <ul class="missed-list" id="missed-list"></ul>
+    </div>
+    <div class="summary-footer">
+      <button class="btn-primary" onclick="resetQuiz()">Try Again ↺</button>
+    </div>
+  </div>
+
+</div><!-- /shell -->
+
+<script>
+/* ═══════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════ */
+const ITEMS = [
+  {
+    id: 1,
+    objective: "Explain why traditional certifications alone are insufficient for AI-enabled enterprises.",
+    domain: "Governance, Risk & Compliance",
+    coverage: "Partially covered",
+    explanation: "Security+ covers foundational governance and risk frameworks, but AI introduces non-deterministic systems, training-data risk, and stakeholder accountability models that Security+ does not address. The foundation transfers; the AI-specific extensions do not."
+  },
+  {
+    id: 2,
+    objective: "Identify the major AI governance frameworks (NIST AI RMF, ISO 42001, EU AI Act).",
+    domain: "Governance, Risk & Compliance",
+    coverage: "Partially covered",
+    explanation: "Security+ introduces governance and risk concepts (NIST CSF, ISO 27001), so the habit of using frameworks carries over. However, AI-specific frameworks like NIST AI RMF and ISO 42001 — and the legal structure of the EU AI Act — are entirely outside the Security+ curriculum."
+  },
+  {
+    id: 3,
+    objective: "Apply the four NIST AI RMF functions (Govern, Map, Measure, Manage) to enterprise AI deployment.",
+    domain: "Governance, Risk & Compliance",
+    coverage: "Partially covered",
+    explanation: "Security+ teaches risk management principles that are conceptually analogous, but the NIST AI RMF's four functions are AI-specific: they address model lifecycle governance, AI-specific risk taxonomy, trustworthiness characteristics, and AI incident management — none of which appear in Security+."
+  },
+  {
+    id: 4,
+    objective: "Classify AI systems under the EU AI Act's four risk tiers.",
+    domain: "Governance, Risk & Compliance",
+    coverage: "Not covered",
+    explanation: "The EU AI Act (Regulation 2024/1689) is a new AI-specific legal regime with no equivalent in Security+. The four risk tiers — Unacceptable Risk, High Risk, Limited Risk, and Minimal Risk — along with conformity assessments and CE marking obligations, are entirely outside the Security+ domain."
+  },
+  {
+    id: 5,
+    objective: "Differentiate AI risk categories: model risk, data risk, operational risk.",
+    domain: "Governance, Risk & Compliance",
+    coverage: "Partially covered",
+    explanation: "Security+ covers general risk categories and risk management methodology. However, AI-specific risk types — model risk (hallucination, bias, drift), data risk (poisoning, lineage gaps), and operational risk from probabilistic outputs — extend well beyond what Security+ addresses."
+  },
+  {
+    id: 6,
+    objective: "Recognize shadow AI patterns and apply governance responses.",
+    domain: "Governance, Risk & Compliance",
+    coverage: "Partially covered",
+    explanation: "Security+ covers shadow IT concepts and policy-based governance responses. Shadow AI is the AI-era analogue, but the specific patterns (unsanctioned LLM API use, personal AI accounts on work data, AI features embedded in approved SaaS) and appropriate governance responses require AI-specific policy knowledge."
+  },
+  {
+    id: 7,
+    objective: "Conduct vendor and supply-chain risk assessments for AI-enabled solutions.",
+    domain: "Governance, Risk & Compliance",
+    coverage: "Partially covered",
+    explanation: "Security+ covers vendor risk management and third-party assessment frameworks. AI adds unique supply-chain risks: pre-trained model provenance, training data sourcing, AIBOM (AI Bill of Materials), and the provider/deployer/importer role distinctions under the EU AI Act — none of which Security+ addresses."
+  },
+  {
+    id: 8,
+    objective: "Design a defense-in-depth architecture for an AI-enabled application.",
+    domain: "Architecture & Implementation",
+    coverage: "Partially covered",
+    explanation: "Security+ directly covers defense-in-depth architecture and maps cleanly to Architecture & Implementation. However, AI systems require an additional layer of controls: input validation against adversarial prompts, output monitoring for hallucinations and sensitive disclosure, model access controls, and OWASP LLM-specific mitigations that Security+ does not cover."
+  },
+  {
+    id: 9,
+    objective: "Adapt NIST SP 800-61 incident response lifecycle for AI-specific incidents.",
+    domain: "Incident Response",
+    coverage: "Partially covered",
+    explanation: "Security+ thoroughly covers NIST SP 800-61 and the four-phase IR lifecycle, so this maps squarely to Incident Response. The 'adapt' requirement is the gap: AI incidents (model drift, prompt injection, training-data poisoning, deepfake fraud) require AI-specific detection methods, triage criteria, containment strategies, and post-incident learning steps not in the standard curriculum."
+  }
+];
+
+/* ═══════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════ */
+let state = {
+  mode:      'practice',    // 'practice' | 'challenge'
+  order:     [],            // shuffled indices
+  current:   0,            // index into order[]
+  answers:   {},           // { itemId: { domain, coverage, correct, domainOk, coverageOk } }
+  checked:   new Set(),    // item IDs that have been checked
+  submitted: false,        // challenge mode: all answered and submitted
+  theme:     'light'
+};
+
+/* ═══════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════ */
+function init() {
+  state.order   = shuffle(ITEMS.map((_, i) => i));
+  state.current = 0;
+  state.answers = {};
+  state.checked = new Set();
+  state.submitted = false;
+
+  document.getElementById('summary-card').classList.remove('show');
+  document.getElementById('quiz-card').style.display = '';
+
+  buildDots();
+  renderQuestion();
+  updateProgress();
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/* ═══════════════════════════════════════════
+   RENDER
+═══════════════════════════════════════════ */
+function renderQuestion() {
+  const idx  = state.order[state.current];
+  const item = ITEMS[idx];
+  const prev = state.answers[item.id];
+
+  // Text
+  document.getElementById('objective-text').textContent = item.objective;
+  document.getElementById('item-counter').textContent =
+    `${state.current + 1} / ${ITEMS.length}`;
+
+  // Selects — restore any prior answer
+  const selD = document.getElementById('sel-domain');
+  const selC = document.getElementById('sel-coverage');
+  selD.value = prev ? prev.domain : '';
+  selC.value = prev ? prev.coverage : '';
+  selD.className = '';
+  selC.className = '';
+  selD.disabled = false;
+  selC.disabled = false;
+
+  // Feedback
+  const fb = document.getElementById('feedback-box');
+  fb.className = 'feedback-box';
+  fb.innerHTML = '';
+
+  // If already checked (practice or challenge submitted), restore state
+  const isChecked = state.checked.has(item.id) || state.submitted;
+  if (isChecked && prev) {
+    applySelectStyles(prev);
+    if (state.mode === 'practice' || state.submitted) {
+      showFeedback(item, prev);
+      selD.disabled = true;
+      selC.disabled = true;
+    }
+  }
+
+  // Check button
+  const btnCheck = document.getElementById('btn-check');
+  if (state.mode === 'challenge' && !state.submitted) {
+    btnCheck.textContent = isAnswered(item.id) ? 'Answered ✓' : 'Save Answer';
+    btnCheck.disabled = false;
+  } else if (isChecked) {
+    btnCheck.textContent = 'Answered ✓';
+    btnCheck.disabled = true;
+  } else {
+    btnCheck.textContent = 'Check Answer';
+    btnCheck.disabled = false;
+  }
+
+  // Nav
+  document.getElementById('btn-prev').disabled = state.current === 0;
+  const isLast = state.current === ITEMS.length - 1;
+  const btnNext = document.getElementById('btn-next');
+  if (state.mode === 'challenge' && isLast && allAnswered() && !state.submitted) {
+    btnNext.textContent = 'See Results →';
+    btnNext.disabled = false;
+  } else {
+    btnNext.textContent = 'Next →';
+    btnNext.disabled = state.mode === 'practice' && !isChecked ? true : isLast;
+  }
+
+  updateDots();
+}
+
+function applySelectStyles(ans) {
+  const selD = document.getElementById('sel-domain');
+  const selC = document.getElementById('sel-coverage');
+  selD.className = ans.domainOk ? 'correct' : 'incorrect';
+  selC.className = ans.coverageOk ? 'correct' : 'incorrect';
+}
+
+function showFeedback(item, ans) {
+  const fb    = document.getElementById('feedback-box');
+  const both  = ans.domainOk && ans.coverageOk;
+  const none  = !ans.domainOk && !ans.coverageOk;
+  const label = both ? '✅ Correct!' : none ? '✗ Incorrect' : '⚠ Partially correct';
+  const cls   = both ? 'correct' : none ? 'incorrect' : 'partial';
+
+  fb.className = `feedback-box show ${cls}`;
+  fb.innerHTML = `
+    <div class="feedback-result">${label}</div>
+    <div class="feedback-answer">
+      <strong>Domain:</strong> ${item.domain}
+      ${!ans.domainOk ? `&nbsp;<em>(you chose: ${ans.domain || 'nothing'})</em>` : ''}
+      &nbsp;·&nbsp;
+      <strong>Coverage:</strong> ${item.coverage}
+      ${!ans.coverageOk ? `&nbsp;<em>(you chose: ${ans.coverage || 'nothing'})</em>` : ''}
+    </div>
+    <div class="feedback-explanation">${item.explanation}</div>`;
+}
+
+/* ═══════════════════════════════════════════
+   ANSWER CHECKING
+═══════════════════════════════════════════ */
+function checkAnswer() {
+  const idx  = state.order[state.current];
+  const item = ITEMS[idx];
+
+  // Normalise HTML entities for comparison
+  const rawD = document.getElementById('sel-domain').value;
+  const rawC = document.getElementById('sel-coverage').value;
+  const domainVal   = rawD.replace(/&amp;/g, '&');
+  const coverageVal = rawC.replace(/&amp;/g, '&');
+
+  if (state.mode === 'practice' && (!domainVal || !coverageVal)) {
+    const fb = document.getElementById('feedback-box');
+    fb.className = 'feedback-box show incorrect';
+    fb.innerHTML = '<div class="feedback-result">Please select both a domain and a coverage level before checking.</div>';
+    return;
+  }
+
+  const domainOk   = domainVal   === item.domain;
+  const coverageOk = coverageVal === item.coverage;
+  const correct    = domainOk && coverageOk;
+
+  const ans = {
+    domain: domainVal, coverage: coverageVal,
+    domainOk, coverageOk, correct
+  };
+  state.answers[item.id] = ans;
+
+  if (state.mode === 'practice') {
+    state.checked.add(item.id);
+    applySelectStyles(ans);
+    showFeedback(item, ans);
+    document.getElementById('sel-domain').disabled = true;
+    document.getElementById('sel-coverage').disabled = true;
+    document.getElementById('btn-check').textContent = 'Answered ✓';
+    document.getElementById('btn-check').disabled = true;
+
+    // Unlock Next in practice mode
+    const isLast = state.current === ITEMS.length - 1;
+    document.getElementById('btn-next').disabled = isLast;
+  } else {
+    // Challenge: just save silently
+    state.checked.add(item.id);
+    document.getElementById('btn-check').textContent = 'Saved ✓';
+    document.getElementById('btn-check').disabled = true;
+    if (allAnswered()) {
+      document.getElementById('btn-next').textContent = 'See Results →';
+      document.getElementById('btn-next').disabled = false;
+    }
+  }
+
+  updateProgress();
+  updateDots();
+}
+
+function isAnswered(id) {
+  return id in state.answers && (state.answers[id].domain || state.answers[id].coverage);
+}
+
+function allAnswered() {
+  return ITEMS.every(item => isAnswered(item.id));
+}
+
+/* ═══════════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════════ */
+function navigate(dir) {
+  // Challenge mode "See Results" on last question
+  if (state.mode === 'challenge' && dir === 1 &&
+      state.current === ITEMS.length - 1 && allAnswered()) {
+    showChallengeSummary();
+    return;
+  }
+  const next = state.current + dir;
+  if (next < 0 || next >= ITEMS.length) return;
+  state.current = next;
+  renderQuestion();
+}
+
+/* ═══════════════════════════════════════════
+   PROGRESS & DOTS
+═══════════════════════════════════════════ */
+function updateProgress() {
+  const total   = ITEMS.length;
+  const checked = state.checked.size;
+  const correct = Object.values(state.answers).filter(a => a.correct).length;
+  const pct     = Math.round((checked / total) * 100);
+
+  document.getElementById('progress-label').textContent =
+    `Question ${state.current + 1} of ${total}`;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-bar-aria').setAttribute('aria-valuenow', checked);
+  document.getElementById('score-tag').textContent =
+    `Score: ${correct} / ${checked}`;
+}
+
+function buildDots() {
+  const row = document.getElementById('dot-row');
+  row.innerHTML = '';
+  ITEMS.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot';
+    d.id = `dot-${i}`;
+    row.appendChild(d);
+  });
+}
+
+function updateDots() {
+  state.order.forEach((itemIdx, pos) => {
+    const item = ITEMS[itemIdx];
+    const dot  = document.getElementById(`dot-${pos}`);
+    const ans  = state.answers[item.id];
+    dot.className = 'dot';
+    if (pos === state.current) dot.classList.add('current');
+    if (ans && state.checked.has(item.id)) {
+      if (ans.correct)                    dot.classList.add('correct');
+      else if (ans.domainOk || ans.coverageOk) dot.classList.add('partial');
+      else                                dot.classList.add('incorrect');
+    }
+  });
+}
+
+/* ═══════════════════════════════════════════
+   CHALLENGE SUMMARY
+═══════════════════════════════════════════ */
+function showChallengeSummary() {
+  state.submitted = true;
+
+  // Grade all saved answers
+  ITEMS.forEach(item => {
+    const ans = state.answers[item.id];
+    if (ans) {
+      ans.domainOk   = ans.domain   === item.domain;
+      ans.coverageOk = ans.coverage === item.coverage;
+      ans.correct    = ans.domainOk && ans.coverageOk;
+    }
+  });
+
+  const correct = Object.values(state.answers).filter(a => a.correct).length;
+  document.getElementById('summary-num').textContent = correct;
+
+  const missed  = ITEMS.filter(item => !state.answers[item.id]?.correct);
+  const list    = document.getElementById('missed-list');
+  const heading = document.getElementById('missed-heading');
+  list.innerHTML = '';
+
+  if (missed.length === 0) {
+    heading.textContent = 'Perfect score!';
+    list.innerHTML = `<div class="all-correct-msg">🎉 You matched every objective correctly. Excellent work!</div>`;
+  } else {
+    heading.textContent = `Missed Items (${missed.length})`;
+    missed.forEach(item => {
+      const ans = state.answers[item.id];
+      const li  = document.createElement('li');
+      li.className = 'missed-item';
+      const yourD = ans?.domain   || '(not answered)';
+      const yourC = ans?.coverage || '(not answered)';
+      li.innerHTML = `
+        <div class="missed-obj">${item.objective}</div>
+        <div class="missed-yours">✗ Your answer: ${yourD} · ${yourC}</div>
+        <div class="missed-correct">✓ Correct: ${item.domain} · ${item.coverage}</div>
+        <div class="feedback-explanation" style="margin-top:.45rem;padding-top:.45rem;border-top:1px solid var(--border);font-size:.82rem;color:var(--ink-2);">${item.explanation}</div>`;
+      list.appendChild(li);
+    });
+  }
+
+  document.getElementById('quiz-card').style.display   = 'none';
+  document.getElementById('summary-card').classList.add('show');
+  updateProgress();
+}
+
+/* ═══════════════════════════════════════════
+   MODE
+═══════════════════════════════════════════ */
+function setMode(mode) {
+  state.mode = mode;
+  document.getElementById('btn-practice').classList.toggle('active', mode === 'practice');
+  document.getElementById('btn-challenge').classList.toggle('active', mode === 'challenge');
+  document.getElementById('btn-practice').setAttribute('aria-pressed', mode === 'practice');
+  document.getElementById('btn-challenge').setAttribute('aria-pressed', mode === 'challenge');
+
+  const badge = document.getElementById('mode-badge');
+  badge.className = `mode-badge ${mode}`;
+  badge.textContent = mode === 'practice' ? 'Practice' : 'Challenge';
+
+  resetQuiz();
+}
+
+/* ═══════════════════════════════════════════
+   RESET
+═══════════════════════════════════════════ */
+function resetQuiz() {
+  init();
+}
+
+/* ═══════════════════════════════════════════
+   THEME
+═══════════════════════════════════════════ */
+function toggleTheme() {
+  state.theme = state.theme === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', state.theme);
+  document.getElementById('theme-toggle').textContent =
+    state.theme === 'dark' ? '☀️' : '🌙';
+}
+
+// Respect system preference on first load
+if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  state.theme = 'dark';
+  document.documentElement.setAttribute('data-theme', 'dark');
+  document.getElementById('theme-toggle').textContent = '☀️';
+}
+
+/* ═══════════════════════════════════════════
+   START
+═══════════════════════════════════════════ */
+init();
+</script>
+</body>
+</html>
