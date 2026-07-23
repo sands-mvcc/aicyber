@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Handout: Mapping AI Objectives to Cybersecurity</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-main: #000000;
+            --accent-green: #008000;
+            --header-bg: #000000;
+            --header-text: #00ff00;
+            --light-green: #eafaea;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--header-bg);
+            color: var(--header-text);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 5px solid var(--accent-green);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+        }
+
+        header p {
+            margin: 5px 0 0 0;
+            font-size: 1.1rem;
+            color: #ffffff;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .overview-box {
+            border: 2px solid var(--text-main);
+            background-color: var(--light-green);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 4px 4px 0px var(--accent-green);
+        }
+
+        .overview-box h2 {
+            margin-top: 0;
+            color: var(--accent-green);
+            border-bottom: 2px solid var(--text-main);
+            padding-bottom: 5px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            background-color: var(--header-bg);
+            color: var(--header-text);
+            border: 2px solid var(--accent-green);
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: var(--accent-green);
+            color: var(--bg-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            background-color: var(--bg-color);
+        }
+
+        th, td {
+            border: 1px solid var(--text-main);
+            padding: 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--header-bg);
+            color: var(--header-text);
+            font-size: 1.1rem;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #f9f9f9;
+        }
+
+        .objective-col { width: 45%; }
+        .domain-col { width: 25%; }
+        .coverage-col { width: 15%; }
+        .action-col { width: 15%; text-align: center; }
+
+        .btn-toggle {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            border: 1px solid var(--text-main);
+            padding: 5px 10px;
+            font-size: 0.9rem;
+        }
+
+        .btn-toggle:hover {
+            background-color: var(--text-main);
+            color: var(--header-text);
+        }
+
+        .rationale-row {
+            display: none;
+        }
+
+        .rationale-row.active {
+            display: table-row;
+        }
+
+        .rationale-content {
+            background-color: var(--light-green);
+            border-left: 5px solid var(--accent-green);
+            padding: 15px;
+            margin: 0;
+            font-size: 0.95rem;
+        }
+        
+        .highlight {
+            font-weight: bold;
+            color: var(--accent-green);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Cybersecurity & Artificial Intelligence</h1>
+        <p>Interactive Lesson: Mapping AI Objectives to Traditional Cyber Principles</p>
+    </header>
+
+    <div class="container">
+        
+        <div class="overview-box">
+            <h2>Lesson Context: Bridging Security+ and AI</h2>
+            <p><strong>The Core Premise:</strong> Security+ provides foundational governance, risk, architecture, and incident-response concepts. However, AI introduces novel challenges that require extending these foundations.</p>
+            <ul>
+                <li><strong>What remains the same:</strong> The need for policy, oversight, and defense-in-depth architecture.</li>
+                <li><strong>What AI adds:</strong> New policy demands, specialized lifecycles, regulatory frameworks, and complex behavioral-control mechanisms (e.g., prompt injection, model drift).</li>
+            </ul>
+            <p><em>Instructions: Review the mapping below. Use the interactive toggles to explore the rationale behind each domain alignment and understand why traditional controls only partially cover AI risks.</em></p>
+        </div>
+
+        <div class="controls">
+            <button id="btnExpandAll" onclick="toggleAll(true)">Expand All Notes</button>
+            <button id="btnCollapseAll" onclick="toggleAll(false)">Collapse All Notes</button>
+        </div>
+
+        <table id="mappingTable">
+            <thead>
+                <tr>
+                    <th class="objective-col">Course Learning Objective</th>
+                    <th class="domain-col">Closest Security+ Domain</th>
+                    <th class="coverage-col">Security+ Coverage</th>
+                    <th class="action-col">Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Row 1 -->
+                <tr>
+                    <td>Explain why traditional certifications alone are insufficient for AI-enabled enterprises.</td>
+                    <td>Governance, Risk & Compliance</td>
+                    <td>Partially covered</td>
+                    <td class="action-col"><button class="btn-toggle" onclick="toggleRow('note1')">View Note</button></td>
+                </tr>
+                <tr id="note1" class="rationale-row">
+                    <td colspan="4">
+                        <div class="rationale-content">
+                            <strong>Why this is right:</strong> AI-specific governance frameworks, risk categories, and lifecycle controls extend rather than replace traditional security. Because it centers on policy, oversight, and formal risk treatment, GRC is the best fit.
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Row 2 -->
+                <tr>
+                    <td>Identify the major AI governance frameworks (NIST AI RMF, ISO 42001, EU AI Act).</td>
+                    <td>Governance, Risk & Compliance</td>
+                    <td>Partially covered</td>
+                    <td class="action-col"><button class="btn-toggle" onclick="toggleRow('note2')">View Note</button></td>
+                </tr>
+                <tr id="note2" class="rationale-row">
+                    <td colspan="4">
+                        <div class="rationale-content">
+                            <strong>Why this is right:</strong> Frameworks fundamentally belong to GRC. While Security+ covers standard frameworks (like NIST CSF), AI introduces specialized regulatory demands.
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Row 3 -->
+                <tr>
+                    <td>Apply the four NIST AI RMF functions to enterprise AI deployment.</td>
+                    <td>Governance, Risk & Compliance</td>
+                    <td>Partially covered</td>
+                    <td class="action-col"><button class="btn-toggle" onclick="toggleRow('note3')">View Note</button></td>
+                </tr>
+                <tr id="note3" class="rationale-row">
+                    <td colspan="4">
+                        <div class="rationale-content">
+                            <strong>Why this is right:</strong> The four functions of the NIST AI RMF are <span class="highlight">Govern, Map, Measure, and Manage</span>. These are inherently risk and compliance functions, though they extend into operational territory.
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Row 4 -->
+                <tr>
+                    <td>Classify AI systems under the EU AI Act's four risk tiers.</td>
+                    <td>Governance, Risk & Compliance</td>
+                    <td>Not covered</td>
+                    <td class="action-col"><button class="btn-toggle" onclick="toggleRow('note4')">View Note</button></td>
+                </tr>
+                <tr id="note4" class="rationale-row">
+                    <td colspan="4">
+                        <div class="rationale-content">
+                            <strong>Why this is right:</strong> Traditional cyber certs do not cover AI-specific legislation. The EU AI Act uses a four-tier risk approach: <span class="highlight">unacceptable, high, limited, and minimal risk</span>. This is a pure GRC objective.
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Row 5 -->
+                <tr>
+                    <td>Differentiate AI risk categories: model risk, data risk, operational risk.</td>
+                    <td>Governance, Risk & Compliance</td>
+                    <td>Partially covered</td>
+                    <td class="action-col"><button class="btn-toggle" onclick="toggleRow('note5')">View Note</button></td>
+                </tr>
+                <tr id="note5" class="rationale-row">
+                    <td colspan="4">
+                        <div class="rationale-content">
+                            <strong>Why this is right:</strong> Security+ introduces standard risk thinking, but AI model risk, adversarial risk, and ethical/societal risk do not map cleanly onto traditional CIA-triad thinking.
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Row 6 -->
+                <tr>
+                    <td>Recognize shadow AI patterns and apply governance responses.</td>
+                    <td>Governance, Risk & Compliance</td>
+                    <td>Partially covered</td>
+                    <td class="action-col"><button class="btn-toggle" onclick="toggleRow('note6')">View Note</button></td>
+                </tr>
+                <tr id="note6" class="rationale-row">
+                    <td colspan="4">
+                        <div class="rationale-content">
+                            <strong>Why this is right:</strong> While shadow IT is a known concept, "shadow AI governance responses" center heavily on establishing new corporate policy and oversight rules, placing it firmly in GRC.
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Row 7 -->
+                <tr>
+                    <td>Conduct vendor and supply-chain risk assessments for AI solutions.</td>
+                    <td>Governance, Risk & Compliance</td>
+                    <td>Partially covered</td>
+                    <td class="action-col"><button class="btn-toggle" onclick="toggleRow('note7')">View Note</button></td>
+                </tr>
+                <tr id="note7" class="rationale-row">
+                    <td colspan="4">
+                        <div class="rationale-content">
+                            <strong>Why this is right:</strong> Security+ addresses third-party risk generally. However, the AI supply chain adds <span class="highlight">opacity, model dependencies, and inherited risks</span> from external models and services, necessitating an updated approach.
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Row 8 -->
+                <tr>
+                    <td>Design a defense-in-depth architecture for an AI-enabled application.</td>
+                    <td>Architecture & Implementation</td>
+                    <td>Partially covered</td>
+                    <td class="action-col"><button class="btn-toggle" onclick="toggleRow('note8')">View Note</button></td>
+                </tr>
+                <tr id="note8" class="rationale-row">
+                    <td colspan="4">
+                        <div class="rationale-content">
+                            <strong>Why this is right:</strong> Defense-in-depth belongs directly to Architecture & Implementation. Still only "partially covered" because AI introduces novel architectural threats such as <span class="highlight">prompt injection</span> that require new layers of defense.
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Row 9 -->
+                <tr>
+                    <td>Adapt NIST SP 800-61 incident response lifecycle for AI-specific incidents.</td>
+                    <td>Incident Response</td>
+                    <td>Partially covered</td>
+                    <td class="action-col"><button class="btn-toggle" onclick="toggleRow('note9')">View Note</button></td>
+                </tr>
+                <tr id="note9" class="rationale-row">
+                    <td colspan="4">
+                        <div class="rationale-content">
+                            <strong>Why this is right:</strong> Adapting the 800-61 lifecycle belongs closely to IR. It is only partially covered because traditional IR does not account for AI novelties like <span class="highlight">model drift and behavioral monitoring</span> during an incident.
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Function to toggle individual rows
+        function toggleRow(rowId) {
+            const row = document.getElementById(rowId);
+            if (row.classList.contains('active')) {
+                row.classList.remove('active');
+            } else {
+                row.classList.add('active');
+            }
+        }
+
+        // Function to expand or collapse all rationale rows
+        function toggleAll(expand) {
+            const rows = document.querySelectorAll('.rationale-row');
+            rows.forEach(row => {
+                if (expand) {
+                    row.classList.add('active');
+                } else {
+                    row.classList.remove('active');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
