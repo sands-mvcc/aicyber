@@ -105,10 +105,10 @@
 
   /* ---- Flip cards ---- */
   .flip-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1.2rem;margin:1.5rem 0;}
-  .flip-card{height:210px;perspective:900px;cursor:pointer;}
-  .flip-card-inner{position:relative;width:100%;height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;}
+  .flip-card{min-height:210px;perspective:900px;cursor:pointer;}
+  .flip-card-inner{display:grid;position:relative;width:100%;min-height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;}
   .flip-card.flipped .flip-card-inner{transform:rotateY(180deg);}
-  .flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--radius);padding:1.2rem;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);}
+  .flip-front,.flip-back{position:relative;grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--radius);padding:1.2rem;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);}
   .flip-front{background:var(--c-surface);border:2px solid var(--c-border);}
   .flip-front .flip-icon{font-size:2rem;margin-bottom:.5rem;}
   .flip-front .flip-label{font-family:var(--font-serif);font-size:1rem;font-weight:600;color:var(--c-text);}
@@ -790,7 +790,7 @@
 
   <div class="callout callout-analogy">
     <p class="callout-title">🏗️ Analogy: The ISO 27001 Model You Already Know</p>
-    <p>If you've implemented or audited ISO 27001, you know the document hierarchy: the Information Security Policy (strategic direction) → the Statement of Applicability (which Annex A controls apply) → documented procedures and work instructions → records as evidence of implementation. ISO 42001 follows an identical structure — Policy → AIMS Scope → Statement of Applicability (42 Annex A controls) → procedures → records. The content is different; the architecture is the same. <strong>This means ISO 27001 practitioners can map their existing document governance skills directly to ISO 42001 implementation.</strong></p>
+    <p>If you've implemented or audited ISO 27001, you know the document hierarchy: the Information Security Policy (strategic direction) → the Statement of Applicability (which Annex A controls apply) → documented procedures and work instructions → records as evidence of implementation. ISO 42001 follows an identical structure — Policy → AIMS Scope → Statement of Applicability (38 Annex A controls) → procedures → records. The content is different; the architecture is the same. <strong>This means ISO 27001 practitioners can map their existing document governance skills directly to ISO 42001 implementation.</strong></p>
   </div>
 
   <h3>The ISO 42001 Document Hierarchy — Click Each Level to Expand</h3>
@@ -825,7 +825,7 @@
         <span class="trigger-meta"><span class="trigger-tag teal">Strategic</span><span class="trigger-icon">▼</span></span>
       </button>
       <div class="accordion-body">
-        <p><strong>What it is:</strong> A document that lists all 42 ISO 42001 Annex A controls, states whether each control is applicable to the organization, and — for applicable controls — provides evidence of implementation. Directly analogous to the ISO 27001 Statement of Applicability.</p>
+        <p><strong>What it is:</strong> A document that lists all 38 ISO 42001 Annex A controls, states whether each control is applicable to the organization, and — for applicable controls — provides evidence of implementation. Directly analogous to the ISO 27001 Statement of Applicability.</p>
         <p><strong>The 42 controls are grouped into themes:</strong></p>
         <ul style="padding-left:1.2rem;margin:.5rem 0;font-size:.88rem;">
           <li style="margin-bottom:.3rem;"><strong>Organizational controls (A.2–A.6):</strong> AI policy, roles and responsibilities, risk management, resource management, impact assessment</li>
@@ -1346,7 +1346,7 @@
     <h4>Key Terms — Day 13</h4>
     <div class="term">AI AUP</div><div class="def">Acceptable Use Policy — operational document governing AI tool use</div>
     <div class="term">AI Use Case Register</div><div class="def">Authoritative inventory of all AI systems; operational artifact for NIST MAP</div>
-    <div class="term">ISO 42001</div><div class="def">Certifiable AI Management System standard; 42 Annex A controls</div>
+    <div class="term">ISO 42001</div><div class="def">Certifiable AI Management System standard; 38 Annex A controls</div>
     <div class="term">AIMS</div><div class="def">AI Management System — the governance program ISO 42001 certifies</div>
     <div class="term">Statement of Applicability</div><div class="def">Documents which Annex A controls apply and evidence of implementation</div>
     <div class="term">AI IR Annex</div><div class="def">Supplement to NIST SP 800-61 for AI-specific incident types and actions</div>

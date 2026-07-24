@@ -92,10 +92,10 @@
 
   /* ---- Flip cards ---- */
   .flip-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.2rem;margin:1.5rem 0;}
-  .flip-card{height:210px;perspective:900px;cursor:pointer;}
-  .flip-card-inner{position:relative;width:100%;height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;}
+  .flip-card{min-height:210px;perspective:900px;cursor:pointer;}
+  .flip-card-inner{display:grid;position:relative;width:100%;min-height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;}
   .flip-card.flipped .flip-card-inner{transform:rotateY(180deg);}
-  .flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--radius);padding:1.2rem;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);}
+  .flip-front,.flip-back{position:relative;grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--radius);padding:1.2rem;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);}
   .flip-front{background:var(--c-surface);border:2px solid var(--c-border);}
   .flip-front .flip-icon{font-size:2rem;margin-bottom:.5rem;}
   .flip-front .flip-label{font-family:var(--font-serif);font-size:1rem;font-weight:600;color:var(--c-text);}
@@ -495,7 +495,7 @@
     <div class="flip-card" tabindex="0" onclick="this.classList.toggle('flipped')" onkeydown="if(event.key==='Enter'||event.key===' ')this.classList.toggle('flipped')">
       <div class="flip-card-inner">
         <div class="flip-front"><div class="flip-icon">👻</div><div class="flip-label">Model Inversion Attack</div><div class="flip-hint">Click to flip</div></div>
-        <div class="flip-back teal-back"><div class="back-label">Supply Chain Implication</div><div class="back-text">Model inversion attacks reconstruct sensitive training data from model outputs — revealing what PII, PHI, or confidential business data was in the training set. If your data was used to fine-tune a vendor's model (intentionally or through shadow AI upload), model inversion can expose that data to anyone with API access. The deployer bears the regulatory liability for the data exposure.</div></div>
+        <div class="flip-back teal-back"><div class="back-label">Supply Chain Implication</div><div class="back-text">Model inversion attacks reconstruct representative features of the training data from model outputs — enough to infer sensitive attributes (PII, PHI, or confidential business data) about the records used to train the model. (Recovering verbatim records is a related but distinct attack, training-data extraction.) If your data was used to fine-tune a vendor's model (intentionally or through shadow AI upload), model inversion can expose that data to anyone with API access. The deployer bears the regulatory liability for the data exposure.</div></div>
       </div>
     </div>
   </div>
@@ -975,6 +975,38 @@
 <!-- ============================================================
      ASSESSMENT ARTIFACT
 ============================================================ -->
+<!-- Activity D · Vendor evidence decision (added) -->
+<section id="d12-vendor">
+  <h2 style="font-size:1.4rem;color:var(--c-accent);margin:2.2rem 0 .4rem;border-top:2px solid var(--c-border);padding-top:1.6rem;">⚖️ Activity D · Read the Vendor Evidence — Tier &amp; Decide</h2>
+  <p>You are assessing <strong>GradeAssist AI</strong>, an ed-tech vendor whose tool would process <strong>student PII (FERPA)</strong> — so it is a <strong>Tier-1 / high-risk</strong> vendor. Below are findings from its assessment packet. Classify each as an <em>assurance</em> (reduces risk) or a <em>red flag</em> (a gap), then make the go-live call.</p>
+  <div style="margin:1rem 0;overflow-x:auto;">
+    <table style="width:100%;border-collapse:collapse;font-size:.86rem;">
+      <thead><tr style="background:var(--c-accent);color:#fff;"><th style="text-align:left;padding:.5rem .6rem;">Finding from the vendor packet</th><th style="padding:.5rem;">Your classification</th></tr></thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--c-border);"><td style="padding:.5rem .6rem;">Current SOC 2 Type II report, no major exceptions</td><td style="text-align:center;"><select class="d12v-sel" data-key="assure" data-explain="Independent, current assurance over the vendor's controls — a genuine positive."><option value="">—</option><option value="assure">Assurance</option><option value="flag">Red flag</option></select></td></tr>
+        <tr style="border-bottom:1px solid var(--c-border);"><td style="padding:.5rem .6rem;">Per the DPA, the vendor trains its base models on customer data</td><td style="text-align:center;"><select class="d12v-sel" data-key="flag" data-explain="Student data feeding vendor model training is a serious privacy/IP red flag — must be contractually excluded."><option value="">—</option><option value="assure">Assurance</option><option value="flag">Red flag</option></select></td></tr>
+        <tr style="border-bottom:1px solid var(--c-border);"><td style="padding:.5rem .6rem;">Contract has no AI-incident / breach-notification clause</td><td style="text-align:center;"><select class="d12v-sel" data-key="flag" data-explain="Without a notification clause you may not learn of an incident in time to meet EU AI Act Art. 73 / FERPA duties."><option value="">—</option><option value="assure">Assurance</option><option value="flag">Red flag</option></select></td></tr>
+        <tr style="border-bottom:1px solid var(--c-border);"><td style="padding:.5rem .6rem;">Subprocessor list disclosed (includes a hyperscaler model API)</td><td style="text-align:center;"><select class="d12v-sel" data-key="assure" data-explain="Transparency about subprocessors lets you extend your own shared-responsibility mapping."><option value="">—</option><option value="assure">Assurance</option><option value="flag">Red flag</option></select></td></tr>
+        <tr style="border-bottom:1px solid var(--c-border);"><td style="padding:.5rem .6rem;">Vendor cannot state what data its model was trained on</td><td style="text-align:center;"><select class="d12v-sel" data-key="flag" data-explain="Opaque training data blocks bias, IP, and compliance assessment."><option value="">—</option><option value="assure">Assurance</option><option value="flag">Red flag</option></select></td></tr>
+        <tr style="border-bottom:1px solid var(--c-border);"><td style="padding:.5rem .6rem;">Student PII stored in-region, encrypted in transit and at rest</td><td style="text-align:center;"><select class="d12v-sel" data-key="assure" data-explain="Residency + encryption address key data-protection requirements."><option value="">—</option><option value="assure">Assurance</option><option value="flag">Red flag</option></select></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="display:flex;gap:.8rem;align-items:center;flex-wrap:wrap;margin:.8rem 0;"><strong style="font-size:.9rem;">Go-live call:</strong>
+    <select id="d12-overall" style="padding:.4rem .6rem;border:1px solid var(--c-border);border-radius:6px;font-size:.88rem;"><option value="">— choose —</option><option value="approve">Approve as-is</option><option value="conditions">Approve with conditions</option><option value="reject">Reject / escalate</option></select></div>
+  <div style="display:flex;gap:.5rem;flex-wrap:wrap;"><button class="btn-primary" onclick="d12vCheck()">Check My Decision</button><button class="btn-secondary" onclick="d12vReset()">Reset</button></div>
+  <div id="d12-result" style="display:none;margin-top:1rem;padding:1rem 1.2rem;border-radius:8px;"></div>
+</section>
+<script>
+function d12vCheck(){var sels=document.querySelectorAll('#d12-vendor .d12v-sel'),c=0,t=sels.length,u=0,rows='';
+ sels.forEach(function(s,i){var k=s.getAttribute('data-key'),v=s.value,e=s.getAttribute('data-explain'),ok=v===k;if(!v)u++;if(ok)c++;var col=ok?'var(--c-green)':'var(--c-accent)';rows+='<li style="margin-bottom:.4rem;"><strong style="color:'+col+';">'+(ok?'✓':'✗')+' Finding '+(i+1)+' → '+(k==='assure'?'Assurance':'Red flag')+'.</strong> '+e+'</li>';s.style.borderColor=col;});
+ var ov=document.getElementById('d12-overall'),oo=ov.value==='conditions';if(!ov.value)u++;ov.style.borderColor=oo?'var(--c-green)':'var(--c-accent)';
+ var ol='<li style="margin-top:.3rem;"><strong style="color:'+(oo?'var(--c-green)':'var(--c-accent)')+';">'+(oo?'✓':'✗')+' Go-live call → Approve with conditions.</strong> The assurances (SOC 2, residency, subprocessor transparency) are real, but the red flags are contract-fixable: require no training on our data, add an AI-incident/notification clause, and obtain a training-data attestation <em>before</em> go-live. Approving as-is ignores serious gaps; outright rejection discards a salvageable vendor.</li>';
+ var tot=t+1,cor=c+(oo?1:0),b=document.getElementById('d12-result');b.style.display='block';b.style.background=(cor===tot)?'rgba(26,92,58,.08)':'var(--c-surface)';b.style.border='1px solid var(--c-border)';
+ b.innerHTML='<p style="font-weight:700;margin-bottom:.5rem;">Score: '+cor+' / '+tot+(u?' — '+u+' unanswered':'')+'</p><ul style="list-style:none;padding-left:0;font-size:.88rem;line-height:1.5;">'+rows+ol+'</ul><p style="margin-top:.6rem;font-size:.88rem;"><strong>Key insight:</strong> Vendor decisions are rarely binary. Separate genuine assurances from gaps, then decide what must be fixed <em>in the contract</em> before go-live.</p>';}
+function d12vReset(){document.querySelectorAll('#d12-vendor .d12v-sel').forEach(function(s){s.value='';s.style.borderColor='';});var ov=document.getElementById('d12-overall');ov.value='';ov.style.borderColor='';var b=document.getElementById('d12-result');b.style.display='none';b.innerHTML='';}
+</script>
+
 <section id="artifact">
   <h2><span class="sec-num">📝 Assessment Artifact · Due: End of Class</span>AI Vendor Risk Assessment Report</h2>
 
@@ -1308,7 +1340,7 @@ buildTierActivity();
 const vqDomains = [
   {
     name:"🤖 AI Model Transparency",
-    color:var(--c-accent),
+    color:'var(--c-accent)',
     qs:[
       {text:"What specific AI model (name, version, provider) powers the AI features in this product?", risk:"h"},
       {text:"Does the vendor provide or commit to providing an AIBOM for the AI system?", risk:"h"},

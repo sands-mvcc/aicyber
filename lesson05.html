@@ -151,10 +151,10 @@ h3{font-family:var(--ff-sans);font-size:1.05rem;font-weight:700;color:var(--ink)
 
 /* ── FLIP CARDS ──────────────────────────────────────── */
 .flip-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:1rem;margin:1.5rem 0}
-.flip-card{height:210px;cursor:pointer;perspective:900px}
-.flip-inner{width:100%;height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;position:relative}
+.flip-card{min-height:210px;cursor:pointer;perspective:900px}
+.flip-inner{display:grid;width:100%;min-height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;position:relative}
 .flip-card.flipped .flip-inner{transform:rotateY(180deg)}
-.flip-front,.flip-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--radius);padding:1.1rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:var(--shadow-sm)}
+.flip-front,.flip-back{position:relative;grid-area:1/1;backface-visibility:hidden;border-radius:var(--radius);padding:1.1rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:var(--shadow-sm)}
 .flip-front{background:#fff;border:1px solid var(--border)}
 .flip-back{transform:rotateY(180deg)}
 .flip-back.banned{background:var(--tier-banned);color:#fff}
@@ -656,6 +656,143 @@ footer strong{color:rgba(255,255,255,.8)}
   </div>
 </section>
 
+<!-- ── M7: PRIVACY & DATA PROTECTION ────────────────────────── -->
+<section id="m7" class="lesson-section">
+  <h2 class="section-title"><span>🔐</span> Module 7 · Privacy &amp; Data Protection as a Discipline (Beyond the AI Act) <span class="section-meta">25 min</span></h2>
+  <div class="prose">
+    <p>The EU AI Act does not operate in a vacuum. Almost every high-risk AI system also processes <strong>personal data</strong>, which means a second, older, and equally binding body of law applies simultaneously: the <strong>General Data Protection Regulation (GDPR, Regulation (EU) 2016/679)</strong>. The AI Act governs the <em>system</em> and its risk to safety and fundamental rights; the GDPR governs the <em>data</em> and the individuals it describes. You cannot comply with one and ignore the other — the same MVCC advising assistant is subject to both at the same time.</p>
+    <p>Privacy is a discipline in its own right, with its own principles, roles, and impact-assessment machinery that predate the AI Act by years. This module gives you the Security+/GRC-level working knowledge you need to recognize where GDPR obligations attach to AI, where the AI Act's assessment duties overlap with GDPR's, and how to actually run the assessment.</p>
+  </div>
+  <div class="analogy-box">
+    <div class="analogy-label">🎓 Anchoring Analogy: Two Inspectors, One Building</div>
+    <p>Think of a new hospital wing. The <strong>fire marshal</strong> (EU AI Act) inspects the structure for safety hazards and rights risks — can it be operated without harming people? The <strong>health inspector</strong> (GDPR) checks how patient records are collected, stored, and disposed of. They inspect the same building on overlapping days, they sometimes examine the same room, but each has a distinct mandate and each can shut you down independently. Passing one inspection does not exempt you from the other.</p>
+  </div>
+
+  <h3>Core GDPR Obligations Most Relevant to AI</h3>
+  <div class="prose">
+    <p>Four GDPR principles do the heaviest lifting when an AI system is in scope. Each maps directly onto a design decision your team makes about training data and inference.</p>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>GDPR Concept</th><th>Article</th><th>What It Demands</th><th>The AI-Specific Tension</th></tr></thead>
+      <tbody>
+        <tr><td>Lawful basis</td><td>Art. 6</td><td>Every processing activity needs one of six lawful bases — consent, contract, legal obligation, vital interests, public task, or legitimate interests.</td><td>"We had the data for enrollment" is not automatically a basis to <em>train a model</em> on it. Repurposing data for AI usually needs a fresh lawful-basis analysis.</td></tr>
+        <tr><td>Purpose limitation</td><td>Art. 5(1)(b)</td><td>Data collected for one specified purpose may not be reused for an incompatible new purpose.</td><td>Data gathered to register students being reused to train a risk-prediction model is a classic purpose-creep flag.</td></tr>
+        <tr><td>Data minimization</td><td>Art. 5(1)(c)</td><td>Process only data that is adequate, relevant, and limited to what is necessary.</td><td>Directly conflicts with the "collect everything, the model will find signal" instinct. More features is not a legal defense.</td></tr>
+        <tr><td>Data-subject rights</td><td>Arts. 15–17</td><td>Access (Art. 15), rectification (Art. 16), and erasure / "right to be forgotten" (Art. 17), among others.</td><td>Individuals can demand to see, correct, or delete their data — including data already absorbed into a trained model.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout callout-eu">
+    <div class="callout-label">🔑 Key Point — Lawful Basis Is Per-Purpose, Not Per-Dataset</div>
+    The single most common GDPR mistake in AI projects is assuming that lawfully holding data for its original purpose licenses any downstream AI use. It does not. Purpose limitation (Art. 5(1)(b)) requires you to test whether model training is <em>compatible</em> with the original purpose — and if it is not, to establish a new lawful basis and, usually, to inform the data subjects. Treat "can we train on this?" as a separate legal question from "can we hold this?"
+  </div>
+
+  <h3>Right to Erasure vs. Model Memorization — and "Machine Unlearning"</h3>
+  <div class="prose">
+    <p>Article 17 gives individuals a right to erasure. That is straightforward for a row in a database — you delete the row. It is <em>not</em> straightforward for a trained model. Large models can <strong>memorize</strong> fragments of their training data, and that information is diffused across billions of parameters rather than sitting in a deletable record. Honoring an erasure request may therefore require more than deleting the source file: the influence of that data can persist in the model's weights.</p>
+    <p><strong>Machine unlearning</strong> is the emerging research field that tries to remove the effect of specific training data from a model without retraining from scratch. At an awareness level, you should know two things: (1) the only fully reliable method today is <em>retraining</em> the model on a dataset with the target data removed — which is often expensive or impractical; and (2) faster "approximate" unlearning techniques exist but come with <em>no guarantee</em> that the data's influence is truly gone, and verifying removal is itself an open problem.</p>
+  </div>
+  <div class="callout">
+    <div class="callout-label">⚠️ Do Not Overstate the Maturity</div>
+    Machine unlearning is an active research area, not a solved compliance control. Do not represent to a regulator, an auditor, or a data subject that a model has "unlearned" someone's data unless you can substantiate it. From a GRC standpoint, the defensible postures today are: retrain on a cleaned dataset, avoid training on personal data you may later have to erase, or keep personal data out of the model and in a governed store the model queries at inference time (so deletion actually removes it).
+  </div>
+
+  <h3>FRIA (AI Act Art. 27) and DPIA (GDPR Art. 35) — Two Assessments, One Workflow</h3>
+  <div class="prose">
+    <p>Both regimes require a structured, documented impact assessment <em>before</em> a high-risk system goes live — but they are not the same instrument and are not triggered by the same thing. Understanding how they relate keeps you from either duplicating work or missing a required assessment entirely.</p>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Dimension</th><th>DPIA — Data Protection Impact Assessment</th><th>FRIA — Fundamental Rights Impact Assessment</th></tr></thead>
+      <tbody>
+        <tr><td>Source</td><td>GDPR <strong>Article 35</strong></td><td>EU AI Act <strong>Article 27</strong></td></tr>
+        <tr><td>Primary focus</td><td>Risks to the protection of <em>personal data</em> and privacy.</td><td>Broader risks to <em>fundamental rights</em> — non-discrimination, dignity, due process — from a high-risk AI system.</td></tr>
+        <tr><td>Who must do it</td><td>The <strong>controller</strong>, when processing is likely to result in a high risk to individuals.</td><td>The <strong>deployer</strong> that is a public body or private provider of public services, plus deployers of certain Annex III systems (e.g., creditworthiness, life/health insurance risk).</td></tr>
+        <tr><td>Trigger</td><td>High-risk processing: new technologies, large-scale processing, systematic monitoring, or automated decisions with legal / similarly significant effects.</td><td>First use of an in-scope high-risk AI system by an in-scope deployer.</td></tr>
+        <tr><td>When</td><td>Before the processing begins.</td><td>Before the system is put into use.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout callout-eu">
+    <div class="callout-label">🔗 How They Complement Each Other</div>
+    The AI Act deliberately avoids duplication: Article 27 states that where a <strong>DPIA has already been carried out under GDPR Art. 35</strong>, the FRIA <em>complements</em> it — you build on and reference the DPIA rather than repeating the data-protection analysis. In practice, run them as one coordinated workflow: the DPIA establishes the personal-data risk picture, and the FRIA extends it to the wider fundamental-rights impacts specific to the AI use case (bias, contestability, human oversight). One project, one assessment package, two legal boxes checked.
+  </div>
+  <div class="callout callout-danger">
+    <div class="callout-label">🕐 Don't Confuse the Timelines — Art. 33 Is a Different Clock</div>
+    Assessments (DPIA / FRIA) happen <em>before</em> deployment. That is separate from GDPR <strong>Article 33</strong>, which requires notifying the supervisory authority of a personal-data breach <strong>within 72 hours</strong> of becoming aware of it (with Art. 34 covering notification of affected individuals). Do not conflate the pre-deployment assessment duty with the post-incident 72-hour breach clock — and note the AI Act's own serious-incident reporting duty (Art. 73) is yet a third, parallel obligation.
+  </div>
+
+  <h3>Conducting a DPIA / FRIA — The Practical Steps</h3>
+  <div class="prose">
+    <p>Whether you are running a DPIA, a FRIA, or the combined package, the working method is the same disciplined sequence:</p>
+    <ol style="margin-left:1.3rem;color:var(--ink-soft);font-size:.92rem">
+      <li style="margin-bottom:.4rem"><strong>Describe the processing / system.</strong> Document the system, its purpose, the data flows, the data categories, and the categories of individuals affected.</li>
+      <li style="margin-bottom:.4rem"><strong>Establish lawful basis and necessity.</strong> Identify the Art. 6 lawful basis and test necessity and proportionality — could you achieve the purpose with less data or a less intrusive method?</li>
+      <li style="margin-bottom:.4rem"><strong>Identify risks to individuals and their rights.</strong> Assess likelihood and severity of harms: discrimination, loss of control over data, wrongful decisions, denial of a service. For a FRIA, extend explicitly to fundamental-rights impacts.</li>
+      <li style="margin-bottom:.4rem"><strong>Identify mitigations.</strong> Define controls that reduce each risk — data minimization, human oversight, bias testing, access controls, retention limits, appeal mechanisms.</li>
+      <li style="margin-bottom:.4rem"><strong>Assess residual risk.</strong> Judge the risk that remains after mitigations. If it stays high, GDPR Art. 36 requires <em>prior consultation</em> with the supervisory authority before proceeding.</li>
+      <li style="margin-bottom:.4rem"><strong>Sign off, monitor, and revisit.</strong> Have the accountable owner (with the DPO's input) record the decision, then re-assess whenever the system or its purpose materially changes.</li>
+    </ol>
+  </div>
+  <div class="callout">
+    <div class="callout-label">🎓 Education-Sector Note — FERPA Is the US Analogue</div>
+    In the United States, the equivalent privacy regime for student education records is <strong>FERPA</strong> (the Family Educational Rights and Privacy Act), which the course covers in the education-sector context elsewhere. GDPR is the framework to reason about here because the EU AI Act travels with it, but recognize that an MVCC system serving US students is squarely a FERPA matter, and a system reaching EU exchange students is <em>simultaneously</em> a GDPR matter.
+  </div>
+
+  <!-- Worksheet template artifact -->
+  <div class="artifact-block">
+    <div class="artifact-label">🧾 Reusable Template — DPIA / FRIA Worksheet</div>
+    <h4>DPIA / FRIA Worksheet (Fillable Template)</h4>
+    <p>Use this structured worksheet to run the combined assessment for any AI system that processes personal data. Complete every field; leave a defensible written trail. Blank cells are meant to be filled in.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:32%">Field</th><th>Your Entry</th></tr></thead>
+        <tbody>
+          <tr><td>System &amp; purpose</td><td style="color:var(--ink-muted);font-style:italic">[ Name the system and state its single specified purpose ]</td></tr>
+          <tr><td>Data categories &amp; subjects</td><td style="color:var(--ink-muted);font-style:italic">[ What personal data, whose — students, staff, applicants? Any special-category data? ]</td></tr>
+          <tr><td>Lawful basis (GDPR Art. 6)</td><td style="color:var(--ink-muted);font-style:italic">[ Which basis, and is it valid for training AND for inference? ]</td></tr>
+          <tr><td>Necessity &amp; proportionality</td><td style="color:var(--ink-muted);font-style:italic">[ Why is this data necessary? Could a less intrusive approach achieve the purpose? ]</td></tr>
+          <tr><td>Risks to rights</td><td style="color:var(--ink-muted);font-style:italic">[ Discrimination, wrongful decisions, loss of control, denial of service — likelihood × severity ]</td></tr>
+          <tr><td>Mitigations</td><td style="color:var(--ink-muted);font-style:italic">[ Human oversight, bias testing, minimization, retention limits, appeal / contest mechanism ]</td></tr>
+          <tr><td>Residual risk</td><td style="color:var(--ink-muted);font-style:italic">[ Risk remaining after mitigations — if still high, Art. 36 prior consultation required ]</td></tr>
+          <tr><td>Sign-off</td><td style="color:var(--ink-muted);font-style:italic">[ Accountable owner, DPO input, date, next review date ]</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Sample completed DPIA artifact -->
+  <div class="artifact-block">
+    <div class="artifact-label">📄 Sample — Completed DPIA (Redacted / Illustrative)</div>
+    <h4>Sample DPIA — MVCC AI Enrollment &amp; Advising Assistant</h4>
+    <p>The following is an <em>illustrative, deliberately imperfect</em> completed worksheet for the fictional MVCC AI enrollment/advising assistant. Read it critically — it is a teaching artifact, not a model answer.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th style="width:32%">Field</th><th>Entry</th></tr></thead>
+        <tbody>
+          <tr><td>System &amp; purpose</td><td>AI assistant that recommends courses and flags students for advisor outreach during enrollment.</td></tr>
+          <tr><td>Data categories &amp; subjects</td><td>Enrolled and prospective students. Fields: transcripts, GPA, attendance, financial-aid status, LMS activity, demographic fields.</td></tr>
+          <tr><td>Lawful basis (GDPR Art. 6)</td><td>Public task / legitimate interests — the college already holds this data for enrollment administration.</td></tr>
+          <tr><td>Necessity &amp; proportionality</td><td>All available student fields are fed to the model to maximize prediction accuracy.</td></tr>
+          <tr><td>Risks to rights</td><td>Possible inaccurate recommendations. Students can email an advisor if a recommendation seems wrong.</td></tr>
+          <tr><td>Mitigations</td><td>An advisor reviews flagged students before outreach. Vendor states the model is "fair."</td></tr>
+          <tr><td>Residual risk</td><td>Low. Advisor-in-the-loop resolves any errors.</td></tr>
+          <tr><td>Sign-off</td><td>Approved by Enrollment Services. DPO consulted informally.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Your task — Critique this DPIA.</strong> Which risks are understated, and what mitigation is missing? In a short written response, identify at least four weaknesses. Consider, among others:</p>
+    <ul>
+      <li><strong>Lawful basis &amp; purpose limitation:</strong> Is "we already hold it for enrollment" a valid basis to <em>train</em> a prediction model? Where is the purpose-limitation analysis?</li>
+      <li><strong>Data minimization:</strong> "All available fields to maximize accuracy" directly contradicts Art. 5(1)(c) — which fields are actually necessary, and what is the discrimination risk of the demographic fields?</li>
+      <li><strong>Risks to rights:</strong> Bias and disparate impact are not assessed at all; "email an advisor" is not a real contestability or appeal mechanism.</li>
+      <li><strong>Mitigations &amp; residual risk:</strong> A vendor's unverified claim that the model is "fair" is not bias testing; the "low residual risk" conclusion is unsupported and likely understated.</li>
+      <li><strong>Missing entirely:</strong> No FRIA extension (this is an Annex III education use case), no retention limit, no erasure/model-memorization plan, and only an "informal" DPO consultation where formal sign-off is expected.</li>
+    </ul>
+  </div>
+</section>
+
 <!-- ── ACTIVITY: DECISION TREE ──────────────────────────────── -->
 <div class="part-banner lab">
   <div class="pb-num">▶</div>
@@ -741,7 +878,7 @@ footer strong{color:rgba(255,255,255,.8)}
     <div class="quiz-head">
       <span>Day 5 Knowledge Check — 10 Questions</span>
       <span class="quiz-score" id="quiz-score-display">Score: 0 / 10</span>
-    </div>
+    </div><div class="quiz-note" style="padding:.55rem 1.2rem;background:#faf6f7;color:var(--ink-soft,#5a5a5a);font-size:.8rem;line-height:1.4;border-bottom:1px solid var(--border,#e7e7e7);">Formative — this knowledge check does not affect your grade. Use it to self-assess before moving on.</div>
     <div id="quiz-body"></div>
     <div class="quiz-actions">
       <button class="btn btn-eu" onclick="gradeQuiz()">Grade My Quiz</button>

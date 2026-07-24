@@ -112,10 +112,10 @@ h3{font-family:var(--ff-sans);font-size:1.05rem;font-weight:700;color:var(--ink)
 .ao-body{padding:.65rem .9rem;background:#fff;border:1px solid var(--border);border-top:none;font-size:.8rem;color:var(--ink-muted);line-height:1.45}
 /* FLIP CARDS */
 .flip-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:1rem;margin:1.5rem 0}
-.flip-card{height:215px;cursor:pointer;perspective:900px}
-.flip-inner{width:100%;height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;position:relative}
+.flip-card{min-height:215px;cursor:pointer;perspective:900px}
+.flip-inner{display:grid;width:100%;min-height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;position:relative}
 .flip-card.flipped .flip-inner{transform:rotateY(180deg)}
-.flip-front,.flip-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--radius);padding:1.1rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:var(--shadow-sm)}
+.flip-front,.flip-back{position:relative;grid-area:1/1;backface-visibility:hidden;border-radius:var(--radius);padding:1.1rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:var(--shadow-sm)}
 .flip-front{background:#fff;border:1px solid var(--border)}
 .flip-back{transform:rotateY(180deg);color:#fff}
 .flip-icon{font-size:2rem;margin-bottom:.45rem}
@@ -453,7 +453,7 @@ footer strong{color:rgba(255,255,255,.8)}
   <h2 class="section-title"><span>📉</span> Module 4 · Model Drift — Four Types &amp; Detection Methods <span class="section-meta">30 min</span></h2>
   <div class="prose">
     <p>Model drift is the silent degradation of AI system performance over time as the world changes in ways the model was not trained for. Unlike poisoning (which is an attack) or backdoors (which are designed compromises), drift is usually not malicious — it happens naturally as populations shift, behaviors evolve, and ground truth changes. But its consequences can be as severe as an intentional attack: a fraud detection model that drifts becomes an enabler of fraud; a patient risk model that drifts produces wrong risk scores; an at-risk student predictor that drifts flags the wrong students.</p>
-    <p>According to DataRobot, <strong>73% of failures in production AI are linked to unforeseen shifts in input data relevance</strong>. 91% of ML models fail due to some form of model drift. This makes drift detection the most operationally critical monitoring activity for deployed AI systems — and the one most commonly skipped.</p>
+    <p>According to DataRobot, <strong>73% of failures in production AI are linked to unforeseen shifts in input data relevance</strong>. studies of model aging find that most deployed ML models degrade over time if they are not retrained — one widely-cited 2022 analysis put this at roughly 91%. This makes drift detection the most operationally critical monitoring activity for deployed AI systems — and the one most commonly skipped.</p>
   </div>
   <h3>The Four Drift Types</h3>
   <div class="drift-types-grid" id="drift-types-grid"></div>
@@ -609,6 +609,37 @@ footer strong{color:rgba(255,255,255,.8)}
 </section>
 
 <!-- Artifact -->
+<!-- Activity D · Drift decision (added) -->
+<section id="d9-decision" class="lesson-section">
+  <h2 class="section-title"><span>📉</span> Activity D · Read the Drift Readout — Hold or Retrain? <span class="section-meta">20 min</span></h2>
+  <p>Monitoring only helps if you can <em>read</em> it. Below is a 30-day monitoring snapshot for the MVCC enrollment model. For each signal decide whether it is within tolerance or a drift alarm, then make the overall call. Remember: drift is multi-dimensional — a healthy accuracy number can hide input and fairness drift.</p>
+  <div style="margin:1rem 0;overflow-x:auto;">
+    <table style="width:100%;border-collapse:collapse;font-size:.86rem;">
+      <thead><tr style="background:var(--oxblood-dk);color:#fff;"><th style="text-align:left;padding:.5rem .6rem;">Signal</th><th style="padding:.5rem;">Reading</th><th style="padding:.5rem;">Threshold</th><th style="padding:.5rem;">Your call</th></tr></thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:.5rem .6rem;">Input-feature drift (PSI)</td><td style="text-align:center;">0.28</td><td style="text-align:center;">alarm if &ge; 0.25</td><td style="text-align:center;"><select class="d9-sel" data-key="alarm" data-explain="PSI 0.28 is over the 0.25 line — the input distribution has shifted."><option value="">—</option><option value="ok">Within tolerance</option><option value="alarm">Drift alarm</option></select></td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:.5rem .6rem;">Prediction-distribution shift (KS test)</td><td style="text-align:center;">p = 0.002</td><td style="text-align:center;">alarm if p &lt; 0.05</td><td style="text-align:center;"><select class="d9-sel" data-key="alarm" data-explain="p=0.002 is far below 0.05 — the output distribution has shifted significantly."><option value="">—</option><option value="ok">Within tolerance</option><option value="alarm">Drift alarm</option></select></td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:.5rem .6rem;">Accuracy (labeled 30-day holdout)</td><td style="text-align:center;">88%</td><td style="text-align:center;">floor &ge; 85%</td><td style="text-align:center;"><select class="d9-sel" data-key="ok" data-explain="88% is above the 85% floor — headline performance still passes."><option value="">—</option><option value="ok">Within tolerance</option><option value="alarm">Drift alarm</option></select></td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:.5rem .6rem;">Null rate in a key input feature</td><td style="text-align:center;">2%</td><td style="text-align:center;">max &le; 5%</td><td style="text-align:center;"><select class="d9-sel" data-key="ok" data-explain="2% nulls is within the 5% data-quality limit."><option value="">—</option><option value="ok">Within tolerance</option><option value="alarm">Drift alarm</option></select></td></tr>
+        <tr style="border-bottom:1px solid var(--border);"><td style="padding:.5rem .6rem;">Demographic-parity gap</td><td style="text-align:center;">9%</td><td style="text-align:center;">max &le; 5%</td><td style="text-align:center;"><select class="d9-sel" data-key="alarm" data-explain="9% exceeds the 5% fairness limit — fairness drift, easily missed if you watch only accuracy."><option value="">—</option><option value="ok">Within tolerance</option><option value="alarm">Drift alarm</option></select></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="display:flex;gap:.8rem;align-items:center;flex-wrap:wrap;margin:.8rem 0;"><strong style="font-size:.9rem;">Overall decision:</strong>
+    <select id="d9-overall" style="padding:.4rem .6rem;border:1px solid var(--border);border-radius:6px;font-size:.88rem;"><option value="">— choose —</option><option value="serve">Keep serving as-is</option><option value="retrain">Trigger retraining / rollback</option></select></div>
+  <div style="display:flex;gap:.5rem;flex-wrap:wrap;"><button class="btn btn-primary" onclick="d9Check()">Check My Decision</button><button class="btn btn-ghost" onclick="d9Reset()">Reset</button></div>
+  <div id="d9-result" style="display:none;margin-top:1rem;padding:1rem 1.2rem;border-radius:8px;"></div>
+</section>
+<script>
+function d9Check(){var sels=document.querySelectorAll('#d9-decision .d9-sel'),c=0,t=sels.length,u=0,rows='';
+ sels.forEach(function(s,i){var k=s.getAttribute('data-key'),v=s.value,e=s.getAttribute('data-explain'),ok=v===k;if(!v)u++;if(ok)c++;var col=ok?'#1a5c3a':'var(--oxblood)';rows+='<li style="margin-bottom:.4rem;"><strong style="color:'+col+';">'+(ok?'✓':'✗')+' Signal '+(i+1)+' → '+(k==='ok'?'Within tolerance':'Drift alarm')+'.</strong> '+e+'</li>';s.style.borderColor=col;});
+ var ov=document.getElementById('d9-overall'),oo=ov.value==='retrain';if(!ov.value)u++;ov.style.borderColor=oo?'#1a5c3a':'var(--oxblood)';
+ var ol='<li style="margin-top:.3rem;"><strong style="color:'+(oo?'#1a5c3a':'var(--oxblood)')+';">'+(oo?'✓':'✗')+' Overall → Trigger retraining / rollback.</strong> Input drift, the prediction shift, and the fairness gap all breach their limits — so you act even though headline accuracy still passes.</li>';
+ var tot=t+1,cor=c+(oo?1:0),b=document.getElementById('d9-result');b.style.display='block';b.style.background=(cor===tot)?'rgba(26,92,58,.08)':'var(--warn-bg,#fff8e1)';b.style.border='1px solid var(--border)';
+ b.innerHTML='<p style="font-weight:700;margin-bottom:.5rem;">Score: '+cor+' / '+tot+(u?' — '+u+' unanswered':'')+'</p><ul style="list-style:none;padding-left:0;font-size:.88rem;line-height:1.5;">'+rows+ol+'</ul><p style="margin-top:.6rem;font-size:.88rem;"><strong>Key insight:</strong> Drift is multi-dimensional — data, prediction, performance, and fairness. Watching only accuracy is how fairness and input drift slip through.</p>';}
+function d9Reset(){document.querySelectorAll('#d9-decision .d9-sel').forEach(function(s){s.value='';s.style.borderColor='';});var ov=document.getElementById('d9-overall');ov.value='';ov.style.borderColor='';var b=document.getElementById('d9-result');b.style.display='none';b.innerHTML='';}
+</script>
+
 <section id="artifact" class="lesson-section">
   <h2 class="section-title"><span>📝</span> Assessment Artifact <span class="section-meta">Due: End of Class</span></h2>
   <div class="artifact-block">
@@ -633,7 +664,7 @@ footer strong{color:rgba(255,255,255,.8)}
     <div class="quiz-head">
       <span>Day 9 Knowledge Check — 10 Questions</span>
       <span class="quiz-score-d" id="quiz-score-display">Score: 0 / 10</span>
-    </div>
+    </div><div class="quiz-note" style="padding:.55rem 1.2rem;background:#faf6f7;color:var(--ink-soft,#5a5a5a);font-size:.8rem;line-height:1.4;border-bottom:1px solid var(--border,#e7e7e7);">Formative — this knowledge check does not affect your grade. Use it to self-assess before moving on.</div>
     <div id="quiz-body"></div>
     <div class="quiz-actions">
       <button class="btn btn-primary" onclick="gradeQuiz()">Grade My Quiz</button>

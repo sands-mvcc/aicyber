@@ -113,10 +113,10 @@ h3{font-family:var(--ff-sans);font-size:1.05rem;font-weight:700;color:var(--ink)
 
 /* ── FLIP CARDS ──────────────────────────────────────── */
 .flip-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:1rem;margin:1.5rem 0}
-.flip-card{height:200px;cursor:pointer;perspective:900px}
-.flip-inner{width:100%;height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;position:relative}
+.flip-card{min-height:200px;cursor:pointer;perspective:900px}
+.flip-inner{display:grid;width:100%;min-height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;position:relative}
 .flip-card.flipped .flip-inner{transform:rotateY(180deg)}
-.flip-front,.flip-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--radius);padding:1.1rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:var(--shadow-sm)}
+.flip-front,.flip-back{position:relative;grid-area:1/1;backface-visibility:hidden;border-radius:var(--radius);padding:1.1rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:var(--shadow-sm)}
 .flip-front{background:#fff;border:1px solid var(--border)}
 .flip-back{transform:rotateY(180deg);border:none}
 .flip-back.ms{background:var(--ms);color:#fff}
@@ -651,6 +651,93 @@ footer strong{color:rgba(255,255,255,.8)}
   </div>
 </section>
 
+<!-- ── EVALUATION & ASSURANCE (added) ──────────────────────────── -->
+<section id="evaluation" class="lesson-section">
+  <h2 class="section-title neutral"><span>📊</span> Module · Evaluation &amp; Assurance — Test Before You Trust <span class="section-meta">25 min</span></h2>
+
+  <p>MEASURE is where governance meets evidence. Before an AI system is trusted in production, you <em>evaluate</em> it: you pick metrics, set <strong>acceptance thresholds</strong> in advance, run the tests (including red-team probes), and compare results to the thresholds to make a defensible <strong>deploy / no-go</strong> decision. "It seemed to work in the demo" is not evaluation.</p>
+
+  <div class="callout callout-ms">
+    <div class="callout-label">🎯 Why Thresholds Come First</div>
+    <p>Setting the bar <em>before</em> you see results prevents the most common assurance failure — moving the goalposts to justify shipping. When Morgan Stanley deployed its internal assistant, it ran formal factuality and hallucination evaluations with human review and expanded only once results cleared the bar. The discipline, not the model, is what made it trustworthy.</p>
+  </div>
+
+  <p><strong>A usable AI evaluation plan names four things:</strong></p>
+  <ul>
+    <li><strong>Metrics</strong> — what you measure: robustness (jailbreak/prompt-injection resistance), safety (hallucination rate, PII leakage), performance (accuracy, latency), and fairness where relevant.</li>
+    <li><strong>Acceptance thresholds</strong> — the pass bar for each metric, set in advance (e.g., "hallucination ≤ 2%," "PII leakage = 0").</li>
+    <li><strong>Method &amp; evidence</strong> — how you test (benchmark set size, red-team probe count) and what artifact records the result.</li>
+    <li><strong>Decision rule</strong> — how metric results roll up to deploy / no-go, including which metrics are <em>critical</em> (any failure = no-go).</li>
+  </ul>
+
+  <!-- Set the Bar interactive -->
+  <h3 style="margin-top:1.4rem;">⚖️ Activity D · "Set the Bar" — Read the Eval, Make the Call</h3>
+  <p style="font-size:.92rem;">Here is a mock pre-deployment evaluation for the <strong>MVCC Enrollment Assistant</strong>. For each metric, decide whether the measured result <strong>meets</strong> its acceptance threshold. Then make the overall deploy decision — treat <em>hallucination</em> and <em>jailbreak resistance</em> as safety-critical (any critical failure = no-go).</p>
+
+  <div id="sb-grid" style="margin:1rem 0;overflow-x:auto;">
+    <table style="width:100%;border-collapse:collapse;font-size:.86rem;">
+      <thead><tr style="background:var(--oxblood-dk,#5a1414);color:#fff;">
+        <th style="text-align:left;padding:.5rem .6rem;">Metric</th>
+        <th style="padding:.5rem .6rem;">Measured</th>
+        <th style="padding:.5rem .6rem;">Threshold</th>
+        <th style="padding:.5rem .6rem;">Your call</th>
+      </tr></thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--border,#e7e7e7);"><td style="padding:.5rem .6rem;">Hallucination rate <em>(critical)</em></td><td style="text-align:center;">6%</td><td style="text-align:center;">≤ 2%</td><td style="text-align:center;"><select class="sb-sel" data-key="fail" data-explain="6% exceeds the ≤2% bar — a critical safety failure."><option value="">—</option><option value="pass">Meets</option><option value="fail">Fails</option></select></td></tr>
+        <tr style="border-bottom:1px solid var(--border,#e7e7e7);"><td style="padding:.5rem .6rem;">Jailbreak resistance <em>(critical)</em></td><td style="text-align:center;">91%</td><td style="text-align:center;">≥ 95%</td><td style="text-align:center;"><select class="sb-sel" data-key="fail" data-explain="91% is below the ≥95% bar — a critical robustness failure."><option value="">—</option><option value="pass">Meets</option><option value="fail">Fails</option></select></td></tr>
+        <tr style="border-bottom:1px solid var(--border,#e7e7e7);"><td style="padding:.5rem .6rem;">PII leakage (500 red-team probes)</td><td style="text-align:center;">0</td><td style="text-align:center;">= 0</td><td style="text-align:center;"><select class="sb-sel" data-key="pass" data-explain="0 leaks meets the zero-tolerance bar."><option value="">—</option><option value="pass">Meets</option><option value="fail">Fails</option></select></td></tr>
+        <tr style="border-bottom:1px solid var(--border,#e7e7e7);"><td style="padding:.5rem .6rem;">Answer accuracy (200 benchmark Qs)</td><td style="text-align:center;">93%</td><td style="text-align:center;">≥ 90%</td><td style="text-align:center;"><select class="sb-sel" data-key="pass" data-explain="93% clears the ≥90% bar."><option value="">—</option><option value="pass">Meets</option><option value="fail">Fails</option></select></td></tr>
+        <tr style="border-bottom:1px solid var(--border,#e7e7e7);"><td style="padding:.5rem .6rem;">P95 latency</td><td style="text-align:center;">2.1s</td><td style="text-align:center;">≤ 3s</td><td style="text-align:center;"><select class="sb-sel" data-key="pass" data-explain="2.1s is within the ≤3s bar."><option value="">—</option><option value="pass">Meets</option><option value="fail">Fails</option></select></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="display:flex;gap:.8rem;align-items:center;flex-wrap:wrap;margin:.8rem 0;">
+    <strong style="font-size:.9rem;">Overall decision:</strong>
+    <select id="sb-overall" style="padding:.4rem .6rem;border:1px solid var(--border,#ccc);border-radius:6px;font-size:.88rem;"><option value="">— choose —</option><option value="deploy">Deploy</option><option value="nogo">No-Go / Hold</option></select>
+  </div>
+  <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+    <button class="btn btn-mg" onclick="sbCheck()">Check My Decision</button>
+    <button class="btn btn-ghost" onclick="sbReset()">Reset</button>
+  </div>
+  <div id="sb-result" style="display:none;margin-top:1rem;padding:1rem 1.2rem;border-radius:8px;"></div>
+
+  <div class="callout callout-mg" style="margin-top:1.2rem;">
+    <div class="callout-label">📚 Sources</div>
+    <p style="font-size:.85rem;">NIST AI RMF 1.0 (AI 100-1) — MEASURE; NIST Generative AI Profile (AI 600-1); MITRE ATLAS (adversarial testing); OWASP Top 10 for LLMs (2025) testing guidance.</p>
+  </div>
+</section>
+<script>
+/* Self-contained "Set the Bar" scorer (namespaced sb*) */
+function sbCheck(){
+  var sels=document.querySelectorAll('#evaluation .sb-sel');
+  var correct=0,total=sels.length,unanswered=0,rows='';
+  sels.forEach(function(s,i){
+    var key=s.getAttribute('data-key'),val=s.value,exp=s.getAttribute('data-explain');
+    var ok=(val===key); if(!val)unanswered++; if(ok)correct++;
+    var color=ok?'var(--mg,#1a5c3a)':'var(--oxblood,#7c1c1c)',mark=ok?'✓':'✗';
+    rows+='<li style="margin-bottom:.4rem;"><strong style="color:'+color+';">'+mark+' Metric '+(i+1)+' → '+(key==='pass'?'Meets':'Fails')+'.</strong> '+exp+'</li>';
+    s.style.borderColor=color;
+  });
+  var ov=document.getElementById('sb-overall');
+  var ovOk=(ov.value==='nogo'); if(!ov.value)unanswered++; var ovTotal=total+1; var ovCorrect=correct+(ovOk?1:0);
+  ov.style.borderColor=ovOk?'var(--mg,#1a5c3a)':'var(--oxblood,#7c1c1c)';
+  var ovLine='<li style="margin-top:.3rem;"><strong style="color:'+(ovOk?'var(--mg,#1a5c3a)':'var(--oxblood,#7c1c1c)')+';">'+(ovOk?'✓':'✗')+' Overall → No-Go / Hold.</strong> Two safety-critical metrics (hallucination, jailbreak resistance) fail their thresholds, so the correct call is to hold — remediate and re-test before deploying.</li>';
+  var box=document.getElementById('sb-result'),pct=Math.round(ovCorrect/ovTotal*100);
+  var head='<p style="font-weight:700;margin-bottom:.5rem;">Score: '+ovCorrect+' / '+ovTotal+' ('+pct+'%)'+(unanswered?' — '+unanswered+' unanswered':'')+'</p>';
+  var insight='<p style="margin-top:.6rem;font-size:.88rem;"><strong>Key insight:</strong> A system can pass most metrics and still be a no-go. Deciding <em>in advance</em> which metrics are critical is what turns a pile of numbers into an accountable deploy decision.</p>';
+  box.style.display='block';
+  box.style.background=(ovCorrect===ovTotal)?'rgba(26,92,58,.08)':'var(--parchment,#f7f4ef)';
+  box.style.border='1px solid var(--border,#e7e7e7)';
+  box.innerHTML=head+'<ul style="list-style:none;padding-left:0;font-size:.88rem;line-height:1.5;">'+rows+ovLine+'</ul>'+insight;
+}
+function sbReset(){
+  document.querySelectorAll('#evaluation .sb-sel').forEach(function(s){s.value='';s.style.borderColor='';});
+  var ov=document.getElementById('sb-overall');ov.value='';ov.style.borderColor='';
+  var box=document.getElementById('sb-result');box.style.display='none';box.innerHTML='';
+}
+</script>
+
 <!-- ── ARTIFACT ────────────────────────────────────────────────── -->
 <section id="artifact" class="lesson-section">
   <h2 class="section-title neutral"><span>📝</span> Assessment Artifact <span class="section-meta">Due: End of Class</span></h2>
@@ -674,7 +761,7 @@ footer strong{color:rgba(255,255,255,.8)}
     <div class="quiz-head">
       <span>Day 4 Knowledge Check — 10 Questions</span>
       <span class="quiz-score" id="quiz-score-display">Score: 0 / 10</span>
-    </div>
+    </div><div class="quiz-note" style="padding:.55rem 1.2rem;background:#faf6f7;color:var(--ink-soft,#5a5a5a);font-size:.8rem;line-height:1.4;border-bottom:1px solid var(--border,#e7e7e7);">Formative — this knowledge check does not affect your grade. Use it to self-assess before moving on.</div>
     <div id="quiz-body"></div>
     <div class="quiz-actions">
       <button class="btn btn-ox" onclick="gradeQuiz()">Grade My Quiz</button>
@@ -836,7 +923,7 @@ const mg34Data=[
   {code:'MG-3.1',badge:'MG-3',title:'Third-Party AI Risk Monitoring',quote:'AI risks and benefits from third-party entities are managed.',impl:'<p>Third-party AI components — foundation models, APIs, training datasets, plugins — create ongoing risk that changes when vendors update their systems. MG-3.1 requires: (1) a monitoring cadence for third-party component changes, (2) impact assessment when changes occur, (3) re-evaluation against MAP-identified risks when significant updates happen. A vendor model update is a trigger for re-running relevant MEASURE subcategories.</p>',example:'<p>MVCC chatbot uses OpenAI GPT model via API. Monitoring plan: subscribe to vendor change logs; evaluate major model updates against MVCC chatbot behavior before enabling in production; require 30-day notice in contract; quarterly vendor security posture review.</p>',failure:'Vendor silently updates the base model. System behavior changes; chatbot begins producing responses that violate MVCC\'s AUP for specific query types. Nobody checks vendor changelogs. Issue discovered 3 months later through student complaints.'},
   {code:'MG-4.1',badge:'MG-4',title:'AI-Specific Incident Response',quote:'Policies and procedures for AI incident response and recovery are established, communicated, and implemented.',impl:'<p>Traditional IR lifecycles (NIST SP 800-61: Prepare, Detect &amp; Analyze, Contain, Eradicate &amp; Recover, Post-Incident Activity) must be extended for AI-specific incidents. New categories: (1) model drift/degradation, (2) bias discovery post-deployment, (3) hallucination-caused harm, (4) prompt injection compromise, (5) training data poisoning. Each requires different detection methods, containment procedures, and recovery timelines. Day 14 covers this in full depth.',example:'<p>MVCC AI Incident Response Annex: bias discovery → (1) Detect: monitoring alert, (2) Contain: flag for human review while root cause investigated (don\'t stop the system immediately unless gap is severe), (3) Eradicate: bias source identified in training data, mitigation applied, (4) Recover: retraining with corrected data, (5) Post-Incident: governance update, advisor notification, documentation.</p>',failure:'AI incident handled using the standard cybersecurity IR playbook. "Contain" means blocking a network segment — not applicable to model bias. "Eradicate" means removing malware — not applicable to training data issues. Wrong playbook → wrong response → continued harm.'},
   {code:'MG-4.2',badge:'MG-4',title:'Stakeholder Communication Plans',quote:'Protocols are followed to communicate about the AI system.',impl:'<p>Communication plans for AI incidents, risk treatment decisions, and significant changes must be pre-defined: (1) internal escalation path (Model Owner → AI Governance Lead → executive), (2) affected user notification (what do students/employees need to know?), (3) regulatory disclosure (EU AI Act Article 73 serious incident reporting for high-risk systems), (4) public communication if relevant. Plans must exist before incidents occur.</p>',example:'<p>MVCC at-risk predictor communication plan: Student notification: "You have been identified as potentially at risk for academic difficulties. An advisor will contact you. You have the right to request human review of this determination." Triggered within 72 hours of flag being acted upon.</p>',failure:'Incident occurs. Team argues for 3 weeks about whether to notify affected students because no notification plan existed. During the argument, harmed students have no recourse. Delay compounds reputational damage when the incident becomes public.'},
-  {code:'MG-4.3',badge:'MG-4',title:'Post-Incident Learning Loop',quote:'Incidents and errors are documented and used to improve AI risk management.',impl:'<p>The improvement loop that closes the cycle: incidents and near-misses feed back to GOVERN (policy update needed?), MAP (was this risk identified?), and MEASURE (did monitoring catch it?). Without this loop, the same failure recurs. MG-4.3 produces the lessons-learned artifact that Day 18\'s learning objective requires: documenting AI incident lessons in a way that strengthens the governance program.</p>',example:'<p>Post-incident report: "Demographic parity alert threshold was set too high (10%). Incident would have been caught earlier if threshold was 5%. Recommendation: lower threshold; update MEASURE 3.1 monitoring parameters. Root cause: training data reflected historical enrollment patterns that disadvantaged non-traditional students."</p>',failure:'Post-incident report written, filed, and forgotten. Same root cause produces the same incident 18 months later. No evidence that lessons learned were ever acted on — audit finds the organization incapable of organizational learning.'},
+  {code:'MG-4.3',badge:'MG-4',title:'Post-Incident Learning Loop',quote:'Incidents and errors are documented and used to improve AI risk management.',impl:'<p>The improvement loop that closes the cycle: incidents and near-misses feed back to GOVERN (policy update needed?), MAP (was this risk identified?), and MEASURE (did monitoring catch it?). Without this loop, the same failure recurs. MG-4.3 produces the lessons-learned artifact that Day 14\'s learning objective requires: documenting AI incident lessons in a way that strengthens the governance program.</p>',example:'<p>Post-incident report: "Demographic parity alert threshold was set too high (10%). Incident would have been caught earlier if threshold was 5%. Recommendation: lower threshold; update MEASURE 3.1 monitoring parameters. Root cause: training data reflected historical enrollment patterns that disadvantaged non-traditional students."</p>',failure:'Post-incident report written, filed, and forgotten. Same root cause produces the same incident 18 months later. No evidence that lessons learned were ever acted on — audit finds the organization incapable of organizational learning.'},
 ];
 
 /* Scenario Lab data */

@@ -237,6 +237,7 @@
 
 <nav class="page-nav" aria-label="Page sections">
   <a href="#overview">Overview</a><span class="sep">·</span>
+  <a href="#using">Using This Course</a><span class="sep">·</span>
   <a href="#objectives">Objectives</a><span class="sep">·</span>
   <a href="#lessons">Lessons</a><span class="sep">·</span>
   <a href="#frameworks">Frameworks</a><span class="sep">·</span>
@@ -254,7 +255,7 @@
     <div class="stat-bar">
       <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">Credit Hours</div></div>
       <div class="stat-item"><div class="stat-num">15</div><div class="stat-label">Lessons</div></div>
-      <div class="stat-item"><div class="stat-num">18</div><div class="stat-label">Learning Objectives</div></div>
+      <div class="stat-item"><div class="stat-num">20</div><div class="stat-label">Learning Objectives</div></div>
       <div class="stat-item"><div class="stat-num">4</div><div class="stat-label">Major Frameworks</div></div>
       <div class="stat-item"><div class="stat-num">10</div><div class="stat-label">OWASP LLM Items</div></div>
     </div>
@@ -272,6 +273,26 @@
     <p>The course is organized around a core question: <em>What genuinely changes when the systems you are securing learn from data, generate probabilistic outputs, and can be manipulated through their inputs in ways that have no parallel in traditional software?</em> Students will work through governance frameworks, risk taxonomies, threat landscapes, architectural controls, and incident response — each adapted for the AI context.</p>
     <p><strong>Daily pattern:</strong> Each 4-hour class divides into <em>Part A</em> (mini-lecture + structured activity — poll, think-pair-share, or micro case) and <em>Part B</em> (lab, case study, or tabletop aligned to that day's objectives). Assessment artifacts are produced every day.</p>
     <p><strong>Prerequisites:</strong> Foundational cybersecurity knowledge equivalent to CompTIA Security+ or equivalent coursework. Familiarity with basic risk management concepts is helpful but not required.</p>
+  </section>
+
+  <!-- ======================================================
+       USING THIS COURSE (pacing + accessibility)
+  ====================================================== -->
+  <section id="using">
+    <h2><span class="sec-kicker">📖 Using This Course</span>How to Work Through the Material</h2>
+    <p><strong>Structure.</strong> The course is 15 lessons (labeled <em>Day 1</em>–<em>Day 15</em>), each equivalent to roughly one 4-hour class session. Every lesson follows the same rhythm, so you always know what to expect:</p>
+    <p style="margin-left:1rem;"><strong>Part A</strong> (mini-lecture + a short structured activity — poll, think-pair-share, or micro-case) → <strong>Part B</strong> (a lab, case study, or tabletop tied to that lesson's objectives) → a <strong>daily artifact</strong> you produce (memo, worksheet, or builder) → a short, ungraded <strong>knowledge check</strong> to confirm you're ready to move on.</p>
+    <p><strong>Pacing (delivered across a term).</strong> Although each lesson is written as a "Day," this course is spaced across a full term — plan on <strong>one lesson per weekly session</strong>, not 15 consecutive days. Budget about 4 hours of guided/contact time per lesson plus independent time to finish the daily artifact. The spacing is a feature: use the gap between sessions to complete the artifact, review the knowledge check, and let concepts consolidate before the next unit. The capstone reuses your Day 1 artifacts, so keep your work organized as you go.</p>
+    <p><strong>Suggested cadence:</strong> Days 1–5 (governance &amp; risk foundations) → Days 6–10 (threat landscape &amp; architecture) → Days 11–15 (policy, incident response, red-teaming &amp; capstone). Knowledge checks are formative and do not affect your grade — use them to self-assess.</p>
+
+    <h3 style="margin-top:1.5rem;">🧪 About the Labs &amp; Activities</h3>
+    <p>Every lesson includes hands-on activities — but in this course, <strong>"lab" means structured applied analysis, not live coding or attacking real systems.</strong> Activities are scenario classifiers, decision labs, matchers, and builders (risk registers, governance charters, threat models, defense matrices), plus think-pair-share and worksheets — all set in realistic scenarios such as an MVCC AI enrollment assistant. You apply the frameworks to a realistic case and produce a written artifact.</p>
+    <p>Where an activity mentions tools, API keys, or sandboxes, those appear as <em>analysis material</em> (things to reason about), not instructions to run live systems. <strong>No programming environment or coding is required.</strong> The capstone (Day 15) is a synthesis and presentation of your accumulated artifacts.</p>
+
+    <h3 style="margin-top:1.5rem;">♿ Accessibility &amp; Accommodations</h3>
+    <p>Moraine Valley Community College is committed to equal access. If you need academic accommodations (extended time, alternate formats, assistive technology, or other support), please arrange them early through the college's disability-services office. Instructors will work with you to implement approved accommodations.</p>
+    <p><em>[Instructor: insert the official MVCC Center for Disability Services statement here — office name, location, phone, email, and the college's standard accommodation language — and link the syllabus accessibility policy.]</em></p>
+    <p><strong>Materials accessibility.</strong> These web lessons use semantic headings, keyboard-operable interactions, and alt text on informative graphics; interactive cards and sorting activities include text fallbacks. If you encounter a barrier in any lesson, report it to your instructor so it can be fixed.</p>
   </section>
 
   <!-- ======================================================
@@ -317,7 +338,7 @@
        OBJECTIVES
   ====================================================== -->
   <section id="objectives">
-    <h2><span class="sec-kicker">🎯 Learning Objectives</span>18 Course-Level Competencies</h2>
+    <h2><span class="sec-kicker">🎯 Learning Objectives</span>20 Course-Level Competencies</h2>
     <div class="obj-grid">
       <div class="obj-item"><span class="obj-num">1</span>Explain why traditional cybersecurity principles alone are insufficient for AI-enabled enterprises and where AAISM extends them.</div>
       <div class="obj-item"><span class="obj-num">2</span>Identify the major AI governance frameworks (NIST AI RMF, ISO/IEC 42001, EU AI Act) and how they interrelate.</div>
@@ -337,6 +358,8 @@
       <div class="obj-item"><span class="obj-num">16</span>Adapt the NIST SP 800-61 incident response lifecycle for AI-specific incidents.</div>
       <div class="obj-item"><span class="obj-num">17</span>Execute a tabletop exercise for deepfake-enabled fraud, prompt injection, and model poisoning.</div>
       <div class="obj-item"><span class="obj-num">18</span>Document AI incident lessons learned in a way that strengthens the AI governance program.</div>
+      <div class="obj-item"><span class="obj-num">19</span>Apply the AI shared-responsibility model to allocate security duties between the organization and its AI service providers across IaaS, PaaS, and SaaS deployments.</div>
+      <div class="obj-item"><span class="obj-num">20</span>Design an AI evaluation plan — selecting robustness, safety, and performance metrics with acceptance thresholds — and interpret benchmark and red-team results to justify a deploy / no-go decision.</div>
     </div>
   </section>
 

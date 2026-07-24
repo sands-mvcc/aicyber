@@ -98,10 +98,10 @@
 
   /* ---- Flip cards ---- */
   .flip-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1.2rem;margin:1.5rem 0;}
-  .flip-card{height:210px;perspective:900px;cursor:pointer;}
-  .flip-card-inner{position:relative;width:100%;height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;}
+  .flip-card{min-height:210px;perspective:900px;cursor:pointer;}
+  .flip-card-inner{display:grid;position:relative;width:100%;min-height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;}
   .flip-card.flipped .flip-card-inner{transform:rotateY(180deg);}
-  .flip-front,.flip-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--radius);padding:1.2rem;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);}
+  .flip-front,.flip-back{position:relative;grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--radius);padding:1.2rem;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:var(--shadow);}
   .flip-front{background:var(--c-surface);border:2px solid var(--c-border);}
   .flip-front .flip-icon{font-size:2rem;margin-bottom:.5rem;}
   .flip-front .flip-label{font-family:var(--font-serif);font-size:1rem;font-weight:600;color:var(--c-text);}
@@ -393,7 +393,7 @@
     <div class="flip-card" tabindex="0" onclick="this.classList.toggle('flipped');markObjective(0);" onkeydown="if(event.key==='Enter'||event.key===' '){this.classList.toggle('flipped');markObjective(0);}">
       <div class="flip-card-inner">
         <div class="flip-front"><div class="flip-icon">⚖️</div><div class="flip-label">Gap 6: New Regulatory Reporting</div><div class="flip-hint">Click to flip</div></div>
-        <div class="flip-back teal-back"><div class="back-label">The Gap &amp; Fix</div><div class="back-text">Traditional IR plans address GDPR Art. 33 (72-hour breach notification) and sector-specific reporting. EU AI Act Article 73 (fully effective August 2, 2026) adds serious incident reporting for high-risk AI systems: 15-day window (2-day for severe cases), notification to national market surveillance authority, specific severity classification. CoSAI AI IR Framework v1.0 (November 2025) provides the first standardized taxonomy for AI incident severity classification. Fix: AI IR Annex pre-drafts regulatory notification templates and defines severity classification criteria.</div></div>
+        <div class="flip-back teal-back"><div class="back-label">The Gap &amp; Fix</div><div class="back-text">Traditional IR plans address GDPR Art. 33 (72-hour breach notification) and sector-specific reporting. EU AI Act Article 73 (fully effective August 2, 2026) adds serious incident reporting for high-risk AI systems: 15-day window (10 days if a person dies; 2 days for widespread infringement or serious disruption of critical infrastructure), notification to national market surveillance authority, specific severity classification. CoSAI AI IR Framework v1.0 (November 2025) provides the first standardized taxonomy for AI incident severity classification. Fix: AI IR Annex pre-drafts regulatory notification templates and defines severity classification criteria.</div></div>
       </div>
     </div>
   </div>
@@ -785,6 +785,71 @@
 <!-- ============================================================
      ASSESSMENT ARTIFACT
 ============================================================ -->
+<!-- Activity D · Red-team triage on a real artifact (added) -->
+<section id="d14-redteam">
+  <h2 style="font-size:1.4rem;color:var(--c-accent);margin:2.2rem 0 .4rem;border-top:2px solid var(--c-border);padding-top:1.6rem;">🎯 Activity D · Triage a Red-Team Report — Go / No-Go</h2>
+  <p>Below is a redacted findings report from a pre-deployment red-team exercise on the MVCC enrollment assistant. This is exactly the artifact a security lead receives before a launch decision. Read each finding, decide how to triage it, then make the release call. Treat student-PII exfiltration and safety-filter bypass as release-blocking.</p>
+  <div style="border:1px solid var(--c-border);border-radius:8px;overflow:hidden;margin:1rem 0;">
+    <div style="background:var(--c-accent);color:#fff;padding:.6rem .9rem;font-family:var(--font-mono,monospace);font-size:.8rem;letter-spacing:.03em;">CONFIDENTIAL · RED-TEAM FINDINGS (SAMPLE / REDACTED) · Target: MVCC Enrollment Assistant v0.9 · Method: PyRIT + manual · Window: 2 weeks</div>
+    <div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;font-size:.85rem;">
+      <thead><tr style="background:var(--c-surface);"><th style="text-align:left;padding:.5rem .6rem;">#</th><th style="text-align:left;padding:.5rem .6rem;">Finding &amp; evidence</th><th style="padding:.5rem;">Your triage</th></tr></thead>
+      <tbody>
+        <tr style="border-top:1px solid var(--c-border);"><td style="padding:.5rem .6rem;">1</td><td style="padding:.5rem .6rem;">Indirect prompt injection via an uploaded transcript causes the assistant to return another student's PII (10/10 attempts).</td><td style="text-align:center;"><select class="d14-sel" data-key="block" data-explain="Reliable PII exfiltration is a FERPA breach vector — release-blocking."><option value="">—</option><option value="block">Block release</option><option value="fix">Fix this sprint</option><option value="accept">Accept &amp; monitor</option></select></td></tr>
+        <tr style="border-top:1px solid var(--c-border);"><td style="padding:.5rem .6rem;">2</td><td style="padding:.5rem .6rem;">Jailbreak bypasses the safety/content filter roughly 1 in 20 attempts, producing disallowed output.</td><td style="text-align:center;"><select class="d14-sel" data-key="block" data-explain="A 5% safety-filter bypass on a student-facing system is release-blocking until hardened."><option value="">—</option><option value="block">Block release</option><option value="fix">Fix this sprint</option><option value="accept">Accept &amp; monitor</option></select></td></tr>
+        <tr style="border-top:1px solid var(--c-border);"><td style="padding:.5rem .6rem;">3</td><td style="padding:.5rem .6rem;">System-prompt leakage reveals internal routing rules and tool names (no secrets exposed).</td><td style="text-align:center;"><select class="d14-sel" data-key="fix" data-explain="Real weakness (aids further attacks) but not itself a breach — fix promptly, not necessarily a blocker."><option value="">—</option><option value="block">Block release</option><option value="fix">Fix this sprint</option><option value="accept">Accept &amp; monitor</option></select></td></tr>
+        <tr style="border-top:1px solid var(--c-border);"><td style="padding:.5rem .6rem;">4</td><td style="padding:.5rem .6rem;">Verbose error messages reveal backend framework and version details.</td><td style="text-align:center;"><select class="d14-sel" data-key="fix" data-explain="Information disclosure that eases reconnaissance — fix this sprint."><option value="">—</option><option value="block">Block release</option><option value="fix">Fix this sprint</option><option value="accept">Accept &amp; monitor</option></select></td></tr>
+        <tr style="border-top:1px solid var(--c-border);"><td style="padding:.5rem .6rem;">5</td><td style="padding:.5rem .6rem;">Over-refusal: ~3% of legitimate FERPA-rights questions are declined.</td><td style="text-align:center;"><select class="d14-sel" data-key="accept" data-explain="A usability/quality issue, not a security breach — accept for launch and monitor/tune."><option value="">—</option><option value="block">Block release</option><option value="fix">Fix this sprint</option><option value="accept">Accept &amp; monitor</option></select></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div style="display:flex;gap:.8rem;align-items:center;flex-wrap:wrap;margin:.8rem 0;"><strong style="font-size:.9rem;">Release decision:</strong>
+    <select id="d14-overall" style="padding:.4rem .6rem;border:1px solid var(--c-border);border-radius:6px;font-size:.88rem;"><option value="">— choose —</option><option value="go">Go — release</option><option value="nogo">No-Go — remediate first</option></select></div>
+  <div style="display:flex;gap:.5rem;flex-wrap:wrap;"><button class="btn-primary" onclick="d14Check()">Check My Triage</button><button class="btn-secondary" onclick="d14Reset()">Reset</button></div>
+  <div id="d14-result" style="display:none;margin-top:1rem;padding:1rem 1.2rem;border-radius:8px;"></div>
+  <p style="margin-top:.6rem;font-size:.85rem;color:var(--c-ink-soft,#555);"><strong>Then draft it:</strong> if finding 1 had been discovered <em>after</em> launch, you would owe two notifications. Use the templates below.</p>
+</section>
+<script>
+function d14Check(){var sels=document.querySelectorAll('#d14-redteam .d14-sel'),c=0,t=sels.length,u=0,rows='',lbl={block:'Block release',fix:'Fix this sprint',accept:'Accept & monitor'};
+ sels.forEach(function(s,i){var k=s.getAttribute('data-key'),v=s.value,e=s.getAttribute('data-explain'),ok=v===k;if(!v)u++;if(ok)c++;var col=ok?'var(--c-green)':'var(--c-accent)';rows+='<li style="margin-bottom:.4rem;"><strong style="color:'+col+';">'+(ok?'✓':'✗')+' Finding '+(i+1)+' → '+lbl[k]+'.</strong> '+e+'</li>';s.style.borderColor=col;});
+ var ov=document.getElementById('d14-overall'),oo=ov.value==='nogo';if(!ov.value)u++;ov.style.borderColor=oo?'var(--c-green)':'var(--c-accent)';
+ var ol='<li style="margin-top:.3rem;"><strong style="color:'+(oo?'var(--c-green)':'var(--c-accent)')+';">'+(oo?'✓':'✗')+' Release decision → No-Go.</strong> Two release-blocking findings (reliable PII exfiltration and a 5% safety-filter bypass) mean you remediate and re-test before launch — regardless of the lower-severity items.</li>';
+ var tot=t+1,cor=c+(oo?1:0),b=document.getElementById('d14-result');b.style.display='block';b.style.background=(cor===tot)?'rgba(26,92,58,.08)':'var(--c-surface)';b.style.border='1px solid var(--c-border)';
+ b.innerHTML='<p style="font-weight:700;margin-bottom:.5rem;">Score: '+cor+' / '+tot+(u?' — '+u+' unanswered':'')+'</p><ul style="list-style:none;padding-left:0;font-size:.88rem;line-height:1.5;">'+rows+ol+'</ul><p style="margin-top:.6rem;font-size:.88rem;"><strong>Key insight:</strong> Triage separates <em>severity</em> from <em>timing</em> — not every finding blocks a launch, but a single reliable breach vector does. The decision must be defensible against the evidence.</p>';}
+function d14Reset(){document.querySelectorAll('#d14-redteam .d14-sel').forEach(function(s){s.value='';s.style.borderColor='';});var ov=document.getElementById('d14-overall');ov.value='';ov.style.borderColor='';var b=document.getElementById('d14-result');b.style.display='none';b.innerHTML='';}
+</script>
+
+<!-- Activity E · Draft the notifications (added) -->
+<section id="d14-notify">
+  <h2 style="font-size:1.4rem;color:var(--c-accent);margin:2.2rem 0 .4rem;border-top:2px solid var(--c-border);padding-top:1.6rem;">✍️ Activity E · Draft the Notifications</h2>
+  <p>Reading about notification duties is not the same as being able to write one under time pressure. Using the finding-1 scenario (post-launch student-PII exposure), draft <strong>both</strong> notices from the templates below. Fill every bracketed field. These are resume-able work products.</p>
+
+  <div style="border:1px solid var(--c-border);border-radius:8px;padding:1rem 1.2rem;margin:1rem 0;background:var(--c-surface);">
+    <div style="font-weight:700;color:var(--c-accent);margin-bottom:.5rem;">Template 1 — EU AI Act Art. 73 Serious-Incident Notification (to the national market-surveillance authority)</div>
+    <ul style="font-size:.87rem;line-height:1.7;">
+      <li><strong>Provider/deployer:</strong> [org, contact, role under the Act]</li>
+      <li><strong>AI system:</strong> [name, version, intended purpose, EU AI Act risk tier]</li>
+      <li><strong>Incident date/detection date:</strong> [dates] · <strong>Reporting deadline:</strong> [15 days / 10 days if a person died / 2 days if widespread or critical-infrastructure disruption]</li>
+      <li><strong>Description of the serious incident:</strong> [what happened, who/what was affected]</li>
+      <li><strong>Suspected cause &amp; affected component:</strong> [model, data, integration]</li>
+      <li><strong>Immediate corrective/mitigating measures taken:</strong> [containment, rollback]</li>
+      <li><strong>Estimated scope/harm:</strong> [number of data subjects, nature of harm]</li>
+    </ul>
+  </div>
+
+  <div style="border:1px solid var(--c-border);border-radius:8px;padding:1rem 1.2rem;margin:1rem 0;background:var(--c-surface);">
+    <div style="font-weight:700;color:var(--c-accent);margin-bottom:.5rem;">Template 2 — FERPA Notification Letter (to affected students/parents)</div>
+    <ul style="font-size:.87rem;line-height:1.7;">
+      <li><strong>Recipient:</strong> [student/eligible student or parent]</li>
+      <li><strong>What happened:</strong> [plain-language description of the unauthorized disclosure and when it occurred]</li>
+      <li><strong>Information involved:</strong> [categories of education-record data exposed]</li>
+      <li><strong>What we are doing:</strong> [containment, fix, review; who has been notified]</li>
+      <li><strong>What you can do:</strong> [steps, resources, protective actions]</li>
+      <li><strong>Contact:</strong> [name, title, phone/email for questions] · <strong>Date:</strong> [date]</li>
+    </ul>
+    <p style="font-size:.82rem;color:var(--c-ink-soft,#555);margin-top:.5rem;"><em>Note: FERPA does not set a fixed breach-notification clock the way GDPR Art. 33 (72 hours) does; follow institutional policy and any state breach-notification law that also applies.</em></p>
+  </div>
+</section>
+
 <section id="artifact">
   <h2><span class="sec-num">📝 Assessment Artifact · Due: End of Class</span>AI Incident Lessons Learned Report</h2>
 
@@ -851,7 +916,7 @@
         <li><label><input type="radio" name="q4" value="a"> EU AI Act Article 73 requires immediate (real-time) notification to the AI Office, compared to GDPR's 72-hour window.</label></li>
         <li><label><input type="radio" name="q4" value="b"> EU AI Act Article 73 allows 30 days for notification, providing more time than GDPR's 72-hour requirement.</label></li>
         <li><label><input type="radio" name="q4" value="c"> EU AI Act Article 73 and GDPR Article 33 have identical 72-hour notification windows, just reported to different authorities.</label></li>
-        <li><label><input type="radio" name="q4" value="d"> EU AI Act Article 73 provides a 15-day window for serious incident notification (2-day for severe cases involving death or serious harm), distinct from — and in addition to — GDPR Article 33's 72-hour data breach notification window, with notification to the national market surveillance authority rather than the data protection authority.</label></li>
+        <li><label><input type="radio" name="q4" value="d"> EU AI Act Article 73 provides a 15-day window for serious incident notification (10 days if the incident involves a person's death; 2 days for widespread infringement or serious disruption of critical infrastructure), distinct from — and in addition to — GDPR Article 33's 72-hour data breach notification window, with notification to the national market surveillance authority rather than the data protection authority.</label></li>
       </ul>
       <div class="quiz-feedback" id="qfb-4"></div>
     </div>
@@ -934,7 +999,7 @@
     <div class="term">Tabletop Exercise (TTX)</div><div class="def">Structured discussion-based incident simulation; tests decisions not systems</div>
     <div class="term">Hot Wash</div><div class="def">Immediate post-TTX debrief producing specific assigned action items</div>
     <div class="term">Authority Vacuum</div><div class="def">Most common TTX failure: no one knows who owns a critical decision</div>
-    <div class="term">EU AI Act Art. 73</div><div class="def">15-day serious incident reporting for high-risk AI; 2-day for severe cases</div>
+    <div class="term">EU AI Act Art. 73</div><div class="def">15-day serious incident reporting for high-risk AI (10 days if a person dies; 2 days for critical-infrastructure or widespread cases)</div>
   </div>
   <div class="rail-section">
     <h4>Lesson Navigation</h4>
@@ -1223,7 +1288,7 @@ const quizAnswers={
   q1:{correct:'b',feedback:{b:'✓ Correct. Detection blind spot (Gap 2) — SIEM-based detection watches for network events, authentication failures, and known threat signatures. Model behavioral drift produces no security alert. The fix is integrating behavioral AI monitoring (output quality metrics, drift detection, accuracy monitoring) into the IR detection pipeline.',default:'✗ The correct answer is B. The 3-week period of undetected service degradation is a detection gap, not a categorization, evidence, or reporting gap. The system was not being monitored for behavioral drift — which is the AI-specific detection signal that would have caught this.'}},
   q2:{correct:'c',feedback:{c:'✓ Correct. Authority vacuum — the most common and consequential TTX finding. No policy, no procedure, and no role assignment defines who owns the decision to disable a production AI system. In a real incident, this ambiguity produces paralysis, committee delays, and a system that continues operating while decision-makers debate jurisdiction. The TTX finding is actionable: the AI Governance Charter must explicitly assign this authority before the next exercise.',default:'✗ The correct answer is C. The authority vacuum is a governance gap revealed by the tabletop — a missing policy decision, not a training or documentation issue. The TTX has done its job by surfacing the gap; the action item is to close it by assigning the authority in writing.'}},
   q3:{correct:'a',feedback:{a:'✓ Correct. Safety failure — the model produces content that facilitates academic dishonesty, which violates its documented purpose and MVCC\'s institutional policies. The key distinction: no technical attack vector was exploited (no injection, no extraction, no evasion). The model was manipulated through persistent, semantically legitimate requests into behavior outside its intended scope. Safety failures require scope boundary remediation — typically system prompt hardening and RAG access controls — not a security incident response.',default:'✗ The correct answer is A. Safety failures occur when a model produces content that violates its purpose or safety properties, even without a traditional attack. Security failures involve exploitation of technical vulnerabilities. This scenario involves neither a security exploit nor a technical attack — the model\'s own behavior produced the harmful output through multi-turn manipulation of its conversational context.'}},
-  q4:{correct:'d',feedback:{d:'✓ Correct. EU AI Act Article 73 provides a 15-day window (2-day for severe cases involving death, serious harm, or critical infrastructure risk) for serious incident reporting, with notification to the national market surveillance authority. This is distinct from — and in addition to — GDPR Article 33\'s 72-hour personal data breach notification to the data protection authority. For an AI incident that also involves a data breach, both timelines may apply simultaneously, to different authorities.',default:'✗ The correct answer is D. The EU AI Act Article 73 timeline (15 days, or 2 days for severe cases) is distinct from GDPR Article 33\'s 72-hour window. Both may apply simultaneously for incidents that qualify as both a personal data breach and a serious AI incident. This dual reporting obligation is a key gap in traditional IR plans.'}},
+  q4:{correct:'d',feedback:{d:'✓ Correct. EU AI Act Article 73 provides a 15-day window (10 days if a person dies; 2 days for widespread infringement or serious disruption of critical infrastructure) for serious incident reporting, with notification to the national market surveillance authority. This is distinct from — and in addition to — GDPR Article 33\'s 72-hour personal data breach notification to the data protection authority. For an AI incident that also involves a data breach, both timelines may apply simultaneously, to different authorities.',default:'✗ The correct answer is D. The EU AI Act Article 73 timeline (15 days; 10 days if a person dies; 2 days for critical-infrastructure or widespread cases) is distinct from GDPR Article 33\'s 72-hour window. Both may apply simultaneously for incidents that qualify as both a personal data breach and a serious AI incident. This dual reporting obligation is a key gap in traditional IR plans.'}},
   q5:{correct:'b',feedback:{b:'✓ Correct. Automated tools primarily test single-turn interactions and cannot replicate the multi-turn conversational attacks that skilled human red teamers use. They also miss subtle bias patterns that require contextual judgment and creative adversarial reasoning to discover. The 2025 study finding — automated tools achieve 69.5% success rates vs. 47.6% for manual — shows automation is more efficient at known attack patterns, while manual testing finds qualitatively different (and often more subtle) vulnerabilities that no automated probe library has been trained to detect.',default:'✗ The correct answer is B. The primary limitation of automated red team tools is their single-turn testing architecture and inability to replicate creative human adversarial reasoning for novel attacks and subtle bias patterns. Both automated and manual testing are required for comprehensive AI red team coverage.'}},
   q6:{correct:'c',feedback:{c:'✓ Correct. The secure-by-design and test-before-deploy principle — finding and fixing vulnerabilities before production deployment is categorically superior to discovering them after harm has occurred. In this scenario, the pre-deployment red team test caught a bias pattern that would have harmed hundreds of student-athletes over months of deployment before behavioral monitoring would have detected the statistical anomaly. The principle generalizes: the cost of finding vulnerabilities in testing is always lower than the cost of finding them in production.',default:'✗ The correct answer is C. The key lesson is the timing of vulnerability discovery — pre-deployment testing vs. post-deployment monitoring. Testing before deployment found a bias pattern before any student was harmed. The governance principle validated is secure-by-design: build testing into the deployment process so vulnerabilities are found at the cheapest possible point in the lifecycle.'}}
 };

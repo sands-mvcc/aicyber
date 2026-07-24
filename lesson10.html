@@ -124,10 +124,10 @@ h3{font-family:var(--ff-sans);font-size:1.05rem;font-weight:700;color:var(--ink)
 .cc-lesson{font-size:.8rem;color:var(--ink-muted);border-top:1px solid var(--border-lt);padding-top:.4rem;margin-top:.5rem}
 /* FLIP CARDS */
 .flip-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin:1.5rem 0}
-.flip-card{height:220px;cursor:pointer;perspective:900px}
-.flip-inner{width:100%;height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;position:relative}
+.flip-card{min-height:220px;cursor:pointer;perspective:900px}
+.flip-inner{display:grid;width:100%;min-height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;position:relative}
 .flip-card.flipped .flip-inner{transform:rotateY(180deg)}
-.flip-front,.flip-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--radius);padding:1.1rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:var(--shadow-sm)}
+.flip-front,.flip-back{position:relative;grid-area:1/1;backface-visibility:hidden;border-radius:var(--radius);padding:1.1rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:var(--shadow-sm)}
 .flip-front{background:#fff;border:1px solid var(--border)}
 .flip-back{transform:rotateY(180deg);color:#fff}
 .flip-icon{font-size:2rem;margin-bottom:.45rem}
@@ -495,7 +495,7 @@ footer strong{color:rgba(255,255,255,.8)}
   <div class="analogy-box">
     <div class="analogy-label">💡 The Newspaper vs. Printing Press Analogy</div>
     <p>Before the printing press, propaganda required handwritten manuscripts — expensive, slow, limited distribution. The printing press enabled mass distribution but still required physical production. Radio and television added audio-visual reach. The internet removed geographic limits. <strong>Generative AI is the final unlock: it removes the production bottleneck entirely.</strong> Any actor, anywhere, can now produce thousands of unique, contextually appropriate, visually or aurally convincing influence pieces per day targeting specific demographic groups, in multiple languages, adapted to each platform's format and norms.</p>
-    <p>The Romania 2024 election is the canonical example: tens of thousands of AI-powered bot accounts, deepfake videos, coordinated TikTok manipulation — enough to make a fringe candidate win the first round of a presidential election before the results were annulled.</p>
+    <p>The Romania 2024 election is the canonical example: tens of thousands of AI-powered bot accounts, undisclosed paid promotion, and coordinated TikTok manipulation — enough to make a fringe candidate win the first round of a presidential election before the results were annulled.</p>
   </div>
   <h3>Five Components of an AI-Enabled Influence Operation</h3>
   <div class="flip-grid" id="inf-flip-grid" role="list" aria-label="Influence operation component flip cards"></div>
@@ -651,7 +651,7 @@ footer strong{color:rgba(255,255,255,.8)}
     <div class="quiz-head">
       <span>Day 10 Knowledge Check — 10 Questions</span>
       <span class="quiz-score-d" id="quiz-score-display">Score: 0 / 10</span>
-    </div>
+    </div><div class="quiz-note" style="padding:.55rem 1.2rem;background:#faf6f7;color:var(--ink-soft,#5a5a5a);font-size:.8rem;line-height:1.4;border-bottom:1px solid var(--border,#e7e7e7);">Formative — this knowledge check does not affect your grade. Use it to self-assess before moving on.</div>
     <div id="quiz-body"></div>
     <div class="quiz-actions">
       <button class="btn btn-primary" onclick="gradeQuiz()">Grade My Quiz</button>
@@ -849,7 +849,7 @@ const detectScenarios=[
 
 /* Influence Op Incidents for Activity B */
 const ioIncidents=[
-  {num:'1',text:'Russian-linked operation created tens of thousands of AI-powered bot accounts on TikTok to artificially boost a fringe candidate\'s presence in Romania\'s presidential election, using deepfakes and coordinated content that exploited TikTok\'s recommendation algorithm.',correct:'Algorithmic amplification + synthetic persona network'},
+  {num:'1',text:'Russian-linked operation created tens of thousands of AI-powered bot accounts on TikTok to artificially boost a fringe candidate\'s presence in Romania\'s presidential election, using coordinated inauthentic content that exploited TikTok\'s recommendation algorithm.',correct:'Algorithmic amplification + synthetic persona network'},
   {num:'2',text:'An AI-generated robocall using President Biden\'s cloned voice instructed New Hampshire primary voters to stay home and "save their vote for November."',correct:'AI voice cloning for voter suppression'},
   {num:'3',text:'GAN-generated profile pictures (faces of people who do not exist) were used to populate hundreds of inauthentic social media accounts that appeared to belong to diverse real individuals across multiple demographics.',correct:'Synthetic persona creation (GAN faces)'},
   {num:'4',text:'A deepfake video depicting a presidential candidate announcing the withdrawal of their candidacy was released three days before Ireland\'s 2025 election. The video included fake "breaking news" footage from fabricated broadcasts.',correct:'Synthetic video + strategic timing'},

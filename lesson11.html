@@ -268,22 +268,21 @@
     margin: 1.5rem 0;
   }
   .flip-card {
-    height: 200px;
+    min-height: 200px;
     perspective: 900px;
     cursor: pointer;
   }
-  .flip-card-inner {
+  .flip-card-inner {display:grid;
     position: relative;
     width: 100%;
-    height: 100%;
+    min-height:100%;
     transition: transform .55s cubic-bezier(.4,0,.2,1);
     transform-style: preserve-3d;
   }
   .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
-  .flip-front, .flip-back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
+  .flip-front, .flip-back {position:relative;grid-area:1/1;
+    
+    
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     border-radius: var(--radius);
@@ -1610,6 +1609,308 @@
     <div id="lab-result" class="result-box"></div>
 
     <p style="margin-top:1rem;font-size:.85rem;color:var(--c-text-soft);">This scored activity feeds into the Day 11 assessment artifact. Screenshot or note your score before proceeding to the assessment section.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     MODULE 6 — AI SHARED-RESPONSIBILITY MODEL (added)
+============================================================ -->
+<section id="shared-responsibility">
+  <div class="activity-header">
+    <div>
+      <div class="act-badge">Module 6 · Architecture Principle · 25 min</div>
+      <h3>Who Secures What? The AI Shared-Responsibility Model</h3>
+    </div>
+    <span class="act-time">⏱ 25 min · Interactive</span>
+  </div>
+  <div class="activity-body">
+    <p>When you build on a cloud AI service, security is <em>split</em> between you and the provider — and where the line falls depends on how much of the stack you rent. Getting this boundary wrong is one of the most common ways AI deployments end up exposed: teams assume "the platform handles security" and leave their own half undone.</p>
+
+    <div class="callout callout-accent">
+      <p class="callout-title">🔑 The Core Idea</p>
+      <p>Just as traditional cloud separates <strong>"security <em>of</em> the cloud"</strong> (the provider's job) from <strong>"security <em>in</em> the cloud"</strong> (your job), AI services separate <strong>security <em>of</em> the AI service</strong> from <strong>security <em>in</em> your AI application</strong>. The managed platform secures the model host and infrastructure; <strong>you</strong> remain responsible for your data, prompts, retrieval sources, tool permissions, identity, and output handling.</p>
+    </div>
+
+    <p><strong>The line moves with the service tier:</strong></p>
+    <div style="display:grid;gap:.8rem;margin:1rem 0;">
+      <div class="arch-scenario"><strong>Self-hosted / IaaS model</strong> (e.g., an open-weight model on your own VMs): you secure almost everything — model weights, infrastructure hardening, data, and the application. Maximum control, maximum responsibility.</div>
+      <div class="arch-scenario"><strong>Managed model API / PaaS</strong> (Azure OpenAI, Amazon Bedrock, Google Vertex AI, IBM watsonx): the provider secures model hosting and platform controls; <strong>you</strong> own prompts, RAG data, orchestration, plugin/tool permissions, identity &amp; access, and app-layer guardrails. <em>This is where most enterprise AI is built — and where responsibility is most often misjudged.</em></div>
+      <div class="arch-scenario"><strong>SaaS AI</strong> (e.g., Microsoft 365 Copilot): the provider owns most of the stack; you own data governance, access control, acceptable-use, and human oversight.</div>
+    </div>
+
+    <div class="callout callout-green">
+      <p class="callout-title">⚠️ Guardrails Reduce Risk — They Don't Remove It</p>
+      <p>Managed platforms offer built-in guardrails (content filters, PII detection, grounding checks). They help, but they are <strong>your</strong> responsibility to enable, tune, and verify — and they never replace testing and monitoring of your own application.</p>
+    </div>
+
+    <!-- Draw the Line interactive -->
+    <h4 style="font-family:var(--font-serif);margin:1.4rem 0 .4rem;font-size:1.05rem;">✏️ Activity D · "Draw the Line" — Assign the Responsibility</h4>
+    <p style="font-size:.92rem;">MVCC is building an <strong>Enrollment Assistant</strong> on a <strong>managed model API (PaaS — e.g., Azure OpenAI or Amazon Bedrock)</strong>. For each task, choose who owns it in this deployment.</p>
+
+    <div id="sr-grid" style="margin:1rem 0;">
+      <div class="sr-row" style="display:grid;grid-template-columns:1fr 150px;gap:.6rem;align-items:center;padding:.55rem 0;border-bottom:1px solid var(--c-border);">
+        <span style="font-size:.9rem;">1. Physical &amp; network security of the datacenter hosting the model</span>
+        <select class="sr-sel" data-key="provider" data-explain="The provider secures the physical and network layer of the model host." style="padding:.35rem .5rem;border:1px solid var(--c-border);border-radius:6px;font-size:.85rem;"><option value="">— choose —</option><option value="provider">Provider</option><option value="customer">Customer</option><option value="shared">Shared</option></select>
+      </div>
+      <div class="sr-row" style="display:grid;grid-template-columns:1fr 150px;gap:.6rem;align-items:center;padding:.55rem 0;border-bottom:1px solid var(--c-border);">
+        <span style="font-size:.9rem;">2. Patching the base model and its serving runtime</span>
+        <select class="sr-sel" data-key="provider" data-explain="Maintaining and patching the base model and its serving infrastructure is the provider's job." style="padding:.35rem .5rem;border:1px solid var(--c-border);border-radius:6px;font-size:.85rem;"><option value="">— choose —</option><option value="provider">Provider</option><option value="customer">Customer</option><option value="shared">Shared</option></select>
+      </div>
+      <div class="sr-row" style="display:grid;grid-template-columns:1fr 150px;gap:.6rem;align-items:center;padding:.55rem 0;border-bottom:1px solid var(--c-border);">
+        <span style="font-size:.9rem;">3. Classifying and controlling the data you place in prompts and RAG sources</span>
+        <select class="sr-sel" data-key="customer" data-explain="You choose and classify the data you feed the model — the provider never sees your intent or your sources." style="padding:.35rem .5rem;border:1px solid var(--c-border);border-radius:6px;font-size:.85rem;"><option value="">— choose —</option><option value="provider">Provider</option><option value="customer">Customer</option><option value="shared">Shared</option></select>
+      </div>
+      <div class="sr-row" style="display:grid;grid-template-columns:1fr 150px;gap:.6rem;align-items:center;padding:.55rem 0;border-bottom:1px solid var(--c-border);">
+        <span style="font-size:.9rem;">4. Designing prompt-injection defenses and validating the app's outputs</span>
+        <select class="sr-sel" data-key="customer" data-explain="Input and output handling inside your application is yours to design, test, and monitor." style="padding:.35rem .5rem;border:1px solid var(--c-border);border-radius:6px;font-size:.85rem;"><option value="">— choose —</option><option value="provider">Provider</option><option value="customer">Customer</option><option value="shared">Shared</option></select>
+      </div>
+      <div class="sr-row" style="display:grid;grid-template-columns:1fr 150px;gap:.6rem;align-items:center;padding:.55rem 0;border-bottom:1px solid var(--c-border);">
+        <span style="font-size:.9rem;">5. Configuring identity, roles, and tenant isolation for your app</span>
+        <select class="sr-sel" data-key="customer" data-explain="The platform provides the access controls; configuring them correctly for your app is on you." style="padding:.35rem .5rem;border:1px solid var(--c-border);border-radius:6px;font-size:.85rem;"><option value="">— choose —</option><option value="provider">Provider</option><option value="customer">Customer</option><option value="shared">Shared</option></select>
+      </div>
+      <div class="sr-row" style="display:grid;grid-template-columns:1fr 150px;gap:.6rem;align-items:center;padding:.55rem 0;border-bottom:1px solid var(--c-border);">
+        <span style="font-size:.9rem;">6. Preventing PII leakage end-to-end (platform offers detection; you must enable &amp; verify)</span>
+        <select class="sr-sel" data-key="shared" data-explain="The platform may offer PII detection, but you must enable, tune, and verify it — a shared duty." style="padding:.35rem .5rem;border:1px solid var(--c-border);border-radius:6px;font-size:.85rem;"><option value="">— choose —</option><option value="provider">Provider</option><option value="customer">Customer</option><option value="shared">Shared</option></select>
+      </div>
+    </div>
+
+    <div style="margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap;">
+      <button class="btn-primary" onclick="srCheck()">Check My Answers</button>
+      <button class="btn-secondary" onclick="srReset()">Reset</button>
+    </div>
+    <div id="sr-result" style="display:none;margin-top:1rem;padding:1rem 1.2rem;border-radius:8px;"></div>
+
+    <div class="callout callout-accent" style="margin-top:1.2rem;">
+      <p class="callout-title">📚 Sources</p>
+      <p style="font-size:.85rem;">Cloud Security Alliance, <em>Generative AI: Proposed Shared Responsibility Model</em> (2023); Microsoft Learn, <em>AI shared responsibility model</em>; AWS, <em>Security, privacy &amp; responsible AI — Amazon Bedrock</em>; NIST AI RMF 1.0 (AI 100-1). Vendor specifics change — verify current documentation.</p>
+    </div>
+  </div>
+</section>
+<script>
+/* Self-contained "Draw the Line" scorer (namespaced sr*) */
+function srCap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+function srCheck(){
+  var sels=document.querySelectorAll('#shared-responsibility .sr-sel');
+  var correct=0,total=sels.length,unanswered=0,rows='';
+  sels.forEach(function(s,i){
+    var key=s.getAttribute('data-key'),val=s.value,exp=s.getAttribute('data-explain');
+    var ok=(val===key); if(!val)unanswered++; if(ok)correct++;
+    var color=ok?'var(--c-green)':'var(--c-accent)',mark=ok?'✓':'✗';
+    rows+='<li style="margin-bottom:.45rem;"><strong style="color:'+color+';">'+mark+' Q'+(i+1)+' → '+srCap(key)+'.</strong> '+exp+'</li>';
+    s.style.borderColor=color;
+  });
+  var box=document.getElementById('sr-result'),pct=Math.round(correct/total*100);
+  var head='<p style="font-weight:700;margin-bottom:.5rem;">Score: '+correct+' / '+total+' ('+pct+'%)'+(unanswered?' — '+unanswered+' unanswered':'')+'</p>';
+  var insight='<p style="margin-top:.6rem;font-size:.88rem;"><strong>Key insight:</strong> On a managed model API (PaaS), the provider secures the model and infrastructure — but most of the security work (data, prompts, identity, output handling, enabling guardrails) shifts to <em>you</em>. "The platform handles security" is the assumption that gets teams breached.</p>';
+  box.style.display='block';
+  box.style.background=(correct===total)?'rgba(26,92,58,.08)':'var(--c-surface)';
+  box.style.border='1px solid var(--c-border)';
+  box.innerHTML=head+'<ul style="list-style:none;padding-left:0;font-size:.88rem;line-height:1.5;">'+rows+'</ul>'+insight;
+}
+function srReset(){
+  document.querySelectorAll('#shared-responsibility .sr-sel').forEach(function(s){s.value='';s.style.borderColor='var(--c-border)';});
+  var box=document.getElementById('sr-result');box.style.display='none';box.innerHTML='';
+}
+</script>
+
+<!-- ============================================================
+     MODULE 7 — IDENTITY, ACCESS & SECRETS FOR AI/AGENTS (added)
+============================================================ -->
+<section id="m7">
+  <div class="activity-header">
+    <div>
+      <div class="act-badge">Module 7 · Architecture Principle · 30 min</div>
+      <h3>Identity, Access &amp; Secrets for AI &amp; Agentic Systems</h3>
+    </div>
+    <span class="act-time">⏱ 30 min · Reading + Checklist</span>
+  </div>
+  <div class="activity-body">
+    <p>On Day 1 you learned the assumption that reframes everything about AI security: <strong>models can now take action, not just answer.</strong> Once an AI agent has tool access — email, code execution, database queries, payments — the blast radius of a single compromised prompt expands from "wrong answer" to "unauthorized action taken with the system's credentials." That shift makes <strong>identity, access, and secrets management</strong> the load-bearing controls of any agentic deployment. This module treats the agent not as a feature, but as a <em>principal</em> — an actor that must be identified, authorized, and held to least privilege exactly like a human user or a service account.</p>
+
+    <div class="callout callout-accent">
+      <p class="callout-title">🔑 Why This Is Not Optional</p>
+      <p>The IBM 2025 Cost of a Data Breach Report found that <strong>13% of organizations reported breaches involving AI models or applications — and 97% of those organizations lacked proper AI access controls.</strong> That single statistic is the strongest empirical argument in this course: the systems getting breached are overwhelmingly the ones that never scoped identity and access for their AI. Everything below exists to keep you out of that 97%.</p>
+    </div>
+
+    <h3>Non-Human Identity: Why Agents Need Their Own</h3>
+    <p>A traditional application acts on behalf of a logged-in user. An AI agent frequently acts <em>autonomously</em> — on a schedule, in response to an event, or as a long-running task — with no human in the loop at the moment of action. That makes it a <strong>non-human identity (NHI)</strong>, also called a machine or workload identity. The single most damaging shortcut in agentic deployments is letting an agent borrow a human's credentials or share one generic "app account" across many agents. When something goes wrong, you cannot tell <em>which</em> agent did <em>what</em>, you cannot revoke one agent without breaking the rest, and you cannot scope permissions to a single job.</p>
+    <p>The principle: <strong>every agent gets its own distinct, scoped identity.</strong> One identity per agent (or per agent role) means every action is attributable in the audit log, permissions can be tuned to exactly that agent's job, and a compromised agent can be disabled in isolation. In practice, machine identities now vastly outnumber human ones in most enterprises — and they are routinely over-permissioned and unmonitored, which is precisely the gap the 97% figure describes.</p>
+
+    <div class="callout callout-key">
+      <p class="callout-title">🧩 Authentication vs. Authorization for Agents</p>
+      <p><strong>Authentication</strong> answers "which agent is this?" — proven with a workload credential (a short-lived token or certificate tied to the agent's identity), <em>never</em> a shared password. <strong>Authorization</strong> answers "what is this agent allowed to do?" — enforced as <strong>least-privilege tool permissions</strong>: the agent can reach only the specific tools and data its task requires, and nothing else. An advising agent that reads the course catalog has no business holding write access to student financial records.</p>
+    </div>
+
+    <h3>Agent Authorization: Least Privilege, Scoped Tokens, Human Gates</h3>
+    <p>Least privilege for agents operates on three levers you should be able to name and apply:</p>
+    <ul style="list-style:none;padding-left:0;display:grid;gap:.6rem;margin:1rem 0;">
+      <li class="arch-scenario"><strong>Scoped, short-lived tokens.</strong> An agent's credential should grant the narrowest set of permissions (read-only where possible), be scoped to specific resources, and expire quickly so a leaked token is useful only briefly. Prefer per-request or per-session tokens over a standing "master key."</li>
+      <li class="arch-scenario"><strong>Least-privilege tool permissions.</strong> Enumerate the tools an agent may call and deny everything else by default (allow-list, not deny-list). Read and write are separate privileges; grant write only where the task genuinely requires it.</li>
+      <li class="arch-scenario"><strong>Human-approval gates for high-impact actions.</strong> Irreversible or high-blast-radius actions — sending external email, moving money, deleting records, changing permissions — should pause for explicit human approval rather than executing autonomously. This is the direct control for OWASP LLM's <em>Excessive Agency</em> risk: keep the agent's independent authority below the threshold where a single bad decision causes real harm.</li>
+    </ul>
+
+    <div class="callout callout-warn">
+      <p class="callout-title">⚠️ The Confused-Deputy Trap</p>
+      <p>An agent with broad permissions plus untrusted input (a poisoned document, an injected prompt) becomes a <strong>confused deputy</strong>: the attacker cannot touch your systems directly, but they can trick the agent — which <em>can</em> — into acting for them. Scoping the agent's own permissions, not just filtering its inputs, is what limits the damage when (not if) prompt injection succeeds.</p>
+    </div>
+
+    <h3>API-Key &amp; Secret Lifecycle</h3>
+    <p>Agents authenticate to models and tools with secrets — API keys, tokens, connection strings. How you handle those secrets is where many AI projects quietly fail an audit:</p>
+    <ul style="list-style:none;padding-left:0;display:grid;gap:.6rem;margin:1rem 0;">
+      <li class="arch-scenario"><strong>Never in prompts or code.</strong> A secret pasted into a system prompt can be coaxed out by prompt injection; a secret committed to a repo lives forever in git history. Keys belong in neither.</li>
+      <li class="arch-scenario"><strong>Use a secrets vault.</strong> Store secrets in a managed vault (e.g., a cloud key/secrets manager) and have the agent fetch them at runtime with its own identity — so access to the secret is itself authenticated and logged.</li>
+      <li class="arch-scenario"><strong>Rotate on a schedule and on suspicion.</strong> Rotate keys regularly and immediately after any suspected exposure. Short-lived credentials make rotation nearly automatic.</li>
+      <li class="arch-scenario"><strong>Separate per environment.</strong> Development, staging, and production get <em>different</em> keys with different scopes. A leaked dev key must never open the door to production data.</li>
+    </ul>
+
+    <h3>A Brief Note on MCP / Tool-Connector Security</h3>
+    <p>The <strong>Model Context Protocol (MCP)</strong> and similar tool-connector frameworks are the emerging standard for wiring an agent to external tools and data sources. They make integration easy — which is exactly why they widen the attack surface. The security question is not "can the agent reach this tool?" but <strong>"which tools <em>should</em> this agent be able to reach, and have I validated each one?"</strong> Treat every connector as untrusted until vetted: confirm its source and integrity, review the permissions it requests, run the connector server with its own least-privilege identity, and maintain an inventory of exactly which tools each agent is wired to. An unvetted connector is an unvetted path into everything the agent can touch.</p>
+
+    <div class="callout callout-green">
+      <p class="callout-title">✅ Applied Checklist — Identity, Access &amp; Secrets for an Agent Deployment</p>
+      <ul style="list-style:none;padding-left:0;font-size:.9rem;line-height:1.6;">
+        <li>☐ Every agent has its own <strong>distinct, scoped identity</strong> — no shared or borrowed human credentials.</li>
+        <li>☐ Agent permissions are an <strong>allow-list</strong> of specific tools/data; everything else denied by default.</li>
+        <li>☐ Credentials are <strong>short-lived and least-privilege</strong> (read-only where the task allows).</li>
+        <li>☐ <strong>High-impact actions</strong> (external email, payments, deletion, permission changes) require a <strong>human-approval gate.</strong></li>
+        <li>☐ <strong>No secrets in prompts or code</strong>; all keys pulled at runtime from a <strong>secrets vault.</strong></li>
+        <li>☐ Keys are <strong>rotated on schedule</strong> and immediately on suspected exposure.</li>
+        <li>☐ <strong>Separate keys per environment</strong> (dev / staging / prod) with distinct scopes.</li>
+        <li>☐ Every <strong>MCP / tool connector is inventoried and validated</strong>; each runs under its own least-privilege identity.</li>
+        <li>☐ Every agent action is <strong>attributable</strong> in an audit log to a single identity.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     ARTIFACT CRITIQUE TASKS — ML-BOM & MODEL CARD (added)
+============================================================ -->
+<section id="artifact-critiques">
+  <div class="activity-header">
+    <div>
+      <div class="act-badge">Activity E · Critique a Real Artifact · 30 min</div>
+      <h3>Analyst Practice: Read the Artifacts, Find the Gaps</h3>
+    </div>
+    <span class="act-time">⏱ 30 min · Written analysis</span>
+  </div>
+  <div class="activity-body">
+    <p>Governance documents are only as good as the analyst who reads them critically. The two artifacts below are the kinds of documents you will be handed on the job and asked to sign off on. Your task is <strong>not</strong> to build them — it is to interrogate them: identify what tells you the truth about a model's provenance and risk, and name what is <em>missing</em> that you would require before trusting the system in production.</p>
+
+    <!-- ARTIFACT 1: CycloneDX ML-BOM -->
+    <h3>Artifact 1 · CycloneDX ML-BOM (redacted)</h3>
+    <p style="font-size:.85rem;color:var(--c-text-soft);margin-bottom:.6rem;"><em>Sample / illustrative artifact — fields redacted and simplified for classroom analysis. Not a real production BOM.</em></p>
+    <div style="overflow-x:auto;border:1px solid var(--c-border);border-radius:var(--radius);background:var(--c-surface2);margin:1rem 0;">
+<pre style="margin:0;padding:1rem 1.2rem;font-family:var(--font-mono);font-size:.78rem;line-height:1.55;color:var(--c-text);white-space:pre;">{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.7",
+  "serialNumber": "urn:uuid:REDACTED-8f2c-4a11-b3e9-REDACTED",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-05-14T09:22:00Z",
+    "component": { "type": "application", "name": "mvcc-enrollment-assistant" }
+  },
+  "components": [
+    {
+      "type": "machine-learning-model",
+      "bom-ref": "model/enroll-intent-classifier@2.3",
+      "name": "enroll-intent-classifier",
+      "version": "2.3",
+      "publisher": "third-party-vendor (name redacted)",
+      "licenses": [ { "license": { "id": "Apache-2.0" } } ],
+      "modelCard": {
+        "modelParameters": {
+          "task": "text-classification",
+          "architectureFamily": "transformer",
+          "datasets": [ { "ref": "data/enrollment-chats-2024" } ]
+        },
+        "quantitativeAnalysis": {
+          "performanceMetrics": [ { "type": "accuracy", "value": "0.94" } ]
+        },
+        "considerations": {
+          "ethicalConsiderations": [ "May underperform on non-native English phrasing" ],
+          "fairnessAssessments": []
+        }
+      }
+    },
+    {
+      "type": "data",
+      "bom-ref": "data/enrollment-chats-2024",
+      "name": "enrollment-chats-2024",
+      "description": "Historical student advising chat logs used for fine-tuning"
+    }
+  ],
+  "services": [
+    {
+      "bom-ref": "svc/hosted-llm-api",
+      "name": "external-hosted-llm-api",
+      "endpoints": [ "https://api.REDACTED-vendor.example/v1" ],
+      "authenticated": true,
+      "x-trust-boundary": true,
+      "data": [ { "classification": "student-PII", "flow": "bi-directional" } ]
+    }
+  ]
+}</pre>
+    </div>
+    <div class="callout callout-accent">
+      <p class="callout-title">✏️ Your Prompt</p>
+      <p><strong>Annotate this ML-BOM:</strong> Which fields tell you the model's <em>provenance</em> and <em>risk</em>? What's missing that you'd <em>require</em> before deployment? Consider — among other things — the redacted publisher, the empty <code>fairnessAssessments</code>, the absence of a data license or consent basis on the training chat logs, no model hash/signature or integrity attestation, no data-collection date range or PII handling note despite student-PII flowing bi-directionally to an external service, and a single accuracy metric with no evaluation dataset or per-group breakdown.</p>
+    </div>
+
+    <!-- ARTIFACT 2: Model Card -->
+    <h3>Artifact 2 · Model Card — MVCC Enrollment Assistant</h3>
+    <p style="font-size:.85rem;color:var(--c-text-soft);margin-bottom:.6rem;"><em>Sample / illustrative artifact — fictional model card for a hypothetical MVCC system. Not a real product.</em></p>
+    <div class="model-card-sim">
+      <div class="mc-header">
+        <h4>MODEL CARD · enroll-intent-classifier</h4>
+        <span style="font-size:.75rem;opacity:.8;">v2.3 · 2026-05</span>
+      </div>
+      <div class="mc-body">
+        <div class="mc-section">
+          <div class="mc-section-label">Model Details</div>
+          <div class="mc-row"><span class="k">Name / version</span><span class="v">enroll-intent-classifier v2.3</span></div>
+          <div class="mc-row"><span class="k">Developer</span><span class="v">Third-party vendor (under NDA)</span></div>
+          <div class="mc-row"><span class="k">Architecture</span><span class="v">Fine-tuned transformer classifier</span></div>
+          <div class="mc-row"><span class="k">License</span><span class="v">Apache-2.0 (model weights)</span></div>
+          <div class="mc-row"><span class="k">Contact</span><span class="v">Not listed</span></div>
+        </div>
+        <div class="mc-section">
+          <div class="mc-section-label">Intended Use</div>
+          <div class="mc-row"><span class="k">Primary use</span><span class="v">Classify student enrollment questions and route to the correct advising workflow.</span></div>
+          <div class="mc-row"><span class="k">Out of scope</span><span class="v">"Not intended for high-stakes decisions." (No decisions enumerated.)</span></div>
+          <div class="mc-row"><span class="k">Users</span><span class="v">MVCC advising staff; student-facing chat.</span></div>
+        </div>
+        <div class="mc-section">
+          <div class="mc-section-label">Training Data</div>
+          <div class="mc-row"><span class="k">Source</span><span class="v">Historical MVCC advising chat logs.</span></div>
+          <div class="mc-row"><span class="k">Date range</span><span class="v">Not specified.</span></div>
+          <div class="mc-row"><span class="k">Consent / PII basis</span><span class="v">Not documented.</span></div>
+          <div class="mc-row"><span class="k">Preprocessing</span><span class="v">"Cleaned and de-duplicated."</span></div>
+        </div>
+        <div class="mc-section">
+          <div class="mc-section-label">Evaluation</div>
+          <div class="mc-row"><span class="k">Headline metric</span><span class="v">94% accuracy.</span></div>
+          <div class="mc-row"><span class="k">Test set</span><span class="v">Not described.</span></div>
+          <div class="mc-row"><span class="k">Subgroup analysis</span><span class="v">None reported.</span></div>
+          <div class="mc-row"><span class="k">Last evaluated</span><span class="v">Not stated.</span></div>
+        </div>
+        <div class="mc-section">
+          <div class="mc-section-label">Limitations &amp; Ethical Considerations</div>
+          <div class="mc-row"><span class="k">Known limits</span><span class="v">"May underperform on non-native English phrasing."</span></div>
+          <div class="mc-row"><span class="k">Bias testing</span><span class="v">Planned for a future release.</span></div>
+          <div class="mc-row"><span class="k">Human oversight</span><span class="v">"Advisors review outputs." (Mechanism not specified.)</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="callout callout-accent">
+      <p class="callout-title">✏️ Your Prompt</p>
+      <p><strong>Critique this model card:</strong> Which claims would you <em>challenge</em>, and what would you <em>require</em> before trusting it? Think about the 94% accuracy with no test set, the "not for high-stakes decisions" disclaimer next to a student-facing enrollment use, the undocumented consent basis for training on real student chats, bias testing deferred to "a future release," an oversight claim with no described mechanism, a developer "under NDA" with no contact, and no evaluation date to tell you whether the model has drifted.</p>
+    </div>
+
+    <div class="callout callout-green">
+      <p class="callout-title">🎯 Deliverable</p>
+      <p>For each artifact, write a short analyst note (roughly 150–200 words): (1) list the fields that establish provenance and risk, (2) list the gaps you would block deployment on, and (3) state one framework hook (EU AI Act, NIST AI RMF, or your organization's data-governance policy) that justifies each requirement. Bring both notes to the architecture-review discussion.</p>
+    </div>
   </div>
 </section>
 

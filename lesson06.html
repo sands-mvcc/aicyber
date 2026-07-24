@@ -148,10 +148,10 @@ h3{font-family:var(--ff-sans);font-size:1.05rem;font-weight:700;color:var(--ink)
 
 /* ── FLIP CARDS ─────────────────────────────────────── */
 .flip-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:1rem;margin:1.5rem 0}
-.flip-card{height:210px;cursor:pointer;perspective:900px}
-.flip-inner{width:100%;height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;position:relative}
+.flip-card{min-height:210px;cursor:pointer;perspective:900px}
+.flip-inner{display:grid;width:100%;min-height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;position:relative}
 .flip-card.flipped .flip-inner{transform:rotateY(180deg)}
-.flip-front,.flip-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--radius);padding:1.1rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:var(--shadow-sm)}
+.flip-front,.flip-back{position:relative;grid-area:1/1;backface-visibility:hidden;border-radius:var(--radius);padding:1.1rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:var(--shadow-sm)}
 .flip-front{background:#fff;border:1px solid var(--border)}
 .flip-back{transform:rotateY(180deg)}
 .flip-back.model{background:var(--model);color:#fff}.flip-back.data{background:var(--data);color:#fff}
@@ -388,6 +388,7 @@ footer strong{color:rgba(255,255,255,.8)}
     <a href="#m4">4 · Three Forces</a>
     <a href="#m5">5 · Shadow AI</a>
     <a href="#m6">6 · Governance Response</a>
+    <a href="#m7">7 · Human Factors</a>
     <a href="#activity-tiles">Activity: Shadow Patterns</a>
     <a href="#activity-checklist">Activity: Detection Audit</a>
     <a href="#activity-scenario">Activity: Decision Lab</a>
@@ -690,6 +691,141 @@ footer strong{color:rgba(255,255,255,.8)}
   <div class="expand-section" id="aup-expand-section"></div>
 </section>
 
+<!-- ── M7: HUMAN FACTORS ─────────────────────────────────────── -->
+<section id="m7" class="lesson-section">
+  <h2 class="section-title"><span>🧑‍⚖️</span> Module 7 · Human Factors — Automation Bias &amp; Over-Reliance <span class="section-meta">20 min</span></h2>
+  <div class="prose">
+    <p>Almost every control in this course eventually rests on one load-bearing assumption: <strong>a human is in the loop</strong>. Human oversight is the fallback for model risk, the check on operational risk, and the last line before an AI output becomes an institutional action. But we have so far treated that human as reliable by default. Human-factors research is unambiguous that they are not (Parasuraman &amp; Riley, 1997, on the use, misuse, and disuse of automation). Oversight is a control that has to be <em>designed</em> — and it fails in predictable, well-studied ways when it is merely assumed.</p>
+    <p>This is not a soft-skills aside. It is the mechanism behind the Operational Risk failures in Module 3: the model can be accurate and the policy can say "a human reviews every output," and the system can still cause harm because that oversight existed only on paper.</p>
+  </div>
+
+  <h3>How a Fluent AI Answer Erodes Scrutiny — Three Mechanisms</h3>
+  <div class="forces-grid">
+    <div class="force-card">
+      <div class="force-head velocity">
+        <div class="force-icon">🧲</div>
+        <div class="force-name">Automation Bias</div>
+      </div>
+      <div class="force-body">
+        <p><strong>The tendency to favor an automated suggestion over your own judgment — and over contradicting evidence.</strong> A fluent, confidently-worded AI answer reads as authoritative, so reviewers weight it more heavily than they would weight a hesitant human colleague. Errors of <em>commission</em> (acting on a wrong AI recommendation) and <em>omission</em> (failing to act because the AI stayed silent) both rise.</p>
+        <div class="force-example">EU AI Act Article 14(4)(b) names this directly: oversight measures must keep operators "aware of the possible tendency of automatically relying or over-relying" on AI output.</div>
+      </div>
+    </div>
+    <div class="force-card">
+      <div class="force-head pervasive">
+        <div class="force-icon">😴</div>
+        <div class="force-name">Complacency</div>
+      </div>
+      <div class="force-body">
+        <p><strong>When a system is usually right, attention decays.</strong> Parasuraman &amp; Manzey (2010) find that complacency grows <em>with</em> reliability: the more trustworthy the automation, the less the monitor actually monitors. The rare error then arrives exactly when scrutiny is lowest — and is the most likely to be missed.</p>
+        <div class="force-example">Cognitive load compounds it: a reviewer facing 200 AI flags a day gives each one seconds, not the minutes real review requires.</div>
+      </div>
+    </div>
+    <div class="force-card">
+      <div class="force-head personal">
+        <div class="force-icon">📉</div>
+        <div class="force-name">Deskilling</div>
+      </div>
+      <div class="force-body">
+        <p><strong>Skills that are not exercised atrophy.</strong> As AI handles the routine cases, the human's ability to recognize the abnormal one degrades — the very expertise the oversight role depends on. Over time the "human in the loop" is less capable of catching the model than on day one, even as the org still counts them as the safeguard.</p>
+        <div class="force-example">The oversight paradox: the better the AI, the fewer chances the human gets to practice the judgment we are relying on them to exercise.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout-danger">
+    <div class="callout-label">⚠️ The Failure Mode This Course Keeps Pointing At</div>
+    Day 3's at-risk predictor and Day 4's MANAGE scenario describe the same event: an <strong>advisor who "treated the flag as a definitive diagnosis rather than a conversation starter,"</strong> or a reviewer who clicks <strong>"Accept"</strong> on 25 cases before lunch. In both, a human was formally "in the loop" and the AI output still became an unreviewed decision. The tell is always the same — the oversight step existed in the policy but produced no independent judgment. <strong>A rubber-stamp is not a weaker form of review; it is the absence of review wearing review's uniform.</strong>
+  </div>
+
+  <h3>Making Oversight Real, Not Nominal — Design Patterns</h3>
+  <p style="color:var(--ink-soft);font-size:.92rem;margin-bottom:.8rem">Oversight that works is engineered into the interface and the workflow — not requested in a policy sentence. Each pattern below converts a nominal check into a real one.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Pattern</th><th>Nominal Oversight (fails)</th><th>Real Oversight (works)</th></tr></thead>
+      <tbody>
+        <tr><td>Forcing function</td><td>"Advisors should review each flag."</td><td>The rationale panel must be opened, and a one-line justification typed, before the action button unlocks.</td></tr>
+        <tr><td>Friction on high-impact actions</td><td>One-click "Accept" for every case, low- and high-stakes alike.</td><td>Low-stakes actions stay fast; high-impact decisions (deny aid, escalate) require a second step, a confirmation, or a short cooling-off delay.</td></tr>
+        <tr><td>Show confidence &amp; provenance</td><td>A single authoritative-looking label ("High Risk").</td><td>The output shows its confidence/uncertainty, the drivers behind it, and its source — so a low-confidence answer visibly invites scrutiny instead of deference.</td></tr>
+        <tr><td>Independent second-person review</td><td>The person who ran the AI also approves its output.</td><td>High-impact AI outputs get a second reviewer who is not anchored by the AI's answer first.</td></tr>
+        <tr><td>Measure override rates</td><td>Nobody knows how often humans actually disagree with the AI.</td><td>Override / agreement rates are logged and reviewed. A near-100% agreement rate is treated as a rubber-stamp alarm, not a success.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout callout-shadow">
+    <div class="callout-label">🔑 Override Rate Is a Health Metric, Not a Nuisance</div>
+    If reviewers accept the AI 99.8% of the time, one of two things is true: the AI is near-perfect (rare), or the humans have stopped reviewing (common). An override rate that is <em>too</em> low is a leading indicator of automation complacency. Instrument it, baseline it, and alert on it — the same way Day 4's MEASURE function instruments any other risk.
+  </div>
+
+  <div class="callout callout-success">
+    <div class="callout-label">✅ Tie-Back: "Human-in-the-Loop" Is a Designed Control</div>
+    <strong>Day 4 (Measure &amp; Manage):</strong> Human oversight is not a governance checkbox — it is a control whose effectiveness MEASURE must quantify (override / agreement rates, time-per-review, opened-rationale rates) and MANAGE must back with a real mechanism (MG-2.4 kill-switch, MG-4.1 incident-response lifecycle). An oversight control you cannot measure is one you cannot claim.<br><br>
+    <strong>Day 14 (Incident Response):</strong> When an AI incident is live — a deepfake authorizing a wire, a prompt injection exfiltrating records — the responder <em>is</em> the human in the loop, under time pressure and the strongest possible pull toward automation bias. That is exactly why the AI-adapted NIST SP 800-61r3 response steps must be pre-designed and rehearsed in tabletops: so oversight survives the moment it is most likely to collapse.<br><br>
+    Across both days the lesson is the same: <strong>oversight is something you design, instrument, and rehearse — never something you assume.</strong>
+  </div>
+
+  <!-- Applied activity: Real Oversight vs. Rubber-Stamp -->
+  <h3>Applied Activity · Spot the Over-Reliance Failure Mode</h3>
+  <div class="scenario-lab">
+    <div class="sl-header">
+      <span class="sl-title">Real Oversight vs. Rubber-Stamp — Classify Each Behavior</span>
+      <span class="sl-score" id="hf-score">0 / 6 classified</span>
+    </div>
+    <div class="sl-body">
+      <p>Each item describes a human interacting with an AI output. Decide whether it is <strong>real oversight</strong> (independent judgment actually applied) or a <strong>rubber-stamp</strong> (nominal review, no real scrutiny). Click your choice to check.</p>
+      <div id="hf-items"></div>
+    </div>
+  </div>
+  <div class="callout" style="margin-top:1rem">
+    <div class="callout-label">📋 Debrief</div>
+    Notice what separates the two. Real oversight always involves an independent check the human could not have skipped — verifying a claim, opening the rationale, applying judgment the AI did not supply. Rubber-stamps share a signature: speed, deference to a confident output, and treating a probabilistic flag as a settled fact. For each rubber-stamp above, ask: which design pattern from the table would have converted it into real oversight?
+  </div>
+</section>
+<script>
+/* Module 7 · Human Factors activity — namespaced (hf*) to avoid collision with existing lesson JS */
+(function(){
+  const hfData=[
+    {b:'An advisor opens the flag\'s rationale panel, sees the score is driven mostly by one missed assignment, and decides a check-in email — not a formal intervention — is the right response this week.',real:true,why:'Independent judgment applied: the advisor inspected the drivers and reached a decision the AI did not dictate. That is oversight doing its job.'},
+    {b:'A reviewer clicks "Accept" on all 25 flagged cases in four minutes to clear the queue before a meeting.',real:false,why:'Four minutes for 25 high-stakes decisions is about ten seconds each — the signature of a rubber-stamp. The review step existed but produced no scrutiny.'},
+    {b:'An advisor treats the model\'s "high-risk" label as a definitive diagnosis and forwards it to a dean as an established fact about the student.',real:false,why:'This is the exact failure Day 3 and Day 4 warn about: a probabilistic flag is a conversation starter, not a diagnosis. Treating it as settled fact is automation bias.'},
+    {b:'Before approving an AI-drafted recommendation letter, a faculty member checks each factual claim (GPA, courses, honors) against the student record and corrects two errors.',real:true,why:'The human applied a verification the AI cannot perform on itself, and caught real errors. That is designed oversight working as intended.'},
+    {b:'Because the AI summary is fluent and confidently worded, a loan officer signs off without following up on an income discrepancy the file itself flags.',real:false,why:'Deferring to a confident-sounding output over contradicting evidence in the file is textbook automation bias — an error of commission.'},
+    {b:'The system requires a reviewer to type a one-line justification before finalizing any "deny" decision, and the reviewer writes a specific, case-based reason.',real:true,why:'A forcing function converted a one-click action into a moment of genuine judgment — and the specific justification shows the human actually engaged with the case.'},
+  ];
+  const grid=document.getElementById('hf-items');
+  if(!grid)return;
+  const hfDone=new Set();
+  hfData.forEach(function(item,i){
+    const card=document.createElement('div');
+    card.className='sc-card show';
+    card.style.marginBottom='.7rem';
+    card.innerHTML='<div class="sc-num">Behavior '+(i+1)+'</div>'
+      +'<div class="sc-question">'+item.b+'</div>'
+      +'<div class="sc-options">'
+      +'<button class="sc-opt" onclick="hfCheck('+i+',true,this)">✅ Real oversight</button>'
+      +'<button class="sc-opt" onclick="hfCheck('+i+',false,this)">🚫 Rubber-stamp</button>'
+      +'</div>'
+      +'<div class="sc-feedback" id="hf-fb-'+i+'"></div>';
+    grid.appendChild(card);
+  });
+  window.hfCheck=function(i,choice,btn){
+    if(hfDone.has(i))return;
+    hfDone.add(i);
+    const item=hfData[i];
+    const ok=(choice===item.real);
+    const opts=btn.parentElement.querySelectorAll('.sc-opt');
+    const correctIdx=item.real?0:1;
+    const chosenIdx=choice?0:1;
+    opts[correctIdx].classList.add('correct-r');
+    if(!ok)opts[chosenIdx].classList.add('wrong-r');
+    const fb=document.getElementById('hf-fb-'+i);
+    fb.className='sc-feedback show '+(ok?'ok':'bad');
+    fb.innerHTML=(ok?'✅ Correct. ':'❌ Not quite. ')+item.why;
+    document.getElementById('hf-score').textContent=hfDone.size+' / '+hfData.length+' classified';
+  };
+})();
+</script>
+
 <!-- ── ACTIVITIES ────────────────────────────────────────────── -->
 <div class="part-banner lab">
   <div class="pb-num">▶</div>
@@ -777,7 +913,7 @@ footer strong{color:rgba(255,255,255,.8)}
     <div class="quiz-head">
       <span>Day 6 Knowledge Check — 10 Questions</span>
       <span class="quiz-score" id="quiz-score-display">Score: 0 / 10</span>
-    </div>
+    </div><div class="quiz-note" style="padding:.55rem 1.2rem;background:#faf6f7;color:var(--ink-soft,#5a5a5a);font-size:.8rem;line-height:1.4;border-bottom:1px solid var(--border,#e7e7e7);">Formative — this knowledge check does not affect your grade. Use it to self-assess before moving on.</div>
     <div id="quiz-body"></div>
     <div class="quiz-actions">
       <button class="btn btn-primary" onclick="gradeQuiz()">Grade My Quiz</button>
@@ -802,6 +938,7 @@ footer strong{color:rgba(255,255,255,.8)}
         <li><a href="#m4"><span class="toc-num">4</span>Three Forces</a></li>
         <li><a href="#m5"><span class="toc-num">5</span>Shadow AI</a></li>
         <li><a href="#m6"><span class="toc-num">6</span>Governance Responses</a></li>
+        <li><a href="#m7"><span class="toc-num">7</span>Human Factors</a></li>
         <li><a href="#activity-tiles"><span class="toc-num">A</span>Activity: Shadow Classifier</a></li>
         <li><a href="#activity-checklist"><span class="toc-num">B</span>Activity: Detection Audit</a></li>
         <li><a href="#activity-scenario"><span class="toc-num">C</span>Activity: Decision Lab</a></li>
@@ -974,7 +1111,7 @@ const quizData=[
   {q:'According to current research (2025), what percentage of organizations have shadow AI governance policies in place?',opts:['83%','63%','37%','15%'],correct:2,exp:'Only 37% of organizations have policies to manage or detect shadow AI (IBM, 2025), leaving 63% operating without guardrails. This means the majority of organizations have no formal mechanism to detect, assess, or respond to shadow AI — even as Gartner projects that 40%+ of enterprises will experience security or compliance incidents linked to shadow AI by 2030.'},
   {q:'An employee who discovers that Claude reduces their contract review time from 4 hours to 45 minutes is told to stop using it. Research shows 48% would continue regardless. Which of the Three Forces explains this behavior?',opts:['Velocity — new AI tools appear faster than governance can adapt','Pervasiveness — AI is embedded in approved tools','Personalization — AI provides individual productivity multipliers that create strong personal incentives to circumvent controls, unlike shadow IT which was merely convenient','Third-Party Risk — the external vendor creates compliance obligations'],correct:2,exp:'Personalization explains the 48% who continue despite bans. Unlike shadow IT (which was a convenience preference), shadow AI represents a significant personal productivity multiplier — the employee\'s individual work output is dramatically improved. This creates a rational economic incentive to continue even after being told to stop. Governance that ignores this incentive structure will always underperform governance that addresses it by providing approved alternatives with equivalent capability.'},
   {q:'MVCC\'s enrollment chatbot was built with January 2024 training data. By October 2024, FAFSA deadlines have changed and the chatbot is providing incorrect deadline information to students. No alert fired. Which NIST AI RMF failure most precisely describes this gap?',opts:['MAP-1.1 — the intended purpose was not documented','MG-2.4 — the kill-switch was not activated','MS-3.1 (Continuous Risk Tracking) and MS-2.4 (Production Monitoring) — no monitoring mechanism was configured to detect when policy changes created a divergence between training data currency and ground truth, and no alert threshold was set for this known foreseeable drift event.','GOVERN-1.3 — the risk tolerance was not defined'],correct:2,exp:'MS-3.1 requires continuous risk tracking in production — risks identified in MAP must be monitored over time. MS-2.4 requires production monitoring against the components and behaviors identified in MAP. A training data staleness event (policy changes invalidating cached knowledge) is a foreseeable drift risk that MAP should identify and MS should monitor. The absence of any metric or alert for this risk is a MEASURE function failure.'},
-  {q:'Which governance response is most appropriate when employees are using a consumer AI tool for legitimate work purposes, and the organization wants to stop the uncontrolled data exposure without reducing productivity?',opts:['Block the tool immediately at the DNS level','Issue a policy memo prohibiting the tool with enforcement consequences','Channel: provide an enterprise-contracted version of the same tool with appropriate data handling agreements, DLP policies, and institutional controls — then enforce the ban on the consumer version after capability parity is established','Accept the risk as a cost of productivity'},correct:2,exp:'Channel is the evidence-based response. When approved alternatives are provided before enforcement of consumer tool bans, unauthorized use drops 89% (Healthcare Brew, 2026). Blocking without alternatives drives usage to personal hotspots (zero visibility, same data exposure). Policy memos without alternatives are ineffective (48% continue despite bans). Accepting risk without controls violates EU AI Act deployer obligations for any system meeting the limited-risk or higher threshold.'},
+  {q:'Which governance response is most appropriate when employees are using a consumer AI tool for legitimate work purposes, and the organization wants to stop the uncontrolled data exposure without reducing productivity?',opts:['Block the tool immediately at the DNS level','Issue a policy memo prohibiting the tool with enforcement consequences','Channel: provide an enterprise-contracted version of the same tool with appropriate data handling agreements, DLP policies, and institutional controls — then enforce the ban on the consumer version after capability parity is established','Accept the risk as a cost of productivity'],correct:2,exp:'Channel is the evidence-based response. When approved alternatives are provided before enforcement of consumer tool bans, unauthorized use drops 89% (Healthcare Brew, 2026). Blocking without alternatives drives usage to personal hotspots (zero visibility, same data exposure). Policy memos without alternatives are ineffective (48% continue despite bans). Accepting risk without controls violates EU AI Act deployer obligations for any system meeting the limited-risk or higher threshold.'},
   {q:'Which of the following detection approaches would be MOST effective at discovering AI-enabled browser extensions processing enterprise data on employees\' work devices?',opts:['DNS query monitoring for AI provider domains','Employee self-reporting through an anonymous tip line','OAuth grant and browser extension inventory combined with permission-level analysis — identifying extensions with high or critical permission levels that have AI capabilities, then assessing data access scope','Network traffic volume analysis for large file transfers'],correct:2,exp:'Browser extensions with OAuth permissions are the hardest shadow AI vector to detect through network monitoring alone, because the processing happens in the browser where the data is already present — no separate network transfer is needed. OAuth grant audits identify what data each extension can access; extension inventory with AI capability classification identifies which extensions have AI processing. LayerX found 20% of enterprise users have AI-enabled extensions, 58% with high/critical permissions, 5.6% outright malicious — making this the highest-priority endpoint detection layer.'},
   {q:'An organization\'s AI AUP states: "Employees should use AI tools responsibly and in accordance with applicable regulations." A security auditor assesses this AUP. What is the most accurate finding?',opts:['This AUP is sufficient — it establishes the principle of responsible use.','This AUP is compliant with EU AI Act requirements.','This AUP fails to govern AI. It lacks: data classification rules for AI inputs, an approved tool list, a tool approval pathway, shadow AI handling procedures, human oversight requirements, and enforcement mechanisms. It is policy theater — documentation without actionable content.','This AUP should be supplemented with a separate FERPA policy.'],correct:2,exp:'The auditor\'s finding is that this AUP is non-operational. Effective AI AUPs must include: scope statement covering all AI use including personal accounts, data classification rules specific to AI prompts, tool tier system (approved/limited/prohibited), approval pathway, shadow AI amnesty and reporting procedures, human oversight requirements by use case, and enforcement mechanisms. A principle statement without operational specifics does not govern AI — it documents an aspiration.'},
 ];

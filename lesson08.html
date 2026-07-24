@@ -128,10 +128,10 @@ h3{font-family:var(--ff-sans);font-size:1.05rem;font-weight:700;color:var(--ink)
 
 /* FLIP CARDS — large format for deep dive */
 .flip-grid-2col{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;margin:1.5rem 0}
-.flip-card{height:230px;cursor:pointer;perspective:900px}
-.flip-inner{width:100%;height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;position:relative}
+.flip-card{min-height:230px;cursor:pointer;perspective:900px}
+.flip-inner{display:grid;width:100%;min-height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;position:relative}
 .flip-card.flipped .flip-inner{transform:rotateY(180deg)}
-.flip-front,.flip-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--radius);padding:1.2rem;display:flex;flex-direction:column;box-shadow:var(--shadow-sm)}
+.flip-front,.flip-back{position:relative;grid-area:1/1;backface-visibility:hidden;border-radius:var(--radius);padding:1.2rem;display:flex;flex-direction:column;box-shadow:var(--shadow-sm)}
 .flip-front{background:#fff;border:1px solid var(--border);justify-content:space-between}
 .flip-back{transform:rotateY(180deg);color:#fff}
 .flip-front-top{display:flex;align-items:flex-start;gap:.7rem}
@@ -335,7 +335,7 @@ footer strong{color:rgba(255,255,255,.8)}
   <h2 class="section-title"><span>🧭</span> Lesson Overview <span class="section-meta">Day 8 · 4 hours</span></h2>
   <div class="prose">
     <p>Day 7 introduced OWASP LLM Top 10 as a practitioner threat reference and positioned it within the broader framework stack. Today you go deep on all ten items — not just what they are, but how each attack actually works, what a real compromise looks like, which defenses address it, and critically, which defenses sound good but don't work.</p>
-    <p>This lesson covers the 2025 edition, which introduced five new categories (Excessive Agency, System Prompt Leakage, Vector &amp; Embedding Weaknesses, Misinformation, and Unbounded Consumption) that reflect what practitioners are actually encountering in production LLM deployments — not theoretical future risks.</p>
+    <p>This lesson covers the 2025 edition, which introduced two genuinely new categories (System Prompt Leakage and Vector &amp; Embedding Weaknesses) and renamed or expanded three others (Excessive Agency, expanded from the 2023 entry; Misinformation, refocused from 2023's Overreliance; and Unbounded Consumption, expanded from 2023's Model Denial of Service) — changes that reflect what practitioners are actually encountering in production LLM deployments, not theoretical future risks.</p>
   </div>
   <div class="analogy-box">
     <div class="analogy-label">🎓 Anchoring Analogy: The Building Inspector's Code Book</div>
@@ -383,7 +383,7 @@ footer strong{color:rgba(255,255,255,.8)}
     <strong>Promoted:</strong> Sensitive Information Disclosure (#6 → #2), Supply Chain (#5 → #3 and expanded)<br>
     <strong>Demoted:</strong> Improper Output Handling (#2 → #5)<br>
     <strong>New in 2025:</strong> Excessive Agency (LLM06), System Prompt Leakage (LLM07), Vector &amp; Embedding Weaknesses (LLM08), Misinformation (LLM09), Unbounded Consumption (LLM10)<br>
-    <strong>Why these five?</strong> They reflect production realities: agentic AI deployments (LLM06), RAG architecture risks (LLM07, LLM08), trust in AI outputs (LLM09), and pay-per-use cost attacks (LLM10).
+    <strong>Why these five?</strong> They reflect production realities: agentic AI deployments (LLM06), RAG &amp; system-prompt risks (LLM07, LLM08), trust in AI outputs (LLM09), and pay-per-use cost attacks (LLM10).
   </div>
 
   <div class="table-wrap">
@@ -540,7 +540,7 @@ footer strong{color:rgba(255,255,255,.8)}
     <div class="quiz-head">
       <span>Day 8 Knowledge Check — 10 Questions</span>
       <span class="quiz-score-d" id="quiz-score-display">Score: 0 / 10</span>
-    </div>
+    </div><div class="quiz-note" style="padding:.55rem 1.2rem;background:#faf6f7;color:var(--ink-soft,#5a5a5a);font-size:.8rem;line-height:1.4;border-bottom:1px solid var(--border,#e7e7e7);">Formative — this knowledge check does not affect your grade. Use it to self-assess before moving on.</div>
     <div id="quiz-body"></div>
     <div class="quiz-actions">
       <button class="btn btn-primary" onclick="gradeQuiz()">Grade My Quiz</button>
@@ -1014,7 +1014,7 @@ const quizData=[
   {q:'What makes "denial of wallet" attacks (LLM10) fundamentally different from traditional DDoS attacks in both execution and impact?',opts:['Denial of wallet attacks require much larger botnets than traditional DDoS','Denial of wallet attacks target financial cost rather than availability — a low-volume, high-cost-per-request attack can exhaust an organization\'s entire AI budget while maintaining normal service availability for users. The attacker\'s cost is minimal; the victim\'s cost can be catastrophic.','Denial of wallet attacks are illegal under computer fraud laws while DDoS is not','Denial of wallet attacks require authentication to execute while DDoS attacks do not'],correct:1,exp:'Denial of wallet attacks exploit LLM cost-scaling: maximum-context requests can cost 1,000× more than minimal ones. A small number of maximally-expensive requests can exhaust a monthly budget. Unlike traditional DDoS (which floods bandwidth causing unavailability), the service remains fully available — the API auto-scales as designed. The financial impact to the victim can be catastrophic ($340K in documented cases) while the attack cost to the adversary is minimal.'},
   {q:'LLM08 (Vector & Embedding Weaknesses) specifically addresses which architectural vulnerability in RAG systems?',opts:['The embedding model can be updated without security review, introducing new behaviors','Multi-tenant access control enforced through metadata filtering in a shared embedding space is insufficient — similarity searches happen before metadata filters are applied, potentially returning restricted content to unauthorized users','Embedding databases can be accessed without authentication if not properly secured','Vector search is computationally expensive and can be used for denial of service'],correct:1,exp:'LLM08 covers the architectural flaw where metadata-based access control is applied after the similarity search in a shared embedding space. The semantic similarity computation may identify restricted documents as close to the query before the metadata filter can exclude them. The fix requires separating embedding stores by access tier (not metadata filtering in a shared store) and applying access controls before the similarity computation, not after.'},
   {q:'Which combination of OWASP LLM defenses primarily addresses LLM06 (Excessive Agency)?',opts:['Output filtering + rate limiting','System prompt hardening + content classifiers','Least-privilege tool access + human approval gates for high-impact actions + audit logging + session-limited OAuth tokens','Input validation + output encoding + parameterized queries'],correct:2,exp:'LLM06 defenses focus on reducing capability and adding human oversight, not on input/output validation. Least privilege limits what the agent can do even if compromised. Human approval gates prevent automated high-impact actions. Audit logging enables detection and response. Session-limited OAuth tokens prevent agent credentials from being reused after a session ends. System prompt hardening is explicitly insufficient for LLM06 because injection can override it.'},
-  {q:'The 2025 OWASP LLM Top 10 added five new items compared to the 2023 edition. Which set correctly identifies all five new additions?',opts:['Prompt Injection, Supply Chain, Excessive Agency, Misinformation, Unbounded Consumption','Sensitive Information Disclosure, Data Poisoning, Improper Output Handling, System Prompt Leakage, Vector & Embedding Weaknesses','Excessive Agency (LLM06), System Prompt Leakage (LLM07), Vector & Embedding Weaknesses (LLM08), Misinformation (LLM09), Unbounded Consumption (LLM10)','Supply Chain, Excessive Agency, System Prompt Leakage, Vector & Embedding Weaknesses, Unbounded Consumption'],correct:2,exp:'The five new additions in the 2025 OWASP LLM Top 10 are LLM06 (Excessive Agency), LLM07 (System Prompt Leakage), LLM08 (Vector & Embedding Weaknesses), LLM09 (Misinformation), and LLM10 (Unbounded Consumption). These reflect production deployment realities of 2024–2025: agentic AI deployments (LLM06), RAG architecture risks (LLM07, LLM08), high-stakes AI output trust (LLM09), and pay-per-use cost attacks (LLM10). LLM01 (Prompt Injection) remains #1 from the original edition.'},
+  {q:'The 2025 OWASP LLM Top 10 added five new items compared to the 2023 edition. Which set correctly identifies all five new additions?',opts:['Prompt Injection, Supply Chain, Excessive Agency, Misinformation, Unbounded Consumption','Sensitive Information Disclosure, Data Poisoning, Improper Output Handling, System Prompt Leakage, Vector & Embedding Weaknesses','Excessive Agency (LLM06), System Prompt Leakage (LLM07), Vector & Embedding Weaknesses (LLM08), Misinformation (LLM09), Unbounded Consumption (LLM10)','Supply Chain, Excessive Agency, System Prompt Leakage, Vector & Embedding Weaknesses, Unbounded Consumption'],correct:2,exp:'The five new additions in the 2025 OWASP LLM Top 10 are LLM06 (Excessive Agency), LLM07 (System Prompt Leakage), LLM08 (Vector & Embedding Weaknesses), LLM09 (Misinformation), and LLM10 (Unbounded Consumption). These reflect production deployment realities of 2024–2025: agentic AI deployments (LLM06), RAG &amp; system-prompt risks (LLM07, LLM08), high-stakes AI output trust (LLM09), and pay-per-use cost attacks (LLM10). LLM01 (Prompt Injection) remains #1 from the original edition.'},
 ];
 
 function buildQuiz(){

@@ -165,10 +165,10 @@ h3{font-family:var(--ff-sans);font-size:1.05rem;font-weight:700;color:var(--ink)
 
 /* FLIP CARDS */
 .flip-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:1rem;margin:1.5rem 0}
-.flip-card{height:215px;cursor:pointer;perspective:900px}
-.flip-inner{width:100%;height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;position:relative}
+.flip-card{min-height:215px;cursor:pointer;perspective:900px}
+.flip-inner{display:grid;width:100%;min-height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;position:relative}
 .flip-card.flipped .flip-inner{transform:rotateY(180deg)}
-.flip-front,.flip-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--radius);padding:1.1rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:var(--shadow-sm)}
+.flip-front,.flip-back{position:relative;grid-area:1/1;backface-visibility:hidden;border-radius:var(--radius);padding:1.1rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:var(--shadow-sm)}
 .flip-front{background:#fff;border:1px solid var(--border)}
 .flip-back{transform:rotateY(180deg)}
 .flip-back.evasion{background:var(--evasion);color:#fff}
@@ -529,7 +529,7 @@ footer strong{color:rgba(255,255,255,.8)}
   </div>
   <div class="callout callout-atlas">
     <div class="callout-label">📋 ATLAS v5.1.0 — November 2025</div>
-    Current version: <strong>16 tactics · 84 techniques · 56 sub-techniques · 42 case studies · 32 mitigations</strong>. October 2025 update added 14 new AI agent techniques (Zenity Labs collaboration). February 2026 v5.4.0 added "Publish Poisoned AI Agent Tool" and "Escape to Host." The framework is actively maintained at <a href="https://atlas.mitre.org" target="_blank" rel="noopener">atlas.mitre.org</a>.
+    As of v5.1.0: <strong>16 tactics · 84 techniques · 56 sub-techniques · 42 case studies · 32 mitigations</strong>. October 2025 update added 14 new AI agent techniques (Zenity Labs collaboration). February 2026 v5.4.0 added "Publish Poisoned AI Agent Tool" and "Escape to Host." The framework is actively maintained at <a href="https://atlas.mitre.org" target="_blank" rel="noopener">atlas.mitre.org</a>.
   </div>
 
   <h3>Interactive ATLAS Tactics Matrix — Click Any Technique</h3>
@@ -572,7 +572,7 @@ footer strong{color:rgba(255,255,255,.8)}
       <tbody>
         <tr><td>Evasion</td><td>Adversarial examples that cause misclassification. Imperceptible image perturbations, adversarial text. Model still runs correctly — inputs are crafted to fool it.</td><td>Jailbreaks, adversarial prompts that bypass content filters, role-play attacks that override safety training</td><td>Deployment-time (model already trained)</td></tr>
         <tr><td>Poisoning</td><td>Malicious training examples inserted into training data. Backdoor triggers that cause misclassification only when a specific pattern is present.</td><td>RAG poisoning, fine-tuning data manipulation, indirect prompt injection via poisoned retrieved documents</td><td>Training-time (before or during model training)</td></tr>
-        <tr><td>Privacy Attacks</td><td>Membership inference (was this sample in training data?), model inversion (reconstruct training data from model outputs), attribute inference</td><td>Training data extraction (verbatim memorization), system prompt extraction, conversation history reconstruction</td><td>Deployment-time (query the deployed model)</td></tr>
+        <tr><td>Privacy Attacks</td><td>Membership inference (was this sample in training data?), model inversion (reconstruct representative features of training data from model outputs), attribute inference</td><td>Training data extraction (verbatim memorization), system prompt extraction, conversation history reconstruction</td><td>Deployment-time (query the deployed model)</td></tr>
         <tr><td>Misuse (GenAI-specific)</td><td>N/A — traditional PredAI models are not typically used for content generation misuse</td><td>CSAM generation, malware code generation, disinformation at scale, targeted harassment, weaponizable synthesis. Using the model for its capabilities, against its intended use.</td><td>Deployment-time (using the model as designed, for harmful purposes)</td></tr>
       </tbody>
     </table>
@@ -751,7 +751,7 @@ footer strong{color:rgba(255,255,255,.8)}
     <div class="quiz-head">
       <span>Day 7 Knowledge Check — 10 Questions</span>
       <span class="quiz-score-d" id="quiz-score-display">Score: 0 / 10</span>
-    </div>
+    </div><div class="quiz-note" style="padding:.55rem 1.2rem;background:#faf6f7;color:var(--ink-soft,#5a5a5a);font-size:.8rem;line-height:1.4;border-bottom:1px solid var(--border,#e7e7e7);">Formative — this knowledge check does not affect your grade. Use it to self-assess before moving on.</div>
     <div id="quiz-body"></div>
     <div class="quiz-actions">
       <button class="btn btn-primary" onclick="gradeQuiz()">Grade My Quiz</button>
@@ -856,7 +856,7 @@ const atlasTactics=[
     {code:'AML.T0019',name:'Publish Poisoned Datasets','desc':'Upload poisoned training datasets to public repositories, targeting organizations that will incorporate this data into their training pipelines.'},
   ]},
   {id:'AML.TA0004',name:'ML Model Access',color:'th-access',techniques:[
-    {code:'AML.T0040',name:'ML Inference API Access','desc:'Access target model via inference API — the primary access vector for evasion, extraction, and privacy attacks against deployed models.'},
+    {code:'AML.T0040',name:'ML Inference API Access',desc:'Access target model via inference API — the primary access vector for evasion, extraction, and privacy attacks against deployed models.'},
     {code:'AML.T0041',name:'Full ML Model Access','desc':'Gain physical access to model weights — enables direct modification, backdoor insertion, and unrestricted extraction without API rate limits.'},
     {code:'AML.T0043',name:'Craft Adversarial Data','desc':'Design inputs that exploit model weaknesses — adversarial examples, crafted prompts, data designed to trigger specific model behaviors.'},
   ]},
