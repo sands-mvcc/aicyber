@@ -1,0 +1,2515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="AI-103 Resource Companion — verified links and teaching context for every framework, regulation, credential, threat reference, and case study across all 15 days of AI Cybersecurity Foundations.">
+<title>AI-103 Resource Companion</title>
+<style>
+  /* ── Design tokens (AI-103 course family) ─────────────────────── */
+  :root {
+    --oxblood:    #6b1a1a;
+    --oxblood-dk: #4a1010;
+    --oxblood-lt: #8c2a2a;
+    --gold:       #c8960c;
+    --gold-lt:    #e8b830;
+    --gold-bg:    #fdf6e0;
+    --cream:      #faf8f4;
+    --parchment:  #f2ede3;
+    --surface:    #ffffff;
+    --ink:        #1a1a1a;
+    --ink-soft:   #3a3a3a;
+    --ink-muted:  #6b6b6b;
+    --border:     #d4cdbf;
+    --border-lt:  #e8e2d8;
+    --link:       #6b1a1a;
+    --focus:      #c8960c;
+    --note-bg:    #fdf6e0;
+    --note-border:#e2c25a;
+    --shadow-sm:  0 1px 3px rgba(0,0,0,.08);
+    --shadow-md:  0 4px 16px rgba(0,0,0,.10);
+    --radius:     6px;
+    --ff-serif:   'Fraunces', 'Georgia', serif;
+    --ff-sans:    'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+    --ff-mono:    'IBM Plex Mono', 'Courier New', monospace;
+    /* type badges */
+    --t-framework: #1e3a5f;
+    --t-regulation:#5a2d6b;
+    --t-credential:#6b1a1a;
+    --t-threat:    #7a3b0c;
+    --t-concept:   #1a5a4a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --cream:      #171213;
+      --parchment:  #221a1b;
+      --surface:    #241c1d;
+      --ink:        #f0e9e2;
+      --ink-soft:   #d3c9c0;
+      --ink-muted:  #9a8e86;
+      --border:     #453a3b;
+      --border-lt:  #362d2e;
+      --link:       #e8a5a5;
+      --gold-bg:    #2e2617;
+      --note-bg:    #2e2617;
+      --note-border:#6b5a20;
+      --shadow-sm:  0 1px 3px rgba(0,0,0,.5);
+      --shadow-md:  0 4px 16px rgba(0,0,0,.55);
+      --t-framework: #4a6fa5;
+      --t-regulation:#8a5a9e;
+      --t-credential:#a34747;
+      --t-threat:    #b06a2e;
+      --t-concept:   #3f8a75;
+    }
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+  body {
+    font-family: var(--ff-sans);
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--ink);
+    background: var(--cream);
+  }
+  a { color: var(--link); }
+  a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+  }
+  .visually-hidden { position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap; }
+
+  .skip-link {
+    position: absolute; top: -48px; left: 1rem;
+    background: var(--oxblood); color: #fff;
+    padding: .5rem .9rem; border-radius: var(--radius);
+    font-size: .85rem; font-weight: 600; z-index: 999;
+    transition: top .2s;
+  }
+  .skip-link:focus { top: .5rem; }
+
+  /* ── Header ───────────────────────────────────────────────────── */
+  .topbar {
+    background: var(--oxblood-dk);
+    color: rgba(255,255,255,.7);
+    font-family: var(--ff-mono);
+    font-size: .76rem;
+    letter-spacing: .04em;
+    padding: .45rem 1.5rem;
+    display: flex; flex-wrap: wrap; gap: .3rem .7rem; align-items: center;
+  }
+  .topbar-sep { opacity: .4; }
+  .site-header {
+    background: var(--oxblood);
+    color: #fff;
+    padding: 2rem 1.5rem 1.6rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .site-header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(135deg, transparent, transparent 40px,
+      rgba(255,255,255,.025) 40px, rgba(255,255,255,.025) 41px);
+    pointer-events: none;
+  }
+  .header-inner { max-width: 1080px; margin: 0 auto; position: relative; }
+  .eyebrow {
+    font-family: var(--ff-mono);
+    font-size: .76rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--gold-lt);
+    margin-bottom: .35rem;
+  }
+  .site-header h1 {
+    font-family: var(--ff-serif);
+    font-size: clamp(1.5rem, 3.2vw, 2.1rem);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: .4rem;
+  }
+  .site-header .tagline {
+    font-size: .93rem;
+    color: rgba(255,255,255,.75);
+    max-width: 700px;
+  }
+
+  /* ── Day strip ────────────────────────────────────────────────── */
+  .day-strip {
+    background: var(--oxblood-lt);
+    border-bottom: 2px solid var(--gold);
+    padding: .55rem 1.5rem;
+  }
+  .day-strip-inner {
+    max-width: 1080px; margin: 0 auto;
+    display: flex; align-items: center; gap: .6rem; flex-wrap: wrap;
+  }
+  .day-strip .day-label {
+    font-family: var(--ff-mono);
+    font-size: .72rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.65);
+  }
+  .day-pill {
+    font-family: var(--ff-mono);
+    font-size: .78rem;
+    font-weight: 700;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,.35);
+    background: transparent;
+    color: rgba(255,255,255,.85);
+    padding: .25rem .85rem;
+    min-height: 34px;
+    cursor: pointer;
+  }
+  .day-pill[aria-current="true"] {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: #2a1a00;
+  }
+  .day-pill.future {
+    opacity: .45;
+    cursor: not-allowed;
+  }
+  .day-title-chip {
+    font-family: var(--ff-sans);
+    font-size: .8rem;
+    color: rgba(255,255,255,.85);
+    font-weight: 600;
+    margin-left: .3rem;
+  }
+
+  /* ── Controls ─────────────────────────────────────────────────── */
+  .controls {
+    max-width: 1080px;
+    margin: 1.4rem auto 0;
+    padding: 0 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .8rem;
+    align-items: center;
+  }
+  .view-tabs {
+    display: flex;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+  .view-tab {
+    font-family: var(--ff-sans);
+    font-size: .85rem;
+    font-weight: 700;
+    padding: .55rem 1.1rem;
+    background: transparent;
+    border: none;
+    color: var(--ink-soft);
+    cursor: pointer;
+    min-height: 44px;
+    border-right: 1px solid var(--border-lt);
+  }
+  .view-tab:last-child { border-right: none; }
+  .view-tab[aria-selected="true"] {
+    background: var(--oxblood);
+    color: #fff;
+  }
+  .search-wrap { flex: 1 1 220px; min-width: 200px; }
+  #search {
+    width: 100%;
+    font-family: var(--ff-sans);
+    font-size: .9rem;
+    padding: .6rem .9rem;
+    min-height: 44px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--ink);
+  }
+  .toggle-btn {
+    font-family: var(--ff-sans);
+    font-size: .85rem;
+    font-weight: 700;
+    padding: .55rem 1rem;
+    min-height: 44px;
+    border-radius: var(--radius);
+    border: 2px solid var(--oxblood-lt);
+    background: var(--surface);
+    color: var(--ink-soft);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+  }
+  .toggle-btn .dot {
+    width: .7rem; height: .7rem;
+    border-radius: 50%;
+    background: var(--border);
+  }
+  .toggle-btn[aria-pressed="true"] {
+    background: var(--oxblood);
+    border-color: var(--oxblood);
+    color: #fff;
+  }
+  .toggle-btn[aria-pressed="true"] .dot { background: var(--gold-lt); }
+  .util-btn {
+    font-family: var(--ff-sans);
+    font-size: .8rem;
+    font-weight: 600;
+    padding: .5rem .8rem;
+    min-height: 44px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+  .instructor-hint {
+    max-width: 1080px;
+    margin: .6rem auto 0;
+    padding: 0 1.25rem;
+    font-size: .8rem;
+    color: var(--ink-muted);
+  }
+  body.instructor-mode .instructor-hint .student-msg { display: none; }
+  body:not(.instructor-mode) .instructor-hint .instructor-msg { display: none; }
+
+  /* ── Main / groups ────────────────────────────────────────────── */
+  main {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 1.2rem 1.25rem 4rem;
+  }
+  .group { margin: 1.8rem 0; }
+  .group-header {
+    display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: .4rem;
+    margin-bottom: 1rem;
+  }
+  .group-header h2 {
+    font-family: var(--ff-serif);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--link);
+  }
+  .group-header .group-meta {
+    font-family: var(--ff-mono);
+    font-size: .72rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+  .group-desc {
+    font-size: .88rem;
+    color: var(--ink-muted);
+    margin: -0.5rem 0 1rem;
+    max-width: 780px;
+  }
+  .no-results {
+    text-align: center;
+    color: var(--ink-muted);
+    padding: 3rem 1rem;
+    font-size: .95rem;
+  }
+  .no-results strong { color: var(--ink); }
+
+  /* ── Resource cards ───────────────────────────────────────────── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 5px solid var(--oxblood);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: .9rem;
+    overflow: hidden;
+  }
+  .card[data-type="framework"]  { border-left-color: var(--t-framework); }
+  .card[data-type="regulation"] { border-left-color: var(--t-regulation); }
+  .card[data-type="credential"] { border-left-color: var(--t-credential); }
+  .card[data-type="threat"]     { border-left-color: var(--t-threat); }
+  .card[data-type="concept"]    { border-left-color: var(--t-concept); }
+
+  .card summary {
+    list-style: none;
+    cursor: pointer;
+    padding: .9rem 1.1rem;
+    display: flex;
+    align-items: flex-start;
+    gap: .8rem;
+  }
+  .card summary::-webkit-details-marker { display: none; }
+  .card summary:hover { background: var(--parchment); }
+  .card .chev {
+    flex-shrink: 0;
+    margin-top: .3rem;
+    width: .6rem; height: .6rem;
+    border-right: 2px solid var(--ink-muted);
+    border-bottom: 2px solid var(--ink-muted);
+    transform: rotate(-45deg);
+    transition: transform .18s;
+  }
+  .card[open] .chev { transform: rotate(45deg); }
+  .card-head-main { flex: 1; min-width: 0; }
+  .card-title-row {
+    display: flex; align-items: center; gap: .55rem; flex-wrap: wrap;
+    margin-bottom: .15rem;
+  }
+  .card-title {
+    font-family: var(--ff-sans);
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--ink);
+  }
+  .type-badge {
+    font-family: var(--ff-mono);
+    font-size: .64rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: #fff;
+    border-radius: 3px;
+    padding: .12rem .5rem;
+  }
+  .type-badge.framework  { background: var(--t-framework); }
+  .type-badge.regulation { background: var(--t-regulation); }
+  .type-badge.credential { background: var(--t-credential); }
+  .type-badge.threat     { background: var(--t-threat); }
+  .type-badge.concept    { background: var(--t-concept); }
+  .day-tags { display: inline-flex; gap: .3rem; }
+  .day-tag {
+    font-family: var(--ff-mono);
+    font-size: .62rem;
+    font-weight: 700;
+    color: var(--ink-muted);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: .1rem .4rem;
+  }
+  .card-oneliner {
+    font-size: .84rem;
+    color: var(--ink-muted);
+    line-height: 1.45;
+  }
+  .card-body {
+    padding: 0 1.1rem 1.1rem;
+    border-top: 1px solid var(--border-lt);
+  }
+  .card-body h3 {
+    font-family: var(--ff-mono);
+    font-size: .7rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    font-weight: 700;
+    margin: 1rem 0 .4rem;
+  }
+  .card-body p { font-size: .9rem; color: var(--ink-soft); margin-bottom: .5rem; }
+  .link-list { list-style: none; }
+  .link-list li { margin-bottom: .35rem; }
+  .link-list a {
+    font-size: .88rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: baseline;
+    gap: .35rem;
+    padding: .15rem 0;
+  }
+  .link-list .ext { font-size: .75rem; opacity: .7; }
+  .link-list .link-note {
+    font-size: .8rem;
+    color: var(--ink-muted);
+    font-weight: 400;
+  }
+  .fact-list { list-style: none; }
+  .fact-list li {
+    font-size: .86rem;
+    color: var(--ink-soft);
+    padding: .28rem 0 .28rem 1.1rem;
+    position: relative;
+    border-bottom: 1px solid var(--border-lt);
+  }
+  .fact-list li:last-child { border-bottom: none; }
+  .fact-list li::before {
+    content: '›';
+    position: absolute; left: .2rem;
+    color: var(--gold);
+    font-weight: 700;
+  }
+  .in-lesson {
+    background: var(--parchment);
+    border: 1px solid var(--border-lt);
+    border-radius: 4px;
+    padding: .7rem .9rem;
+    font-size: .86rem;
+    color: var(--ink-soft);
+    margin-top: .4rem;
+  }
+  .in-lesson .where {
+    font-family: var(--ff-mono);
+    font-size: .68rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--link);
+    font-weight: 700;
+    display: block;
+    margin-bottom: .2rem;
+  }
+  .instructor-note {
+    display: none;
+    background: var(--note-bg);
+    border: 1px solid var(--note-border);
+    border-left: 4px solid var(--gold);
+    border-radius: 4px;
+    padding: .7rem .9rem;
+    font-size: .86rem;
+    color: var(--ink-soft);
+    margin-top: .7rem;
+  }
+  .instructor-note .note-label {
+    font-family: var(--ff-mono);
+    font-size: .68rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+    display: block;
+    margin-bottom: .25rem;
+  }
+  .instructor-note ul { margin: .3rem 0 0 1.1rem; }
+  .instructor-note li { margin-bottom: .3rem; }
+  body.instructor-mode .instructor-note { display: block; }
+
+  .day-pill-course { border-color: var(--gold); color: #fff; font-weight: 700; }
+  .day-pill-course[aria-current="true"] { background: var(--gold); border-color: var(--gold); color: #2a1a00; }
+
+  /* Roadmap view (Course tab) */
+  .intro-note { background:var(--parchment);border:1px solid var(--border-lt);border-left:4px solid var(--gold);border-radius:4px;padding:.8rem 1rem;font-size:.86rem;color:var(--ink-soft);margin-bottom:1.5rem; }
+  .unit-block { margin-bottom:1.6rem; }
+  .unit-header { font-family:var(--ff-mono);font-size:.74rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;padding:.5rem .9rem;border-radius:var(--radius) var(--radius) 0 0; }
+  .unit-1 .unit-header{background:#1e3a5f;} .unit-2 .unit-header{background:#5a2d6b;}
+  .unit-3 .unit-header{background:#7a3b0c;} .unit-4 .unit-header{background:#8c2a2a;}
+  .unit-5 .unit-header{background:#1a5a4a;}
+  .unit-days { border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);overflow:hidden; }
+  .day-row { display:flex;gap:.9rem;padding:.8rem 1rem;border-bottom:1px solid var(--border-lt);align-items:flex-start; }
+  .day-row:last-child { border-bottom:none; }
+  .day-row:hover { background:var(--parchment); }
+  .day-badge { flex-shrink:0;width:2.6rem;text-align:center; }
+  .day-badge .d-lbl { font-family:var(--ff-mono);font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-muted); }
+  .day-badge .d-num { font-family:var(--ff-serif);font-size:1.5rem;font-weight:700;color:var(--oxblood);line-height:1; }
+  .day-main { flex:1;min-width:0; }
+  .day-main .d-title { font-weight:700;font-size:.95rem;margin-bottom:.15rem; }
+  .day-main .d-desc { font-size:.82rem;color:var(--ink-muted);margin-bottom:.4rem; }
+  .day-res { display:flex;flex-wrap:wrap;gap:.35rem; }
+  .res-chip { font-family:var(--ff-mono);font-size:.66rem;font-weight:600;padding:.12rem .5rem;border-radius:3px;border:1px solid var(--border);background:var(--surface);color:var(--ink-soft);cursor:pointer;text-decoration:none; }
+  .res-chip:hover { border-color:var(--gold);color:var(--link); }
+  .res-chip.t-framework{border-left:3px solid var(--t-framework);} .res-chip.t-regulation{border-left:3px solid var(--t-regulation);}
+  .res-chip.t-credential{border-left:3px solid var(--t-credential);} .res-chip.t-threat{border-left:3px solid var(--t-threat);}
+  .res-chip.t-concept{border-left:3px solid var(--t-concept);} .res-chip.t-case{border-left:3px solid var(--t-case,#4a4a4a);}
+  .day-lo { font-family:var(--ff-mono);font-size:.64rem;color:var(--ink-muted);flex-shrink:0;text-align:right;min-width:3.5rem; }
+  .card[data-type="case"] { border-left-color:#4a4a4a; }
+  .type-badge.case { background:#4a4a4a; }
+  @media (max-width:560px) { .day-lo { display:none; } }
+
+  footer {
+    background: var(--oxblood-dk);
+    color: rgba(255,255,255,.55);
+    text-align: center;
+    font-family: var(--ff-mono);
+    font-size: .78rem;
+    letter-spacing: .03em;
+    padding: 1.4rem 1rem;
+  }
+  footer strong { color: rgba(255,255,255,.8); }
+
+  @media (max-width: 560px) {
+    .controls { gap: .6rem; }
+    .view-tab { padding: .55rem .8rem; font-size: .8rem; }
+  }
+  @media print {
+    .topbar, .day-strip, .controls, .instructor-hint { display: none; }
+    body { background: #fff; }
+    .card { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<div class="topbar" role="banner">
+  <span>AI-103: AI Cybersecurity Foundations</span>
+  <span class="topbar-sep">·</span>
+  <span>MVCC · Dept. of Engineering &amp; Technology</span>
+  <span class="topbar-sep">·</span>
+  <span>Dr. John L. Sands</span>
+  <span class="topbar-sep">·</span>
+  <a href="https://sands-mvcc.github.io/aicyber/index.html" target="_blank" rel="noopener" style="color:var(--gold-lt);text-decoration:none;font-weight:700;">Course Home ↗</a>
+</div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <p class="eyebrow">Resource Companion</p>
+    <h1 id="header-title">Day 1 · Expanding Cybersecurity Principles for AI</h1>
+    <p class="tagline">
+      Every framework, regulation, credential, threat reference, and case study across all 15 days —
+      with verified links to the authoritative source and enough context to teach the material when it
+      comes up in class. A companion to the
+      <a href="https://sands-mvcc.github.io/aicyber/index.html" target="_blank" rel="noopener" style="color:var(--gold-lt);font-weight:700;">AI-103 course home ↗</a>.
+    </p>
+  </div>
+</header>
+
+<nav class="day-strip" aria-label="Course day selector">
+  <div class="day-strip-inner">
+    <button class="day-pill day-pill-course" id="day-course" aria-current="false" type="button">🗺 Course</button>
+    <span class="day-label" style="margin-left:.3rem;">Day</span>
+    <button class="day-pill" id="day-1" aria-current="true" type="button">1</button>
+    <button class="day-pill" id="day-2" aria-current="false" type="button">2</button>
+    <button class="day-pill" id="day-3" aria-current="false" type="button">3</button>
+    <button class="day-pill" id="day-4" aria-current="false" type="button">4</button>
+    <button class="day-pill" id="day-5" aria-current="false" type="button">5</button>
+    <button class="day-pill" id="day-6" aria-current="false" type="button">6</button>
+    <button class="day-pill" id="day-7" aria-current="false" type="button">7</button>
+    <button class="day-pill" id="day-8" aria-current="false" type="button">8</button>
+    <button class="day-pill" id="day-9" aria-current="false" type="button">9</button>
+    <button class="day-pill" id="day-10" aria-current="false" type="button">10</button>
+    <button class="day-pill" id="day-11" aria-current="false" type="button">11</button>
+    <button class="day-pill" id="day-12" aria-current="false" type="button">12</button>
+    <button class="day-pill" id="day-13" aria-current="false" type="button">13</button>
+    <button class="day-pill" id="day-14" aria-current="false" type="button">14</button>
+    <button class="day-pill" id="day-15" aria-current="false" type="button">15</button>
+    <span class="day-title-chip" id="day-chip"></span>
+  </div>
+</nav>
+
+<div class="controls">
+  <div class="view-tabs" role="tablist" aria-label="Resource organization view">
+    <button class="view-tab" role="tab" id="tab-flow" aria-selected="true" aria-controls="main" type="button">Lesson Flow</button>
+    <button class="view-tab" role="tab" id="tab-category" aria-selected="false" aria-controls="main" type="button">By Category</button>
+  </div>
+  <div class="search-wrap">
+    <label for="search" class="visually-hidden">Search resources</label>
+    <input type="search" id="search" placeholder="Search — e.g. “Annex A”, “risk tiers”, “prompt injection”…" autocomplete="off">
+  </div>
+  <button class="toggle-btn" id="instructor-toggle" aria-pressed="false" type="button">
+    <span class="dot" aria-hidden="true"></span> Instructor notes
+  </button>
+  <button class="util-btn" id="expand-all" type="button">Expand all</button>
+  <button class="util-btn" id="collapse-all" type="button">Collapse all</button>
+</div>
+<p class="instructor-hint">
+  <span class="student-msg">Student view. Each card gives the official link, what the resource is, and where it appears in the selected day's lesson.</span>
+  <span class="instructor-msg">Instructor mode is on — amber talking-point panels are now visible on each card.</span>
+</p>
+
+<main id="main" aria-live="polite"></main>
+
+<footer>
+  <strong>AI-103 Resource Companion · Course Roadmap + Days 1–15</strong> ·
+  Moraine Valley Community College · Department of Engineering &amp; Technology ·
+  Dr. John L. Sands · 2026
+  <br>Companion to <a href="https://sands-mvcc.github.io/aicyber/index.html" target="_blank" rel="noopener" style="color:rgba(255,255,255,.8);">sands-mvcc.github.io/aicyber</a> · Links verified July 2026 · External sites open in a new tab (↗).
+</footer>
+
+<script>
+'use strict';
+
+/* ═══════════════════════════════════════════════════════════════════
+   RESOURCE DATA — to add a new day: add a DAYS entry, a FLOW_GROUPS
+   entry, and give each relevant resource a dayCtx[n] block.
+   Shared fields (title, type, links, what, facts) are written once;
+   per-day fields (flowGroup, where, why, notes) live in dayCtx.
+   ═══════════════════════════════════════════════════════════════════ */
+
+const DAYS = {
+  1: { title: 'Expanding Cybersecurity Principles for AI' },
+  2: { title: 'AI Governance Foundations & Framework Landscape' },
+  3: { title: 'NIST AI RMF in Depth — Govern & Map' },
+  4: { title: 'NIST AI RMF — Measure & Manage' },
+  5: { title: 'EU AI Act Risk Tiers & Obligations' },
+  6: { title: 'AI Risk Categories & Shadow AI' },
+  7: { title: 'AI as Target I — Threats, ATT&CK/ATLAS & OWASP' },
+  8: { title: 'AI as Target II — OWASP Top 10 for LLMs Deep Dive' },
+  9: { title: 'AI as Target III — Attacks on Data & Models' },
+  10: { title: 'AI as a Weapon — Deepfakes, Phishing & Influence Ops' },
+  11: { title: 'Architecting Secure AI Systems & Lifecycle Controls' },
+  12: { title: 'Vendor & Supply Chain Risk for AI' },
+  13: { title: 'AI Policies, AUPs & Governance Documents' },
+  14: { title: 'AI Incident Response, Red Teaming & Tabletops' },
+  15: { title: 'Synthesis & Final Capstone Presentations' }
+};
+
+const FLOW_GROUPS = {
+  1: [
+    { id: 'd1m1', title: 'Module 1 · Credentials & the Pathway', meta: '“Why Security+ Isn\u2019t Enough”', desc: 'Resources behind the credential comparison table and the pilot\u2019s type-rating analogy.' },
+    { id: 'd1m2', title: 'Module 2 · Six New Assumptions', meta: 'Flip cards', desc: 'The references behind the flip-card claims — prompt injection, excessive agency, and the regulatory contrast.' },
+    { id: 'd1m3', title: 'Module 3 · Course Map Frameworks', meta: 'AI as target & AI as weapon', desc: 'The four major frameworks on the course map, each with its authoritative source.' },
+    { id: 'd1m4', title: 'Module 4 · AAISM Domain Vocabulary', meta: 'Deep dive', desc: 'Threat references and governance artifacts named in the three AAISM domain tables.' }
+  ],
+  2: [
+    { id: 'd2m1', title: 'Module 1 · Governance Maturity Components', meta: 'The five components', desc: 'Resources behind the accordion of five components — the IR annex, defined roles, and the register.' },
+    { id: 'd2m2', title: 'Module 2 · NIST AI RMF Deep Dive', meta: 'The engine · 35 min', desc: 'Govern–Map–Measure–Manage, the seven trustworthiness characteristics, and the CSF 2.0 structural parallel.' },
+    { id: 'd2m3', title: 'Module 3 · ISO/IEC 42001 Deep Dive', meta: 'The chassis · 30 min', desc: 'The clause structure, Annex A\u2019s 38 controls, and the two ISO standards the lesson leans on for parallels.' },
+    { id: 'd2m4', title: 'Module 4 · EU AI Act Deep Dive', meta: 'The law · 35 min', desc: 'The enforcement timeline, risk tiers, and the GDPR extraterritoriality parallel.' },
+    { id: 'd2m5', title: 'Module 5 · OWASP LLM Top 10 Deep Dive', meta: 'The threat reference · 30 min', desc: 'The full ten-item catalog and the traditional web Top 10 the lesson uses as its anchoring analogy.' }
+  ],
+  3: [
+    { id: 'd3m1', title: 'Module 1 · The RMF Two-Layer Architecture', meta: 'Why two layers · 20 min', desc: 'The Govern (organization-layer) vs. Map/Measure/Manage (system-layer) split, and its ISO 42001 clause parallel.' },
+    { id: 'd3m2', title: 'Modules 2–3 · GOVERN Deep Dive', meta: '6 categories · 19 subcategories', desc: 'Every GOVERN subcategory with implementation notes — the organization-layer foundation and the artifacts that evidence it.' },
+    { id: 'd3m3', title: 'Modules 4–5 · MAP Deep Dive', meta: '5 categories · 18 subcategories', desc: 'The system-layer due-diligence function — context, categorization, third-party risk, and impact on affected groups.' },
+    { id: 'd3m4', title: 'Activities · Charter & MAP Worksheet', meta: 'Labs + GOVERN/MAP sorter', desc: 'The MVCC charter builder, the MAP worksheet, and the sorter that drills the GOVERN-vs-MAP distinction.' }
+  ],
+  4: [
+    { id: 'd4m1', title: 'Module 1 · Why AI Measurement Is Different', meta: 'Continuous, not point-in-time · 20 min', desc: 'Why AI systems must be measured continuously — drift, degradation, and the TEVV mindset the MEASURE function formalizes.' },
+    { id: 'd4m2', title: 'Modules 2–3 · MEASURE Deep Dive', meta: '22 subcategories', desc: 'Metrics, TEVV, adversarial testing, and drift monitoring — the assessment engine, with OWASP tests as a MEASURE input.' },
+    { id: 'd4m3', title: 'Modules 4–5 · MANAGE Deep Dive', meta: '13 subcategories', desc: 'Risk treatment, control implementation, incident response, and the continuous-improvement loop back to GOVERN.' },
+    { id: 'd4m4', title: 'Activities · Risk Register & Scenario Lab', meta: 'Register builder + decision lab', desc: 'The AI risk register builder and the scenario lab that applies MEASURE and MANAGE to real deployments.' }
+  ],
+  5: [
+    { id: 'd5m1', title: 'Modules 1–2 · Binding Law & Enforcement Timeline', meta: 'Why "binding" changes everything · 35 min', desc: 'What makes the EU AI Act different from a framework, and the phased enforcement dates through 2027.' },
+    { id: 'd5m2', title: 'Module 3 · The Four Risk Tiers', meta: 'Classification logic · 30 min', desc: 'Prohibited (Art. 5), high-risk (Annex III), limited (Art. 50 transparency), and minimal — plus the classification decision tree.' },
+    { id: 'd5m3', title: 'Module 4 · High-Risk Requirements', meta: 'Articles 9–15 · 35 min', desc: 'The nine obligations high-risk providers must meet — risk management, data governance, documentation, oversight, accuracy.' },
+    { id: 'd5m4', title: 'Module 5 · Roles & the AI Value Chain', meta: 'Provider · Deployer · Importer · Distributor', desc: 'Who owes what: the four operator roles and how obligations shift along the value chain.' },
+    { id: 'd5m5', title: 'Module 6 · GPAI Models — Chapter V', meta: 'Systemic risk · 20 min', desc: 'General-purpose AI obligations, the systemic-risk threshold, and the GPAI Code of Practice.' }
+  ],
+  6: [
+    { id: 'd6m1', title: 'Module 1 · Beyond the CIA Triad', meta: 'Necessary but insufficient · 20 min', desc: 'Why confidentiality/integrity/availability doesn\u2019t capture AI risk — and what the five AI risk categories add.' },
+    { id: 'd6m2', title: 'Modules 2–3 · Five AI Risk Categories', meta: 'Model · Data · Operational · Ethical · Third-Party', desc: 'The risk taxonomy beyond the CIA triad, each tied to the NIST subcategories and controls that address it.' },
+    { id: 'd6m3', title: 'Module 4 · Velocity, Pervasiveness & Personalization', meta: 'The three forces · 20 min', desc: 'Why AI risk propagates faster and wider than traditional IT risk — the amplifiers behind the categories.' },
+    { id: 'd6m4', title: 'Modules 5–6 · Shadow AI & Governance Responses', meta: 'Detect · Block · Channel · Register · Monitor · 65 min', desc: 'Shadow AI definition, scale, and exposure paths — and the governance responses that bring it into the register.' }
+  ],
+  7: [
+    { id: 'd7m1', title: 'Modules 1–2 · Why AI Is a Different Target · ATT&CK vs ATLAS', meta: 'When to use which · 45 min', desc: 'What makes AI systems a distinct attack surface, and how MITRE ATT&CK and ATLAS divide the labor.' },
+    { id: 'd7m2', title: 'Module 3 · ATLAS Deep Dive', meta: '16 tactics · 40 min', desc: 'All 16 ATLAS tactics and key techniques — the interactive matrix and attack-chain builder.' },
+    { id: 'd7m3', title: 'Module 4 · NIST AI 100-2 E2025', meta: 'The AML taxonomy · 30 min', desc: 'The authoritative adversarial-ML taxonomy: evasion, poisoning, privacy, and abuse attacks.' },
+    { id: 'd7m4', title: 'Modules 5–6 · OWASP Stack & Framework Fit', meta: 'Which framework when · 35 min', desc: 'OWASP LLM Top 10 as the practitioner layer, and how the whole framework stack fits together.' }
+  ],
+  8: [
+    { id: 'd8m1', title: 'Module 1 · Why OWASP LLM Top 10 Exists', meta: 'What\u2019s new in 2025 · 20 min', desc: 'The purpose of the list and the two new 2025 categories — system prompt leakage and misinformation.' },
+    { id: 'd8m2', title: 'Modules 2–3 · All Ten Items, Deep Dive', meta: 'LLM01–LLM10 · 110 min', desc: 'Attack path, real incidents, and defenses for each of the ten categories — flip cards and deep dives.' },
+    { id: 'd8m3', title: 'Module 4 · Defense-in-Depth for LLM Apps', meta: 'Layered controls · 20 min', desc: 'How the ten risks map to layered defenses; the defense-builder activity for the MVCC chatbot.' },
+    { id: 'd8m4', title: 'Activities · Incident Case-Study Matcher', meta: 'EchoLeak · Mata v. Avianca', desc: 'Matching real documented incidents to the OWASP categories they exemplify.' }
+  ],
+  9: [
+    { id: 'd9m1', title: 'Modules 1–2 · Data as Code · Poisoning Taxonomy', meta: 'Five sub-categories · 55 min', desc: 'The control-plane reframe and the five-part data-poisoning taxonomy, mapped to NIST AML.' },
+    { id: 'd9m2', title: 'Module 3 · Backdoor & Trojan Attacks', meta: 'Dormant compromises · 30 min', desc: 'How backdoor triggers and trojaned models work — and why they evade normal testing.' },
+    { id: 'd9m3', title: 'Module 4 · Model Drift — Four Types & Detection', meta: 'PSI · ADWIN · 30 min', desc: 'Concept, data, label, and prediction drift — with statistical detection methods.' },
+    { id: 'd9m4', title: 'Module 5 · MLOps Pipeline Security', meta: 'Where attacks land · 25 min', desc: 'Securing the training/deployment pipeline — provenance, AIBOM, and defense-matrix building.' }
+  ],
+  10: [
+    { id: 'd10m1', title: 'Modules 1–2 · Weaponization Shift · Deepfakes', meta: 'Scale, impact, detection · 70 min', desc: 'How AI changes attacker economics, and the deepfake threat — anchored by the Arup $25M case.' },
+    { id: 'd10m2', title: 'Module 3 · AI-Generated Phishing', meta: 'The grammar-check fallacy · 40 min', desc: 'Why "bad grammar" detection fails against AI phishing, BEC, and TOAD attacks.' },
+    { id: 'd10m3', title: 'Module 4 · AI-Enabled Influence Operations', meta: 'Scale meets personalization · 35 min', desc: 'Coordinated inauthentic behavior at national scale — the Romania election case.' },
+    { id: 'd10m4', title: 'Module 5 · Defensive Posture & Provenance', meta: 'What actually works · 25 min', desc: 'Content provenance (C2PA), watermarking, and the detection limits behind a layered defense.' }
+  ],
+  11: [
+    { id: 'd11m1', title: 'Modules 1–2 · Defense in Depth · Data Lifecycle', meta: 'Layered AI controls · 80 min', desc: 'Defense-in-depth for AI systems and controls across the data lifecycle — provenance and lineage.' },
+    { id: 'd11m2', title: 'Modules 3–4 · AIBOM & Model Cards', meta: 'Lifecycle artifacts · 60 min', desc: 'Building an AI Bill of Materials and model cards as the transparency and supply-chain controls.' },
+    { id: 'd11m3', title: 'Module 5 · Least Privilege for Agents', meta: 'Excessive agency · 50 min', desc: 'Constraining agentic systems — OWASP LLM06 controls, scoped tokens, and approval gates.' }
+  ],
+  12: [
+    { id: 'd12m1', title: 'Modules 1–2 · AI Value Chain · Roles & Obligations', meta: 'Provider/deployer/importer · 80 min', desc: 'The AI value chain and EU AI Act operator roles applied to vendor relationships (Article 25).' },
+    { id: 'd12m2', title: 'Module 3 · Embedded AI Risk', meta: 'AI you didn\u2019t know you bought · 30 min', desc: 'Risk from AI features embedded in third-party products — the hidden supply chain.' },
+    { id: 'd12m3', title: 'Modules 4–5 · Vendor Tiering & Assessment', meta: 'Questionnaire + contract lab · 75 min', desc: 'Tiering vendors by risk, the structured assessment questionnaire, and AI contract-clause governance.' }
+  ],
+  13: [
+    { id: 'd13m1', title: 'Modules 1–2 · Why Documents Matter · The AI AUP', meta: '8 components · 65 min', desc: 'The role of governance documents and how to build an AI Acceptable Use Policy that survives audit.' },
+    { id: 'd13m2', title: 'Module 3 · The Use Case Register', meta: 'Operational inventory · 30 min', desc: 'Building and maintaining the AI Use Case Register — the live inventory shadow-AI detection depends on.' },
+    { id: 'd13m3', title: 'Modules 4–5 · ISO 42001 Docs & IR Annex', meta: 'Document hierarchy · 80 min', desc: 'The ISO 42001 document hierarchy and the AI Incident Response Annex extending NIST SP 800-61.' }
+  ],
+  14: [
+    { id: 'd14m1', title: 'Modules 1–2 · Why IR Gaps Exist · AI IR Lifecycle', meta: 'Six gaps · 60 min', desc: 'The six ways AI breaks traditional IR, and the adapted NIST SP 800-61r3 lifecycle for AI incidents.' },
+    { id: 'd14m2', title: 'Module 3 · AI Red Teaming', meta: '8-category framework · 45 min', desc: 'Planning red-team exercises appropriate to system risk — safety, security, and abuse testing.' },
+    { id: 'd14m3', title: 'Module 4 · Tabletop Method & Exercises', meta: 'Three live TTXs · 20 min', desc: 'Running tabletops for deepfake fraud, prompt-injection exfiltration, and model-poisoning discovery.' }
+  ],
+  15: [
+    { id: 'd15m1', title: 'Synthesis · 15-Day Course Map & Trustworthiness', meta: 'Seven characteristics mapped', desc: 'Day-by-day synthesis and the seven NIST trustworthiness characteristics mapped across every lesson.' },
+    { id: 'd15m2', title: 'Capstone · AI Security Program Pack', meta: '8 components', desc: 'The team-built program pack — register, risk classification, architecture, AUP, red-team outline.' },
+    { id: 'd15m3', title: 'Assessment · Presentation, Peer Review & Careers', meta: 'Final quiz + pathways', desc: 'The presentation format, peer-review form, 18-objective self-assessment, and credential pathways.' }
+  ]
+};
+
+const CATEGORY_GROUPS = [
+  { id: 'credential', title: 'Credentials', meta: 'ISACA · CompTIA · ISC2', desc: 'The AI credentials and their traditional prerequisites.' },
+  { id: 'framework', title: 'Frameworks & Standards', meta: 'NIST · ISO', desc: 'Voluntary frameworks and certifiable standards.' },
+  { id: 'regulation', title: 'Regulations', meta: 'Binding law', desc: 'The new AI regulation and the familiar baseline it departs from.' },
+  { id: 'threat', title: 'Threat References', meta: 'OWASP · MITRE · NIST', desc: 'Where the attack taxonomies live.' },
+  { id: 'concept', title: 'Core Concepts', meta: 'Governance artifacts', desc: 'Lifecycle documentation concepts.' }
+];
+
+const RESOURCES = [
+
+  /* ═════════ CREDENTIALS ═════════ */
+  {
+    id: 'aaism', type: 'credential',
+    title: 'ISACA AAISM — Advanced in AI Security Management',
+    oneliner: 'The AI security management credential the whole course points toward. Three domains: Governance (31%), Risk (31%), Technologies & Controls (38%).',
+    links: [
+      { label: 'AAISM credential page (ISACA)', url: 'https://www.isaca.org/credentialing/aaism' },
+      { label: 'AAISM exam content outline', url: 'https://www.isaca.org/credentialing/aaism/aaism-exam-content-outline', note: 'domain weights and task statements' },
+      { label: 'ISACA AAISM launch FAQ', url: 'https://www.isaca.org/resources/news-and-trends/isaca-now-blog/2025/isaca-advanced-in-ai-security-management-aaism-faqs' }
+    ],
+    what: 'ISACA\'s AI-centric security management certification, launched August 2025. It validates a security manager\'s ability to govern enterprise AI: establishing AI security programs, managing AI-specific risk, and implementing technical controls. It is deliberately a stackable specialization — it supplements CISM/CISSP-level management expertise with an AI layer rather than replacing it.',
+    facts: [
+      'Prerequisite: an active CISM or CISSP (cannot be taken directly from Security+)',
+      'Exam: 90 multiple-choice questions, 2.5 hours, scaled passing score of 450',
+      'Domain 1 — AI Governance & Program Management: 31%',
+      'Domain 2 — AI Risk Management: 31%',
+      'Domain 3 — AI Technologies & Controls: 38% (largest weight)'
+    ],
+    dayCtx: {
+      1: {
+        flowGroup: 'd1m1',
+        where: 'Overview · Module 1 · Module 4',
+        why: 'AAISM is the organizing skeleton of the entire lesson: the pilot\'s type-rating analogy, the credential comparison table, and the deep dive on the three domains in Module 4 all build toward it.',
+        notes: [
+          'Emphasize the pathway sequencing: Security+ → this course → CISM/CISSP → AAISM. Students sometimes assume they can sit AAISM right after Security+ — they cannot.',
+          'The exam content outline page is the authoritative source for the 31/31/38 weights quoted in the lesson and in Quiz Q3.',
+          'Mnemonic for the three ISACA AI credentials by audience: Auditors → AAIA, Security managers → AAISM, Risk pros → AAIR.'
+        ]
+      },
+      2: {
+        flowGroup: 'd2m1',
+        where: 'Module 1 — Component 5 (Defined Roles)',
+        why: 'Component 5 states that "AAISM Domain 1 requires these roles to be defined, empowered, and trained" — the AI Governance Lead, Risk Owner, and Security Lead. The exam content outline is where those Domain 1 task statements live.',
+        notes: [
+          'Connect back to Day 1: Domain 1 was previewed at 31% weight; today\'s five governance components are what those Domain 1 tasks look like in an actual organization.',
+          'Good comprehension check: "Which of today\'s five governance components maps to which AAISM domain?" (Committee/roles/AUP → D1; register → D1/D2; IR annex → D1 with D3 controls.)'
+        ]
+      },
+      3: {
+        flowGroup: 'd3m2',
+        where: 'GV-2.1 (roles) · GV-2.2 (training) · the charter activity',
+        why: 'The AAISM Domain 1 governance roles map directly onto GV-2.1: AI Governance Lead, AI Risk Owner, AI Security Lead, Model Owner, Data Steward for AI. Day 3 turns those role names into a charter students actually draft — so Domain 1 stops being a bullet list and becomes an org chart.',
+        notes: [
+          'GV-2.1\'s "common failure" (naming the CISO as AI risk owner with no added resources or authority) is a great AAISM-exam-flavored discussion — the credential expects roles to be empowered and resourced, not just labeled.',
+          'The charter builder (Activity A) is essentially a Domain 1 artifact: roles, risk tolerance, oversight body, training tiers. Students can keep it for a real AAISM portfolio.'
+        ]
+      },
+      15: {
+        flowGroup: 'd15m3',
+        where: 'Career pathways — AAISM as the credential the course prepares for',
+        why: 'Day 15\'s career-pathways section points students toward AAISM: the capstone Program Pack is essentially a portfolio artifact against its three domains.',
+        notes: [
+          'Close the loop from Day 1: Security+ → CISM/CISSP → AAISM, with this course as the AI-specific bridge.'
+        ]
+      }
+    }
+  },
+  {
+    id: 'aaia', type: 'credential',
+    title: 'ISACA AAIA — Advanced in AI Audit',
+    oneliner: 'The audit-track sibling of AAISM, for assurance professionals who hold CISA or an equivalent audit credential.',
+    links: [
+      { label: 'AAIA credential page (ISACA)', url: 'https://www.isaca.org/credentialing/aaia' }
+    ],
+    what: 'ISACA\'s AI audit credential, the first of the three "Advanced in AI" certifications to launch. It targets auditors and assurance professionals, validating the ability to audit AI systems, their controls, and their governance. Prerequisite is CISA or another qualified high-level audit certification.',
+    facts: [
+      'Audience: IT auditors and assurance professionals',
+      'Prerequisite: CISA or equivalent audit certification',
+      'Focus: auditing AI systems and controls, per the lesson\'s comparison table'
+    ],
+    dayCtx: {
+      1: {
+        flowGroup: 'd1m1',
+        where: 'Module 1 — credential comparison table',
+        why: 'Appears in the three-credential table so students can pick the right next credential for their role. Most AI-103 students on a security track will target AAISM, not AAIA.',
+        notes: [
+          'Useful contrast question for class: "You manage the security program vs. you provide independent assurance over it — which credential fits which role?"'
+        ]
+      }
+    }
+  },
+  {
+    id: 'aair', type: 'credential',
+    title: 'ISACA AAIR — Advanced in AI Risk',
+    oneliner: 'The risk-track credential, launched April 2026 — the newest of the three ISACA AI certifications.',
+    links: [
+      { label: 'AAIR credential page (ISACA)', url: 'https://www.isaca.org/credentialing/aair' },
+      { label: 'ISACA AAIR launch press release (Apr 2026)', url: 'https://www.isaca.org/about-us/newsroom/press-releases/2026/isaca-launches-advanced-in-ai-risk-aair-certification-to-equip-it-risk-professionals' }
+    ],
+    what: 'ISACA\'s AI risk credential for experienced IT risk and advisory professionals, formally launched April 15, 2026. It validates the ability to evaluate AI-related vulnerabilities, assess opportunities and impacts, and manage the full AI risk lifecycle across three practice areas: AI risk governance and framework integration, AI lifecycle risk management, and AI risk program management.',
+    facts: [
+      'Launched April 15, 2026 — newest of the three ISACA AI credentials',
+      'Prerequisites: one of ~25 qualifying certifications (CRISC is the primary pathway; CISA, CISM, CISSP, CGEIT, CDPSE and others also qualify) plus IT risk experience',
+      'Three practice areas: risk governance & framework integration · lifecycle risk management · risk program management'
+    ],
+    dayCtx: {
+      1: {
+        flowGroup: 'd1m1',
+        where: 'Module 1 — credential comparison table',
+        why: 'Third row of the credential table. The lesson lists its prerequisite as "CRISC or equivalent" — CRISC is the primary pathway, and ISACA accepts a broad list of equivalents.',
+        notes: [
+          'This credential is only a few months old as of this semester — students may find beta-era information online that has since been superseded by the April 2026 launch details.',
+          'AAIR\'s three practice areas map loosely to AAISM Domain 2, which is a nice illustration of how the credentials overlap without duplicating.'
+        ]
+      }
+    }
+  },
+  {
+    id: 'pathway', type: 'credential',
+    title: 'The Traditional Credential Pathway — Security+, CISM, CISSP, CISA, CRISC',
+    oneliner: 'The five foundational credentials the lesson builds on: the "ATPL" in the pilot analogy.',
+    links: [
+      { label: 'CompTIA Security+', url: 'https://www.comptia.org/en-us/certifications/security/' },
+      { label: 'ISACA CISM — Certified Information Security Manager', url: 'https://www.isaca.org/credentialing/cism' },
+      { label: 'ISC2 CISSP — Certified Information Systems Security Professional', url: 'https://www.isc2.org/certifications/cissp' },
+      { label: 'ISACA CISA — Certified Information Systems Auditor', url: 'https://www.isaca.org/credentialing/cisa' },
+      { label: 'ISACA CRISC — Certified in Risk and Information Systems Control', url: 'https://www.isaca.org/credentialing/crisc' }
+    ],
+    what: 'The established, pre-AI credential landscape the lesson assumes as its foundation. Security+ provides the entry-level vocabulary (the course\'s stated grounding); CISM and CISSP are the management-level prerequisites for AAISM; CISA feeds AAIA; and CRISC is the primary pathway to AAIR.',
+    facts: [
+      'Security+ — entry-level foundation; the lesson\'s five-domain summary (threats, crypto/PKI, IAM, architecture, IR & governance) derives from its exam objectives',
+      'CISM / CISSP — the two accepted AAISM prerequisites',
+      'CISA — the AAIA prerequisite; CRISC — the primary AAIR pathway',
+      'Lesson framing: these transfer completely to AI security — what changes is "the aircraft"'
+    ],
+    dayCtx: {
+      1: {
+        flowGroup: 'd1m1',
+        where: 'Overview analogy · Module 1 domain-compare cards · Activity A',
+        why: 'Activity A asks students to map course objectives to Security+ domains, so having the official Security+ objective list one click away is useful during the share-out.',
+        notes: [
+          'CompTIA periodically re-versions Security+ exam codes and shuffles domain names — if a student\'s study materials use slightly different domain labels than the lesson\'s cards, that\'s why. The concepts map cleanly regardless of version.',
+          'During Activity A, pull up the Security+ page and have students compare the official domain list against the lesson\'s five-card summary.'
+        ]
+      }
+    }
+  },
+
+  /* ═════════ FRAMEWORKS & STANDARDS ═════════ */
+  {
+    id: 'nist-ai-rmf', type: 'framework',
+    title: 'NIST AI Risk Management Framework (AI RMF 1.0)',
+    oneliner: 'The voluntary U.S. risk framework built on four functions — Govern, Map, Measure, Manage — and seven trustworthiness characteristics.',
+    links: [
+      { label: 'NIST AI RMF hub page', url: 'https://www.nist.gov/itl/ai-risk-management-framework' },
+      { label: 'AI RMF 1.0 full document (NIST AI 100-1, PDF)', url: 'https://nvlpubs.nist.gov/nistpubs/ai/nist.ai.100-1.pdf' },
+      { label: 'AI RMF Playbook (NIST AIRC)', url: 'https://airc.nist.gov/airmf-resources/playbook/', note: 'the categories and subcategories the lesson references live here' },
+      { label: 'Generative AI Profile (NIST AI 600-1, PDF)', url: 'https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf', note: 'GenAI companion, July 2024' }
+    ],
+    what: 'Released January 26, 2023 under a Congressional mandate, the AI RMF is NIST\'s voluntary, sector-agnostic framework for managing AI risk. Part 1 explains how AI risk differs from traditional software risk and defines seven trustworthiness characteristics; Part 2 organizes practice into four core functions — Govern, Map, Measure, Manage — each broken into categories and subcategories in the companion Playbook.',
+    facts: [
+      'Four functions: GOVERN (cross-cutting culture & accountability), MAP (context & risk identification), MEASURE (assessment & tracking, home of TEVV), MANAGE (prioritization & response)',
+      'GOVERN has six categories: 1 policies · 2 accountability · 3 workforce DEI · 4 risk culture · 5 value-chain engagement · 6 third-party risk',
+      'Seven trustworthiness characteristics: valid & reliable · safe · secure & resilient · accountable & transparent · explainable & interpretable · privacy-enhanced · fair with harmful bias managed',
+      'Voluntary and non-certifiable — the key contrast with ISO/IEC 42001',
+      'Structurally parallel to NIST CSF 2.0, which is why CISM/CISSP holders find it familiar'
+    ],
+    dayCtx: {
+      1: {
+        flowGroup: 'd1m3',
+        where: 'Module 3 course map (Days 1–4 node) · Module 4 Domain 3 "Ethics & Trust" node',
+        why: 'The Domain 3 "Ethics & Trust" map node explicitly aligns to "NIST AI RMF trustworthiness characteristics" — the list of seven above is what that node refers to.',
+        notes: [
+          'The trustworthiness characteristics preview Day 2 — worth naming all seven aloud on Day 1 so they sound familiar later.',
+          'Compare/contrast talking point: NIST AI RMF is what you follow; ISO 42001 is what you certify against. Same territory, different enforcement models.',
+          'The Playbook is the most classroom-useful artifact — it turns each subcategory into concrete actions, which students can use in the Day 15 capstone.'
+        ]
+      },
+      2: {
+        flowGroup: 'd2m2',
+        where: 'Module 2 (35-min deep dive) · Module 6 stack ("the engine") · Quiz Q4, Q9',
+        why: 'Today\'s treatment is the full one: all four function tabs, the six GOVERN categories, the seven characteristics with their tradeoffs, and the "engine" role in the governance stack. The Playbook link is the primary source for every category the lesson lists.',
+        notes: [
+          'The lesson\'s "common failure mode" (skipping GOVERN and starting with MEASURE) is worth dwelling on — it\'s the most transferable insight of the module and reappears in the scenario sorter.',
+          'TEVV (Testing, Evaluation, Verification, and Validation) is named in the MEASURE tab — students will meet the acronym again in vendor documentation; it comes from the AI RMF\'s own vocabulary.',
+          'The tradeoffs grid (explainability vs. accuracy, privacy vs. performance) is exam-relevant framing: mature governance documents tradeoffs rather than denying them.',
+          'Day 3 covers Govern and Map in applied depth per the lesson footer — today is the map, not the territory.'
+        ]
+      },
+      3: {
+        flowGroup: 'd3m1',
+        where: 'The entire lesson — Modules 1–5, both activities, and all 10 quiz questions',
+        why: 'Day 3 is the deep implementation dive on the AI RMF\'s first two functions. Every subcategory code the lesson enumerates (GV-1.1 through GV-6.2, MP-1.1 through MP-5.2) comes straight from the framework; the Playbook link is the authoritative source for all of them.',
+        notes: [
+          'The lesson\'s central thesis — most orgs "implement NIST AI RMF" but only do the system layer (Map/Measure/Manage) and skip the organization layer (Govern) — is the single most important takeaway. The Playbook makes the Govern subcategories concrete enough to act on.',
+          'Subcategory-count note: the lesson teaches GOVERN as 6 categories / 19 subcategories and MAP as 5 categories / 18 subcategories (37 combined). NIST\'s own numbering has shifted slightly across releases, so if a student\'s count differs by one or two, check which Playbook revision they\'re citing — the lesson\'s codes match its stated structure.',
+          'The seven trustworthiness characteristics resurface in GV-1.2 (they must appear in policy as design constraints). Students met all seven on Day 2 — Day 3 is where they become auditable policy language.',
+          'For the charter and MAP-worksheet activities, the Playbook is the best desk reference: it lists suggested actions and evidence per subcategory, which is exactly what students are drafting.'
+        ]
+      },
+      4: {
+        flowGroup: 'd4m1',
+        where: 'The entire lesson — MEASURE (22 subcategories) and MANAGE (13 subcategories)',
+        why: 'Day 4 completes the four-function walkthrough: MEASURE (MS-1.1 through the full set) quantifies and tracks the risks MAP identified, and MANAGE (MG-1.1 onward) treats them and loops findings back to GOVERN. The Playbook is again the authoritative source for every subcategory code.',
+        notes: [
+          'The Day 4 through-line: MAP (Day 3) found the risks, MEASURE assesses them with metrics and TEVV, MANAGE decides what to do. The continuous-improvement loop feeds MANAGE lessons back to GOVERN — closing the circle from Day 3.',
+          'MEASURE is where TEVV lives (Testing, Evaluation, Verification, Validation) — the same acronym from the Day 3 MP-3.3 row, now the organizing idea of a whole function.',
+          'Emphasize continuous measurement: unlike traditional software tested once at release, AI degrades in production (drift), so MEASURE is an ongoing practice, not a release gate. That\'s the Module 1 thesis.'
+        ]
+      },
+      6: {
+        flowGroup: 'd6m2',
+        where: 'Module 3 — each of the five risk categories maps to NIST subcategories (e.g. MS-2.11, MS-3.1, MG-2.4, MAP-4.1/4.2, GV-6.1)',
+        why: 'Day 6\'s five AI risk categories aren\'t a competing taxonomy — the lesson maps each back to the NIST subcategories that address it. Model risk → MEASURE robustness/validity subcategories; data risk → MAP-4.2; third-party risk → GV-6.1 and MAP-4.1; and so on. The framework is the control layer under the taxonomy.',
+        notes: [
+          'Good synthesis question: "For each of the five risk categories, which NIST function owns the response?" (Model/data risk → mostly MEASURE; operational → MANAGE; third-party → GOVERN 6 + MAP 4; ethical → cuts across GOVERN 3, MAP 5, MEASURE fairness.)',
+          'Shadow AI detection (Module 5) is literally a gap analysis against the GV-1.5 AI Use Case Register from Day 3 — the register you build in governance is the baseline shadow-AI hunting works from.'
+        ]
+      },
+      7: {
+        flowGroup: 'd7m4',
+        where: 'Module 6 — the framework stack (NIST AI RMF as the operating model)',
+        why: 'Day 7\'s "which framework when" module places NIST AI RMF as the risk-management operating model that the threat references (ATLAS, OWASP, NIST AML) feed into.',
+        notes: []
+      },
+      11: {
+        flowGroup: 'd11m1',
+        where: 'Architecture controls implement MANAGE-function risk treatments',
+        why: 'Day 11\'s defense-in-depth is the MANAGE function made architectural — controls mapped to the risks MEASURE surfaced.',
+        notes: []
+      },
+      13: {
+        flowGroup: 'd13m1',
+        where: 'Governance documents implement the GOVERN function',
+        why: 'Day 13\'s AUP, register, and policies are the concrete artifacts of the GOVERN function from Day 3.',
+        notes: []
+      },
+      14: {
+        flowGroup: 'd14m1',
+        where: 'AI IR extends the MANAGE function (incident response)',
+        why: 'Day 14\'s incident response is the MANAGE-function incident-handling subcategories made operational for AI.',
+        notes: []
+      },
+      15: {
+        flowGroup: 'd15m1',
+        where: 'Synthesis — the seven trustworthiness characteristics mapped across all 15 days (~33 mentions)',
+        why: 'Day 15\'s synthesis is organized around the seven NIST trustworthiness characteristics, mapping each to the lessons that developed it. The AI RMF is the framework the whole course was built on.',
+        notes: [
+          'The capstone self-assessment maps all 18 objectives back to the four functions and seven characteristics — the AI RMF is the organizing spine of the synthesis.'
+        ]
+      }
+    }
+  },
+  {
+    id: 'nist-csf', type: 'framework',
+    title: 'NIST Cybersecurity Framework (CSF) 2.0',
+    oneliner: 'The cybersecurity framework the AI RMF is structurally parallel to — the reason the AI RMF "feels familiar" to CISMs.',
+    links: [
+      { label: 'NIST CSF hub page', url: 'https://www.nist.gov/cyberframework' },
+      { label: 'CSF 2.0 full document (PDF)', url: 'https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf' }
+    ],
+    what: 'NIST\'s flagship cybersecurity framework, updated to version 2.0 in February 2024. CSF 2.0 organizes cybersecurity practice into six functions — Govern, Identify, Protect, Detect, Respond, Recover — with Govern newly elevated to a cross-cutting function. The AI RMF deliberately mirrors this function-based architecture, and the current NIST SP 800-61 Rev. 3 incident response guidance is organized as a CSF 2.0 community profile.',
+    facts: [
+      'Version 2.0 released February 2024; added GOVERN as a sixth, cross-cutting function',
+      'Six functions: Govern · Identify · Protect · Detect · Respond · Recover',
+      'The AI RMF\'s Govern/Map/Measure/Manage structure is the AI-domain analogue of this function-based design',
+      'SP 800-61 Rev. 3 (the IR guidance in Component 4\'s annex) is now organized around these six functions'
+    ],
+    dayCtx: {
+      2: {
+        flowGroup: 'd2m2',
+        where: 'Module 2 banner — "structurally parallel to NIST CSF 2.0, which is why CISMs find it immediately familiar"',
+        why: 'The lesson uses CSF 2.0 as the familiarity bridge. If a student hasn\'t worked with CSF, showing the six functions side-by-side with the AI RMF\'s four makes the parallel concrete.',
+        notes: [
+          'Quick board exercise: write CSF\'s six functions and AI RMF\'s four side by side, and ask students to draw the mapping (CSF Govern ↔ AI RMF Govern; Identify ↔ Map; Detect/Protect ↔ Measure/Manage roughly).',
+          'CSF 2.0 elevating GOVERN in 2024 and AI RMF leading with GOVERN in 2023 is the same design philosophy — governance first — which reinforces the Module 2 failure-mode point.'
+        ]
+      }
+    }
+  },
+  {
+    id: 'iso-42001', type: 'framework',
+    title: 'ISO/IEC 42001:2023 — AI Management Systems (AIMS)',
+    oneliner: 'The world\'s first certifiable AI management system standard — the ISO 27001 analogue for AI, with 38 Annex A controls across 9 domains.',
+    links: [
+      { label: 'ISO/IEC 42001 standard page (ISO)', url: 'https://www.iso.org/standard/42001' },
+      { label: 'ISO overview: AI management systems', url: 'https://www.iso.org/artificial-intelligence/ai-management-systems' }
+    ],
+    what: 'Published December 2023, ISO/IEC 42001 specifies requirements for establishing, implementing, maintaining, and continually improving an Artificial Intelligence Management System (AIMS). It follows the same Harmonized Structure (Annex SL) as ISO 27001, ISO 9001, and ISO 14001 — clauses 4 through 10 covering Context, Leadership, Planning, Support, Operation, Performance Evaluation, and Improvement — with the AI-specific substance in Annex A\'s 38 controls and in AI-specific clause requirements.',
+    facts: [
+      'World\'s first AI management system standard (December 2023); certifiable by accredited third parties — unlike the voluntary NIST AI RMF',
+      'Harmonized Structure (Annex SL): clauses 4–10 identical in architecture to ISO 27001',
+      'Annex A: 38 AI-specific controls across 9 domains (vs. ISO 27001\'s 93); applicability set by the Statement of Applicability (SoA)',
+      'Certification = two-stage audit (Stage 1 documentation, Stage 2 operational) with time-limited certificates and surveillance audits',
+      'Full text is paywalled — the ISO page provides scope and purchase; certification-body explainers cover the structure free'
+    ],
+    dayCtx: {
+      1: {
+        flowGroup: 'd1m3',
+        where: 'Module 3 course map (Days 2–5 node)',
+        why: 'The course map node reads "Certifiable AI management system. AIMS analogue to ISO 27001." Students who know ISO 27001 from Security+ study will grasp the parallel instantly.',
+        notes: [
+          'Heads-up before you screen-share: the actual standard text is behind ISO\'s paywall. Show the scope on the ISO page, then use certification-body explainers (BSI, Microsoft compliance docs) for structure without buying it.',
+          'The NIST-vs-ISO distinction (framework vs. certifiable standard) is a reliable exam-style discriminator worth drilling.'
+        ]
+      },
+      2: {
+        flowGroup: 'd2m3',
+        where: 'Module 3 (30-min deep dive) · Module 6 stack ("the chassis") · Quiz Q1, Q7, Q8',
+        why: 'Today covers the full clause table (4–10 with ISO 27001 parallels), the nine Annex A domains, and the meaning of "certifiable" (two-stage audit, SoA, surveillance). Three quiz questions draw directly from this module.',
+        notes: [
+          'Quiz Q8\'s CISO scenario ("we\'re ISO 27001 certified, 42001 should be easy") is the module\'s key nuance: same Annex SL skeleton, genuinely new AI content. Don\'t let students round it to "identical."',
+          'The Annex A count contrast is memorable: 27001 has 93 controls, 42001 has 38 — fewer but deeper, because each AI control (impact assessment, lifecycle, data provenance) is substantial.',
+          'The Clause 6 row references an AI system impact assessment "(ISO 42005)" — that\'s a separate guidance standard; see its own card in this module.'
+        ]
+      },
+      3: {
+        flowGroup: 'd3m1',
+        where: 'Module 1 — the RMF two-layer table, "ISO 42001 parallel" row',
+        why: 'Day 3\'s architecture table maps the AI RMF\'s two layers onto ISO 42001 clauses: GOVERN aligns to Clauses 4–7 (context, leadership, planning, support), while MAP/MEASURE/MANAGE align to Clause 8 (operation) and the Annex A lifecycle controls. It\'s the bridge that makes the RMF\'s abstract layering concrete for anyone who saw ISO 42001 on Day 2.',
+        notes: [
+          'This is a fast callback, not a new deep dive — students learned 42001\'s clause structure on Day 2; today it just anchors the Govern-vs-system-layer split. Keep the ISO page handy only if someone questions the mapping.',
+          'Nice reinforcement: GOVERN "established once, inherited by all systems" mirrors 42001 Clauses 4–7 (the management-system setup); MAP "per-system due diligence" mirrors Clause 8 operation. Same two-layer logic in both frameworks.'
+        ]
+      },
+      11: {
+        flowGroup: 'd11m1',
+        where: 'Lifecycle controls align to ISO 42001 Annex A (~3 mentions)',
+        why: 'Day 11\'s data-lifecycle and architecture controls map to ISO 42001 Annex A lifecycle controls — the standard\'s operational requirements become design decisions.',
+        notes: []
+      },
+      12: {
+        flowGroup: 'd12m3',
+        where: 'Vendor assessment references ISO 42001 certification as vendor evidence',
+        why: 'Day 12 treats a vendor\'s ISO 42001 certification as assurance evidence — a certified AIMS reduces assessed vendor risk.',
+        notes: []
+      },
+      13: {
+        flowGroup: 'd13m3',
+        where: 'Module 4 — "ISO 42001 DOCUMENTS" (a full 40-min module)',
+        why: 'Day 13 builds the ISO 42001 document hierarchy: policy → procedures → records. This is the standard\'s clause structure (from Day 2) turned into an actual document set students assemble.',
+        notes: [
+          'The document hierarchy is Annex A made concrete. This is the payoff of the Day 2 clause-structure material.'
+        ]
+      },
+      15: {
+        flowGroup: 'd15m2',
+        where: 'Capstone — the program pack maps to ISO 42001 structure',
+        why: 'Day 15\'s program pack is organized so it could support an ISO 42001 AIMS.',
+        notes: []
+      }
+    }
+  },
+  {
+    id: 'iso-27001', type: 'framework',
+    title: 'ISO/IEC 27001 — Information Security Management Systems',
+    oneliner: 'The ISMS standard every clause of ISO 42001 is compared against — the "80% already understood" baseline for CISMs.',
+    links: [
+      { label: 'ISO/IEC 27001 standard page (ISO)', url: 'https://www.iso.org/standard/27001' }
+    ],
+    what: 'The long-established international standard for information security management systems (ISMS), most recently revised in 2022. Lesson 2 uses it as the structural reference point for ISO 42001: both follow the Annex SL Harmonized Structure, so an organization or professional who has implemented an ISO 27001 ISMS already understands the clause architecture of an ISO 42001 AIMS.',
+    facts: [
+      'Current edition: ISO/IEC 27001:2022, with 93 Annex A controls',
+      'Same Annex SL clause structure (4–10) as ISO 42001 — Context, Leadership, Planning, Support, Operation, Performance, Improvement',
+      'The lesson\'s clause table maps every ISO 42001 clause to its 27001 parallel',
+      'Organizations commonly integrate a 42001 AIMS with an existing 27001 ISMS rather than running two parallel systems'
+    ],
+    dayCtx: {
+      2: {
+        flowGroup: 'd2m3',
+        where: 'Module 3 — "The ISO 27001 Parallel" analogy box and the clause comparison table',
+        why: 'Every row of the Module 3 clause table has an "ISO 27001 Parallel" column. Having the 27001 page open lets you answer "what does 27001 actually say there?" without hand-waving.',
+        notes: [
+          'Many AI-103 students met ISO 27001 only as a name in Security+ prep — a 2-minute orientation ("it\'s the certifiable ISMS standard; SOC 2\'s international cousin") pays off before the clause table.',
+          'The debrief question in Activity A ("we\'re 27001 certified, let\'s just add 42001 and we\'re done — what gaps remain?") is answered by the comparison matrix: threat specificity (OWASP) and legal obligations (EU AI Act) remain uncovered.'
+        ]
+      }
+    }
+  },
+  {
+    id: 'iso-42005', type: 'framework',
+    title: 'ISO/IEC 42005:2025 — AI System Impact Assessment',
+    oneliner: 'The guidance standard for AI impact assessments — referenced in ISO 42001\'s Clause 6 planning requirements.',
+    links: [
+      { label: 'ISO/IEC 42005 standard page (ISO)', url: 'https://www.iso.org/standard/42005' }
+    ],
+    what: 'Published in 2025 by ISO/IEC JTC 1/SC 42, ISO/IEC 42005 provides structured guidance for conducting AI system impact assessments — evaluating how an AI system and its foreseeable applications may affect individuals, groups, and society across the lifecycle. It is a process/guidance standard, not a certifiable one: organizations use it internally to make the impact assessments required by ISO 42001 (and expected under the EU AI Act for high-risk systems) rigorous and repeatable.',
+    facts: [
+      'Published 2025 by the same subcommittee (SC 42) that produced ISO 42001',
+      'Guidance standard — no certification or external audit; complements the certifiable ISO 42001',
+      'Covers timing and scope of assessments, thresholds, roles, documentation, and ongoing review across the lifecycle',
+      'Bridges to regulation: supports the fundamental-rights style impact assessments high-risk systems face under the EU AI Act'
+    ],
+    dayCtx: {
+      2: {
+        flowGroup: 'd2m3',
+        where: 'Module 3 clause table — Clause 6 (Planning) row: "AI adds impact assessment requirement (ISO 42005)"',
+        why: 'The lesson names it in passing inside the clause table. This card is the two-minute answer when a student asks "what\'s ISO 42005?" — a sibling guidance standard, not another certification.',
+        notes: [
+          'Clean taxonomy for the board: 42001 = the management system you certify; 42005 = the how-to guide for one of its required activities (impact assessment). Same family, different jobs.',
+          'The Annex A "AI System Impact Assessment" domain row says it "maps to EU AI Act FRIA for high-risk systems" — 42005 is the methodology that makes that mapping practical.'
+        ]
+      },
+      3: {
+        flowGroup: 'd3m3',
+        where: 'Module 4 — MAP output: "MAP Worksheet, AI System Card, or AI Impact Assessment"',
+        why: 'Day 3 says the output of MAP is "a completed system context document — sometimes called a MAP Worksheet, AI System Card, or AI Impact Assessment." ISO 42005 is the standardized methodology for that last form, so it\'s the rigor layer behind the worksheet students draft in Activity B.',
+        notes: [
+          'Framing that connects the frameworks: NIST MAP tells you what to capture; ISO 42005 tells you how to structure and document it; the EU AI Act FRIA is when the law requires it. The Day 3 MAP worksheet is a lightweight version of all three.',
+          'MAP 5 (impacts on individuals/groups) is exactly the territory ISO 42005 formalizes — worth mentioning when students reach the hardest, most-skipped MAP category.'
+        ]
+      }
+    }
+  },
+  {
+    id: 'sp-800-61', type: 'framework',
+    title: 'NIST SP 800-61 Rev. 3 — Incident Response Recommendations',
+    oneliner: 'The incident response guidance the AI IR annex extends — significantly restructured in April 2025 around CSF 2.0.',
+    links: [
+      { label: 'SP 800-61 Rev. 3 (final, CSRC)', url: 'https://csrc.nist.gov/pubs/sp/800/61/r3/final' },
+      { label: 'NIST Incident Response project page', url: 'https://csrc.nist.gov/projects/incident-response' }
+    ],
+    what: 'NIST\'s incident response publication, finalized April 3, 2025 as "Incident Response Recommendations and Considerations for Cybersecurity Risk Management: A CSF 2.0 Community Profile." Revision 3 fully supersedes the 2012 Revision 2 (the classic Computer Security Incident Handling Guide) and reorganizes incident response around the six CSF 2.0 functions — Govern, Identify, Protect, Detect, Respond, Recover — rather than the old standalone four-phase lifecycle.',
+    facts: [
+      'Rev. 3 finalized April 3, 2025; Rev. 2 formally withdrawn the same day',
+      'Now structured as a CSF 2.0 Community Profile using the six functions: Govern · Identify · Protect · Detect · Respond · Recover',
+      'The classic Rev. 2 lifecycle (Preparation → Detection & Analysis → Containment/Eradication/Recovery → Post-Incident) is the model most Security+ materials still teach',
+      'Course context: Days 14–15 adapt this for AI incidents — hallucination events, prompt injection, model poisoning'
+    ],
+    dayCtx: {
+      1: {
+        flowGroup: 'd1m3',
+        where: 'Module 3 course map (Days 14–15 node) · Module 4 Domain 1 "AI Incident Response Annex" row',
+        why: 'The lesson references "the NIST SP 800-61 IR lifecycle" — the phrase students will recognize from Security+ study. The current revision restructured that lifecycle, which is itself a teachable moment.',
+        notes: [
+          'Important accuracy point: the lesson (and most Security+ prep material) describes the Rev. 2 four-phase lifecycle. Rev. 3 replaced that with CSF 2.0 function alignment in April 2025. Flag this on Day 1 so the Day 14–15 tabletop uses current guidance — and it doubles as a live example of "the ground is moving under traditional infosec."',
+          'The mapping exercise in Activity A includes "Adapt NIST SP 800-61 incident response lifecycle for AI-specific incidents" — accept lifecycle-language answers, then note the revision.'
+        ]
+      },
+      2: {
+        flowGroup: 'd2m1',
+        where: 'Module 1 — Component 4: AI Incident Response Annex',
+        why: 'Component 4 defines the AI IR Annex as "an extension of the existing NIST SP 800-61 incident response plan" covering hallucination harm, prompt injection compromise, poisoning, and drift. Day 14 builds the annex in detail.',
+        notes: [
+          'Same Rev. 3 caution as Day 1 applies: the annex students build on Day 14 should extend the current CSF-2.0-aligned Rev. 3, not the withdrawn Rev. 2 playbook structure.',
+          'Component 4\'s killer line — "no playbook for \'the model started producing wrong outputs and we don\'t know when it started\'" — is a good hook for why drift belongs in an IR annex at all.'
+        ]
+      },
+      13: {
+        flowGroup: 'd13m3',
+        where: 'Module 5 — the AI IR Annex extends NIST SP 800-61 (~7 mentions)',
+        why: 'Day 13 builds the AI Incident Response Annex explicitly as an extension of NIST SP 800-61 for AI-specific incidents. This is the annex Day 1 and Day 2 pointed toward.',
+        notes: [
+          'Same Rev. 3 caution as before: the annex should extend the current CSF-2.0-aligned SP 800-61r3, not the withdrawn Rev. 2 four-phase lifecycle.'
+        ]
+      },
+      14: {
+        flowGroup: 'd14m1',
+        where: 'Modules 1–2 — the AI IR lifecycle adapts NIST SP 800-61r3 (the whole lesson)',
+        why: 'Day 14 is the incident-response lesson: it identifies six ways AI breaks traditional IR and adapts the NIST SP 800-61r3 lifecycle for AI incidents, then runs tabletops. SP 800-61r3 is the backbone.',
+        notes: [
+          'The r3 restructuring (CSF 2.0 functions, April 2025) is what Day 14 should teach — flag it so the tabletops use current guidance, not the old four-phase model.',
+          'The "six IR gaps" are the heart of Module 1: where the traditional lifecycle simply has no playbook for AI failure modes (silent drift, hallucination harm, model poisoning discovery).'
+        ]
+      },
+      15: {
+        flowGroup: 'd15m2',
+        where: 'Capstone — the IR annex in the Program Pack',
+        why: 'Day 15\'s program pack includes the AI IR annex built on SP 800-61r3.',
+        notes: []
+      }
+    }
+  },
+
+  /* ═════════ REGULATIONS ═════════ */
+  {
+    id: 'eu-ai-act', type: 'regulation',
+    title: 'EU AI Act — Regulation (EU) 2024/1689',
+    oneliner: 'The world\'s first binding horizontal AI regulation: four risk tiers, phased enforcement, extraterritorial reach, fines up to €35M or 7% of global turnover.',
+    links: [
+      { label: 'Official text (EUR-Lex, Regulation 2024/1689)', url: 'https://eur-lex.europa.eu/eli/reg/2024/1689/oj' },
+      { label: 'AI Act Explorer & high-level summary', url: 'https://artificialintelligenceact.eu/high-level-summary/', note: 'the most classroom-friendly navigation of the Act' },
+      { label: 'Implementation timeline (all key dates)', url: 'https://artificialintelligenceact.eu/implementation-timeline/', note: 'matches the Module 4 timeline table' },
+      { label: 'Article 5 — Prohibited AI practices', url: 'https://artificialintelligenceact.eu/article/5/' },
+      { label: 'Annex III — High-risk use cases', url: 'https://artificialintelligenceact.eu/annex/3/' },
+      { label: 'Chapter III Section 2 — High-risk requirements (Articles 8–15)', url: 'https://artificialintelligenceact.eu/chapter/3/', note: 'the nine high-risk obligations for Day 5 Module 4' },
+      { label: 'Article 50 — Transparency obligations (limited-risk)', url: 'https://artificialintelligenceact.eu/article/50/' },
+      { label: 'GPAI Code of Practice (AI Act Explorer)', url: 'https://artificialintelligenceact.eu/introduction-to-code-of-practice/', note: 'Chapter V / systemic-risk material for Day 5 Module 6' },
+      { label: 'European Commission AI Act Service Desk timeline', url: 'https://ai-act-service-desk.ec.europa.eu/en/ai-act/timeline/timeline-implementation-eu-ai-act', note: 'the EU\'s own phased-application summary' },
+      { label: 'AI Act Compliance Checker', url: 'https://artificialintelligenceact.eu/assessment/eu-ai-act-compliance-checker/', note: 'interactive classification tool' }
+    ],
+    what: 'The EU\'s comprehensive AI regulation, in force since August 1, 2024, applying in phases. Its core mechanism is risk-based classification: unacceptable-risk practices are prohibited (enforceable since February 2, 2025), high-risk systems face full conformity requirements (from August 2, 2026), limited-risk systems carry Article 50 transparency duties, and minimal-risk systems face only the Article 4 AI-literacy obligation. A separate regime covers general-purpose AI models (from August 2025). It distinguishes providers from deployers, reaches extraterritorially like GDPR, and carries penalties up to €35M or 7% of global annual turnover.',
+    facts: [
+      'Four risk tiers: unacceptable (prohibited) · high (full conformity) · limited (transparency, Art. 50) · minimal (AI literacy only, Art. 4)',
+      'Timeline: in force Aug 1, 2024 → prohibitions & AI literacy Feb 2, 2025 → GPAI obligations Aug 2, 2025 → high-risk obligations Aug 2, 2026 → legacy high-risk systems Aug 2, 2027',
+      'Classification is use-case driven, not technology driven — the same LLM can be minimal risk in one deployment and high risk in another',
+      'High-risk obligations include risk management, data governance, technical documentation, logging, human oversight, conformity assessment + CE marking, EU database registration, and Article 73 serious-incident reporting',
+      'Maximum fines: €35M or 7% of global annual turnover, whichever is higher',
+      'GPAI (general-purpose AI) models carry transparency and copyright duties above ~10^23 FLOP; models above 10^25 FLOP are presumed "systemic risk" with added safety, evaluation, and incident-reporting duties (Chapter V). The July 2025 GPAI Code of Practice is the voluntary compliance route.'
+    ],
+    dayCtx: {
+      1: {
+        flowGroup: 'd1m3',
+        where: 'Module 3 course map (highlighted Day 5 node) · Module 2 "Regulatory Novelty" flip card',
+        why: 'The lesson\'s highlighted node promises "Risk tiers, fines, extraterritorial reach" for Day 5, and the regulatory-novelty flip card cites the provider/deployer distinction. Quiz Q4 uses the Act as a distractor.',
+        notes: [
+          'Timely hook: the major high-risk obligations milestone lands August 2, 2026 — within weeks of this class session. Enterprises are scrambling right now, which makes the "why does this matter" case for you.',
+          'Use the Compliance Checker live with the Activity B scenarios — the MVCC predictive-analytics dashboard is a strong candidate for high-risk classification under the education Annex III category.',
+          'Precision note: the lesson says "four risk tiers," which is correct for the classic framing; the GPAI regime sits alongside the tiers rather than inside them.'
+        ]
+      },
+      2: {
+        flowGroup: 'd2m4',
+        where: 'Module 4 (35-min deep dive) · Module 6 stack ("the law") · Quiz Q2, Q5 · Scenarios 2, 6',
+        why: 'Today covers the full enforcement timeline table, all four tier tabs, Annex III high-risk categories, and the provider obligations list. The Article 5 and Annex III links open the exact legal text behind the lesson\'s bullet lists.',
+        notes: [
+          'DATE CHECK: the lesson\'s red callout says "August 2, 2026 is 75 days away" — that was written in May. As of late July 2026 it is days away, not weeks. Update the countdown aloud; the urgency is now literal.',
+          'Quiz Q2 hinges on February 2, 2025 as the prohibited-practices date — the timeline table row students most often misread (they anchor on August dates).',
+          'Scenario 6 (US company, no EU presence) turns on extraterritoriality — output used in the EU triggers scope regardless of headquarters. The GDPR parallel in the banner is the fastest way to teach this.',
+          'The "Minimal Risk ≠ No Governance" callout is the module\'s best trap-avoider: Act obligations ending doesn\'t mean governance ends — NIST/ISO/AUP still apply.'
+        ]
+      },
+      3: {
+        flowGroup: 'd3m2',
+        where: 'GV-1.1 (obligation register) · GV-2.2 (Article 4 AI literacy) · MP-5.1 (FRIA for high-risk)',
+        why: 'Day 3 threads the EU AI Act through three subcategories: GV-1.1 requires an obligation register that records each system\'s risk tier and provider/deployer obligations; GV-2.2 cites Article 4\'s AI-literacy mandate as making training "no longer optional"; and MP-5.1\'s disproportionate-impact analysis is framed as a compliance issue because it triggers the Act\'s Fundamental Rights Impact Assessment (FRIA).',
+        notes: [
+          'Quiz Q5 turns on exactly this point: MAP 5.1 is a security/governance issue (not "just ethics") because disparate impact on marginalized groups creates EU AI Act FRIA liability for high-risk systems. The Annex III link shows which use cases are high-risk.',
+          'GV-2.2\'s three training tiers (Awareness / Practitioner / Expert) are the course\'s concrete implementation of Article 4 — worth connecting so students see literacy as a real deliverable, not a slogan.',
+          'The GV-1.1 obligation register is where the Day 5 EU AI Act classification work will eventually be recorded — a nice forward pointer.'
+        ]
+      },
+      5: {
+        flowGroup: 'd5m1',
+        where: 'The entire lesson — timeline, four tiers, Articles 9–15, the four roles, and Chapter V GPAI',
+        why: 'Day 5 is the full EU AI Act deep dive. The links now include the specific articles the lesson works through: Article 5 (prohibited), Annex III (high-risk), Chapter III §2 / Articles 8–15 (the nine high-risk requirements), Article 50 (transparency), and the GPAI Code of Practice for Chapter V.',
+        notes: [
+          'DATE CHECK: the lesson\'s "where we are now" framing was written earlier in 2026. As of late July 2026, prohibitions (Feb 2025) and GPAI obligations (Aug 2025) are already in force, and the big high-risk milestone (Aug 2, 2026) is days away. Say the current date out loud so the timeline lands.',
+          'Classification is use-case driven, not model-driven — the lesson\'s decision tree (Activity A) hammers this. The same LLM is minimal-risk as a grammar tool and high-risk in admissions screening.',
+          'Roles (Module 5): Provider builds/places on market · Deployer uses under its authority · Importer brings a non-EU provider\'s system in · Distributor makes it available. Obligations are heaviest on the provider and shift as you move down the chain. Activity B drills exactly this.',
+          'GPAI numbers to get right (Module 6): the GPAI threshold is ~10^23 FLOP; the systemic-risk presumption is 10^25 FLOP. The July 2025 GPAI Code of Practice is voluntary but the main route to demonstrate compliance. Verify current figures via the linked AI Act Explorer before class.'
+        ]
+      },
+      6: {
+        flowGroup: 'd6m2',
+        where: 'Module 3 risk categories (ethical/third-party) · Shadow AI exposure paths · Article 5/14/50 references',
+        why: 'Day 6 uses the EU AI Act as the compliance backstop for its risk taxonomy: ethical risk ties to prohibited practices (Art. 5) and transparency (Art. 50); shadow AI that touches high-risk use cases creates unregistered Annex III liability. The Act is the "why this is a governance problem, not just an IT one" argument.',
+        notes: [
+          'Shadow AI\'s compliance angle: an unsanctioned tool doing Annex III high-risk work (e.g. an unofficial admissions-screening bot) is an un-governed, un-registered high-risk system — a direct EU AI Act exposure, not just a data-leak worry.',
+          'Ties back to Day 3\'s obligation register: shadow AI is exactly what\'s missing from GV-1.1/GV-1.5, which is why detection matters.'
+        ]
+      },
+      10: {
+        flowGroup: 'd10m3',
+        where: 'Article 50 transparency (deepfake/synthetic-media labeling)',
+        why: 'Day 10 references Article 50: AI-generated or manipulated content must be disclosed. It\'s the regulatory hook for the deepfake/synthetic-media discussion.',
+        notes: [
+          'Article 50 transparency is the legal counterpart to C2PA\'s technical provenance — law and tooling pushing the same direction.'
+        ]
+      },
+      11: {
+        flowGroup: 'd11m1',
+        where: 'Annex III high-risk requirements drive the architecture (~19 mentions)',
+        why: 'Day 11\'s secure-architecture work is scoped by EU AI Act requirements: high-risk systems (Annex III) must have specific technical controls, logging, and oversight designed in. The architecture serves the obligations.',
+        notes: [
+          'Article 15 (accuracy, robustness, cybersecurity) is effectively an architecture requirement — Day 11 is where those legal words become design decisions.'
+        ]
+      },
+      12: {
+        flowGroup: 'd12m1',
+        where: 'Modules 1–2 — the AI value chain and Article 25 (provider/deployer obligations)',
+        why: 'Day 12\'s vendor work is built on the EU AI Act operator roles (~28 mentions). Article 25 defines how obligations flow along the value chain — the legal basis for vendor tiering and contract clauses.',
+        notes: [
+          'Article 25 is the Day 12 anchor: it governs responsibilities along the supply chain, which is exactly what vendor risk management operationalizes.'
+        ]
+      },
+      13: {
+        flowGroup: 'd13m1',
+        where: 'AUP and governance documents implement EU AI Act obligations (~35 mentions)',
+        why: 'Day 13\'s policy documents (AUP, register, IR annex) are where EU AI Act obligations become organizational reality — prohibited-use clauses (Art. 5), transparency (Art. 50), incident reporting (Art. 73).',
+        notes: [
+          'Article 73 serious-incident reporting is a required element of the Day 13 IR annex.'
+        ]
+      },
+      14: {
+        flowGroup: 'd14m1',
+        where: 'Article 73 serious-incident reporting drives the AI IR lifecycle (~25 mentions)',
+        why: 'Day 14\'s incident-response work is shaped by Article 73: high-risk AI incidents must be reported to authorities within defined timelines. The IR lifecycle has to build that reporting in.',
+        notes: [
+          'Article 73 (and Article 33 for notified bodies) turns IR from an internal process into a regulatory obligation for high-risk systems.'
+        ]
+      },
+      15: {
+        flowGroup: 'd15m1',
+        where: 'Synthesis — the EU AI Act as the legal spine of the program (~41 mentions)',
+        why: 'Day 15 synthesizes the EU AI Act across the whole program: classification, high-risk obligations, roles, and reporting all feed the capstone.',
+        notes: []
+      }
+    }
+  },
+  {
+    id: 'gdpr-hipaa', type: 'regulation',
+    title: 'GDPR & HIPAA — The Familiar Regulatory Baseline',
+    oneliner: 'The two regulations the course uses as contrast and precedent: the compliance regimes security professionals already know.',
+    links: [
+      { label: 'GDPR full text (EUR-Lex, Regulation 2016/679)', url: 'https://eur-lex.europa.eu/eli/reg/2016/679/oj' },
+      { label: 'GDPR navigable reference (gdpr-info.eu)', url: 'https://gdpr-info.eu/' },
+      { label: 'HIPAA (U.S. HHS official page)', url: 'https://www.hhs.gov/hipaa/index.html' },
+      { label: 'FERPA (U.S. Dept. of Education — Student Privacy)', url: 'https://studentprivacy.ed.gov/ferpa', note: 'the education-sector regulation Day 3 adds to the obligation register' }
+    ],
+    what: 'The EU General Data Protection Regulation and the U.S. Health Insurance Portability and Accountability Act — the two compliance regimes most Security+-trained professionals already know. Day 1 invokes them to show what AI regulation is not (neither regulates model behavior or risk-tiers AI systems); Day 2 invokes GDPR as precedent for the EU AI Act\'s extraterritorial scope and penalty structure.',
+    facts: [
+      'GDPR: data-subject rights, lawful basis, breach notification — data-centric, not model-centric',
+      'HIPAA: privacy and security rules for PHI held by covered entities — sector-specific',
+      'The EU AI Act operates alongside GDPR, not instead of it — an AI system can trigger both',
+      'GDPR pioneered the extraterritorial + percentage-of-turnover penalty model the AI Act reuses',
+      'FERPA (20 U.S.C. § 1232g) governs student education records — the relevant sector regulation for MVCC and the Day 3 charter activity'
+    ],
+    dayCtx: {
+      1: {
+        flowGroup: 'd1m2',
+        where: 'Module 2 — "Regulatory Novelty" flip card',
+        why: 'The flip card states AI obligations "don\'t map cleanly to GDPR or HIPAA." These links let you show the actual scope language if a student pushes back.',
+        notes: [
+          'Good discussion prompt: the MVCC predictive-analytics dashboard in Activity B touches FERPA (student records), not HIPAA — a nice reminder that sector regulation is a patchwork and AI cuts across all of it.',
+          'If asked "doesn\'t GDPR Article 22 already cover automated decision-making?" — yes, partially, and that\'s exactly the point: partial coverage with new AI-specific gaps is the lesson\'s core thesis.'
+        ]
+      },
+      3: {
+        flowGroup: 'd3m2',
+        where: 'GV-1.1 (obligation register) · Activity A charter (GV-1.1 field)',
+        why: 'Day 3\'s GV-1.1 requires an obligation register linking each AI system to every law that touches it — and the lesson names FERPA alongside GDPR, HIPAA, and DORA as examples. The charter builder\'s first field explicitly prompts for FERPA as the MVCC regulatory obligation.',
+        notes: [
+          'FERPA is the sector regulation that matters most for the MVCC scenarios: any AI touching student records, grades, or aid decisions is in FERPA scope. The included U.S. Dept. of Education link is the authoritative source.',
+          'Teaching point for GV-1.1: the register isn\'t a one-time list — it needs an owner and a review cadence tied to how fast the relevant regulations change.'
+        ]
+      },
+      2: {
+        flowGroup: 'd2m4',
+        where: 'Module 4 banner — "Like GDPR, its scope is extraterritorial"',
+        why: 'Day 2 uses GDPR as precedent rather than contrast: same extraterritorial logic, same fines-as-percentage-of-turnover design. Students who lived through GDPR readiness in 2018 will recognize the current AI Act scramble.',
+        notes: [
+          'One-line framing that lands: "The AI Act is to 2026 what GDPR was to 2018 — same panic, same consultants, same deadline math."'
+        ]
+      },
+      4: {
+        flowGroup: 'd4m2',
+        where: 'MEASURE/MANAGE examples — FERPA and HIPAA as the sector rules a MVCC or health AI system must measure against',
+        why: 'Day 4\'s measurement and risk-treatment examples repeatedly use FERPA (student data) as the compliance constraint a control has to satisfy. When MEASURE evaluates a system and MANAGE treats the risk, the sector regulation defines what "acceptable" means.',
+        notes: [
+          'FERPA is the recurring MVCC constraint: any measured metric or managed control on a student-facing system has to hold up under FERPA. The Dept. of Education link is the authoritative reference.',
+          'Article 73 serious-incident reporting (named in the MANAGE material) is the EU AI Act analogue — worth noting the US sector-rule vs. EU horizontal-rule contrast when incident response comes up.'
+        ]
+      },
+      5: {
+        flowGroup: 'd5m1',
+        where: 'Module 1 — GDPR as the "binding law" precedent the EU AI Act builds on',
+        why: 'Day 5\'s "why binding changes everything" framing leans on GDPR as the model students already know: extraterritorial reach, percentage-of-turnover fines, and a compliance industry. The AI Act reuses that enforcement architecture.',
+        notes: [
+          'The GDPR parallel is the fastest way to make "binding" concrete: students who remember the 2018 GDPR scramble immediately grasp what an enforceable AI regulation means.'
+        ]
+      },
+      6: {
+        flowGroup: 'd6m2',
+        where: 'Data-risk and ethical-risk categories · shadow AI exposure paths (FERPA/GDPR data leakage)',
+        why: 'Day 6\'s data-risk category and shadow-AI exposure analysis use FERPA and GDPR as the concrete "what gets violated" when data flows into an unsanctioned AI tool. A student pasting records into a public chatbot is a FERPA exposure — the sector rule makes the risk category real.',
+        notes: [
+          'The sharpest shadow-AI teaching moment: an employee pasting student data into a consumer AI tool is a live FERPA violation, not a hypothetical. That\'s why shadow-AI detection is a compliance control, not just hygiene.',
+          'FERPA appears ~18 times in Day 6 — it\'s the anchor regulation for the whole MVCC shadow-AI scenario set.'
+        ]
+      },
+      9: {
+        flowGroup: 'd9m4',
+        where: 'Data-risk and privacy-attack context',
+        why: 'Day 9\'s privacy-attack material (extraction, inversion, membership inference) implicates GDPR/FERPA-protected data — the regulations define what\'s at stake when training data leaks.',
+        notes: []
+      },
+      13: {
+        flowGroup: 'd13m1',
+        where: 'AUP regulatory-obligation clauses (FERPA, GDPR)',
+        why: 'Day 13\'s AUP must encode the sector regulations — FERPA for student data, GDPR where applicable. The obligation register from Day 3 feeds these clauses.',
+        notes: []
+      }
+    }
+  },
+
+  /* ═════════ THREAT REFERENCES ═════════ */
+  {
+    id: 'owasp-llm', type: 'threat',
+    title: 'OWASP Top 10 for LLM Applications (2025)',
+    oneliner: 'The practitioner threat reference — all ten LLM risk categories, from Prompt Injection (LLM01) to Unbounded Consumption (LLM10).',
+    links: [
+      { label: 'OWASP Top 10 for LLM — current list', url: 'https://genai.owasp.org/llm-top-10/', note: 'each item links to its full risk page' },
+      { label: 'OWASP GenAI Security Project (home)', url: 'https://genai.owasp.org/' },
+      { label: '2025 edition resource page (full PDF)', url: 'https://genai.owasp.org/resource/owasp-top-10-for-llm-applications-2025/' }
+    ],
+    what: 'A community-driven list of the ten most critical security risks in applications built on large language models, maintained by the OWASP GenAI Security Project. The 2025 edition (published November 18, 2024) is the current version. The ten: LLM01 Prompt Injection, LLM02 Sensitive Information Disclosure, LLM03 Supply Chain, LLM04 Data & Model Poisoning, LLM05 Improper Output Handling, LLM06 Excessive Agency, LLM07 System Prompt Leakage, LLM08 Vector & Embedding Weaknesses, LLM09 Misinformation, LLM10 Unbounded Consumption.',
+    facts: [
+      'Current edition: 2025 (published Nov 18, 2024) — two new categories vs. 2023: LLM07 System Prompt Leakage and LLM09 Misinformation',
+      'LLM01 Prompt Injection remains #1; distinguishes direct injection from indirect (instructions hidden in retrieved content)',
+      'LLM06 Excessive Agency = excessive functionality, permissions, or autonomy in agentic systems',
+      'Covers socio-technical risks (misinformation, excessive agency) alongside technical ones — broader than the web Top 10\'s code focus',
+      'Free, Creative Commons licensed — students can download the full document'
+    ],
+    dayCtx: {
+      1: {
+        flowGroup: 'd1m2',
+        where: 'Module 2 flip cards · Module 3 course map · Module 4 Domain 3',
+        why: 'The lesson name-checks OWASP twice: "Excessive agency is a top OWASP LLM risk" (agentic action card) and the course map node for Days 7–8. Having the actual list open lets you show students the official category names behind the flip-card concepts.',
+        notes: [
+          'When the "Prompts as Attack Surface" card is flipped, open LLM01 and point out that OWASP distinguishes direct vs. indirect prompt injection — the indirect case (instructions hidden in retrieved content) is the one with truly no traditional analogue.',
+          'The lesson says "2025 edition" on the course map — that is the version published Nov 2024; check genai.owasp.org for anything newer before Day 7.',
+          'Quiz Q4 distractor prep: prompt injection ≠ non-determinism. The chatbot-phrasing scenario in Q4 is non-determinism; injection requires adversarial intent.'
+        ]
+      },
+      2: {
+        flowGroup: 'd2m5',
+        where: 'Module 5 (30-min deep dive, all ten modal cards) · Module 6 stack ("the threat reference") · Quiz Q3, Q6 · Scenarios 5, 8',
+        why: 'Today students learn all ten items via the clickable card grid — attack path, real-world example, and mitigations for each. The genai.owasp.org list is the primary source; each item there links to a full risk page with the same structure the lesson\'s modals follow.',
+        notes: [
+          'The lesson banner says "two new categories vs 2023" — those are LLM07 System Prompt Leakage and LLM09 Misinformation. Learning Objective 5 requires students to list all ten; a mnemonic pass at the end of Module 5 helps.',
+          'LLM07\'s core teaching point is architectural, not tactical: system prompts cannot function as security boundaries — design assuming disclosure.',
+          'Scenario 5 (SQL passed unsanitized downstream) = LLM05 Improper Output Handling + NIST Manage for the control program — the module\'s best example of OWASP and NIST layering.',
+          'The web-OWASP analogy card in this module carries the "same role, different domain" framing; see its card below for the traditional Top 10 link.'
+        ]
+      },
+      4: {
+        flowGroup: 'd4m2',
+        where: 'MEASURE — adversarial testing: "OWASP LLM07 system prompt leakage is an adversarial input test"',
+        why: 'Day 4 uses OWASP as a concrete MEASURE input: the adversarial-testing and red-teaming subcategories are satisfied by testing against OWASP LLM categories. The lesson explicitly names LLM07 (System Prompt Leakage) as an example of an adversarial input test a MEASURE program runs.',
+        notes: [
+          'The clean framing: OWASP tells you what to test for; the MEASURE function is where that testing gets scheduled, tracked, and turned into metrics. Threat reference meets risk-management engine.',
+          'This is a forward pointer to Days 7–8, where the full ten-item deep dive happens — Day 4 just uses OWASP as a testing checklist.'
+        ]
+      },
+      6: {
+        flowGroup: 'd6m2',
+        where: 'Model/operational risk categories · shadow AI (LLM06 Excessive Agency, LLM10 Unbounded Consumption)',
+        why: 'Day 6\'s risk categories borrow OWASP items as concrete instances: excessive agency (LLM06) shows up in the operational-risk and shadow-AI discussion, and unbounded consumption (LLM10) illustrates operational/cost risk. The taxonomy and the threat list reinforce each other.',
+        notes: [
+          'Shadow-AI tie-in: an unsanctioned agentic tool with broad permissions is LLM06 (Excessive Agency) plus a governance gap — the threat and the risk category describing the same thing.'
+        ]
+      },
+      7: {
+        flowGroup: 'd7m4',
+        where: 'Module 5 — "OWASP LLM Top 10 (2025): Practitioner Threat Reference" (20-min module)',
+        why: 'Day 7 places OWASP as the practitioner layer of the framework stack (Module 6 is "which framework when"). OWASP tells builders what to defend against; ATLAS and NIST AML sit alongside it.',
+        notes: [
+          'Day 7 is the setup; Day 8 is the full ten-item deep dive. Here OWASP is one layer of the stack being assembled.'
+        ]
+      },
+      8: {
+        flowGroup: 'd8m2',
+        where: 'The entire lesson — all ten items across Modules 2–3, plus defense-in-depth and real incidents',
+        why: 'Day 8 is THE OWASP deep dive: LLM01–LLM10 each get a flip card and full treatment (attack path, real incident, defenses), then Module 4 builds a defense-in-depth architecture. EchoLeak and Mata v. Avianca anchor it to real events.',
+        notes: [
+          'Learning Objective 11 (name all ten) and 12 (match scenarios to categories) both land here. The genai.owasp.org list is the primary source — each item links to its full risk page.',
+          'The case-study matcher (Activity B) pairs EchoLeak → LLM01/LLM02 and Mata v. Avianca → LLM09. Those two incidents have their own cards in this companion.'
+        ]
+      },
+      11: {
+        flowGroup: 'd11m3',
+        where: 'Module 5 — Least Privilege for Agents (OWASP LLM06 Excessive Agency)',
+        why: 'Day 11\'s agentic-security module is essentially the defensive answer to OWASP LLM06. Scoped tokens, approval gates, and least privilege are the controls that bound excessive agency.',
+        notes: [
+          'LLM06 is the through-line from threat (Day 8) to architecture (Day 11) to human oversight (Days 3/5): all three describe bounding autonomy.'
+        ]
+      },
+      14: {
+        flowGroup: 'd14m2',
+        where: 'Module 3 — red-teaming against the OWASP categories',
+        why: 'Day 14\'s red-team framework tests systems against OWASP LLM risks — prompt injection and the rest become the test cases for the exercises.',
+        notes: [
+          'The prompt-injection tabletop (Day 14) is a live exercise of OWASP LLM01.'
+        ]
+      },
+      15: {
+        flowGroup: 'd15m1',
+        where: 'Synthesis — OWASP as the threat-reference layer of the program',
+        why: 'Day 15 folds OWASP into the capstone: the security architecture and red-team outline are designed against the OWASP LLM Top 10.',
+        notes: []
+      }
+    }
+  },
+  {
+    id: 'owasp-web', type: 'threat',
+    title: 'OWASP Top 10 (Web Applications) — The Traditional Parallel',
+    oneliner: 'The classic web-application Top 10 the lesson uses as its anchoring analogy: "same role, different domain."',
+    links: [
+      { label: 'OWASP Top 10 project page', url: 'https://owasp.org/www-project-top-ten/', note: 'current edition and history' }
+    ],
+    what: 'The original OWASP Top 10 — the long-standing community reference for the most critical web application security risks (injection, broken access control, cryptographic failures, and so on). Lesson 2 invokes it as the analogy anchor: no serious web security program ignores the web Top 10, and the LLM Top 10 plays exactly that role for AI applications. The key difference the lesson draws: web OWASP catalogs code vulnerabilities, while LLM OWASP also covers socio-technical harms that arrive through model outputs.',
+    facts: [
+      'The reference list web security controls and scanners have been designed against for two decades',
+      'Students meet it in Security+ prep (injection, XSS, broken access control)',
+      'Maintained by the OWASP Foundation; check the project page for the current edition',
+      'Lesson\'s framing: same role as LLM Top 10, different domain — and the LLM list adds output-borne, socio-technical risk'
+    ],
+    dayCtx: {
+      2: {
+        flowGroup: 'd2m5',
+        where: 'Module 5 — "The Traditional OWASP Parallel" analogy box',
+        why: 'The analogy only works if students actually know the web Top 10. A 60-second refresher from the project page (injection, access control, XSS) sets up the "same role, different domain" point.',
+        notes: [
+          'Fast comprehension check: "SQL injection is to the web Top 10 what ______ is to the LLM Top 10." (Prompt injection — both are the #1, both are input-as-instructions confusion.)',
+          'Note the deliberate echo in LLM05: model output containing SQL injection is where the two lists literally meet — an LLM weakness producing a classic web weakness.'
+        ]
+      }
+    }
+  },
+  {
+    id: 'mitre-atlas', type: 'threat',
+    title: 'MITRE ATLAS — Adversarial Threat Landscape for AI Systems',
+    oneliner: 'The ATT&CK-style matrix of real-world adversary tactics and techniques against AI systems — the "(OWASP, ATLAS)" pairing in Domain 3.',
+    links: [
+      { label: 'ATLAS matrix (atlas.mitre.org)', url: 'https://atlas.mitre.org/' },
+      { label: 'ATLAS data & changelog (GitHub)', url: 'https://github.com/mitre-atlas/atlas-data', note: 'authoritative version/technique counts' }
+    ],
+    what: 'A free, living knowledge base of adversary tactics, techniques, mitigations, and documented case studies targeting AI and machine-learning systems, maintained by MITRE and modeled directly on ATT&CK. Where OWASP\'s LLM Top 10 ranks risks for builders, ATLAS catalogs how attacks actually unfold — reconnaissance through impact — including AI-specific tactics like AI Model Access and AI Attack Staging, plus techniques such as prompt injection, jailbreaks, and RAG poisoning.',
+    facts: [
+      'Structure mirrors ATT&CK: Tactics → Techniques → Mitigations, backed by real-world case studies',
+      'v5.1.0 (Nov 2025): 16 tactics, 84 techniques — the figures the Day 7 lesson quotes; v5.4.0 (Feb 2026) added further agent-focused techniques',
+      'Now on monthly, date-versioned content releases (e.g. 2026.05) — check the GitHub changelog for current counts',
+      'Not a control catalog or certification target — a threat-intelligence and red-teaming reference',
+      'Pairs with OWASP LLM Top 10: OWASP for risk categories, ATLAS for attacker behavior'
+    ],
+    dayCtx: {
+      1: {
+        flowGroup: 'd1m4',
+        where: 'Module 4 — Domain 3 intro ("threat landscape knowledge (OWASP, ATLAS)") and the "Red Team & Testing" map node',
+        why: 'Domain 3\'s red-teaming node ("adversarial testing — prompt injection, jailbreaks, poisoning, extraction") is essentially a description of what ATLAS catalogs.',
+        notes: [
+          'Students who studied ATT&CK for Security+ will feel at home immediately — lean on that: "same matrix logic, new attack surface."',
+          'The case studies are the classroom gold: real documented attacks on production AI systems make Module 2\'s abstractions concrete.'
+        ]
+      },
+      6: {
+        flowGroup: 'd6m2',
+        where: 'Module 3 — model-risk category (adversarial attack landscape)',
+        why: 'Day 6\'s model-risk category references ATLAS once as the catalog of how models actually get attacked. It\'s a pointer, not a deep dive — the full ATLAS treatment is Day 7 — but it grounds "model risk" in a real threat taxonomy rather than an abstraction.',
+        notes: [
+          'Keep this light on Day 6: one mention to show model risk is concrete and catalogued. Save the interactive matrix for Day 7.'
+        ]
+      },
+      7: {
+        flowGroup: 'd7m2',
+        where: 'Modules 2–3 — "ATT&CK vs ATLAS" and the full "ATLAS Deep Dive — All 16 Tactics" (40-min module)',
+        why: 'Day 7 is where ATLAS gets its full treatment: Module 2 teaches when to use ATT&CK vs ATLAS, and Module 3 walks all 16 tactics with an interactive matrix and attack-chain builder. The front page\'s "v5.1, 16 tactics, 84 techniques" figures are exactly what this module uses.',
+        notes: [
+          'Version note: the lesson cites v5.1 (16 tactics / 84 techniques), accurate as of Nov 2025. ATLAS reached v5.4.0 in Feb 2026 and now ships monthly date-versioned releases (e.g. 2026.05) — check the GitHub changelog before class; the counts grow.',
+          'The attack-chain builder (Activity A) is the ATLAS payoff: students assemble a real multi-tactic attack path against the MVCC chatbot.'
+        ]
+      },
+      15: {
+        flowGroup: 'd15m1',
+        where: 'Synthesis — the threat-landscape thread across the capstone',
+        why: 'Day 15 revisits ATLAS as part of the synthesis: the capstone red-team outline draws on the ATLAS tactics students learned on Day 7.',
+        notes: [
+          'In the capstone Program Pack, the red-team outline is where ATLAS resurfaces.'
+        ]
+      }
+    }
+  },
+  {
+    id: 'nist-aml', type: 'threat',
+    title: 'NIST AI 100-2e2025 — Adversarial Machine Learning Taxonomy',
+    oneliner: 'The authoritative vocabulary for the attack types named in Domain 2: poisoning, evasion, extraction, inversion, and privacy attacks.',
+    links: [
+      { label: 'NIST AI 100-2e2025 (final, CSRC)', url: 'https://csrc.nist.gov/pubs/ai/100/2/e2025/final' },
+      { label: 'NIST publication summary page', url: 'https://www.nist.gov/publications/adversarial-machine-learning-taxonomy-and-terminology-attacks-and-mitigations-0' }
+    ],
+    what: 'NIST\'s taxonomy and terminology of adversarial machine learning attacks and mitigations, updated March 24, 2025. It organizes attacks by system class (predictive AI vs. generative AI), lifecycle stage, and attacker goals/capabilities/knowledge — covering evasion, poisoning, and privacy attacks on predictive systems, plus prompt-injection and supply-chain attacks on generative systems. It is the standard reference that gives the lesson\'s "adversarial risk" row its precise vocabulary.',
+    facts: [
+      '2025 edition (E2025) published March 24, 2025, superseding the 2023 edition',
+      'Distinguishes Predictive AI (PredAI) from Generative AI (GenAI) attack surfaces',
+      'GenAI coverage includes direct and indirect prompt injection, RAG poisoning, and agent attacks',
+      'Companion to the AI RMF — adopts its security, resilience, and robustness concepts'
+    ],
+    dayCtx: {
+      1: {
+        flowGroup: 'd1m4',
+        where: 'Module 4 — Domain 2 "Adversarial Risk" row ("prompt injection, evasion, extraction, inversion, poisoning")',
+        why: 'When students ask "what exactly is model inversion vs. extraction?" this is the definitional source — the lesson names the attacks but defers definitions to Days 7–9.',
+        notes: [
+          'Keep this in your pocket for precision questions on Day 1; assign sections of it as pre-reading before Days 7–9 rather than covering it now.',
+          'Quick-reference distinction if asked: evasion fools a deployed model\'s output; poisoning corrupts training; extraction steals the model; inversion reconstructs training data.'
+        ]
+      },
+      7: {
+        flowGroup: 'd7m3',
+        where: 'Module 4 — "NIST AI 100-2 E2025: The Authoritative AML Taxonomy" (a full 30-min module)',
+        why: 'Day 7 gives NIST AI 100-2 its own module as the authoritative adversarial-ML taxonomy — evasion, poisoning, privacy, and abuse attacks across predictive and generative AI. It is the definitional backbone the whole AI-as-target unit rests on.',
+        notes: [
+          'This is the deep dive the Day 1 card promised. The four attack classes (evasion, poisoning, privacy, abuse) organize Days 7–9.',
+          'Pair it with ATLAS: NIST 100-2 is the taxonomy (what the attacks are); ATLAS is the matrix (how they chain in the wild).'
+        ]
+      },
+      8: {
+        flowGroup: 'd8m2',
+        where: 'Referenced throughout the OWASP deep dive as the taxonomy behind the LLM categories',
+        why: 'Day 8\'s OWASP items map back to NIST AML classes — poisoning (LLM04), prompt injection, and privacy attacks all have their formal definitions here.',
+        notes: [
+          'When a student wants the rigorous definition behind an OWASP category, this is the source.'
+        ]
+      },
+      9: {
+        flowGroup: 'd9m1',
+        where: 'Modules 1–2 — the data-poisoning taxonomy is built on NIST AI 100-2',
+        why: 'Day 9\'s five-part poisoning taxonomy and the privacy-attack material derive their vocabulary from NIST AI 100-2. The lesson\'s classifications trace to this document.',
+        notes: [
+          'The five poisoning sub-categories on Day 9 are a finer-grained expansion of the poisoning class NIST defines.'
+        ]
+      }
+    }
+  },
+
+  /* ═════════ CORE CONCEPTS ═════════ */
+  {
+    id: 'model-cards', type: 'concept',
+    title: 'Model Cards',
+    oneliner: 'Standardized documentation for trained models — provenance, intended use, evaluation, and limitations. Named in Domain 1\'s lifecycle-governance row.',
+    links: [
+      { label: 'Original paper: "Model Cards for Model Reporting" (Mitchell et al., arXiv)', url: 'https://arxiv.org/abs/1810.03993' }
+    ],
+    what: 'A documentation framework proposed by Mitchell et al. (2019) providing a standardized short document accompanying a trained model: intended use cases, training data characteristics, evaluation results across relevant subpopulations, and known limitations. In AI governance terms, model cards are the transparency artifact of the model lifecycle — the analogue of a datasheet or product label.',
+    facts: [
+      'Origin: Mitchell et al., presented at the FAT* (now FAccT) conference, 2019',
+      'Reports performance disaggregated across demographic and other subpopulations — directly relevant to the lesson\'s "performs worse on subpopulations" model-risk definition',
+      'Widely adopted: model repositories and major AI vendors publish model cards as standard practice',
+      'In AAISM terms: a Domain 1 lifecycle-governance control that feeds Domain 3 transparency controls'
+    ],
+    dayCtx: {
+      1: {
+        flowGroup: 'd1m4',
+        where: 'Module 4 — Domain 1 "Data & Model Lifecycle Governance" row · sidebar key terms',
+        why: 'Listed alongside AIBOM as a governance artifact "from training to retirement." Students building the Day 15 capstone program will need to specify model-card requirements in policy.',
+        notes: [
+          'Show a real model card from a public model repository (any major open model works) — seeing an actual one is worth ten minutes of description.',
+          'Connection to Activity B: ask what a model card for the MVCC tutoring chatbot would need to disclose about its training on course materials.'
+        ]
+      },
+      3: {
+        flowGroup: 'd3m3',
+        where: 'Module 4 — MAP output artifact ("MAP Worksheet, AI System Card, or AI Impact Assessment")',
+        why: 'Day 3 names the "AI System Card" as one of the forms a completed MAP takes. A model card is the closest real-world instance: MP-1.1 (intended purpose), MP-2.1 (task/method), MP-3.x (capabilities and limits), and MP-5.1 (subgroup performance) are exactly the fields a good model card documents.',
+        notes: [
+          'Concrete tie-in for the MAP worksheet activity: the fields students fill (purpose, users, constraints, subgroup impact) are the same fields a model card carries. Show a real one so the worksheet feels less abstract.',
+          'MP-5.1\'s subgroup-impact requirement is what model cards\' disaggregated evaluation was invented for — a clean example of a governance requirement meeting a documentation practice.'
+        ]
+      },
+      10: {
+        flowGroup: 'd10m1',
+        where: 'Model provenance as a defensive signal (brief mention)',
+        why: 'Day 10 mentions model cards once as part of the transparency toolkit — knowing a model\'s provenance and intended use supports the defensive posture against synthetic media.',
+        notes: []
+      },
+      11: {
+        flowGroup: 'd11m2',
+        where: 'Module 4 — "MODEL CARDS" (a full 25-min module)',
+        why: 'Day 11 gives model cards their own module as a core lifecycle transparency control. Students specify model-card requirements as part of the secure-architecture design — provenance, intended use, evaluation, limitations.',
+        notes: [
+          'This is the deep dive the Day 1/Day 3 mentions pointed toward. Show a real model card from a public repository.',
+          'Model cards + AIBOM together are Day 11\'s two documentation artifacts: the card describes the model, the AIBOM inventories the supply chain.'
+        ]
+      },
+      12: {
+        flowGroup: 'd12m3',
+        where: 'Module 5 — vendor assessment (requiring vendor model cards)',
+        why: 'Day 12\'s vendor questionnaire asks vendors for model cards as evidence of transparency. A vendor who can\'t produce one is a documented risk.',
+        notes: []
+      },
+      13: {
+        flowGroup: 'd13m3',
+        where: 'ISO 42001 document hierarchy — model cards as a required artifact',
+        why: 'Day 13\'s document hierarchy includes model cards as one of the lifecycle records an AIMS maintains.',
+        notes: []
+      },
+      14: {
+        flowGroup: 'd14m1',
+        where: 'Model provenance in incident response (which model version failed?)',
+        why: 'Day 14\'s IR work needs model cards to answer "which model, which version, trained on what?" when investigating an AI incident.',
+        notes: []
+      },
+      15: {
+        flowGroup: 'd15m2',
+        where: 'Capstone Program Pack — model-card requirements in policy',
+        why: 'The Day 15 capstone specifies model-card requirements as part of the program pack.',
+        notes: []
+      }
+    }
+  },
+  {
+    id: 'aibom', type: 'concept',
+    title: 'AIBOM — AI Bill of Materials',
+    oneliner: 'The SBOM concept extended to AI: an inventory of the models, datasets, and dependencies inside an AI system.',
+    links: [
+      { label: 'CISA SBOM resource hub', url: 'https://www.cisa.gov/sbom', note: 'the foundation concept AIBOM extends' }
+    ],
+    what: 'An AI Bill of Materials extends the software bill of materials (SBOM) concept — championed by CISA for software supply-chain transparency — to AI systems. Where an SBOM lists software components and their versions, an AIBOM additionally inventories models (base and fine-tuned), training and fine-tuning datasets, and their provenance, making the AI supply chain auditable.',
+    facts: [
+      'Builds on SBOM practice (SPDX and CycloneDX formats both have AI/ML extensions in progress)',
+      'Answers the Domain 2 supply-chain problem the lesson flags: "unique opacity and layering" in the AI supply chain',
+      'A prerequisite for meaningful vendor risk assessment of AI products — you cannot assess what you cannot enumerate',
+      'AIBOM is an emerging practice: formats and tooling are still standardizing, unlike mature SBOM tooling'
+    ],
+    dayCtx: {
+      1: {
+        flowGroup: 'd1m4',
+        where: 'Module 4 — Domain 1 lifecycle row and sidebar key terms ("AIBOM — AI Bill of Materials") · Day 11 course-map node',
+        why: 'The sidebar defines it in four words; this card gives you the two-minute version when a student asks what it actually contains.',
+        notes: [
+          'Analogy that lands: SBOM is the ingredients label for software; AIBOM adds the recipe and the farm the ingredients came from (datasets + provenance).',
+          'Honest framing for students: AIBOM is where SBOM was several years ago — named, demanded, and still standardizing. That is itself evidence for the lesson\'s thesis that AI governance tooling is new.',
+          'Forward pointer: AIBOM reappears on Day 2 inside OWASP LLM03 (Supply Chain) and LLM04 (Poisoning) as a listed mitigation.'
+        ]
+      },
+      3: {
+        flowGroup: 'd3m3',
+        where: 'GV-6 (third-party/supply-chain policy) · MP-4.1 (component & dependency risks)',
+        why: 'Day 3 handles supply chain at both layers: GV-6 sets the organization-level policy for third-party AI risk "before any specific vendor appears," while MP-4.1 maps the actual component and dependency risks for one specific system. AIBOM is the inventory that makes MP-4.1 possible — you can\'t map risks for components you haven\'t enumerated.',
+        notes: [
+          'Clean GOVERN-vs-MAP illustration: GV-6 is the vendor-risk policy (all systems); MP-4.1 is the vendor-risk analysis for this system. AIBOM is the shared artifact — the org mandates it in GV-6, the system produces it in MP-4.1.',
+          'This is the through-line to Day 12 (vendor & supply-chain risk): today\'s GV-6 policy and MP-4.1 analysis become that day\'s full vendor-assessment lab.'
+        ]
+      },
+      6: {
+        flowGroup: 'd6m2',
+        where: 'Third-party risk category · shadow AI (unknown components = no AIBOM)',
+        why: 'Day 6\'s third-party-risk category leans on AIBOM as the antidote: you cannot assess supply-chain risk for components you haven\'t enumerated, and shadow AI is precisely the case where no AIBOM exists. The concept ties the risk taxonomy to a concrete governance artifact.',
+        notes: [
+          'Shadow-AI framing: an unsanctioned tool has no AIBOM by definition — nobody enumerated its models, data, or dependencies. That\'s the third-party-risk category and the shadow-AI problem meeting in one artifact.',
+          'AIBOM appears ~9 times in Day 6 — it\'s the recurring answer to "how do we govern the supply chain we can\'t see?"'
+        ]
+      },
+      9: {
+        flowGroup: 'd9m4',
+        where: 'Module 5 — MLOps pipeline security (provenance & component inventory)',
+        why: 'Day 9\'s MLOps security relies on AIBOM: you can\'t secure a pipeline whose components you haven\'t enumerated. Provenance and lineage are AIBOM in practice.',
+        notes: [
+          'AIBOM is the inventory that makes drift/poisoning investigation possible — if you don\'t know what\'s in the model, you can\'t trace what went wrong.'
+        ]
+      },
+      11: {
+        flowGroup: 'd11m2',
+        where: 'Module 3 — "AIBOM" (a full 35-min module)',
+        why: 'Day 11 gives AIBOM its own module (~69 mentions) as the supply-chain transparency control: inventory of models, datasets, and dependencies with provenance. It\'s the architecture-unit centerpiece alongside model cards.',
+        notes: [
+          'This is the AIBOM deep dive the earlier days pointed toward. SBOM is the ingredients label; AIBOM adds the recipe and the farms.',
+          'AIBOM + model cards are Day 11\'s two documentation artifacts, and both feed Day 12\'s vendor assessment.'
+        ]
+      },
+      12: {
+        flowGroup: 'd12m3',
+        where: 'Modules 4–5 — vendor tiering and assessment (AIBOM as evidence)',
+        why: 'Day 12\'s vendor assessment requires an AIBOM from vendors: you cannot tier or assess supply-chain risk for components you can\'t enumerate. This is the practical payoff of the concept.',
+        notes: [
+          'A vendor who can\'t or won\'t produce an AIBOM is itself a risk signal — that\'s a Tier-1 red flag in the assessment.'
+        ]
+      },
+      13: {
+        flowGroup: 'd13m3',
+        where: 'ISO 42001 document hierarchy — AIBOM as a supply-chain record',
+        why: 'Day 13 includes the AIBOM in the AIMS document hierarchy as the supply-chain inventory record.',
+        notes: []
+      },
+      15: {
+        flowGroup: 'd15m2',
+        where: 'Capstone Program Pack — AIBOM as a required deliverable',
+        why: 'The Day 15 program pack includes an AIBOM as part of the supply-chain governance component.',
+        notes: []
+      }
+    }
+  },
+  {
+    id: 'human-oversight', type: 'concept',
+    title: 'Human Oversight Models — HITL / HOTL / HOOL',
+    oneliner: 'The three human-oversight postures the AI Use Case Register records: Human-in-the-Loop, Human-on-the-Loop, Human-out-of-the-Loop.',
+    links: [
+      { label: 'EU AI Act Article 14 — Human oversight (high-risk)', url: 'https://artificialintelligenceact.eu/article/14/', note: 'the legal basis for requiring human oversight' },
+      { label: 'NIST AI RMF Playbook (GOVERN/MAP actions)', url: 'https://airc.nist.gov/airmf-resources/playbook/', note: 'where oversight-model decisions get documented' }
+    ],
+    what: 'A shorthand for how much human control sits over an AI system\'s decisions. Human-in-the-Loop (HITL): a human reviews and approves each consequential action before it takes effect. Human-on-the-Loop (HOTL): the system acts autonomously but a human monitors and can intervene. Human-out-of-the-Loop (HOOL): the system acts with no real-time human involvement. Day 3\'s AI Use Case Register (GV-1.5) records which model applies to each deployed system — and the choice is a governance decision, not just an engineering one.',
+    facts: [
+      'HITL = approve-before-act · HOTL = monitor-and-intervene · HOOL = fully autonomous',
+      'The oversight model is a required field in the Day 3 AI Use Case Register (GV-1.5)',
+      'Higher-risk systems (per GV-1.3 risk tolerance) should sit further toward HITL',
+      'The EU AI Act Article 14 mandates effective human oversight for high-risk systems — "design-level capability, not just an opt-in button"',
+      'Excessive autonomy without oversight is also OWASP LLM06 (Excessive Agency) — the same concern from the threat side'
+    ],
+    dayCtx: {
+      3: {
+        flowGroup: 'd3m2',
+        where: 'GV-1.5 AI Use Case Register — "Human oversight model (HITL / HOTL / HOOL)" field',
+        why: 'The register\'s minimum-viable fields include the human-oversight model for each system. Day 3 introduces the three postures as a governance choice tied to risk tier: the more consequential the system, the more human control the register should record.',
+        notes: [
+          'Tie it to risk tolerance (GV-1.3): a High-Tier MVCC system that influences grades or aid should be HITL; a Low-Tier productivity tool can be HOTL or HOOL. The register makes that decision explicit and auditable.',
+          'Forward pointer to the threat units: HOOL systems with broad permissions are exactly OWASP LLM06 (Excessive Agency). Governance (Day 3) and threat modeling (Days 7–8) are describing the same risk from two directions.',
+          'The EU AI Act Article 14 link is the legal teeth: for high-risk systems, effective human oversight is mandatory and must be designed in, not bolted on.'
+        ]
+      },
+      5: {
+        flowGroup: 'd5m3',
+        where: 'Module 4 — high-risk requirements: Article 14 human oversight',
+        why: 'Day 5\'s walkthrough of the nine high-risk obligations (Articles 9–15) includes Article 14, which legally mandates effective human oversight for high-risk systems. The HITL/HOTL/HOOL vocabulary from Day 3 is exactly what an Article 14 compliance discussion needs.',
+        notes: [
+          'Connect Day 3 and Day 5: the oversight model students recorded in the Use Case Register (GV-1.5) is the same decision Article 14 makes legally mandatory for high-risk systems. Governance choice becomes legal requirement.',
+          'Article 14 requires oversight be a "design-level capability, not just an opt-in button" — a high-risk system that is effectively HOOL likely fails the requirement.'
+        ]
+      },
+      6: {
+        flowGroup: 'd6m4',
+        where: 'Governance responses — the oversight posture recorded when shadow AI is brought into the register',
+        why: 'Day 6\'s "Register" governance response (bringing shadow AI under control) means assigning each newly-registered system a human-oversight model. HITL/HOTL/HOOL is the field that gets filled when a shadow tool is channeled into the official register.',
+        notes: [
+          'The Block/Channel/Register/Monitor framework ends in the register — and a registered system needs an oversight posture. This closes the loop from Day 3\'s register to Day 6\'s shadow-AI remediation.'
+        ]
+      },
+      11: {
+        flowGroup: 'd11m3',
+        where: 'Module 5 — least privilege and human approval gates for agents',
+        why: 'Day 11\'s agentic controls operationalize the oversight posture: HITL approval gates for high-risk actions, scoped autonomy for lower-risk ones. The HITL/HOTL/HOOL choice becomes concrete architecture.',
+        notes: [
+          'Least privilege for agents IS the HOOL-guardrail: if a system must act autonomously, bound what it can do. Day 11 is where the Day 3 register field becomes real controls.'
+        ]
+      },
+      14: {
+        flowGroup: 'd14m2',
+        where: 'Red-team testing of oversight controls',
+        why: 'Day 14 red-teams whether human-oversight controls actually work — can an attacker push a system past its approval gates? Oversight that only exists on paper fails the test.',
+        notes: []
+      }
+    }
+  },
+  {
+    id: 'shadow-ai', type: 'concept',
+    title: 'Shadow AI',
+    oneliner: 'Unsanctioned AI use inside an organization — employees using AI tools without governance, review, or the AI Use Case Register knowing about it.',
+    links: [
+      { label: 'NIST AI RMF Playbook (GOVERN — inventory & policy)', url: 'https://airc.nist.gov/airmf-resources/playbook/', note: 'the register/policy controls shadow AI is measured against' },
+      { label: 'FERPA (U.S. Dept. of Education — Student Privacy)', url: 'https://studentprivacy.ed.gov/ferpa', note: 'the rule most commonly violated when staff paste records into public AI tools' }
+    ],
+    what: 'Shadow AI is the AI-era version of shadow IT: staff adopting AI tools — public chatbots, browser extensions, embedded AI features — without approval, security review, or governance. Day 6 covers its definition, scale, exposure paths (data leakage, compliance violations, ungoverned high-risk use), and the governance responses that bring it under control. It is detected as a gap analysis against the AI Use Case Register built in Day 3 (GV-1.5).',
+    facts: [
+      'Detection = gap analysis against the GV-1.5 AI Use Case Register: anything running that isn\'t registered is shadow AI',
+      'Primary exposure paths: sensitive-data leakage (FERPA/GDPR), ungoverned high-risk use (Annex III), and unmanaged model/operational risk',
+      'Governance responses (Day 6 Module 6): Block, Channel, Register, Monitor — rarely just "block"',
+      'A registered (formerly shadow) system still needs a risk tier, an owner, and a human-oversight model',
+      'The BYOAI ("bring your own AI") pattern makes shadow AI faster to spread than classic shadow IT'
+    ],
+    dayCtx: {
+      6: {
+        flowGroup: 'd6m4',
+        where: 'Modules 5–6 (40 + 25 min) · Activities A, B, C · Objective 6',
+        why: 'Shadow AI is the back half of Day 6 and Learning Objective 6. The lesson defines it, quantifies it, maps its exposure paths, and gives the Block/Channel/Register/Monitor response framework — all anchored to the MVCC context and FERPA.',
+        notes: [
+          'The single best framing: shadow AI detection is a gap analysis against the Day 3 register. If you built GV-1.5 well, shadow AI is "everything running that isn\'t on the list." The register and shadow AI are two sides of one control.',
+          'Resist "just block it" — the lesson\'s Block/Channel/Register/Monitor framework exists because blocking drives shadow AI further underground. Channeling to a sanctioned tool is usually the better response.',
+          'The sharpest MVCC scenario: a staffer pasting student records into a public chatbot is a live FERPA violation and an ungoverned data-risk event at once — shadow AI makes the abstract risk categories concrete.'
+        ]
+      }
+    }
+  },
+  {
+    id: 'risk-categories', type: 'concept',
+    title: 'The Five AI Risk Categories',
+    oneliner: 'Day 6\'s taxonomy beyond the CIA triad: Model, Data, Operational, Ethical, and Third-Party risk.',
+    links: [
+      { label: 'NIST AI RMF Playbook (subcategory mapping)', url: 'https://airc.nist.gov/airmf-resources/playbook/', note: 'each risk category maps to NIST MEASURE/MANAGE/MAP subcategories' }
+    ],
+    what: 'Day 6 argues the CIA triad (confidentiality, integrity, availability) is necessary but insufficient for AI, and adds a five-category risk taxonomy: Model risk (the model itself — accuracy, robustness, drift, adversarial attack), Data risk (training and inference data — quality, provenance, leakage), Operational risk (the system in production — reliability, cost, scale), Ethical risk (fairness, transparency, societal impact), and Third-Party risk (the AI supply chain). Each maps back to specific NIST subcategories.',
+    facts: [
+      'Model · Data · Operational · Ethical · Third-Party — the five categories the CIA triad doesn\'t capture',
+      'Each maps to NIST subcategories: e.g. model → MEASURE robustness/validity; data → MAP-4.2; third-party → GV-6.1 & MAP-4.1',
+      'Amplified by "the three forces" (Module 4): velocity, pervasiveness, and personalization',
+      'The taxonomy is the organizing frame for the rest of the course\'s threat and control work'
+    ],
+    dayCtx: {
+      6: {
+        flowGroup: 'd6m2',
+        where: 'Modules 1–3 · Activity A (risk-category classifier) · Objective 5',
+        why: 'The five categories are the front half of Day 6 and Learning Objective 5. Module 1 makes the "CIA triad is insufficient" case; Modules 2–3 define each category and map it to NIST subcategories; Activity A drills classifying real scenarios into categories.',
+        notes: [
+          'The categories aren\'t a competing framework — each maps to NIST subcategories that already exist. Frame it as "a vocabulary for talking about AI risk," with NIST as the control layer underneath.',
+          'Good synthesis question for the whole unit: for each category, which NIST function owns the response? It ties Day 6 back to Days 3–4.',
+          '"The three forces" (velocity, pervasiveness, personalization) in Module 4 explain why these risks propagate faster and wider than traditional IT risk — the amplifiers behind the taxonomy.'
+        ]
+      }
+    }
+  },
+  {
+    id: 'c2pa', type: 'framework',
+    title: 'C2PA / Content Credentials — Content Provenance',
+    oneliner: 'The open standard for cryptographically signed media provenance — the "nutrition label for digital content" behind Day 10\'s deepfake defenses.',
+    links: [
+      { label: 'C2PA home (Coalition for Content Provenance and Authenticity)', url: 'https://c2pa.org/' },
+      { label: 'C2PA specifications', url: 'https://spec.c2pa.org/', note: 'the technical standard and explainer' },
+      { label: 'NIST AI 100-4 — Reducing Risks Posed by Synthetic Content (PDF)', url: 'https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-4.pdf', note: 'NIST\'s survey of provenance, watermarking, and detection' }
+    ],
+    what: 'C2PA is an open technical standard, maintained by the Coalition for Content Provenance and Authenticity, that binds tamper-evident provenance metadata (Content Credentials) to media using cryptographic signatures. It records who created or edited an asset and how — a "nutrition label" for images, video, and audio. Backed by Adobe, Microsoft, BBC, Google, OpenAI, Sony, and others, it is the primary provenance layer in Day 10\'s deepfake and synthetic-media defense, alongside watermarking and detection.',
+    facts: [
+      'Content Credentials = cryptographically signed manifests recording origin and edit history',
+      'Backed by a broad coalition (Adobe, Microsoft, BBC, Google, Intel, OpenAI, Sony, Truepic, and 200+ members)',
+      'Being adopted as an ISO standard; specification has iterated through v2.x in 2025–26',
+      'A provenance layer, not a detector: it proves what a genuine asset is, not whether an unlabeled one is fake',
+      'NIST AI 100-4 situates C2PA within the broader synthetic-content transparency toolkit'
+    ],
+    dayCtx: {
+      10: {
+        flowGroup: 'd10m4',
+        where: 'Module 5 — Defensive Posture: content provenance as a deepfake countermeasure',
+        why: 'Day 10 covers deepfakes and synthetic media heavily (C2PA is named ~21 times). The defensive-posture module presents provenance — C2PA Content Credentials — as one pillar of "what actually works," alongside watermarking, detection, and process controls like verification channels.',
+        notes: [
+          'Frame C2PA honestly: it authenticates genuine content rather than detecting fakes. An unsigned image isn\'t proven fake — provenance is a positive signal, not a negative one. That nuance is the key teaching point.',
+          'The Arup case is the counterweight: no provenance tech would have stopped that fraud — the fix was a verification channel (call back on a known number). Provenance is one layer, not the whole defense.',
+          'NIST AI 100-4 is the neutral, authoritative survey if a student wants the full landscape of provenance + watermarking + detection tradeoffs.'
+        ]
+      }
+    }
+  },
+  {
+    id: 'privacy-tech', type: 'concept',
+    title: 'Privacy-Enhancing Techniques — Differential Privacy & Federated Learning',
+    oneliner: 'The data-protection methods that trade some model performance for privacy — named across the threat and architecture units.',
+    links: [
+      { label: 'NIST SP 800-226 — Evaluating Differential Privacy Guarantees (final)', url: 'https://csrc.nist.gov/pubs/sp/800/226/final', note: 'NIST\'s authoritative differential-privacy guidance' },
+      { label: 'NIST AI RMF Playbook (privacy-enhanced characteristic)', url: 'https://airc.nist.gov/airmf-resources/playbook/', note: 'where privacy techniques map to MEASURE/MANAGE' }
+    ],
+    what: 'A family of techniques for protecting personal data in AI systems. Differential privacy adds calibrated statistical noise so individual records can\'t be reconstructed from a model or its outputs; federated learning trains across decentralized data without centralizing it. Both implement the NIST "privacy-enhanced" trustworthiness characteristic — and both illustrate the lesson\'s recurring tradeoff theme: privacy protection typically costs some model performance.',
+    facts: [
+      'Differential privacy: calibrated noise bounds what any single record contributes — a defense against model inversion and membership-inference attacks',
+      'Federated learning: train on-device / on-site without moving raw data to a central store',
+      'Both realize the NIST "privacy-enhanced" characteristic and the EU AI Act / GDPR data-minimization posture',
+      'Tradeoff (from Day 2): privacy techniques usually reduce model performance — a documented, deliberate choice',
+      'Named across Days 7–9 as mitigations for privacy attacks (extraction, inversion, membership inference)'
+    ],
+    dayCtx: {
+      7: {
+        flowGroup: 'd7m3',
+        where: 'Module 4 — NIST AI 100-2 privacy-attack mitigations',
+        why: 'The NIST AML taxonomy\'s privacy-attack class (model extraction, inversion, membership inference) is met with these techniques. Day 7 names differential privacy as a mitigation when it walks the taxonomy.',
+        notes: [
+          'Keep it brief on Day 7 — this is a named mitigation in the taxonomy, not a deep dive. The point is that each attack class has a corresponding defense.'
+        ]
+      },
+      9: {
+        flowGroup: 'd9m4',
+        where: 'Module 5 — MLOps pipeline security and data protection',
+        why: 'Day 9\'s data-centric attacks (poisoning, plus privacy leakage from training data) are partly addressed by privacy-enhancing techniques in the pipeline. Differential privacy appears as a training-time control.',
+        notes: [
+          'Connect to the tradeoff theme from Day 2: adding differential privacy noise protects training data but can measurably lower accuracy — document the choice rather than pretending it\'s free.'
+        ]
+      }
+    }
+  },
+  {
+    id: 'mlops-drift', type: 'concept',
+    title: 'MLOps Security & Drift Detection — PSI / ADWIN',
+    oneliner: 'Securing the ML pipeline and detecting the four drift types with statistical methods — the operational core of Day 9.',
+    links: [
+      { label: 'NIST AI RMF Playbook (MEASURE — monitoring & drift)', url: 'https://airc.nist.gov/airmf-resources/playbook/', note: 'drift monitoring lives in the MEASURE function' },
+      { label: 'NIST AI 100-2e2025 — Adversarial ML (pipeline attacks)', url: 'https://csrc.nist.gov/pubs/ai/100/2/e2025/final', note: 'poisoning and supply-chain attacks on the pipeline' }
+    ],
+    what: 'MLOps security covers the training-and-deployment pipeline as an attack surface — where poisoning, backdoors, and supply-chain compromises actually land. Drift detection is the monitoring discipline that catches silent model degradation: concept drift, data drift, label drift, and prediction drift, detected with statistical tools like PSI (Population Stability Index) and ADWIN (Adaptive Windowing). Together they are the operational heart of Day 9 and a concrete instance of the NIST MEASURE function\'s continuous-monitoring requirement.',
+    facts: [
+      'Four drift types: concept · data · label · prediction — each with different signals and responses',
+      'Detection methods: PSI (Population Stability Index) for distribution shift; ADWIN (Adaptive Windowing) for streaming change detection',
+      'MLOps pipeline is where poisoning and backdoor attacks actually execute — securing it is a supply-chain control',
+      'Drift monitoring is the MEASURE function made operational — the "AI degrades in production" thesis from Day 4, with tools',
+      'Ties to AIBOM: pipeline provenance and component inventory are prerequisites for trustworthy MLOps'
+    ],
+    dayCtx: {
+      9: {
+        flowGroup: 'd9m3',
+        where: 'Modules 4–5 — model drift (four types, PSI/ADWIN) and MLOps pipeline security',
+        why: 'Day 9 is the deepest operational lesson: drift appears ~242 times and MLOps ~71. Module 4 teaches the four drift types with PSI and ADWIN detection; Module 5 secures the pipeline where poisoning and backdoors land. This card anchors both.',
+        notes: [
+          'The clean synthesis: MEASURE (Day 4) said "AI degrades continuously — monitor it." Day 9 provides the tools (PSI, ADWIN) and the taxonomy (four drift types) to actually do it.',
+          'Drift-vs-attack distinction worth drawing: drift is usually benign environmental change; poisoning is adversarial. Same symptom (degrading outputs), different cause and response. The detection lab (Activity B) drills this.',
+          'MLOps pipeline security is where the abstract "supply chain risk" from Days 3/6/12 becomes concrete — the CI/CD for models is the actual attack surface.'
+        ]
+      }
+    }
+  }
+];
+
+/* ═══════════════════════════════════════════════════════════════════
+   COURSE-LEVEL DATA (for the 🗺 Course roadmap view)
+   ═══════════════════════════════════════════════════════════════════ */
+const UNITS = [
+  { n: 1, title: 'Unit 1 — Foundation: Extending Cybersecurity for AI', range: 'Days 1–3', days: [1,2,3] },
+  { n: 2, title: 'Unit 2 — Governance & Regulation: Frameworks in Practice', range: 'Days 4–6', days: [4,5,6] },
+  { n: 3, title: 'Unit 3 — Threat Landscape: AI as Target', range: 'Days 7–9', days: [7,8,9] },
+  { n: 4, title: 'Unit 4 — AI as Weapon & Secure Architecture', range: 'Days 10–12', days: [10,11,12] },
+  { n: 5, title: 'Unit 5 — Policies, Incident Response & Synthesis', range: 'Days 13–15', days: [13,14,15] }
+];
+const LESSONS = {
+  1:  { title: 'Expanding Cybersecurity Principles for AI', desc: 'Why traditional infosec is insufficient for AI-enabled enterprises; where AAISM extends it.', lo: 'LO 1', res: ['aaism','aaia','aair','pathway'] },
+  2:  { title: 'AI Governance Foundations & Framework Landscape', desc: 'How NIST AI RMF, ISO 42001, EU AI Act, and OWASP LLM Top 10 fit together — and when to reach for each.', lo: 'LO 2', res: ['nist-ai-rmf','iso-42001','eu-ai-act','owasp-llm','nist-csf','iso-27001','owasp-web'] },
+  3:  { title: 'NIST AI RMF in Depth: Govern & Map', desc: 'All 6 GOVERN categories, all 5 MAP categories, 37 subcategories — charter builder and MAP worksheet lab.', lo: 'LO 3', res: ['nist-ai-rmf','iso-42001','eu-ai-act','aaism','human-oversight','gdpr-hipaa','iso-42005','model-cards','aibom'] },
+  4:  { title: 'NIST AI RMF: Measure & Manage', desc: 'All 22 MEASURE & 13 MANAGE subcategories — risk register builder and scenario decision lab.', lo: 'LO 3', res: ['nist-ai-rmf','owasp-llm','gdpr-hipaa'] },
+  5:  { title: 'EU AI Act Risk Tiers & Obligations', desc: 'Four risk tiers, nine high-risk requirements, four stakeholder roles, GPAI obligations — classification tree and scenario labs.', lo: 'LO 4, 8', res: ['eu-ai-act','human-oversight','gdpr-hipaa'] },
+  6:  { title: 'AI Risk Categories & Shadow AI', desc: 'Five AI risk categories beyond the CIA triad, the three forces, shadow-AI detection and governance responses.', lo: 'LO 5, 6', res: ['risk-categories','shadow-ai','nist-ai-rmf','eu-ai-act','gdpr-hipaa','owasp-llm','aibom','mitre-atlas','model-cards','human-oversight'] },
+  7:  { title: 'AI as Target I: Threats, ATT&CK/ATLAS & OWASP Landscape', desc: 'MITRE ATLAS (16 tactics, 84 techniques), NIST AI 100-2 E2025, OWASP stack — matrix, attack-chain builder, threat-model lab.', lo: 'LO 10, 11', res: ['mitre-attack','mitre-atlas','nist-aml','owasp-llm','nist-ai-rmf','privacy-tech'] },
+  8:  { title: 'AI as Target II: OWASP Top 10 for LLMs Deep Dive', desc: 'All 10 OWASP LLM items — attack paths, real incidents (EchoLeak, Mata v. Avianca), defense builder.', lo: 'LO 11, 12', res: ['owasp-llm','echoleak','avianca','nist-aml'] },
+  9:  { title: 'AI as Target III: Attacks on Data & Models', desc: 'Data-poisoning taxonomy, backdoor/trojan mechanics, four drift types with PSI/ADWIN detection, MLOps pipeline security.', lo: 'LO 12, 13', res: ['nist-aml','mlops-drift','aibom','privacy-tech','gdpr-hipaa'] },
+  10: { title: 'AI as a Weapon: Deepfakes, Phishing & Influence Operations', desc: 'Documented incidents (Arup $25M, Romania election), the economics of AI-enabled fraud — detection lab and defense builder.', lo: 'LO 14, 15', res: ['arup','romania','c2pa','eu-ai-act','model-cards'] },
+  11: { title: 'Architecting Secure AI Systems & Lifecycle Controls', desc: 'Defense in depth for AI, data-lifecycle controls, AIBOM, model cards, least privilege for agentic systems.', lo: 'LO 13, 14', res: ['aibom','model-cards','owasp-llm','human-oversight','eu-ai-act','iso-42001','nist-ai-rmf'] },
+  12: { title: 'Vendor & Supply Chain Risk for AI', desc: 'AI value chain, provider/deployer/importer roles, vendor tiering, assessment questionnaire, contract-clause lab.', lo: 'LO 7, 8', res: ['eu-ai-act','aibom','iso-42001','model-cards'] },
+  13: { title: 'AI Policies, AUPs & Governance Documents', desc: 'Build an AI AUP, Use Case Register, ISO 42001 document hierarchy, and AI IR Annex. Mini-Project Part 2.', lo: 'LO 9', res: ['iso-42001','eu-ai-act','sp-800-61','nist-ai-rmf','gdpr-hipaa','model-cards','aibom'] },
+  14: { title: 'AI Incident Response, Red Teaming & Tabletops', desc: 'Six AI IR gaps, adapted NIST SP 800-61r3 lifecycle, 8-category red-team framework, three live tabletops.', lo: 'LO 15, 16, 17', res: ['sp-800-61','arup','eu-ai-act','owasp-llm','human-oversight','nist-ai-rmf','model-cards'] },
+  15: { title: 'Synthesis & Final Capstone Presentations', desc: '15-day synthesis, 7 NIST trustworthiness characteristics mapped to all lessons, 8-component AI Security Program Pack.', lo: 'All LOs', res: ['nist-ai-rmf','aaism','eu-ai-act','owasp-llm','mitre-atlas','aibom','model-cards','sp-800-61','iso-42001'] }
+};
+
+/* Course-only resources not already in the per-day RESOURCES.
+   These get a `course` block and `short`; resources that already live in
+   RESOURCES get their `short`/`course` context via COURSE_META below. */
+const COURSE_EXTRA = [
+  {
+    id: 'mitre-attack', type: 'framework', short: 'ATT&CK',
+    title: 'MITRE ATT&CK — Enterprise Adversary TTPs',
+    oneliner: 'The original adversary-behavior matrix ATLAS is modeled on — the "ATT&CK/ATLAS" pairing on Day 7.',
+    links: [ { label: 'MITRE ATT&CK (attack.mitre.org)', url: 'https://attack.mitre.org/' } ],
+    what: 'MITRE\'s foundational knowledge base of real-world adversary tactics for enterprise systems. Day 7 pairs it with ATLAS: "you know ATT&CK — here\'s its AI twin."',
+    facts: [ 'The matrix ATLAS deliberately mirrors', 'Enterprise matrix is far larger; ATLAS is the AI-specific sibling', 'Use together: ATT&CK for infrastructure, ATLAS for AI-specific vectors' ],
+    course: { where: 'Day 7 title ("ATT&CK/ATLAS")', why: 'The bridge that makes ATLAS immediately usable.', notes: ['Five minutes on the live ATT&CK matrix before ATLAS makes the analogy real.'] },
+    dayCtx: {
+      7: {
+        flowGroup: 'd7m1',
+        where: 'Module 2 — "MITRE ATT&CK vs MITRE ATLAS — When to Use Which"',
+        why: 'Day 7 gives ATT&CK an explicit module: it\'s the enterprise-threat matrix students already know, and the lesson teaches exactly when to reach for it versus ATLAS. They\'re complementary, not competing.',
+        notes: ['The clean rule from the module: ATT&CK for infrastructure/enterprise threats, ATLAS for AI-specific attack vectors — use both together.',
+                'Students who studied ATT&CK for Security+ transfer instantly: "same matrix logic, new attack surface."']
+      }
+    }
+  },
+  {
+    id: 'arup', type: 'case', short: 'Arup $25M',
+    title: 'Arup Deepfake Fraud — $25M via Video Call (2024)',
+    oneliner: 'The documented deepfake-CFO video-call fraud the front page cites on Day 10. The anchor case for AI-as-weapon.',
+    links: [
+      { label: 'CNN — Arup confirmed as $25M deepfake victim', url: 'https://www.cnn.com/2024/05/16/tech/arup-deepfake-scam-loss-hong-kong-intl-hnk' },
+      { label: 'CNN — original report of the $25M video-call scam', url: 'https://www.cnn.com/2024/02/04/asia/deepfake-cfo-scam-hong-kong-intl-hnk' },
+      { label: 'AI Incident Database — Incident 634', url: 'https://incidentdatabase.ai/cite/634/', note: 'structured incident record (Responsible AI Collaborative)' }
+    ],
+    what: 'In early 2024 a finance employee at engineering firm Arup\'s Hong Kong office was tricked into transferring ~US$25.6M after a video conference in which every other participant — the "CFO" and colleagues — was an AI deepfake built from public footage. It started with a phishing email and required no system compromise.',
+    facts: [ 'Loss ≈ US$25.6M (HK$200M) across 15 transfers to five accounts', 'Every video-call participant except the victim was a deepfake', 'No malware or system breach — social engineering + real-time deepfakes', 'Arup publicly confirmed the incident in May 2024' ],
+    course: { where: 'Day 10 (deepfakes/phishing) · Day 14 tabletop seed', why: 'The front page names the "Arup $25M" case on Day 10; it also seeds the Day 14 deepfake-fraud tabletop.', notes: ['The killer detail: the victim was cautious and asked for a video call to verify — the deepfake defeated exactly that instinct.','Links go to primary reporting (CNN) plus the OECD incident record — safe to show in class.'] },
+    dayCtx: {
+      10: {
+        flowGroup: 'd10m1',
+        where: 'Modules 1–2 — the deepfake threat, anchored by the Arup $25M case',
+        why: 'Day 10\'s deepfake module uses Arup as its centerpiece: the $25M video-call fraud where every participant but the victim was an AI deepfake. It grounds the "weaponization shift" thesis in a real, consequential incident.',
+        notes: ['The teaching payoff: the victim did the "right" thing (asked for a video call to verify) and the deepfake defeated exactly that instinct. The fix is a verification channel, not better deepfake-spotting.',
+                'Links go to primary CNN reporting plus the OECD incident record — safe to show in class.']
+      },
+      14: {
+        flowGroup: 'd14m3',
+        where: 'Module 4 — the deepfake-fraud tabletop exercise',
+        why: 'Day 14 runs a deepfake-fraud tabletop, and Arup is the obvious scenario seed. Students who met the case on Day 10 role-play the response on Day 14.',
+        notes: ['Reuse the Day 10 framing: no detection tech saved Arup — process (out-of-band verification) is the control the tabletop should surface.']
+      }
+    }
+  },
+  {
+    id: 'romania', type: 'case', short: 'Romania election',
+    title: 'Romania 2024 Presidential Election Annulment',
+    oneliner: 'The influence-operations case the front page cites on Day 10 — a national vote annulled over a coordinated online campaign.',
+    links: [
+      { label: 'IFES — The Romanian 2024 Election Annulment (analysis)', url: 'https://www.ifes.org/publications/romanian-2024-election-annulment-addressing-emerging-threats-electoral-integrity', note: 'stable, non-partisan institutional analysis of the Dec 6, 2024 annulment' },
+      { label: 'Reuters — search current coverage', url: 'https://www.reuters.com/site-search/?query=Romania+election+annulled+TikTok', note: 'for the latest developments; verify before class' }
+    ],
+    what: 'Romania\'s Constitutional Court annulled the first round of its 2024 presidential election after allegations of a coordinated, algorithmically amplified social-media influence campaign — the course\'s influence-operations counterpart to individual-scale deepfake fraud.',
+    facts: [ 'Used on Day 10 as the influence-operations example', 'Illustrates AI-amplified coordinated inauthentic behavior, not a single deepfake', 'A fast-moving political story — verify current status before teaching' ],
+    course: { where: 'Day 10 (influence operations)', why: 'The scale contrast to the Arup case: fraud against a person vs. manipulation of an electorate.', notes: ['Live political topic — present documented facts (court annulment, influence-campaign allegations) and point to current primary reporting.','The IFES analysis is the stable classroom source; the Reuters search pulls the most current coverage the day you teach.'] },
+    dayCtx: {
+      10: {
+        flowGroup: 'd10m3',
+        where: 'Module 4 — AI-Enabled Influence Operations',
+        why: 'Day 10\'s influence-ops module uses the Romania 2024 election annulment as the national-scale counterpart to individual deepfake fraud — coordinated, algorithmically amplified manipulation.',
+        notes: ['Live political topic — present the documented facts (court annulment, influence-campaign allegations) and point students to current primary reporting rather than one fixed source.',
+                'The scale contrast with Arup is the lesson: one is fraud against a person, the other is manipulation of an electorate.']
+      }
+    }
+  },
+  {
+    id: 'echoleak', type: 'case', short: 'EchoLeak',
+    title: 'EchoLeak — Zero-Click AI Assistant Exfiltration',
+    oneliner: 'A documented indirect-prompt-injection exploit the front page cites on Day 8 — a real-world LLM01/LLM02 case.',
+    links: [
+      { label: 'Aim Labs — EchoLeak research write-up (Aim Security)', url: 'https://www.aim.security/lp/aim-labs-echoleak-blogpost', note: 'the original disclosure, with the full attack chain' },
+      { label: 'Microsoft MSRC — CVE-2025-32711', url: 'https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-32711', note: 'the official vendor advisory' }
+    ],
+    what: 'EchoLeak (CVE-2025-32711) is a documented zero-click indirect-prompt-injection vulnerability in Microsoft 365 Copilot, disclosed by Aim Labs in June 2025. A crafted email containing hidden instructions caused the assistant to exfiltrate data from the user\'s context — no clicks, no user interaction. Microsoft patched it server-side; no in-the-wild exploitation was reported. Day 8 uses it for OWASP LLM01 → LLM02.',
+    facts: [ 'CVE-2025-32711 — zero-click indirect prompt injection in Microsoft 365 Copilot (disclosed June 2025, patched server-side)', 'Demonstrates indirect prompt injection — instructions hidden in retrieved content', 'Maps to OWASP LLM01 → LLM02 chain', 'Cited on the Day 8 card alongside Mata v. Avianca' ],
+    course: { where: 'Day 8 (OWASP deep dive — real incidents)', why: 'Turns abstract "indirect prompt injection" into a concrete, named, zero-click case.', notes: ['Both links are primary sources — the Aim Labs research post and Microsoft\'s CVE advisory — safe to show in class.'] },
+    dayCtx: {
+      8: {
+        flowGroup: 'd8m4',
+        where: 'Modules 2–3 & Activity B — real-incident grounding for OWASP LLM01/LLM02',
+        why: 'Day 8 uses EchoLeak as the concrete zero-click indirect-prompt-injection case: crafted content makes an AI assistant leak data with no user interaction. It maps LLM01 (Prompt Injection) into LLM02 (Sensitive Information Disclosure).',
+        notes: ['The Aim Labs write-up walks the full attack chain step by step — ideal for showing how "instructions hidden in retrieved content" works in practice; the MSRC advisory (CVE-2025-32711) confirms the vendor response.']
+      }
+    }
+  },
+  {
+    id: 'avianca', type: 'case', short: 'Mata v. Avianca',
+    title: 'Mata v. Avianca — Fabricated AI Legal Citations',
+    oneliner: 'The court case the front page cites on Day 8 where an LLM produced fake citations — the canonical OWASP LLM09 example.',
+    links: [ { label: 'Mata v. Avianca, Inc. — full docket (CourtListener)', url: 'https://www.courtlistener.com/docket/63107798/mata-v-avianca-inc/', note: 'S.D.N.Y. 22-cv-01461 — the sanctions opinion is on the docket' } ],
+    what: 'In Mata v. Avianca (2023), attorneys submitted a brief with citations fabricated by ChatGPT and were sanctioned — the textbook OWASP LLM09 (Misinformation) case: confident, well-formatted, entirely false output in a high-stakes domain.',
+    facts: [ 'LLM produced non-existent case citations presented as real', 'Resulted in court sanctions against the attorneys', 'The canonical real-world OWASP LLM09 example' ],
+    course: { where: 'Day 8 (OWASP deep dive — real incidents)', why: 'Grounds "misinformation" in a consequential professional failure.', notes: ['Pairs with Day 8\'s point that AI misinformation is dangerous because it is confident and well-formatted.'] },
+    dayCtx: {
+      8: {
+        flowGroup: 'd8m4',
+        where: 'Modules 2–3 & Activity B — the canonical OWASP LLM09 (Misinformation) case',
+        why: 'Day 8 uses Mata v. Avianca as the textbook misinformation case: attorneys filed a brief with ChatGPT-fabricated citations and were sanctioned. It makes LLM09 concrete and consequential.',
+        notes: ['Pairs with the Day 8 point that AI misinformation is dangerous precisely because it is confident and well-formatted.']
+      }
+    }
+  }
+];
+
+/* course-level context + short labels for resources that already live in RESOURCES */
+const COURSE_META = {
+  'aaism': { short:'AAISM', where:'Hero alignment · Framework grid · Days 1 & 15', why:'The course\'s named credential alignment; Day 15\'s capstone is a portfolio against its three domains.', notes:['Hero says "Aligned: AAISM · NIST AI RMF · EU AI Act" — AAISM is the credential spine.'] },
+  'aaia': { short:'AAIA', where:'Day 1 credential comparison', why:'Part of the ISACA AI family; audit-track students should know it exists.', notes:[] },
+  'aair': { short:'AAIR', where:'Day 1 · relevant to Units 2–4', why:'The risk-heavy middle of the course (Days 5–12) is AAIR territory.', notes:['Only months old — beta-era details online may be superseded.'] },
+  'pathway': { short:'Security+ etc.', where:'Overview — Prerequisites', why:'Course prerequisite is Security+ or equivalent; structure mirrors CISM domains.', notes:[] },
+  'nist-ai-rmf': { short:'NIST AI RMF', where:'Hero · Framework grid · Days 2,3,4,6,15', why:'Front page calls it "the operating model of this course." Days 3–4 are the deep dive; Day 15 maps its 7 characteristics across all lessons.', notes:['The Playbook is the source for all 37+ subcategories Days 3–4 enumerate.'] },
+  'nist-csf': { short:'NIST CSF 2.0', where:'Day 2 parallel · underpins Day 14 IR', why:'Same six-function logic in both the AI RMF parallel and the modern SP 800-61.', notes:[] },
+  'iso-42001': { short:'ISO 42001', where:'Framework grid · Days 2,3,12,13', why:'Its Annex A drives the Day 12 vendor lab; its document hierarchy structures the Day 13 policy build.', notes:[] },
+  'iso-27001': { short:'ISO 27001', where:'Day 2 clause-parallel', why:'The anchor that makes the certifiable-management-system idea legible.', notes:[] },
+  'iso-42005': { short:'ISO 42005', where:'Day 3 (MAP) · Day 5 (high-risk FRIA)', why:'The impact-assessment how-to shared by NIST MAP and the EU AI Act high-risk regime.', notes:[] },
+  'sp-800-61': { short:'SP 800-61r3', where:'Objective 16 · Day 14 (named "800-61r3")', why:'Front page cites r3, so the CSF-2.0-aligned structure is what Day 14 teaches.', notes:['Good that the course names the revision — confirm the tabletops use the six-function structure.'] },
+  'eu-ai-act': { short:'EU AI Act', where:'Hero · Framework grid · Days 2,5,12,13', why:'A named alignment target; Day 5 is the deep dive, Day 12 applies the role split to vendors.', notes:['The Aug 2, 2026 high-risk milestone is days away this term — the course\'s strongest "why now."'] },
+  'gdpr-hipaa': { short:'GDPR/HIPAA', where:'Day 1 (contrast) · Day 5 (precedent)', why:'Bookends the regulatory story: what old regimes miss, and the design the new one borrowed.', notes:[] },
+  'owasp-llm': { short:'OWASP LLM', where:'Hero · Framework grid · Days 2,7,8,11', why:'The threat-reference layer of the stack; Days 7–8 teach all ten, Day 11 designs defenses.', notes:['Objective 11 requires naming all ten — mnemonic pass after Day 8 helps for the Day 15 quiz.'] },
+  'nist-aml': { short:'NIST AML', where:'Day 7 (named "NIST AI 100-2") · Day 9', why:'The definitional backbone for the threat units.', notes:['evasion fools output · poisoning corrupts training · extraction steals the model · inversion reconstructs data.'] },
+  'mitre-atlas': { short:'MITRE ATLAS', where:'Framework grid · Day 7 · Days 6, 10, 14–15', why:'Listed as a sixth core framework with specific v5.1 counts; Day 7 builds an interactive matrix on it; later days use its case studies and the capstone red-team outline draws on its tactics.', notes:['Version note: the front page says v5.1 (16/84), accurate Nov 2025; ATLAS now ships monthly date-versioned releases — check the changelog before Day 7.','Students who know ATT&CK transfer instantly: "same matrix, new attack surface."'] },
+  'owasp-web': { short:'OWASP Web Top 10', where:'Day 2 (the "traditional parallel" analogy box)', why:'The anchoring analogy for the LLM Top 10: no serious web program ignores the web Top 10, and the LLM list plays exactly that role for AI applications.', notes:['Fast check: "SQL injection is to the web Top 10 what ______ is to the LLM Top 10." (Prompt injection.)'] },
+  'model-cards': { short:'Model Cards', where:'Day 11 (lifecycle) · Day 6 (model risk)', why:'A concrete lifecycle artifact Objective 14 names explicitly.', notes:['Show a real model card from a public repository.'] },
+  'aibom': { short:'AIBOM', where:'Objective 14 · Days 11 & 12', why:'Connects architecture to vendor risk — you can\'t assess a supply chain you can\'t enumerate.', notes:['SBOM is the ingredients label; AIBOM adds the recipe and the farms.'] },
+  'human-oversight': { short:'HITL/HOTL/HOOL', where:'Day 3 (Use Case Register) · Days 11–12 (agentic controls)', why:'The human-oversight posture is a governance decision recorded per system; it recurs in the architecture and vendor units and mirrors OWASP LLM06 from the threat side.', notes:['Higher-risk systems sit further toward HITL; the register makes the choice auditable.'] },
+  'shadow-ai': { short:'Shadow AI', where:'Day 6 (Objective 6) · relevant to Days 12–13', why:'Unsanctioned AI use detected as a gap analysis against the Day 3 register; the Block/Channel/Register/Monitor response framework brings it under governance.', notes:['Shadow AI is "everything running that isn\'t on the GV-1.5 register" — the register and shadow AI are two sides of one control.'] },
+  'risk-categories': { short:'5 Risk Categories', where:'Day 6 (Objective 5) · frames the threat units', why:'The Model/Data/Operational/Ethical/Third-Party taxonomy that extends the CIA triad; each category maps to NIST subcategories and organizes the rest of the course\'s risk work.', notes:['Not a competing framework — a vocabulary with NIST as the control layer underneath.'] },
+  'c2pa': { short:'C2PA', where:'Day 10 (deepfake/synthetic-media defense)', why:'The open content-provenance standard (Content Credentials) — the "nutrition label for media" that anchors Day 10\'s defensive posture alongside watermarking and detection.', notes:['It authenticates genuine content rather than detecting fakes — a positive signal, not a negative one.'] },
+  'privacy-tech': { short:'Privacy Techniques', where:'Days 7 & 9 (privacy-attack mitigations)', why:'Differential privacy and federated learning implement the NIST "privacy-enhanced" characteristic and defend against extraction/inversion/membership attacks — at a documented performance cost.', notes:['The recurring tradeoff: privacy protection usually reduces model performance.'] },
+  'mlops-drift': { short:'MLOps & Drift', where:'Day 9 (Objective 12–13) · operationalizes MEASURE', why:'Securing the ML pipeline and detecting the four drift types with PSI/ADWIN — the operational core of Day 9 and the tooling behind the MEASURE function\'s continuous-monitoring requirement.', notes:['MEASURE said "AI degrades — monitor it"; Day 9 provides the tools (PSI, ADWIN) to do it.'] }
+};
+
+/* ── State ─────────────────────────────────────────────────────── */
+const STORAGE_KEY = 'ai103-companion-v2';
+let state = { view: 'flow', instructor: false, day: 1 };
+try {
+  const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+  if (saved && typeof saved === 'object') state = Object.assign(state, saved);
+  if (state.day !== 'course' && !DAYS[state.day]) state.day = 1;
+} catch (e) { /* private mode etc. — fail silently */ }
+function saveState() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* noop */ }
+}
+
+/* ── Rendering ─────────────────────────────────────────────────── */
+/* The lessons live on the course site (Dr. Sands' repo), not alongside
+   this file. All lesson links are absolute and open in a new tab. */
+const COURSE_SITE = 'https://sands-mvcc.github.io/aicyber/';
+const lessonURL = d => COURSE_SITE + 'lesson' + String(d).padStart(2, '0') + '.html';
+
+const mainEl = document.getElementById('main');
+const escapeMap = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+function esc(s) { return String(s).replace(/[&<>"']/g, c => escapeMap[c]); }
+
+function matchesQuery(r, ctx, q) {
+  if (!q) return true;
+  const hay = [
+    r.title, r.oneliner, r.what,
+    r.facts.join(' '),
+    ctx.where, ctx.why,
+    (ctx.notes || []).join(' '),
+    r.links.map(l => l.label).join(' ')
+  ].join(' ').toLowerCase();
+  return q.toLowerCase().split(/\s+/).every(term => hay.includes(term));
+}
+
+function cardHTML(r, ctx) {
+  const links = r.links.map(l =>
+    `<li><a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} <span class="ext" aria-hidden="true">↗</span><span class="visually-hidden"> (opens in new tab)</span></a>${l.note ? ` <span class="link-note">— ${esc(l.note)}</span>` : ''}</li>`
+  ).join('');
+  const facts = r.facts.map(f => `<li>${esc(f)}</li>`).join('');
+  const notes = (ctx.notes && ctx.notes.length)
+    ? `<div class="instructor-note"><span class="note-label">Instructor talking points</span><ul>${ctx.notes.map(n => `<li>${esc(n)}</li>`).join('')}</ul></div>`
+    : '';
+  const dayTags = Object.keys(r.dayCtx).map(d => `<span class="day-tag">Day ${d}</span>`).join('');
+  return `
+  <details class="card" data-type="${esc(r.type)}" data-id="${esc(r.id)}">
+    <summary>
+      <span class="chev" aria-hidden="true"></span>
+      <span class="card-head-main">
+        <span class="card-title-row">
+          <span class="card-title">${esc(r.title)}</span>
+          <span class="type-badge ${esc(r.type)}">${esc(r.type)}</span>
+          <span class="day-tags">${dayTags}</span>
+        </span>
+        <span class="card-oneliner">${esc(r.oneliner)}</span>
+      </span>
+    </summary>
+    <div class="card-body">
+      <h3>Official Links</h3>
+      <ul class="link-list">${links}</ul>
+      <h3>What It Is</h3>
+      <p>${esc(r.what)}</p>
+      <h3>Key Facts</h3>
+      <ul class="fact-list">${facts}</ul>
+      <h3>In the Day ${state.day} Lesson</h3>
+      <div class="in-lesson"><span class="where">${esc(ctx.where)}</span>${esc(ctx.why)}</div>
+      ${notes}
+    </div>
+  </details>`;
+}
+
+/* ── Course roadmap support ──────────────────────────────────────── */
+// merged lookup: per-day RESOURCES (augmented with COURSE_META) + COURSE_EXTRA
+const COURSE_RES_BY_ID = {};
+RESOURCES.forEach(r => {
+  const m = COURSE_META[r.id];
+  COURSE_RES_BY_ID[r.id] = m
+    ? Object.assign({}, r, { short: m.short, course: { where: m.where, why: m.why, notes: m.notes } })
+    : Object.assign({}, r, { short: r.title, course: { where: '', why: '', notes: [] } });
+});
+COURSE_EXTRA.forEach(r => { COURSE_RES_BY_ID[r.id] = r; });
+
+function courseMatches(r, q) {
+  if (!q) return true;
+  const c = r.course || {};
+  const hay = [r.title, r.short, r.oneliner, r.what, (r.facts||[]).join(' '), c.where, c.why, (c.notes||[]).join(' '), (r.links||[]).map(l=>l.label).join(' ')].join(' ').toLowerCase();
+  return q.toLowerCase().split(/\s+/).every(t => hay.includes(t));
+}
+
+function courseCardHTML(r) {
+  const c = r.course || {};
+  const links = (r.links||[]).map(l =>
+    `<li><a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} <span class="ext" aria-hidden="true">↗</span><span class="visually-hidden"> (opens in new tab)</span></a>${l.note ? ` <span class="link-note">— ${esc(l.note)}</span>` : ''}</li>`
+  ).join('');
+  const facts = (r.facts||[]).map(f => `<li>${esc(f)}</li>`).join('');
+  const notes = (c.notes && c.notes.length)
+    ? `<div class="instructor-note"><span class="note-label">Instructor talking points</span><ul>${c.notes.map(n=>`<li>${esc(n)}</li>`).join('')}</ul></div>` : '';
+  const days = Object.keys(LESSONS).filter(d => LESSONS[d].res.includes(r.id)).map(Number).sort((a,b)=>a-b);
+  const dayTags = days.length ? `<span class="day-tags">${days.map(d=>`<span class="day-tag">Day ${d}</span>`).join('')}</span>` : '';
+  return `
+  <details class="card" data-type="${esc(r.type)}" id="cres-${esc(r.id)}">
+    <summary>
+      <span class="chev" aria-hidden="true"></span>
+      <span class="card-head-main">
+        <span class="card-title-row">
+          <span class="card-title">${esc(r.title)}</span>
+          <span class="type-badge ${esc(r.type)}">${esc(r.type)}</span>
+          ${dayTags}
+        </span>
+        <span class="card-oneliner">${esc(r.oneliner)}</span>
+      </span>
+    </summary>
+    <div class="card-body">
+      <h3>Official Links</h3>
+      <ul class="link-list">${links}</ul>
+      <h3>What It Is</h3>
+      <p>${esc(r.what)}</p>
+      <h3>Key Facts</h3>
+      <ul class="fact-list">${facts}</ul>
+      <h3>Where It Appears in the Course</h3>
+      <div class="in-lesson"><span class="where">${esc(c.where||'')}</span>${esc(c.why||'')}</div>
+      ${notes}
+    </div>
+  </details>`;
+}
+
+function renderCourse(q) {
+  // Flow view = 15-day roadmap; Category view = all resources grouped
+  if (state.view === 'category') {
+    const items = Object.values(COURSE_RES_BY_ID).filter(r => courseMatches(r, q));
+    const groups = [
+      { id:'credential', title:'Credentials', meta:'ISACA · CompTIA · ISC2' },
+      { id:'framework', title:'Frameworks & Standards', meta:'NIST · ISO · MITRE' },
+      { id:'regulation', title:'Regulations', meta:'Binding law' },
+      { id:'threat', title:'Threat References', meta:'OWASP · MITRE · NIST' },
+      { id:'concept', title:'Core Concepts', meta:'Governance artifacts' },
+      { id:'case', title:'Case Studies & Incidents', meta:'Documented real-world events' }
+    ];
+    let html = '', total = 0;
+    groups.forEach(g => {
+      const gi = items.filter(r => r.type === g.id);
+      if (!gi.length) return; total += gi.length;
+      html += `<section class="group" aria-label="${esc(g.title)}"><div class="group-header"><h2>${esc(g.title)}</h2><span class="group-meta">${esc(g.meta)} · ${gi.length}</span></div>${gi.map(courseCardHTML).join('')}</section>`;
+    });
+    mainEl.innerHTML = total ? html : `<div class="no-results"><strong>No resources match “${esc(q)}.”</strong></div>`;
+    return;
+  }
+  // roadmap
+  let html = `<p class="intro-note">The full 15-day arc. Click a day title to open that lesson on the course site; click any resource chip to open its card. Switch to <strong>All Resources</strong> for the grouped card view, or use search across everything. The course overview, learning objectives, and grading breakdown live on the <a href="${COURSE_SITE}index.html" target="_blank" rel="noopener">course home page ↗</a>.</p>`;
+  let total = 0;
+  UNITS.forEach(u => {
+    const rows = u.days.map(d => {
+      const L = LESSONS[d]; if (!L) return '';
+      const chips = L.res.map(id => {
+        const r = COURSE_RES_BY_ID[id]; if (!r) return '';
+        if (q && !courseMatches(r, q)) return '';
+        return `<a class="res-chip t-${esc(r.type)}" href="#cres-${esc(id)}" data-jump="${esc(id)}">${esc(r.short||r.title)}</a>`;
+      }).filter(Boolean).join('');
+      const lessonHit = courseMatches({title:L.title,short:'',oneliner:L.desc,what:'',facts:[],course:{},links:[]}, q);
+      if (q && !chips && !lessonHit) return '';
+      total++;
+      return `<div class="day-row"><div class="day-badge"><div class="d-lbl">Day</div><div class="d-num">${d}</div></div><div class="day-main"><div class="d-title"><a href="${lessonURL(d)}" target="_blank" rel="noopener">${esc(L.title)} <span class="ext" aria-hidden="true">↗</span><span class="visually-hidden"> (opens the lesson in a new tab)</span></a></div><div class="d-desc">${esc(L.desc)}</div><div class="day-res">${chips || '<span style="font-size:.76rem;color:var(--ink-muted)">—</span>'}</div></div><div class="day-lo">${esc(L.lo)}</div></div>`;
+    }).filter(Boolean).join('');
+    if (!rows) return;
+    html += `<div class="unit-block unit-${u.n}"><div class="unit-header">${esc(u.title)} · ${esc(u.range)}</div><div class="unit-days">${rows}</div></div>`;
+  });
+  mainEl.innerHTML = total ? html : `<div class="no-results"><strong>No days match “${esc(q)}.”</strong><br>Try By Category, or a term like “OWASP” or “vendor.”</div>`;
+  mainEl.querySelectorAll('[data-jump]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      setView('category');
+      const el = document.getElementById('cres-' + a.dataset.jump);
+      if (el) { el.open = true; el.scrollIntoView({ behavior:'smooth', block:'center' }); }
+    });
+  });
+}
+
+function render() {
+  const q = document.getElementById('search').value.trim();
+  const day = state.day;
+  if (day === 'course') { renderCourse(q); return; }
+  const dayResources = RESOURCES
+    .concat(COURSE_EXTRA.filter(r => r.dayCtx))
+    .filter(r => r.dayCtx && r.dayCtx[day])
+    .map(r => ({ r, ctx: r.dayCtx[day] }))
+    .filter(x => matchesQuery(x.r, x.ctx, q));
+
+  const groups = state.view === 'flow' ? FLOW_GROUPS[day] : CATEGORY_GROUPS;
+  const keyFn = state.view === 'flow' ? (x => x.ctx.flowGroup) : (x => x.r.type);
+
+  let html = '';
+  let total = 0;
+  groups.forEach(g => {
+    const items = dayResources.filter(x => keyFn(x) === g.id);
+    if (!items.length) return;
+    total += items.length;
+    html += `
+    <section class="group" aria-label="${esc(g.title)}">
+      <div class="group-header">
+        <h2>${esc(g.title)}</h2>
+        <span class="group-meta">${esc(g.meta)} · ${items.length} resource${items.length === 1 ? '' : 's'}</span>
+      </div>
+      <p class="group-desc">${esc(g.desc)}</p>
+      ${items.map(x => cardHTML(x.r, x.ctx)).join('')}
+    </section>`;
+  });
+  if (!total) {
+    html = `<div class="no-results"><strong>No Day ${day} resources match “${esc(q)}.”</strong><br>Try a shorter term — e.g. “NIST”, “Annex”, or “risk”.</div>`;
+  } else {
+    html = `<p class="intro-note">Resources behind <strong>Day ${day} — ${esc(DAYS[day].title)}</strong>.
+      <a href="${lessonURL(day)}" target="_blank" rel="noopener">Open the Day ${day} lesson ↗</a><span class="visually-hidden"> (opens in a new tab)</span></p>` + html;
+  }
+  mainEl.innerHTML = html;
+}
+
+/* ── Wiring ────────────────────────────────────────────────────── */
+const tabFlow = document.getElementById('tab-flow');
+const tabCat = document.getElementById('tab-category');
+function setView(v) {
+  state.view = v; saveState();
+  tabFlow.setAttribute('aria-selected', String(v === 'flow'));
+  tabCat.setAttribute('aria-selected', String(v === 'category'));
+  render();
+}
+tabFlow.addEventListener('click', () => setView('flow'));
+tabCat.addEventListener('click', () => setView('category'));
+[tabFlow, tabCat].forEach((tab, i, arr) => {
+  tab.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+      e.preventDefault();
+      const next = arr[(i + 1) % arr.length];
+      next.focus(); next.click();
+    }
+  });
+});
+
+const coursePill = document.getElementById('day-course');
+function setDay(d) {
+  state.day = d; saveState();
+  Object.keys(DAYS).forEach(k => {
+    const pill = document.getElementById('day-' + k);
+    if (pill) pill.setAttribute('aria-current', String(String(k) === String(d)));
+  });
+  coursePill.setAttribute('aria-current', String(d === 'course'));
+  if (d === 'course') {
+    document.getElementById('header-title').textContent = 'Course Roadmap · All 15 Days';
+    document.getElementById('day-chip').textContent = 'Front-page companion';
+    tabFlow.textContent = '15-Day Roadmap';
+    tabCat.textContent = 'All Resources';
+  } else {
+    document.getElementById('header-title').textContent = `Day ${d} · ${DAYS[d].title}`;
+    document.getElementById('day-chip').textContent = DAYS[d].title;
+    tabFlow.textContent = 'Lesson Flow';
+    tabCat.textContent = 'By Category';
+  }
+  render();
+}
+document.getElementById('day-1').addEventListener('click', () => setDay(1));
+document.getElementById('day-2').addEventListener('click', () => setDay(2));
+document.getElementById('day-3').addEventListener('click', () => setDay(3));
+document.getElementById('day-4').addEventListener('click', () => setDay(4));
+document.getElementById('day-5').addEventListener('click', () => setDay(5));
+document.getElementById('day-6').addEventListener('click', () => setDay(6));
+document.getElementById('day-7').addEventListener('click', () => setDay(7));
+document.getElementById('day-8').addEventListener('click', () => setDay(8));
+document.getElementById('day-9').addEventListener('click', () => setDay(9));
+document.getElementById('day-10').addEventListener('click', () => setDay(10));
+document.getElementById('day-11').addEventListener('click', () => setDay(11));
+document.getElementById('day-12').addEventListener('click', () => setDay(12));
+document.getElementById('day-13').addEventListener('click', () => setDay(13));
+document.getElementById('day-14').addEventListener('click', () => setDay(14));
+document.getElementById('day-15').addEventListener('click', () => setDay(15));
+coursePill.addEventListener('click', () => setDay('course'));
+
+const instrBtn = document.getElementById('instructor-toggle');
+function applyInstructor() {
+  instrBtn.setAttribute('aria-pressed', String(state.instructor));
+  document.body.classList.toggle('instructor-mode', state.instructor);
+}
+instrBtn.addEventListener('click', () => {
+  state.instructor = !state.instructor; saveState(); applyInstructor();
+});
+
+document.getElementById('search').addEventListener('input', render);
+document.getElementById('expand-all').addEventListener('click', () => {
+  mainEl.querySelectorAll('details.card').forEach(d => { d.open = true; });
+});
+document.getElementById('collapse-all').addEventListener('click', () => {
+  mainEl.querySelectorAll('details.card').forEach(d => { d.open = false; });
+});
+
+/* ── Deep-link routing ─────────────────────────────────────────────
+   Supported hashes (used by index.html):
+     #day-7      → open Day 7 (keeps the reader's saved Flow/Category tab)
+     #course     → course roadmap
+     #resources  → course All-Resources card list
+     #res-aibom  → All-Resources list with that card expanded
+   ────────────────────────────────────────────────────────────────── */
+function applyHash(initial) {
+  const h = (location.hash || '').replace(/^#/, '');
+  if (!h) return false;
+  const dayMatch = h.match(/^day-(\d{1,2})$/);
+  if (dayMatch && DAYS[dayMatch[1]]) { setDay(Number(dayMatch[1])); return true; }
+  if (h === 'course') { setDay('course'); setView('flow'); return true; }
+  if (h === 'resources') { setDay('course'); setView('category'); return true; }
+  const resMatch = h.match(/^res-(.+)$/);
+  if (resMatch) {
+    setDay('course'); setView('category');
+    const el = document.getElementById('cres-' + resMatch[1]);
+    if (el) {
+      el.open = true;
+      el.scrollIntoView({ behavior: initial ? 'auto' : 'smooth', block: 'center' });
+    }
+    return true;
+  }
+  return false;
+}
+window.addEventListener('hashchange', () => applyHash(false));
+
+/* init */
+if (state.view === 'category') { tabFlow.setAttribute('aria-selected','false'); tabCat.setAttribute('aria-selected','true'); }
+applyInstructor();
+if (!applyHash(true)) setDay(state.day);
+</script>
+
+</body>
+</html>
