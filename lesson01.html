@@ -612,6 +612,11 @@
     margin-right: .4rem;
   }
   .q-options { list-style: none; }
+.q-options{counter-reset:opt;}
+.q-options li{counter-increment:opt;display:flex;align-items:flex-start;gap:.5rem;}
+.q-options li::before{content:counter(opt,upper-alpha) ".";font-weight:700;opacity:.6;flex:0 0 1.15rem;padding-top:.55rem;font-size:.85rem;}
+.q-options li label{flex:1;}
+
   .q-options li {
     margin-bottom: .45rem;
   }
@@ -1880,11 +1885,11 @@ function gradeQuiz() {
         fb.innerHTML = `✅ <strong>Correct!</strong> ${explanation}`;
       } else {
         fb.className = 'q-feedback incorrect show';
-        fb.innerHTML = `❌ <strong>Incorrect.</strong> ${explanation}`;
+        fb.innerHTML = `❌ <strong>Incorrect.</strong> The correct answer is ${correct.toUpperCase()}. ${explanation}`;
       }
     } else {
       fb.className = 'q-feedback unanswered show';
-      fb.innerHTML = `⚠️ <strong>No answer selected.</strong> ${explanation}`;
+      fb.innerHTML = `⚠️ <strong>No answer selected.</strong> The correct answer is ${correct.toUpperCase()}. ${explanation}`;
     }
   });
   document.getElementById('quiz-score-display').textContent = `Score: ${quizScore} / 5`;
