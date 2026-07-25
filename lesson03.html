@@ -285,6 +285,7 @@ tbody tr:hover{background:var(--parchment)}
 .q-feedback{margin-top:.7rem;padding:.7rem .9rem;border-radius:4px;font-size:.86rem;display:none;line-height:1.5}
 .q-feedback.correct{background:var(--success-bg);border:1px solid #a8d4b0;color:var(--success)}
 .q-feedback.incorrect{background:var(--error-bg);border:1px solid #e8b4b4;color:var(--error)}
+  .q-feedback.unanswered { background:#fff8e6; border:1px solid #e8d4a0; color:#8a6d1f; }
 .q-feedback.show{display:block}
 .quiz-actions{padding:1rem 1.5rem;border-top:1px solid var(--border-lt);display:flex;gap:.7rem;flex-wrap:wrap;align-items:center}
 .btn{font-family:var(--ff-sans);font-weight:700;font-size:.88rem;padding:.55rem 1.2rem;border:none;border-radius:var(--radius);cursor:pointer;transition:background .15s,transform .1s}
@@ -1122,7 +1123,7 @@ footer strong{color:rgba(255,255,255,.8)}
     <div class="sidebar-card-body" style="display:flex;flex-direction:column;gap:.5rem">
       <a href="lesson02.html" style="font-size:.85rem;font-weight:600;color:var(--oxblood)">← Day 2: Framework Landscape</a>
       <span style="font-size:.85rem;font-weight:600;color:var(--ink-muted)">Day 3 — Current</span>
-      <a href="index.html#lessons" style="font-size:.85rem;font-weight:600;color:var(--ink-muted)">Day 4 — Coming Soon →</a>
+      <a href="lesson04.html" style="font-size:.85rem;font-weight:600;color:var(--oxblood)">Day 4: MEASURE &amp; MANAGE →</a>
     </div>
   </div>
 </aside>
@@ -1131,6 +1132,7 @@ footer strong{color:rgba(255,255,255,.8)}
 <div class="lesson-nav-footer">
   <a href="lesson02.html">← Day 2: Framework Landscape</a>
   <a href="index.html">Course Home</a>
+  <a href="lesson04.html">Day 4: MEASURE &amp; MANAGE →</a>
 </div>
 
 <footer>
@@ -1340,7 +1342,7 @@ function gradeQuiz(){
     const sel=document.querySelector(`input[name="q${i}"]:checked`);
     const fb=document.getElementById(`qf${i}`);fb.classList.add('show');
     if(sel&&parseInt(sel.value)===q.correct){score++;fb.className='q-feedback correct show';fb.innerHTML=`✅ <strong>Correct!</strong> ${q.exp}`}
-    else{fb.className='q-feedback incorrect show';fb.innerHTML=`❌ <strong>${sel?'Incorrect.':'No answer selected.'}</strong> ${q.exp}`}
+    else{fb.className = sel ? 'q-feedback incorrect show' : 'q-feedback unanswered show';fb.innerHTML = `${sel ? '❌ <strong>Incorrect.</strong>' : '⚠️ <strong>No answer selected.</strong>'} ${q.exp}`}
   });
   document.getElementById('quiz-score-display').textContent=`Score: ${score} / ${quizData.length}`;
   const msgs=['Keep reviewing — the subcategory detail takes time.','Good start — review the missed items carefully.','Solid — revisit the GOVERN/MAP distinction questions.','Strong work!','Excellent command of the material!','Perfect score — outstanding!'];

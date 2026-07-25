@@ -239,7 +239,7 @@
 <a href="#main" class="skip">Skip to main content</a>
 
 <div class="site-bar" role="banner">
-  <a href="https://sands-mvcc.github.io/aicyber/index.html">← AI-103 Course Home</a>
+  <a href="index.html">← AI-103 Course Home</a>
   <span class="sep">·</span>
   <span>MVCC · Dept. of Engineering &amp; Technology · Dr. John L. Sands</span>
 </div>
@@ -831,8 +831,8 @@
 </section>
 
 <div class="lesson-nav-bottom">
-  <a href="https://sands-mvcc.github.io/aicyber/lesson14.html" class="nav-btn">← Day 14: AI IR &amp; Red Teaming</a>
-  <a href="https://sands-mvcc.github.io/aicyber/index.html" class="nav-btn primary">↩ Return to Course Home</a>
+  <a href="lesson14.html" class="nav-btn">← Day 14: AI IR &amp; Red Teaming</a>
+  <a href="index.html" class="nav-btn primary">↩ Return to Course Home</a>
 </div>
 
 </div><!-- end main col -->
@@ -879,8 +879,8 @@
 
   <div class="rail-section">
     <h4>Final Navigation</h4>
-    <a href="https://sands-mvcc.github.io/aicyber/lesson14.html" class="nav-btn" style="display:block;text-align:center;margin-bottom:.4rem;font-size:.82rem;">← Day 14</a>
-    <a href="https://sands-mvcc.github.io/aicyber/index.html" class="nav-btn primary" style="display:block;text-align:center;font-size:.82rem;">Course Home →</a>
+    <a href="lesson14.html" class="nav-btn" style="display:block;text-align:center;margin-bottom:.4rem;font-size:.82rem;">← Day 14</a>
+    <a href="index.html" class="nav-btn primary" style="display:block;text-align:center;font-size:.82rem;">Course Home →</a>
   </div>
 </aside>
 
@@ -1130,7 +1130,7 @@ function gradeFinalQuiz(){
       const val=selected.value;
       if(val===qdata.correct){score++;selected.closest('li').classList.add('correct');fb.className='fq-feedback show';fb.style.background='var(--c-green-light)';fb.style.color='var(--c-green)';fb.textContent=qdata.feedback[val]||qdata.feedback.default;}
       else{selected.closest('li').classList.add('wrong');q.querySelector(`input[value="${qdata.correct}"]`).closest('li').classList.add('correct');fb.className='fq-feedback show';fb.style.background='#fff0f0';fb.style.color='#c00';fb.textContent=qdata.feedback[val]||qdata.feedback.default;}
-    } else {fb.className='fq-feedback show';fb.style.background='#fff0f0';fb.style.color='#c00';fb.textContent='— No answer selected. '+qdata.feedback.default;}
+    } else {fb.className='fq-feedback show';fb.style.background = '#fff8e6';fb.style.color = '#8a6d1f';fb.textContent = '⚠️ No answer selected. ' + qdata.feedback.default.replace(/^✗\s*/, '');}
   });
   const pct=Math.round(score/8*100);
   const panel=document.getElementById('final-score-panel');panel.className='quiz-score-panel show';

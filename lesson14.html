@@ -263,7 +263,7 @@
 <body>
 <a href="#main" class="skip">Skip to main content</a>
 <div class="site-bar" role="banner">
-  <a href="https://sands-mvcc.github.io/aicyber/index.html">← AI-103 Course Home</a>
+  <a href="index.html">← AI-103 Course Home</a>
   <span class="sep">·</span>
   <span>MVCC · Dept. of Engineering &amp; Technology · Dr. John L. Sands</span>
 </div>
@@ -953,8 +953,8 @@ function d14Reset(){document.querySelectorAll('#d14-redteam .d14-sel').forEach(f
 
 <!-- Bottom nav -->
 <div class="lesson-nav-bottom">
-  <a href="https://sands-mvcc.github.io/aicyber/lesson13.html" class="nav-btn">← Day 13: AI Policies &amp; AUPs</a>
-  <a href="https://sands-mvcc.github.io/aicyber/lesson15.html" class="nav-btn primary">Day 15: Capstone Presentations →</a>
+  <a href="lesson13.html" class="nav-btn">← Day 13: AI Policies &amp; AUPs</a>
+  <a href="lesson15.html" class="nav-btn primary">Day 15: Capstone Presentations →</a>
 </div>
 
 </div><!-- end main col -->
@@ -1003,9 +1003,9 @@ function d14Reset(){document.querySelectorAll('#d14-redteam .d14-sel').forEach(f
   </div>
   <div class="rail-section">
     <h4>Lesson Navigation</h4>
-    <a href="https://sands-mvcc.github.io/aicyber/index.html" class="nav-btn" style="display:block;text-align:center;margin-bottom:.4rem;font-size:.82rem;">← Course Home</a>
-    <a href="https://sands-mvcc.github.io/aicyber/lesson13.html" class="nav-btn" style="display:block;text-align:center;margin-bottom:.4rem;font-size:.82rem;">← Day 13</a>
-    <a href="https://sands-mvcc.github.io/aicyber/lesson15.html" class="nav-btn primary" style="display:block;text-align:center;font-size:.82rem;">Day 15 →</a>
+    <a href="index.html" class="nav-btn" style="display:block;text-align:center;margin-bottom:.4rem;font-size:.82rem;">← Course Home</a>
+    <a href="lesson13.html" class="nav-btn" style="display:block;text-align:center;margin-bottom:.4rem;font-size:.82rem;">← Day 13</a>
+    <a href="lesson15.html" class="nav-btn primary" style="display:block;text-align:center;font-size:.82rem;">Day 15 →</a>
   </div>
 </aside>
 
@@ -1304,7 +1304,7 @@ function gradeQuiz(){
       const val=selected.value;
       if(val===qdata.correct){score++;selected.closest('li').classList.add('correct');feedback.className='quiz-feedback show';feedback.style.background='var(--c-green-light)';feedback.style.color='var(--c-green)';feedback.textContent=qdata.feedback[val]||qdata.feedback.default;}
       else{selected.closest('li').classList.add('wrong');q.querySelector(`input[value="${qdata.correct}"]`).closest('li').classList.add('correct');feedback.className='quiz-feedback show';feedback.style.background='#fff0f0';feedback.style.color='#c00';feedback.textContent=qdata.feedback[val]||qdata.feedback.default;}
-    } else {feedback.className='quiz-feedback show';feedback.style.background='#fff0f0';feedback.style.color='#c00';feedback.textContent='— No answer selected. '+qdata.feedback.default;}
+    } else {feedback.className='quiz-feedback show';feedback.style.background = '#fff8e6';feedback.style.color = '#8a6d1f';feedback.textContent = '⚠️ No answer selected. ' + qdata.feedback.default.replace(/^✗\s*/, '');}
   });
   const panel=document.getElementById('quiz-score-panel');panel.className='quiz-score-panel show';
   const pct=Math.round(score/6*100);

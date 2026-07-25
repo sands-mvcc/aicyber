@@ -640,6 +640,7 @@
   }
   .q-feedback.correct { background: var(--success-bg); border: 1px solid #a8d4b0; color: var(--success); }
   .q-feedback.incorrect { background: var(--error-bg); border: 1px solid #e8b4b4; color: var(--error); }
+  .q-feedback.unanswered { background:#fff8e6; border:1px solid #e8d4a0; color:#8a6d1f; }
   .q-feedback.show { display: block; }
   .quiz-actions {
     padding: 1rem 1.5rem;
@@ -1721,7 +1722,7 @@
       <div class="sidebar-card-body" style="display:flex;flex-direction:column;gap:.5rem;">
         <a href="index.html" style="font-size:.85rem;font-weight:600;color:var(--oxblood);">← Course Home</a>
         <span style="font-size:.85rem;font-weight:600;color:var(--ink-muted);">Day 1 — Current</span>
-        <a href="#" style="font-size:.85rem;font-weight:600;color:var(--ink-muted);cursor:not-allowed;">Day 2 — Coming Soon →</a>
+        <a href="lesson02.html" style="font-size:.85rem;font-weight:600;color:var(--oxblood);">Day 2: Framework Landscape →</a>
       </div>
     </div>
 
@@ -1732,7 +1733,7 @@
 <!-- Lesson footer nav -->
 <div class="lesson-nav-footer">
   <a href="index.html">← Course Home</a>
-  <a href="#" style="color:var(--ink-muted);pointer-events:none;">Day 2 Coming Soon →</a>
+  <a href="lesson02.html">Day 2: Framework Landscape →</a>
 </div>
 
 <footer>
@@ -1857,11 +1858,11 @@ function resetMapping() {
 
 /* ── Quiz ────────────────────────────────────────────────────── */
 const answers = {
-  q1: { correct: 'b', explanation: 'Correct. AI introduces risk categories (model risk, adversarial risk, ethical risk) that have no clean CIA-triad analogue. Traditional risk registers also lack the assessment methods needed for AI — adversarial testing, behavioral monitoring, subpopulation performance analysis.' },
-  q2: { correct: 'b', explanation: 'Correct. The key insight is that training data defines behavior — it is a control plane, not merely stored information. Poisoning it modifies what the system does, making it fundamentally different from traditional data confidentiality risks.' },
-  q3: { correct: 'b', explanation: 'Correct. Domain 3 carries the highest weight precisely because these controls — prompt injection defense, behavioral monitoring, MLOps security — transfer least from traditional security. They require genuinely new skills, not extensions of existing ones.' },
-  q4: { correct: 'c', explanation: 'Correct. Non-determinism is the assumption that the same input can produce different outputs. This breaks traditional testing and validation approaches that assume repeatability.' },
-  q5: { correct: 'c', explanation: 'Correct. AAISM builds on foundational security knowledge — the learning pathway runs: Security+ foundational skills → advanced governance expertise → AAISM AI-specific domains. This course bridges the first step of that journey, establishing the AI security concepts that extend your Security+ foundation.' },
+  q1: { correct: 'b', explanation: 'AI introduces risk categories (model risk, adversarial risk, ethical risk) that have no clean CIA-triad analogue. Traditional risk registers also lack the assessment methods needed for AI — adversarial testing, behavioral monitoring, subpopulation performance analysis.' },
+  q2: { correct: 'b', explanation: 'The key insight is that training data defines behavior — it is a control plane, not merely stored information. Poisoning it modifies what the system does, making it fundamentally different from traditional data confidentiality risks.' },
+  q3: { correct: 'b', explanation: 'Domain 3 carries the highest weight precisely because these controls — prompt injection defense, behavioral monitoring, MLOps security — transfer least from traditional security. They require genuinely new skills, not extensions of existing ones.' },
+  q4: { correct: 'c', explanation: 'Non-determinism is the assumption that the same input can produce different outputs. This breaks traditional testing and validation approaches that assume repeatability.' },
+  q5: { correct: 'c', explanation: 'AAISM builds on foundational security knowledge — the learning pathway runs: Security+ foundational skills → advanced governance expertise → AAISM AI-specific domains. This course bridges the first step of that journey, establishing the AI security concepts that extend your Security+ foundation.' },
 };
 
 let quizScore = 0;
@@ -1873,7 +1874,6 @@ function gradeQuiz() {
     const fb = document.getElementById(`${q}-feedback`);
     const { correct, explanation } = answers[q];
     if (selected) {
-      fb.classList.add('show');
       if (selected.value === correct) {
         quizScore++;
         fb.className = 'q-feedback correct show';
@@ -1883,7 +1883,7 @@ function gradeQuiz() {
         fb.innerHTML = `❌ <strong>Incorrect.</strong> ${explanation}`;
       }
     } else {
-      fb.className = 'q-feedback incorrect show';
+      fb.className = 'q-feedback unanswered show';
       fb.innerHTML = `⚠️ <strong>No answer selected.</strong> ${explanation}`;
     }
   });

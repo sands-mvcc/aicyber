@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="AI-103 Lesson 11 — Architecting Secure AI Systems & Lifecycle Controls. Defense in depth for AI, data lifecycle, AIBOM, model cards, and least privilege for agents.">
-<title>AI-103 · Day 11: Architecting Secure AI Systems & Lifecycle Controls</title>
+<title>AI-103 · Day 11: Architecting Secure AI Systems &amp; Lifecycle Controls</title>
 <style>
   /* ============================================================
      DESIGN TOKENS — matches Lesson 1/course aesthetic
@@ -781,7 +781,7 @@
 
 <!-- Site bar -->
 <div class="site-bar" role="banner">
-  <a href="https://sands-mvcc.github.io/aicyber/index.html">← AI-103 Course Home</a>
+  <a href="index.html">← AI-103 Course Home</a>
   <span class="sep">·</span>
   <span>MVCC · Dept. of Engineering &amp; Technology · Dr. John L. Sands</span>
 </div>
@@ -2026,8 +2026,8 @@ function srReset(){
 
 <!-- Lesson nav bottom -->
 <div class="lesson-nav-bottom">
-  <a href="https://sands-mvcc.github.io/aicyber/lesson10.html" class="nav-btn">← Day 10: AI as a Weapon</a>
-  <a href="https://sands-mvcc.github.io/aicyber/lesson12.html" class="nav-btn primary">Day 12: Vendor & Supply Chain Risk →</a>
+  <a href="lesson10.html" class="nav-btn">← Day 10: AI as a Weapon</a>
+  <a href="lesson12.html" class="nav-btn primary">Day 12: Vendor & Supply Chain Risk →</a>
 </div>
 
 </div><!-- end main content -->
@@ -2078,9 +2078,9 @@ function srReset(){
 
   <div class="rail-section">
     <h4>Lesson Navigation</h4>
-    <a href="https://sands-mvcc.github.io/aicyber/index.html" class="nav-btn" style="display:block;text-align:center;margin-bottom:.4rem;font-size:.82rem;">← Course Home</a>
-    <a href="https://sands-mvcc.github.io/aicyber/lesson10.html" class="nav-btn" style="display:block;text-align:center;margin-bottom:.4rem;font-size:.82rem;">← Day 10</a>
-    <a href="https://sands-mvcc.github.io/aicyber/lesson12.html" class="nav-btn primary" style="display:block;text-align:center;font-size:.82rem;">Day 12 →</a>
+    <a href="index.html" class="nav-btn" style="display:block;text-align:center;margin-bottom:.4rem;font-size:.82rem;">← Course Home</a>
+    <a href="lesson10.html" class="nav-btn" style="display:block;text-align:center;margin-bottom:.4rem;font-size:.82rem;">← Day 10</a>
+    <a href="lesson12.html" class="nav-btn primary" style="display:block;text-align:center;font-size:.82rem;">Day 12 →</a>
   </div>
 </aside>
 
@@ -2473,9 +2473,9 @@ function gradeQuiz() {
       }
     } else {
       feedback.className = 'quiz-feedback show';
-      feedback.style.background = '#fff0f0';
-      feedback.style.color = '#c00';
-      feedback.textContent = '— No answer selected. ' + qdata.feedback.default;
+      feedback.style.background = '#fff8e6';
+      feedback.style.color = '#8a6d1f';
+      feedback.textContent = '⚠️ No answer selected. ' + qdata.feedback.default.replace(/^✗\s*/, '');
     }
   });
   const panel = document.getElementById('quiz-score-panel');

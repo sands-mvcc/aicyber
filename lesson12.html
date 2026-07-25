@@ -310,7 +310,7 @@
 <a href="#main" class="skip">Skip to main content</a>
 
 <div class="site-bar" role="banner">
-  <a href="https://sands-mvcc.github.io/aicyber/index.html">← AI-103 Course Home</a>
+  <a href="index.html">← AI-103 Course Home</a>
   <span class="sep">·</span>
   <span>MVCC · Dept. of Engineering &amp; Technology · Dr. John L. Sands</span>
 </div>
@@ -1111,8 +1111,8 @@ function d12vReset(){document.querySelectorAll('#d12-vendor .d12v-sel').forEach(
 
 <!-- Bottom nav -->
 <div class="lesson-nav-bottom">
-  <a href="https://sands-mvcc.github.io/aicyber/lesson11.html" class="nav-btn">← Day 11: Secure Architecture</a>
-  <a href="https://sands-mvcc.github.io/aicyber/lesson13.html" class="nav-btn primary">Day 13: AI Policies &amp; AUPs →</a>
+  <a href="lesson11.html" class="nav-btn">← Day 11: Secure Architecture</a>
+  <a href="lesson13.html" class="nav-btn primary">Day 13: AI Policies &amp; AUPs →</a>
 </div>
 
 </div><!-- end main col -->
@@ -1163,9 +1163,9 @@ function d12vReset(){document.querySelectorAll('#d12-vendor .d12v-sel').forEach(
 
   <div class="rail-section">
     <h4>Lesson Navigation</h4>
-    <a href="https://sands-mvcc.github.io/aicyber/index.html" class="nav-btn" style="display:block;text-align:center;margin-bottom:.4rem;font-size:.82rem;">← Course Home</a>
-    <a href="https://sands-mvcc.github.io/aicyber/lesson11.html" class="nav-btn" style="display:block;text-align:center;margin-bottom:.4rem;font-size:.82rem;">← Day 11</a>
-    <a href="https://sands-mvcc.github.io/aicyber/lesson13.html" class="nav-btn primary" style="display:block;text-align:center;font-size:.82rem;">Day 13 →</a>
+    <a href="index.html" class="nav-btn" style="display:block;text-align:center;margin-bottom:.4rem;font-size:.82rem;">← Course Home</a>
+    <a href="lesson11.html" class="nav-btn" style="display:block;text-align:center;margin-bottom:.4rem;font-size:.82rem;">← Day 11</a>
+    <a href="lesson13.html" class="nav-btn primary" style="display:block;text-align:center;font-size:.82rem;">Day 13 →</a>
   </div>
 </aside>
 
@@ -1602,8 +1602,8 @@ function gradeQuiz(){
         feedback.textContent=qdata.feedback[val]||qdata.feedback.default;
       }
     } else {
-      feedback.className='quiz-feedback show';feedback.style.background='#fff0f0';feedback.style.color='#c00';
-      feedback.textContent='— No answer selected. '+qdata.feedback.default;
+      feedback.className='quiz-feedback show';feedback.style.background = '#fff8e6';feedback.style.color = '#8a6d1f';
+      feedback.textContent = '⚠️ No answer selected. ' + qdata.feedback.default.replace(/^✗\s*/, '');
     }
   });
   const panel=document.getElementById('quiz-score-panel');

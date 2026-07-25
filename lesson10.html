@@ -260,6 +260,7 @@ tbody tr:hover{background:var(--parchment)}
 .q-fb{margin-top:.7rem;padding:.7rem .9rem;border-radius:4px;font-size:.86rem;display:none;line-height:1.5}
 .q-fb.ok{background:var(--success-bg);border:1px solid #a8d4b0;color:var(--success)}
 .q-fb.bad{background:var(--error-bg);border:1px solid #e8b4b4;color:var(--error)}
+.q-fb.warn{background:#fff8e6;border:1px solid #e8d4a0;color:#8a6d1f}
 .q-fb.show{display:block}
 .quiz-actions{padding:1rem 1.5rem;border-top:1px solid var(--border-lt);display:flex;gap:.7rem;flex-wrap:wrap;align-items:center}
 .quiz-msg{font-size:.88rem;color:var(--ink-muted);font-family:var(--ff-mono)}
@@ -719,7 +720,7 @@ footer strong{color:rgba(255,255,255,.8)}
     <div class="sc-body" style="display:flex;flex-direction:column;gap:.5rem">
       <a href="lesson09.html" style="font-size:.85rem;font-weight:600;color:var(--oxblood)">← Day 9: Attacks on Data &amp; Models</a>
       <span style="font-size:.85rem;font-weight:600;color:var(--ink-muted)">Day 10 — Current</span>
-      <a href="index.html#lessons" style="font-size:.85rem;font-weight:600;color:var(--ink-muted)">Day 11 — Coming Soon →</a>
+      <a href="lesson11.html" style="font-size:.85rem;font-weight:600;color:var(--oxblood)">Day 11: Secure Architecture →</a>
     </div>
   </div>
 </aside>
@@ -727,6 +728,7 @@ footer strong{color:rgba(255,255,255,.8)}
 <div class="lesson-nav-footer">
   <a href="lesson09.html">← Day 9: Attacks on Data &amp; Models</a>
   <a href="index.html">Course Home</a>
+  <a href="lesson11.html">Day 11: Secure Architecture →</a>
 </div>
 <footer>
   <strong>AI-103: AI Cybersecurity Foundations · Day 10</strong> · Moraine Valley Community College · Dr. John L. Sands · 2026<br><br>
@@ -1072,7 +1074,7 @@ function gradeQuiz(){
     const sel=document.querySelector(`input[name="q${i}"]:checked`);
     const fb=document.getElementById(`qf${i}`);fb.classList.add('show');
     if(sel&&parseInt(sel.value)===q.correct){score++;fb.className='q-fb ok show';fb.innerHTML=`✅ <strong>Correct!</strong> ${q.exp}`}
-    else{fb.className='q-fb bad show';fb.innerHTML=`❌ <strong>${sel?'Incorrect.':'No answer.'}</strong> ${q.exp}`}
+    else{fb.className=sel?'q-fb bad show':'q-fb warn show';fb.innerHTML=`${sel?'❌ <strong>Incorrect.</strong>':'⚠️ <strong>No answer selected.</strong>'} ${q.exp}`}
   });
   document.getElementById('quiz-score-display').textContent=`Score: ${score} / ${quizData.length}`;
   const msgs=['Keep reviewing.','Good effort.','Solid command.','Strong work!','Excellent!','Perfect!'];
