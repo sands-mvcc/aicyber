@@ -38,6 +38,7 @@
     --t-credential:#6b1a1a;
     --t-threat:    #7a3b0c;
     --t-concept:   #1a5a4a;
+    --t-case:      #4a4a4a;
   }
   @media (prefers-color-scheme: dark) {
     :root {
@@ -60,6 +61,7 @@
       --t-credential:#a34747;
       --t-threat:    #b06a2e;
       --t-concept:   #3f8a75;
+      --t-case:      #6f6f6f;
     }
   }
 
@@ -427,6 +429,99 @@
     color: var(--ink-muted);
     font-weight: 400;
   }
+  /* ── Video / media links (no iframes: nothing loads from YouTube until clicked) ── */
+  .media-list { list-style: none; }
+  .media-list li {
+    margin-bottom: .55rem;
+    padding-left: 1.15rem;
+    position: relative;
+  }
+  .media-list li::before {
+    content: "\25B8";
+    position: absolute;
+    left: 0; top: .05rem;
+    color: var(--gold);
+    font-size: .8rem;
+  }
+  .media-list a {
+    font-size: .88rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: baseline;
+    gap: .35rem;
+    padding: .15rem 0;
+  }
+  .media-list .ext { font-size: .75rem; opacity: .7; }
+  .media-src {
+    display: inline-block;
+    font-family: var(--ff-mono);
+    font-size: .64rem;
+    font-weight: 700;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: .05rem .35rem;
+    margin-left: .4rem;
+    white-space: nowrap;
+  }
+  .media-note {
+    display: block;
+    font-size: .8rem;
+    color: var(--ink-muted);
+    margin-top: .1rem;
+  }
+  .media-section { margin-top: 2.4rem; }
+  .media-intro {
+    font-size: .86rem;
+    color: var(--ink-soft);
+    margin-bottom: 1rem;
+    max-width: 68ch;
+  }
+  .media-group { margin-bottom: 1.4rem; }
+  .media-group h3 {
+    font-family: var(--ff-sans);
+    font-size: .82rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--link);
+    margin-bottom: .2rem;
+  }
+  .media-group-desc {
+    font-size: .82rem;
+    color: var(--ink-muted);
+    margin-bottom: .5rem;
+    max-width: 68ch;
+  }
+  .media-flag {
+    font-family: var(--ff-mono);
+    font-size: .62rem;
+    font-weight: 700;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--link);
+    border: 1px solid var(--note-border);
+    background: var(--note-bg);
+    border-radius: 3px;
+    padding: .05rem .4rem;
+    white-space: nowrap;
+  }
+  .day-media {
+    font-family: var(--ff-mono);
+    font-size: .66rem;
+    font-weight: 700;
+    color: var(--link);
+    border: 1px solid var(--note-border);
+    background: var(--note-bg);
+    border-radius: 3px;
+    padding: .12rem .45rem;
+    white-space: nowrap;
+  }
+  .video-msg { display: none; }
+  body.video-only .video-msg { display: inline; }
+  body.video-only .student-msg { display: none; }
   .fact-list { list-style: none; }
   .fact-list li {
     font-size: .86rem;
@@ -511,10 +606,10 @@
   .res-chip:hover { border-color:var(--gold);color:var(--link); }
   .res-chip.t-framework{border-left:3px solid var(--t-framework);} .res-chip.t-regulation{border-left:3px solid var(--t-regulation);}
   .res-chip.t-credential{border-left:3px solid var(--t-credential);} .res-chip.t-threat{border-left:3px solid var(--t-threat);}
-  .res-chip.t-concept{border-left:3px solid var(--t-concept);} .res-chip.t-case{border-left:3px solid var(--t-case,#4a4a4a);}
+  .res-chip.t-concept{border-left:3px solid var(--t-concept);} .res-chip.t-case{border-left:3px solid var(--t-case);}
   .day-lo { font-family:var(--ff-mono);font-size:.64rem;color:var(--ink-muted);flex-shrink:0;text-align:right;min-width:3.5rem; }
   .card[data-type="case"] { border-left-color:#4a4a4a; }
-  .type-badge.case { background:#4a4a4a; }
+  .type-badge.case       { background: var(--t-case); }
   @media (max-width:560px) { .day-lo { display:none; } }
 
   footer {
@@ -601,12 +696,16 @@
   <button class="toggle-btn" id="instructor-toggle" aria-pressed="false" type="button">
     <span class="dot" aria-hidden="true"></span> Instructor notes
   </button>
+  <button class="toggle-btn" id="video-toggle" aria-pressed="false" type="button">
+    <span class="dot" aria-hidden="true"></span> Video only
+  </button>
   <button class="util-btn" id="expand-all" type="button">Expand all</button>
   <button class="util-btn" id="collapse-all" type="button">Collapse all</button>
 </div>
 <p class="instructor-hint">
   <span class="student-msg">Student view. Each card gives the official link, what the resource is, and where it appears in the selected day's lesson.</span>
   <span class="instructor-msg">Instructor mode is on — amber talking-point panels are now visible on each card.</span>
+  <span class="video-msg">Video filter is on — showing only resources with a linked talk for this view.</span>
 </p>
 
 <main id="main" aria-live="polite"></main>
@@ -738,10 +837,11 @@ const FLOW_GROUPS = {
 
 const CATEGORY_GROUPS = [
   { id: 'credential', title: 'Credentials', meta: 'ISACA · CompTIA · ISC2', desc: 'The AI credentials and their traditional prerequisites.' },
-  { id: 'framework', title: 'Frameworks & Standards', meta: 'NIST · ISO', desc: 'Voluntary frameworks and certifiable standards.' },
+  { id: 'framework', title: 'Frameworks & Standards', meta: 'NIST · ISO · MITRE', desc: 'Voluntary frameworks and certifiable standards.' },
   { id: 'regulation', title: 'Regulations', meta: 'Binding law', desc: 'The new AI regulation and the familiar baseline it departs from.' },
   { id: 'threat', title: 'Threat References', meta: 'OWASP · MITRE · NIST', desc: 'Where the attack taxonomies live.' },
-  { id: 'concept', title: 'Core Concepts', meta: 'Governance artifacts', desc: 'Lifecycle documentation concepts.' }
+  { id: 'concept', title: 'Core Concepts', meta: 'Governance artifacts', desc: 'Lifecycle documentation concepts.' },
+  { id: 'case', title: 'Case Studies & Incidents', meta: 'Documented real-world events', desc: 'The real incidents this day uses as anchor examples.' }
 ];
 
 const RESOURCES = [
@@ -886,7 +986,12 @@ const RESOURCES = [
 
   /* ═════════ FRAMEWORKS & STANDARDS ═════════ */
   {
-    id: 'nist-ai-rmf', type: 'framework',
+    id: 'nist-ai-rmf',
+    videos: [
+      { id: 'tj8uU4mpkVA', days: [3], title: 'Lightning Talk: From AI Risk to Governance with NIST RMF', src: 'SANS Institute', note: 'SANS AI Summit 2026 — operationalizing the RMF, not just citing it.' },
+      { id: '-qsO3BcWAPk', days: [2], title: 'Lightning Talk: Bridging Geek–Wonk Divide in AI Risk', src: 'SANS Institute', note: 'SANS AI Summit 2026 — translating technical AI risk for legal and policy audiences.' }
+    ],
+    type: 'framework',
     title: 'NIST AI Risk Management Framework (AI RMF 1.0)',
     oneliner: 'The voluntary U.S. risk framework built on four functions — Govern, Map, Measure, Manage — and seven trustworthiness characteristics.',
     links: [
@@ -1424,7 +1529,12 @@ const RESOURCES = [
 
   /* ═════════ THREAT REFERENCES ═════════ */
   {
-    id: 'owasp-llm', type: 'threat',
+    id: 'owasp-llm',
+    videos: [
+      { id: 'gUNXZMcd2jU', days: [8], title: 'OWASP’s Top 10 Ways to Attack LLMs: AI Vulnerabilities Exposed', src: 'IBM Technology', note: 'Jeff Crume walks the current 2025 list — including system prompt leakage and vector/embedding weaknesses.' },
+      { id: 'tEbnRWULeZ8', days: [11], title: 'Lightning Talk: AI Turned Workflow into a Security Boundary', src: 'SANS Institute', note: 'SANS AI Summit 2026 — threat-modelling the agentic workflow itself.' }
+    ],
+    type: 'threat',
     title: 'OWASP Top 10 for LLM Applications (2025)',
     oneliner: 'The practitioner threat reference — all ten LLM risk categories, from Prompt Injection (LLM01) to Unbounded Consumption (LLM10).',
     links: [
@@ -1547,7 +1657,11 @@ const RESOURCES = [
     }
   },
   {
-    id: 'mitre-atlas', type: 'threat',
+    id: 'mitre-atlas',
+    videos: [
+      { id: '3EqW5y-VXog', days: [7], title: '3 Keys to Weather the Autonomous Attack Storm', src: 'SANS Institute', note: 'SANS AI Summit 2026 — defending against AI-driven, autonomous attack campaigns.' }
+    ],
+    type: 'threat',
     title: 'MITRE ATLAS — Adversarial Threat Landscape for AI Systems',
     oneliner: 'The ATT&CK-style matrix of real-world adversary tactics and techniques against AI systems — the "(OWASP, ATLAS)" pairing in Domain 3.',
     links: [
@@ -1728,7 +1842,11 @@ const RESOURCES = [
     }
   },
   {
-    id: 'aibom', type: 'concept',
+    id: 'aibom',
+    videos: [
+      { id: 'QIUHetsI3LA', days: [11, 12], title: 'Lightning Talk: Operationalizing AIBOMs in AI Supply Chains', src: 'SANS Institute', note: 'SANS AI Summit 2026 — moving the AIBOM from concept to practice.' }
+    ],
+    type: 'concept',
     title: 'AIBOM — AI Bill of Materials',
     oneliner: 'The SBOM concept extended to AI: an inventory of the models, datasets, and dependencies inside an AI system.',
     links: [
@@ -1810,7 +1928,11 @@ const RESOURCES = [
     }
   },
   {
-    id: 'human-oversight', type: 'concept',
+    id: 'human-oversight',
+    videos: [
+      { id: 'B9edzrY5fnU', days: [11], title: 'Lightning Talk: When Humans Stop Thinking: Agentic AI', src: 'SANS Institute', note: 'SANS AI Summit 2026 — what happens to oversight when the system acts on its own.' }
+    ],
+    type: 'concept',
     title: 'Human Oversight Models — HITL / HOTL / HOOL',
     oneliner: 'The three human-oversight postures the AI Use Case Register records: Human-in-the-Loop, Human-on-the-Loop, Human-out-of-the-Loop.',
     links: [
@@ -1870,7 +1992,11 @@ const RESOURCES = [
     }
   },
   {
-    id: 'shadow-ai', type: 'concept',
+    id: 'shadow-ai',
+    videos: [
+      { id: '-C2zhpvjLU8', days: [6], title: 'Lightning Talk: AI Isn’t the Risk — We Are', src: 'SANS Institute', note: 'SANS AI Summit 2026 — the human behaviour behind unsanctioned AI use.' }
+    ],
+    type: 'concept',
     title: 'Shadow AI',
     oneliner: 'Unsanctioned AI use inside an organization — employees using AI tools without governance, review, or the AI Use Case Register knowing about it.',
     links: [
@@ -2019,6 +2145,92 @@ const RESOURCES = [
       }
     }
   }
+  ,
+  {
+    id: 'shared-responsibility', type: 'concept',
+    title: 'The AI Shared-Responsibility Model — IaaS / PaaS / SaaS',
+    oneliner: 'Who secures what when you did not build the model. The cloud shared-responsibility line, redrawn for the AI stack (Objective 19).',
+    links: [
+      { label: 'CSA AI Controls Matrix (AICM) v1.1', url: 'https://cloudsecurityalliance.org/artifacts/ai-controls-matrix-v1-1', note: 'the explicit Shared Security Responsibility Model for AI — free download' },
+      { label: 'CSA — Introducing the AI Controls Matrix', url: 'https://cloudsecurityalliance.org/blog/2025/07/10/introducing-the-csa-ai-controls-matrix-a-comprehensive-framework-for-trustworthy-ai', note: 'plain-language overview of the role split' },
+      { label: 'CISA — Joint Guidance: Deploying AI Systems Securely', url: 'https://www.cisa.gov/news-events/alerts/2024/04/15/joint-guidance-deploying-ai-systems-securely', note: 'NSA AISC + CISA + FBI + Five Eyes partners, April 2024' },
+      { label: 'CISA — AI and joint-seal AI publications', url: 'https://www.cisa.gov/ai/cisa-products', note: 'the full set of CISA AI guidance in one place' }
+    ],
+    what: 'The familiar cloud shared-responsibility model says the provider secures the cloud and the customer secures what they put in it. AI breaks that clean line, because the "thing you put in it" now includes a model you did not train, on data you cannot inspect, reached through an orchestration layer somebody else operates. The Cloud Security Alliance\'s AI Controls Matrix makes the new line explicit: every control is tagged with who owns it across five roles — Cloud Service Provider, Model Provider, Orchestrated Service Provider, Application Provider, and AI Customer — with some owned outright and others genuinely shared. The CISA/NSA joint guidance approaches the same problem from the deployer side: it is written specifically for organizations running AI systems they did not develop.',
+    facts: [
+      'CSA AICM v1.1: 247 control objectives across 18 security domains, built on the Cloud Controls Matrix',
+      'Five roles in the AI shared-responsibility split: CSP, Model Provider, Orchestrated Service Provider, Application Provider, AI Customer',
+      'Each control is tagged as single-owner or shared — the point is that "shared" is a real category, not a gap',
+      'AICM maps to ISO/IEC 42001, ISO/IEC 27001, BSI AIC4, and the NIST AI RMF',
+      'CISA/NSA "Deploying AI Systems Securely" (April 2024) targets externally developed AI specifically',
+      'The failure mode has a name in the CISA agentic guidance: accountability blur'
+    ],
+    dayCtx: {
+      11: {
+        flowGroup: 'd11m1',
+        where: 'Modules 1–2 — defense in depth and the data lifecycle, as the layer-ownership question',
+        why: 'Day 11 architects a secure AI system layer by layer. Every layer prompts the same question: is this control ours, the provider\'s, or shared? The shared-responsibility model is the map that answers it, and it is what keeps defense-in-depth from quietly having an unowned layer.',
+        notes: [
+          'The one-line hook: you can outsource the model, but you cannot outsource the accountability. Students who know the IaaS/PaaS/SaaS chart get the shift immediately — AI adds a model layer and an orchestration layer to a picture they already carry.',
+          'Concrete MVCC framing: for a SaaS chatbot the vendor owns model weights and inference infrastructure, but prompt handling, data classification, and output review are still yours. Ask the class to draw the line before showing them the AICM version.',
+          'Worth naming the trap: the most dangerous cell in the matrix is not the one the provider owns, it is the one both parties assume the other owns.'
+        ]
+      },
+      12: {
+        flowGroup: 'd12m1',
+        where: 'Modules 1–2 — the AI value chain and EU AI Act operator roles (Article 25)',
+        why: 'Day 12\'s value-chain module already teaches the EU AI Act\'s provider/deployer/importer/distributor roles. The shared-responsibility model is the technical-controls counterpart to that legal framing: the Act says who is liable, the AICM says who implements which control. Teaching them together is what makes vendor assessment concrete.',
+        notes: [
+          'Pair them deliberately: EU AI Act Article 25 answers "who is legally on the hook," the AICM answers "who actually configures the control." Students conflate these constantly.',
+          'This is the sharpest input to the vendor questionnaire in Modules 4–5 — every "shared" control is a question the vendor has to answer in writing.',
+          'The AICM ships with an AI-specific CAIQ (self-assessment questionnaire), which is close to a ready-made version of the artifact students build in the contract-clause lab.'
+        ]
+      }
+    }
+  },
+  {
+    id: 'ai-evaluation', type: 'concept',
+    title: 'AI Evaluation Plans — Robustness, Safety & Deploy/No-Go',
+    oneliner: 'Turning "is this model good enough to ship?" into written metrics, thresholds, and a defensible go/no-go decision (Objective 20).',
+    links: [
+      { label: 'NIST — AI Test, Evaluation, Validation & Verification (TEVV)', url: 'https://www.nist.gov/ai-test-evaluation-validation-and-verification-tevv', note: 'the umbrella program page for AI measurement science' },
+      { label: 'NIST — ARIA: Assessing Risks and Impacts of AI', url: 'https://www.nist.gov/news-events/news/2024/05/nist-launches-aria-new-program-advance-sociotechnical-testing-and', note: 'model testing, red-teaming and field testing as one evaluation program' },
+      { label: 'NIST AI 700-2 — ARIA 0.1 Pilot Evaluation Report', url: 'https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.700-2.pdf', note: 'what a real structured AI evaluation actually produced (Nov 2025)' },
+      { label: 'OWASP GenAI Red Teaming Guide', url: 'https://genai.owasp.org/resource/genai-red-teaming-guide/', note: 'the practitioner-side testing methodology' }
+    ],
+    what: 'An AI evaluation plan is the document that decides, in advance and in writing, what "good enough to deploy" means for a specific system: which robustness, safety, and performance metrics will be measured, what acceptance threshold each must clear, who reviews the results, and what happens when a threshold is missed. NIST\'s TEVV program is the measurement-science home for this work, and ARIA is its flagship evaluation program — deliberately combining model testing, red-teaming, and field testing rather than treating benchmark accuracy as sufficient. The through-line for the course is that evaluation is not a one-time gate: the same metrics become the monitoring baseline once the system is live.',
+    facts: [
+      'TEVV = Test, Evaluation, Validation and Verification — NIST\'s framing for AI measurement',
+      'ARIA (launched May 2024) asks whether a system is valid, reliable, safe, secure, private and fair once deployed — not in the lab',
+      'ARIA combines three methods: model testing, red-teaming, and field testing',
+      'ARIA metrics target technical and societal robustness, not accuracy alone',
+      'NIST AI 700-2 (Nov 2025) is the ARIA 0.1 pilot evaluation report',
+      'A usable plan needs four parts: metrics, acceptance thresholds, a reviewer, and a defined no-go path'
+    ],
+    dayCtx: {
+      4: {
+        flowGroup: 'd4m2',
+        where: 'Modules 2–3 — the MEASURE deep dive: metrics, TEVV, adversarial testing and drift monitoring',
+        why: 'MEASURE is the RMF function that says "define your metrics and actually run them." The evaluation plan is the artifact that function produces. Day 4 already teaches TEVV as a mindset; this card supplies the external programs (TEVV, ARIA) that show what a rigorous version looks like in practice.',
+        notes: [
+          'The distinction that lands: MEASURE tells you to measure, the evaluation plan is where you commit to the number. A threshold written down before testing is governance; a threshold chosen after seeing results is rationalization.',
+          'ARIA\'s three-method structure is a ready-made template for the scenario lab — ask each team whether their proposed metric is model testing, red-teaming, or field testing, and watch them discover they only planned the first.',
+          'Tie it forward: the same thresholds set here become the drift-detection baseline on Day 9 and the monitoring trigger in MANAGE. Evaluation does not end at deployment.'
+        ]
+      },
+      14: {
+        flowGroup: 'd14m2',
+        where: 'Module 3 — AI red teaming and the 8-category framework',
+        why: 'Day 14 teaches red teaming as a planned exercise scaled to system risk. Red-team findings are evaluation evidence: they only change a deployment decision if there was a written threshold for them to fail against. This card connects the red-team output back to the go/no-go decision it is supposed to inform.',
+        notes: [
+          'The question that sharpens the whole module: your red team found seven issues — now what? Without pre-agreed severity thresholds, the answer is whoever argues hardest in the room.',
+          'The OWASP GenAI Red Teaming Guide is the practitioner counterpart to NIST\'s program-level framing — useful for students who want the actual test methodology rather than the governance wrapper.',
+          'Close the loop to Day 4: this is the same evaluation plan, re-run after the system is live. Red teaming is continuous TEVV, not a launch checkbox.'
+        ]
+      }
+    }
+  }
+
 ];
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -2035,17 +2247,17 @@ const LESSONS = {
   1:  { title: 'Expanding Cybersecurity Principles for AI', desc: 'Why traditional infosec is insufficient for AI-enabled enterprises; where AAISM extends it.', lo: 'LO 1', res: ['aaism','aaia','aair','pathway'] },
   2:  { title: 'AI Governance Foundations & Framework Landscape', desc: 'How NIST AI RMF, ISO 42001, EU AI Act, and OWASP LLM Top 10 fit together — and when to reach for each.', lo: 'LO 2', res: ['nist-ai-rmf','iso-42001','eu-ai-act','owasp-llm','nist-csf','iso-27001','owasp-web'] },
   3:  { title: 'NIST AI RMF in Depth: Govern & Map', desc: 'All 6 GOVERN categories, all 5 MAP categories, 37 subcategories — charter builder and MAP worksheet lab.', lo: 'LO 3', res: ['nist-ai-rmf','iso-42001','eu-ai-act','aaism','human-oversight','gdpr-hipaa','iso-42005','model-cards','aibom'] },
-  4:  { title: 'NIST AI RMF: Measure & Manage', desc: 'All 22 MEASURE & 13 MANAGE subcategories — risk register builder and scenario decision lab.', lo: 'LO 3', res: ['nist-ai-rmf','owasp-llm','gdpr-hipaa'] },
+  4:  { title: 'NIST AI RMF: Measure & Manage', desc: 'All 22 MEASURE & 13 MANAGE subcategories — risk register builder and scenario decision lab.', lo: 'LO 3, 20', res: ['nist-ai-rmf','owasp-llm','gdpr-hipaa','ai-evaluation'] },
   5:  { title: 'EU AI Act Risk Tiers & Obligations', desc: 'Four risk tiers, nine high-risk requirements, four stakeholder roles, GPAI obligations — classification tree and scenario labs.', lo: 'LO 4, 8', res: ['eu-ai-act','human-oversight','gdpr-hipaa'] },
   6:  { title: 'AI Risk Categories & Shadow AI', desc: 'Five AI risk categories beyond the CIA triad, the three forces, shadow-AI detection and governance responses.', lo: 'LO 5, 6', res: ['risk-categories','shadow-ai','nist-ai-rmf','eu-ai-act','gdpr-hipaa','owasp-llm','aibom','mitre-atlas','model-cards','human-oversight'] },
   7:  { title: 'AI as Target I: Threats, ATT&CK/ATLAS & OWASP Landscape', desc: 'MITRE ATLAS (16 tactics, 84 techniques), NIST AI 100-2 E2025, OWASP stack — matrix, attack-chain builder, threat-model lab.', lo: 'LO 10, 11', res: ['mitre-attack','mitre-atlas','nist-aml','owasp-llm','nist-ai-rmf','privacy-tech'] },
   8:  { title: 'AI as Target II: OWASP Top 10 for LLMs Deep Dive', desc: 'All 10 OWASP LLM items — attack paths, real incidents (EchoLeak, Mata v. Avianca), defense builder.', lo: 'LO 11, 12', res: ['owasp-llm','echoleak','avianca','nist-aml'] },
   9:  { title: 'AI as Target III: Attacks on Data & Models', desc: 'Data-poisoning taxonomy, backdoor/trojan mechanics, four drift types with PSI/ADWIN detection, MLOps pipeline security.', lo: 'LO 12, 13', res: ['nist-aml','mlops-drift','aibom','privacy-tech','gdpr-hipaa'] },
   10: { title: 'AI as a Weapon: Deepfakes, Phishing & Influence Operations', desc: 'Documented incidents (Arup $25M, Romania election), the economics of AI-enabled fraud — detection lab and defense builder.', lo: 'LO 14, 15', res: ['arup','romania','c2pa','eu-ai-act','model-cards'] },
-  11: { title: 'Architecting Secure AI Systems & Lifecycle Controls', desc: 'Defense in depth for AI, data-lifecycle controls, AIBOM, model cards, least privilege for agentic systems.', lo: 'LO 13, 14', res: ['aibom','model-cards','owasp-llm','human-oversight','eu-ai-act','iso-42001','nist-ai-rmf'] },
-  12: { title: 'Vendor & Supply Chain Risk for AI', desc: 'AI value chain, provider/deployer/importer roles, vendor tiering, assessment questionnaire, contract-clause lab.', lo: 'LO 7, 8', res: ['eu-ai-act','aibom','iso-42001','model-cards'] },
+  11: { title: 'Architecting Secure AI Systems & Lifecycle Controls', desc: 'Defense in depth for AI, data-lifecycle controls, AIBOM, model cards, least privilege for agentic systems.', lo: 'LO 13, 14, 19', res: ['aibom','model-cards','owasp-llm','human-oversight','eu-ai-act','iso-42001','nist-ai-rmf','shared-responsibility'] },
+  12: { title: 'Vendor & Supply Chain Risk for AI', desc: 'AI value chain, provider/deployer/importer roles, vendor tiering, assessment questionnaire, contract-clause lab.', lo: 'LO 7, 8, 19', res: ['eu-ai-act','aibom','iso-42001','model-cards','shared-responsibility'] },
   13: { title: 'AI Policies, AUPs & Governance Documents', desc: 'Build an AI AUP, Use Case Register, ISO 42001 document hierarchy, and AI IR Annex. Mini-Project Part 2.', lo: 'LO 9', res: ['iso-42001','eu-ai-act','sp-800-61','nist-ai-rmf','gdpr-hipaa','model-cards','aibom'] },
-  14: { title: 'AI Incident Response, Red Teaming & Tabletops', desc: 'Six AI IR gaps, adapted NIST SP 800-61r3 lifecycle, 8-category red-team framework, three live tabletops.', lo: 'LO 15, 16, 17', res: ['sp-800-61','arup','eu-ai-act','owasp-llm','human-oversight','nist-ai-rmf','model-cards'] },
+  14: { title: 'AI Incident Response, Red Teaming & Tabletops', desc: 'Six AI IR gaps, adapted NIST SP 800-61r3 lifecycle, 8-category red-team framework, three live tabletops.', lo: 'LO 15, 16, 17, 20', res: ['sp-800-61','arup','eu-ai-act','owasp-llm','human-oversight','nist-ai-rmf','model-cards','ai-evaluation'] },
   15: { title: 'Synthesis & Final Capstone Presentations', desc: '15-day synthesis, 7 NIST trustworthiness characteristics mapped to all lessons, 8-component AI Security Program Pack.', lo: 'All LOs', res: ['nist-ai-rmf','aaism','eu-ai-act','owasp-llm','mitre-atlas','aibom','model-cards','sp-800-61','iso-42001'] }
 };
 
@@ -2184,16 +2396,52 @@ const COURSE_META = {
   'risk-categories': { short:'5 Risk Categories', where:'Day 6 (Objective 5) · frames the threat units', why:'The Model/Data/Operational/Ethical/Third-Party taxonomy that extends the CIA triad; each category maps to NIST subcategories and organizes the rest of the course\'s risk work.', notes:['Not a competing framework — a vocabulary with NIST as the control layer underneath.'] },
   'c2pa': { short:'C2PA', where:'Day 10 (deepfake/synthetic-media defense)', why:'The open content-provenance standard (Content Credentials) — the "nutrition label for media" that anchors Day 10\'s defensive posture alongside watermarking and detection.', notes:['It authenticates genuine content rather than detecting fakes — a positive signal, not a negative one.'] },
   'privacy-tech': { short:'Privacy Techniques', where:'Days 7 & 9 (privacy-attack mitigations)', why:'Differential privacy and federated learning implement the NIST "privacy-enhanced" characteristic and defend against extraction/inversion/membership attacks — at a documented performance cost.', notes:['The recurring tradeoff: privacy protection usually reduces model performance.'] },
+  'shared-responsibility': { short:'Shared Responsibility', where:'Days 11 & 12 (Objective 19)', why:'Who owns which control once the model is somebody else\'s — the five-role AI split (CSP, model provider, orchestrator, application provider, customer) that sits underneath both secure architecture and vendor assessment.', notes:['The dangerous cell is the one both parties assume the other owns.'] },
+  'ai-evaluation': { short:'AI Evaluation', where:'Days 4 & 14 (Objective 20)', why:'Metrics, acceptance thresholds and a written deploy/no-go path — the artifact the MEASURE function is asking for, and the thing that makes red-team findings actionable.', notes:['A threshold written before testing is governance; one chosen afterward is rationalization.'] },
   'mlops-drift': { short:'MLOps & Drift', where:'Day 9 (Objective 12–13) · operationalizes MEASURE', why:'Securing the ML pipeline and detecting the four drift types with PSI/ADWIN — the operational core of Day 9 and the tooling behind the MEASURE function\'s continuous-monitoring requirement.', notes:['MEASURE said "AI degrades — monitor it"; Day 9 provides the tools (PSI, ADWIN) to do it.'] }
 };
 
+/* ── Video / media data ────────────────────────────────────────────
+   Links only — no iframes, no thumbnails. Nothing is requested from
+   YouTube until the reader clicks. Every video ID below was verified
+   against the YouTube oEmbed endpoint (title + channel confirmed).
+   ────────────────────────────────────────────────────────────────── */
+const videoURL = id => 'https://www.youtube.com/watch?v=' + id;
+
+const MEDIA_PLAYLIST = {
+  title: 'AI Governance & Security | SANS AI Summit 2026',
+  channel: 'SANS Institute',
+  url: 'https://www.youtube.com/playlist?list=PLfmbdqLXkhJM'
+};
+
+const ADDITIONAL_MEDIA = [
+  {
+    title: 'SANS AI Summit 2026 — broader sessions',
+    desc: 'Playlist talks that span the whole course rather than mapping to one resource. Good opening- or closing-day viewing.',
+    items: [
+      { id: '1oArF1HDIXM', title: 'Keynote: Every Doorknob, All At Once: AI Cyber Lessons', src: 'SANS Institute', note: 'Scale-of-attack framing — useful before Day 10.' },
+      { id: 'Ti1oWMBlNVc', title: 'Keynote: Integrous AI', src: 'SANS Institute', note: 'Trustworthiness as an organizing idea — pairs with the Day 15 synthesis.' },
+      { id: 'Fboj9EC7aa4', title: 'Keynote: Claw and Order: Protecting Your Shell', src: 'SANS Institute', note: 'General AI-security keynote.' },
+      { id: 'HIJ9zT1cDWc', title: 'How the Coalition for Secure AI Prepares Defenders', src: 'SANS Institute', note: 'CoSAI — an industry body the course does not otherwise cover.' }
+    ]
+  },
+  {
+    title: 'Other institutional talks',
+    desc: 'Outside the SANS playlist, from institutional channels only.',
+    items: [
+      { id: '-vXoC0UvpjY', title: 'Deep Dive into the OWASP Top 10 for Agentic AI Applications', src: 'OWASP London', note: 'NOTE: this is the Agentic Applications (ASI) Top 10 — a separate OWASP list from the LLM Top 10 taught on Day 8. Closest fit is Day 11, Module 3 (least privilege for agents). Deliberately not filed on the OWASP LLM card, so the two lists do not get conflated.' }
+    ]
+  }
+];
+
 /* ── State ─────────────────────────────────────────────────────── */
 const STORAGE_KEY = 'ai103-companion-v2';
-let state = { view: 'flow', instructor: false, day: 1 };
+let state = { view: 'flow', instructor: false, day: 1, videoOnly: false };
 try {
   const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
   if (saved && typeof saved === 'object') state = Object.assign(state, saved);
   if (state.day !== 'course' && !DAYS[state.day]) state.day = 1;
+  state.videoOnly = false;
 } catch (e) { /* private mode etc. — fail silently */ }
 function saveState() {
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* noop */ }
@@ -2205,9 +2453,37 @@ function saveState() {
 const COURSE_SITE = 'https://sands-mvcc.github.io/aicyber/';
 const lessonURL = d => COURSE_SITE + 'lesson' + String(d).padStart(2, '0') + '.html';
 
+const DAY_RESOURCES = RESOURCES.concat(COURSE_EXTRA.filter(r => r.dayCtx));
+function dayVideoCount(day) {
+  return DAY_RESOURCES.filter(r => r.dayCtx && r.dayCtx[day])
+    .reduce((n, r) => n + videosForDay(r, day).length, 0);
+}
+
 const mainEl = document.getElementById('main');
 const escapeMap = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
 function esc(s) { return String(s).replace(/[&<>"']/g, c => escapeMap[c]); }
+
+function videoItemHTML(v) {
+  return `<li><a href="${esc(videoURL(v.id))}" target="_blank" rel="noopener">${esc(v.title)} <span class="ext" aria-hidden="true">\u2197</span><span class="visually-hidden"> (opens on YouTube in a new tab)</span></a><span class="media-src">${esc(v.src)}</span>${v.note ? `<span class="media-note">${esc(v.note)}</span>` : ''}</li>`;
+}
+
+/* A video is pinned to the day(s) it actually belongs to, so a card that
+   recurs across ten days does not drag its videos along to all of them.
+   The course view is the exception: there it shows everything. */
+function videosForDay(r, day) {
+  const vids = r.videos || [];
+  if (day === 'course') return vids;
+  return vids.filter(v => !v.days || v.days.indexOf(Number(day)) !== -1);
+}
+
+function videoFlagHTML(n) {
+  return n ? `<span class="media-flag">\u25B8 ${n} video${n === 1 ? '' : 's'}</span>` : '';
+}
+
+function videoHTML(vids) {
+  if (!vids || !vids.length) return '';
+  return `<h3>Watch</h3><ul class="media-list">${vids.map(videoItemHTML).join('')}</ul>`;
+}
 
 function matchesQuery(r, ctx, q) {
   if (!q) return true;
@@ -2216,7 +2492,8 @@ function matchesQuery(r, ctx, q) {
     r.facts.join(' '),
     ctx.where, ctx.why,
     (ctx.notes || []).join(' '),
-    r.links.map(l => l.label).join(' ')
+    r.links.map(l => l.label).join(' '),
+    videosForDay(r, state.day).map(v => v.title + ' ' + v.src + ' ' + (v.note || '')).join(' ')
   ].join(' ').toLowerCase();
   return q.toLowerCase().split(/\s+/).every(term => hay.includes(term));
 }
@@ -2230,6 +2507,7 @@ function cardHTML(r, ctx) {
     ? `<div class="instructor-note"><span class="note-label">Instructor talking points</span><ul>${ctx.notes.map(n => `<li>${esc(n)}</li>`).join('')}</ul></div>`
     : '';
   const dayTags = Object.keys(r.dayCtx).map(d => `<span class="day-tag">Day ${d}</span>`).join('');
+  const dayVids = videosForDay(r, state.day);
   return `
   <details class="card" data-type="${esc(r.type)}" data-id="${esc(r.id)}">
     <summary>
@@ -2239,6 +2517,7 @@ function cardHTML(r, ctx) {
           <span class="card-title">${esc(r.title)}</span>
           <span class="type-badge ${esc(r.type)}">${esc(r.type)}</span>
           <span class="day-tags">${dayTags}</span>
+          ${videoFlagHTML(dayVids.length)}
         </span>
         <span class="card-oneliner">${esc(r.oneliner)}</span>
       </span>
@@ -2250,6 +2529,7 @@ function cardHTML(r, ctx) {
       <p>${esc(r.what)}</p>
       <h3>Key Facts</h3>
       <ul class="fact-list">${facts}</ul>
+      ${videoHTML(dayVids)}
       <h3>In the Day ${state.day} Lesson</h3>
       <div class="in-lesson"><span class="where">${esc(ctx.where)}</span>${esc(ctx.why)}</div>
       ${notes}
@@ -2271,7 +2551,7 @@ COURSE_EXTRA.forEach(r => { COURSE_RES_BY_ID[r.id] = r; });
 function courseMatches(r, q) {
   if (!q) return true;
   const c = r.course || {};
-  const hay = [r.title, r.short, r.oneliner, r.what, (r.facts||[]).join(' '), c.where, c.why, (c.notes||[]).join(' '), (r.links||[]).map(l=>l.label).join(' ')].join(' ').toLowerCase();
+  const hay = [r.title, r.short, r.oneliner, r.what, (r.facts||[]).join(' '), c.where, c.why, (c.notes||[]).join(' '), (r.links||[]).map(l=>l.label).join(' '), (r.videos||[]).map(v=>v.title+' '+v.src+' '+(v.note||'')).join(' ')].join(' ').toLowerCase();
   return q.toLowerCase().split(/\s+/).every(t => hay.includes(t));
 }
 
@@ -2294,6 +2574,7 @@ function courseCardHTML(r) {
           <span class="card-title">${esc(r.title)}</span>
           <span class="type-badge ${esc(r.type)}">${esc(r.type)}</span>
           ${dayTags}
+          ${videoFlagHTML((r.videos || []).length)}
         </span>
         <span class="card-oneliner">${esc(r.oneliner)}</span>
       </span>
@@ -2305,6 +2586,7 @@ function courseCardHTML(r) {
       <p>${esc(r.what)}</p>
       <h3>Key Facts</h3>
       <ul class="fact-list">${facts}</ul>
+      ${videoHTML(r.videos)}
       <h3>Where It Appears in the Course</h3>
       <div class="in-lesson"><span class="where">${esc(c.where||'')}</span>${esc(c.why||'')}</div>
       ${notes}
@@ -2312,10 +2594,37 @@ function courseCardHTML(r) {
   </details>`;
 }
 
+function mediaMatches(v, q) {
+  if (!q) return true;
+  const hay = [v.title, v.src, v.note || ''].join(' ').toLowerCase();
+  return q.toLowerCase().split(/\s+/).every(t => hay.includes(t));
+}
+
+function mediaSectionHTML(q) {
+  let inner = '', total = 0;
+  ADDITIONAL_MEDIA.forEach(g => {
+    const items = g.items.filter(v => mediaMatches(v, q));
+    if (!items.length) return;
+    total += items.length;
+    inner += `<div class="media-group"><h3>${esc(g.title)}</h3><p class="media-group-desc">${esc(g.desc)}</p><ul class="media-list">${items.map(videoItemHTML).join('')}</ul></div>`;
+  });
+  if (!total) return '';
+  return `<section class="group media-section" aria-label="Additional Resources">
+    <div class="group-header">
+      <h2>Additional Resources</h2>
+      <span class="group-meta">Video &middot; ${total}</span>
+    </div>
+    <p class="media-intro">Talks that do not map onto a single resource card. Source playlist: <a href="${esc(MEDIA_PLAYLIST.url)}" target="_blank" rel="noopener">${esc(MEDIA_PLAYLIST.title)} <span class="ext" aria-hidden="true">\u2197</span><span class="visually-hidden"> (opens on YouTube in a new tab)</span></a> (${esc(MEDIA_PLAYLIST.channel)}). Links only \u2014 nothing loads from YouTube until you click.</p>
+    ${inner}
+  </section>`;
+}
+
 function renderCourse(q) {
   // Flow view = 15-day roadmap; Category view = all resources grouped
   if (state.view === 'category') {
-    const items = Object.values(COURSE_RES_BY_ID).filter(r => courseMatches(r, q));
+    const items = Object.values(COURSE_RES_BY_ID)
+      .filter(r => courseMatches(r, q))
+      .filter(r => !state.videoOnly || (r.videos || []).length);
     const groups = [
       { id:'credential', title:'Credentials', meta:'ISACA · CompTIA · ISC2' },
       { id:'framework', title:'Frameworks & Standards', meta:'NIST · ISO · MITRE' },
@@ -2330,7 +2639,10 @@ function renderCourse(q) {
       if (!gi.length) return; total += gi.length;
       html += `<section class="group" aria-label="${esc(g.title)}"><div class="group-header"><h2>${esc(g.title)}</h2><span class="group-meta">${esc(g.meta)} · ${gi.length}</span></div>${gi.map(courseCardHTML).join('')}</section>`;
     });
-    mainEl.innerHTML = total ? html : `<div class="no-results"><strong>No resources match “${esc(q)}.”</strong></div>`;
+    const media = mediaSectionHTML(q);
+    mainEl.innerHTML = (total || media)
+      ? html + media
+      : `<div class="no-results"><strong>No resources match “${esc(q)}.”</strong></div>`;
     return;
   }
   // roadmap
@@ -2345,9 +2657,11 @@ function renderCourse(q) {
         return `<a class="res-chip t-${esc(r.type)}" href="#cres-${esc(id)}" data-jump="${esc(id)}">${esc(r.short||r.title)}</a>`;
       }).filter(Boolean).join('');
       const lessonHit = courseMatches({title:L.title,short:'',oneliner:L.desc,what:'',facts:[],course:{},links:[]}, q);
+      const vN = dayVideoCount(d);
+      if (state.videoOnly && !vN) return '';
       if (q && !chips && !lessonHit) return '';
       total++;
-      return `<div class="day-row"><div class="day-badge"><div class="d-lbl">Day</div><div class="d-num">${d}</div></div><div class="day-main"><div class="d-title"><a href="${lessonURL(d)}" target="_blank" rel="noopener">${esc(L.title)} <span class="ext" aria-hidden="true">↗</span><span class="visually-hidden"> (opens the lesson in a new tab)</span></a></div><div class="d-desc">${esc(L.desc)}</div><div class="day-res">${chips || '<span style="font-size:.76rem;color:var(--ink-muted)">—</span>'}</div></div><div class="day-lo">${esc(L.lo)}</div></div>`;
+      return `<div class="day-row"><div class="day-badge"><div class="d-lbl">Day</div><div class="d-num">${d}</div></div><div class="day-main"><div class="d-title"><a href="${lessonURL(d)}" target="_blank" rel="noopener">${esc(L.title)} <span class="ext" aria-hidden="true">↗</span><span class="visually-hidden"> (opens the lesson in a new tab)</span></a></div><div class="d-desc">${esc(L.desc)}</div><div class="day-res">${chips || '<span style="font-size:.76rem;color:var(--ink-muted)">—</span>'}${vN ? `<span class="day-media" title="${vN} linked video${vN === 1 ? '' : 's'} on this day">\u25B8 ${vN}</span>` : ''}</div></div><div class="day-lo">${esc(L.lo)}</div></div>`;
     }).filter(Boolean).join('');
     if (!rows) return;
     html += `<div class="unit-block unit-${u.n}"><div class="unit-header">${esc(u.title)} · ${esc(u.range)}</div><div class="unit-days">${rows}</div></div>`;
@@ -2367,11 +2681,11 @@ function render() {
   const q = document.getElementById('search').value.trim();
   const day = state.day;
   if (day === 'course') { renderCourse(q); return; }
-  const dayResources = RESOURCES
-    .concat(COURSE_EXTRA.filter(r => r.dayCtx))
+  const dayResources = DAY_RESOURCES
     .filter(r => r.dayCtx && r.dayCtx[day])
     .map(r => ({ r, ctx: r.dayCtx[day] }))
-    .filter(x => matchesQuery(x.r, x.ctx, q));
+    .filter(x => matchesQuery(x.r, x.ctx, q))
+    .filter(x => !state.videoOnly || videosForDay(x.r, day).length);
 
   const groups = state.view === 'flow' ? FLOW_GROUPS[day] : CATEGORY_GROUPS;
   const keyFn = state.view === 'flow' ? (x => x.ctx.flowGroup) : (x => x.r.type);
@@ -2393,7 +2707,9 @@ function render() {
     </section>`;
   });
   if (!total) {
-    html = `<div class="no-results"><strong>No Day ${day} resources match “${esc(q)}.”</strong><br>Try a shorter term — e.g. “NIST”, “Annex”, or “risk”.</div>`;
+    html = state.videoOnly && !q
+      ? `<div class="no-results"><strong>No Day ${day} resources have a linked video.</strong><br>Turn off <em>Video only</em>, or open the Course view for the full media list.</div>`
+      : `<div class="no-results"><strong>No Day ${day} resources match “${esc(q)}.”</strong><br>Try a shorter term — e.g. “NIST”, “Annex”, or “risk”.</div>`;
   } else {
     html = `<p class="intro-note">Resources behind <strong>Day ${day} — ${esc(DAYS[day].title)}</strong>.
       <a href="${lessonURL(day)}" target="_blank" rel="noopener">Open the Day ${day} lesson ↗</a><span class="visually-hidden"> (opens in a new tab)</span></p>` + html;
@@ -2469,6 +2785,15 @@ instrBtn.addEventListener('click', () => {
   state.instructor = !state.instructor; saveState(); applyInstructor();
 });
 
+const videoBtn = document.getElementById('video-toggle');
+function applyVideoOnly() {
+  videoBtn.setAttribute('aria-pressed', String(state.videoOnly));
+  document.body.classList.toggle('video-only', state.videoOnly);
+}
+videoBtn.addEventListener('click', () => {
+  state.videoOnly = !state.videoOnly; applyVideoOnly(); render();
+});
+
 document.getElementById('search').addEventListener('input', render);
 document.getElementById('expand-all').addEventListener('click', () => {
   mainEl.querySelectorAll('details.card').forEach(d => { d.open = true; });
@@ -2508,6 +2833,7 @@ window.addEventListener('hashchange', () => applyHash(false));
 /* init */
 if (state.view === 'category') { tabFlow.setAttribute('aria-selected','false'); tabCat.setAttribute('aria-selected','true'); }
 applyInstructor();
+applyVideoOnly();
 if (!applyHash(true)) setDay(state.day);
 </script>
 
