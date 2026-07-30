@@ -196,6 +196,53 @@
   .lesson-time { font-size: .78rem; color: var(--c-text-soft); margin-bottom: .3rem; }
   .lesson-lo { font-size: .76rem; color: var(--c-text-soft); }
 
+  /* Section-level accordion (wraps an entire section: Media Library, Generation Tools) */
+  .section-accordion { border: none; }
+  .section-accordion > summary {
+    list-style: none; cursor: pointer; user-select: none;
+    display: flex; align-items: center; gap: 1rem;
+    padding: 0; margin-bottom: .3rem;
+  }
+  .section-accordion > summary::-webkit-details-marker { display: none; }
+  .section-accordion > summary:focus-visible { outline: 2px solid var(--c-accent); outline-offset: 4px; }
+
+  .section-accordion-heading { flex: 1; }
+  .section-accordion-heading h2 { margin-bottom: 0; }
+  .section-accordion-sub {
+    font-size: .85rem; color: var(--c-text-soft); margin-top: .2rem; font-weight: 400;
+  }
+
+  .section-chevron {
+    flex-shrink: 0; width: 1.4rem; height: 1.4rem; color: var(--c-text-soft);
+    border: 1px solid var(--c-border); border-radius: 50%; padding: .3rem;
+    background: var(--c-surface); transition: transform .2s ease, background .15s, color .15s;
+  }
+  .section-accordion > summary:hover .section-chevron { background: var(--c-surface2); color: var(--c-accent); }
+  .section-accordion[open] > summary .section-chevron { transform: rotate(180deg); color: var(--c-accent); background: var(--c-accent-light); }
+
+  .section-accordion-body { padding-top: 1rem; }
+
+  /* Generation Tools */
+  .tools-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem; margin-top: 1.2rem;
+  }
+  .tool-card {
+    display: flex; flex-direction: column; gap: .6rem;
+    border: 1px solid var(--c-border); border-radius: var(--radius);
+    padding: 1.2rem 1.2rem 1.3rem; background: var(--c-surface);
+  }
+  .tool-icon { font-size: 1.6rem; }
+  .tool-name { font-weight: 700; font-size: .95rem; color: var(--c-text); }
+  .tool-desc { font-size: .82rem; color: var(--c-text-mid); flex: 1; }
+  .tool-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: .4rem;
+    background: var(--c-accent); color: #fff; text-decoration: none;
+    border-radius: 6px; padding: .55rem 1rem; font-size: .84rem; font-weight: 600;
+    transition: filter .15s;
+  }
+  .tool-btn:hover { filter: brightness(.85); }
+
   /* Media Library accordion */
   .media-accordion { display: flex; flex-direction: column; gap: .6rem; margin-top: 1.2rem; }
 
@@ -279,6 +326,7 @@
   <a href="#lessons">Lessons</a><span class="sep">·</span>
   <a href="#frameworks">Frameworks</a><span class="sep">·</span>
   <a href="#media">Podcasts &amp; Slides</a><span class="sep">·</span>
+  <a href="#tools">Generation Tools</a><span class="sep">·</span>
   <a href="#grading">Grading</a><span class="sep">·</span>
   <a href="lesson01.html" style="color:var(--c-accent);font-weight:600;">→ Day 1</a>
 </nav>
@@ -822,10 +870,18 @@
        MEDIA LIBRARY — PODCASTS & SLIDE DECKS
   ====================================================== -->
   <section id="media">
-    <h2><span class="sec-kicker">🎧 Media Library</span>Lesson Podcasts &amp; Slide Decks</h2>
-    <p style="font-size:.88rem;color:var(--c-text-soft);margin-bottom:.5rem;">Each of the 15 lessons has a companion audio podcast (NotebookLM overview) and a slide deck. Click a lesson bar below to expand it and reveal both links. Sections are collapsed by default — expand only the lesson you need.</p>
+    <details class="section-accordion">
+      <summary>
+        <span class="section-accordion-heading">
+          <h2><span class="sec-kicker">🎧 Media Library</span>Lesson Podcasts &amp; Slide Decks</h2>
+          <span class="section-accordion-sub">Click to expand — audio podcast and slide deck for each of the 15 lessons.</span>
+        </span>
+        <svg class="section-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </summary>
+      <div class="section-accordion-body">
+        <p style="font-size:.88rem;color:var(--c-text-soft);margin-bottom:.5rem;">Each of the 15 lessons has a companion audio podcast (NotebookLM overview) and a slide deck. Click a lesson bar below to expand it and reveal both links. Sections are collapsed by default — expand only the lesson you need.</p>
 
-    <div class="media-accordion">
+        <div class="media-accordion">
 
       <details class="media-item">
         <summary>
@@ -1007,7 +1063,60 @@
         </div>
       </details>
 
-    </div>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ======================================================
+       GENERATION TOOLS
+  ====================================================== -->
+  <section id="tools">
+    <details class="section-accordion">
+      <summary>
+        <span class="section-accordion-heading">
+          <h2><span class="sec-kicker">⚙️ Generation Tools</span>Instructional Content Generators</h2>
+          <span class="section-accordion-sub">Click to expand — quick-launch tools for building lesson materials.</span>
+        </span>
+        <svg class="section-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </summary>
+      <div class="section-accordion-body">
+        <p style="font-size:.88rem;color:var(--c-text-soft);margin-bottom:.5rem;">Standalone builders for generating supplementary instructional materials. Each opens its own tool page in this repository.</p>
+
+        <div class="tools-grid">
+          <div class="tool-card">
+            <div class="tool-icon">🖼️</div>
+            <div class="tool-name">Generate Instructional Graphics</div>
+            <div class="tool-desc">Build prompts and specs for lesson graphics, diagrams, and visual aids.</div>
+            <a class="tool-btn" href="gen-graphics.html">Open Tool →</a>
+          </div>
+          <div class="tool-card">
+            <div class="tool-icon">📝</div>
+            <div class="tool-name">Generate Instructional Content</div>
+            <div class="tool-desc">Draft lesson text, explanations, and supporting written material.</div>
+            <a class="tool-btn" href="gen-content.html">Open Tool →</a>
+          </div>
+          <div class="tool-card">
+            <div class="tool-icon">📋</div>
+            <div class="tool-name">Generate Instructional Cheatsheets</div>
+            <div class="tool-desc">Produce quick-reference sheets summarizing key lesson concepts.</div>
+            <a class="tool-btn" href="gen-sheets.html">Open Tool →</a>
+          </div>
+          <div class="tool-card">
+            <div class="tool-icon">🧩</div>
+            <div class="tool-name">Generate Instructional Activities</div>
+            <div class="tool-desc">Create hands-on activities, labs, and structured exercises.</div>
+            <a class="tool-btn" href="gen-activities.html">Open Tool →</a>
+          </div>
+          <div class="tool-card">
+            <div class="tool-icon">💡</div>
+            <div class="tool-name">Generate Instructional Examples</div>
+            <div class="tool-desc">Produce worked examples and applied scenarios for a lesson topic.</div>
+            <a class="tool-btn" href="gen-examples.html">Open Tool →</a>
+          </div>
+        </div>
+      </div>
+    </details>
   </section>
 
   <!-- ======================================================
