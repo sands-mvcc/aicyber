@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NIST AI RMF 1.0 — Interactive Guide</title>
+<meta name="description" content="An interactive student guide to the NIST AI Risk Management Framework (AI RMF 1.0): purpose, structure, and how to apply it.">
+<style>
+  :root{
+    --paper:#F6F4EF;
+    --paper-raised:#FFFFFF;
+    --ink:#1B1E24;
+    --ink-soft:#565C66;
+    --line:#DBD6C9;
+    --govern:#2B3A67;
+    --govern-tint:#E7EAF3;
+    --map:#3F6E52;
+    --map-tint:#E6EEE8;
+    --measure:#8A5A34;
+    --measure-tint:#F1E7DC;
+    --manage:#A13D3D;
+    --manage-tint:#F3E3E1;
+    --accent:#2B3A67;
+    --focus:#C9A227;
+    --radius:10px;
+    --shadow:0 1px 2px rgba(27,30,36,.06), 0 8px 24px rgba(27,30,36,.06);
+    --maxw:1180px;
+  }
+  html[data-theme="dark"]{
+    --paper:#14161B;
+    --paper-raised:#1D2027;
+    --ink:#ECE9E1;
+    --ink-soft:#A6ACB8;
+    --line:#333844;
+    --govern-tint:#222B42;
+    --map-tint:#1E2C24;
+    --measure-tint:#2D2419;
+    --manage-tint:#301E20;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:.001ms !important; transition-duration:.001ms !important;}
+  }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', -apple-system, Segoe UI, sans-serif;
+    line-height:1.55;
+    transition:background .25s ease, color .25s ease;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces', Georgia, serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+    color:var(--ink);
+  }
+  code, .mono, .fn-code{
+    font-family:'IBM Plex Mono', ui-monospace, monospace;
+  }
+  a{color:inherit;}
+  ::selection{background:var(--focus); color:#1B1E24;}
+  :focus-visible{outline:3px solid var(--focus); outline-offset:3px; border-radius:4px;}
+
+  /* Skip link */
+  .skip-link{
+    position:absolute; left:-999px; top:0; background:var(--ink); color:var(--paper);
+    padding:.6rem 1rem; z-index:200; border-radius:0 0 8px 0;
+  }
+  .skip-link:focus{left:0;}
+
+  /* Top bar */
+  .topbar{
+    position:sticky; top:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:.75rem 1.25rem;
+    background:var(--paper);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar .brand{
+    display:flex; align-items:center; gap:.6rem;
+    font-family:'Fraunces', serif; font-weight:600; font-size:1.05rem;
+  }
+  .brand .ring-mini{width:22px; height:22px; flex:none;}
+  .topbar-controls{display:flex; align-items:center; gap:.5rem;}
+  .btn{
+    font-family:inherit; font-size:.85rem; font-weight:500;
+    background:var(--paper-raised); color:var(--ink);
+    border:1px solid var(--line); border-radius:8px;
+    padding:.5rem .8rem; cursor:pointer;
+    transition:transform .12s ease, border-color .12s ease;
+  }
+  .btn:hover{border-color:var(--accent); transform:translateY(-1px);}
+  .btn:active{transform:translateY(0);}
+  .btn.icon{padding:.5rem; line-height:0;}
+
+  /* Layout */
+  .shell{
+    display:grid;
+    grid-template-columns:260px minmax(0,1fr);
+    gap:0;
+    max-width:var(--maxw);
+    margin:0 auto;
+  }
+  nav.side{
+    position:sticky; top:57px;
+    align-self:start;
+    height:calc(100vh - 57px);
+    overflow-y:auto;
+    padding:1.75rem 1rem 2rem 1.25rem;
+    border-right:1px solid var(--line);
+  }
+  nav.side .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:.68rem; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink-soft); margin:1.3rem 0 .5rem;
+  }
+  nav.side .eyebrow:first-child{margin-top:0;}
+  nav.side a{
+    display:block; padding:.4rem .5rem; margin:.05rem 0;
+    border-radius:6px; text-decoration:none; font-size:.88rem;
+    color:var(--ink-soft);
+    border-left:2px solid transparent;
+  }
+  nav.side a:hover{background:var(--paper-raised); color:var(--ink);}
+  nav.side a.active{color:var(--ink); font-weight:600; border-left-color:var(--accent); background:var(--paper-raised);}
+  nav.side a .dot{display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:.5rem;}
+
+  main{padding:0 clamp(1rem, 3vw, 2.5rem) 4rem;}
+  section{scroll-margin-top:75px;}
+
+  /* Hero */
+  .hero{
+    padding:3rem 0 2rem;
+    display:grid; grid-template-columns:1.1fr .9fr; gap:2.5rem; align-items:center;
+    border-bottom:1px solid var(--line);
+  }
+  .hero h1{font-size:clamp(1.9rem, 3.4vw, 2.6rem); margin:.2rem 0 .8rem; line-height:1.08;}
+  .hero .kicker{
+    font-family:'IBM Plex Mono', monospace; font-size:.75rem; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--govern);
+  }
+  .hero p.lede{color:var(--ink-soft); font-size:1.05rem; max-width:52ch;}
+  .hero-actions{display:flex; gap:.7rem; margin-top:1.2rem; flex-wrap:wrap;}
+  .hero-actions .btn.primary{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+  .hero-diagram{display:flex; justify-content:center;}
+  .ring-caption{
+    text-align:center; font-size:.78rem; color:var(--ink-soft); margin-top:.4rem;
+    font-family:'IBM Plex Mono', monospace;
+  }
+
+  /* Section headers */
+  .section-head{padding:2.4rem 0 .6rem;}
+  .section-head .kicker{
+    font-family:'IBM Plex Mono', monospace; font-size:.72rem; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--ink-soft); display:block; margin-bottom:.3rem;
+  }
+  .section-head h2{font-size:1.6rem; margin:.1rem 0 .4rem;}
+  .section-head p{color:var(--ink-soft); max-width:70ch; margin:0;}
+
+  /* Purpose / How to use cards */
+  .card-grid{display:grid; grid-template-columns:repeat(2, 1fr); gap:1rem; margin:1.2rem 0 2rem;}
+  .info-card{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius);
+    padding:1.2rem 1.3rem; box-shadow:var(--shadow);
+  }
+  .info-card h3{font-size:1.02rem; margin:0 0 .4rem;}
+  .info-card p{margin:0; color:var(--ink-soft); font-size:.92rem;}
+  .info-card ol, .info-card ul{margin:.3rem 0 0; padding-left:1.1rem; color:var(--ink-soft); font-size:.92rem;}
+  .info-card li{margin-bottom:.3rem;}
+
+  /* Trustworthy characteristics */
+  .chip-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:.8rem; margin:1rem 0 2rem;}
+  .chip{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius);
+    padding:1rem 1.1rem;
+  }
+  .chip h4{margin:0 0 .3rem; font-size:.95rem; font-family:'Fraunces', serif; font-weight:600;}
+  .chip p{margin:0; font-size:.82rem; color:var(--ink-soft);}
+  .chip .glyph{font-family:'IBM Plex Mono', monospace; font-size:.7rem; color:var(--accent); letter-spacing:.06em;}
+
+  /* Function sections */
+  .fn-section{padding-top:2rem;}
+  .fn-band{
+    border-radius:14px; padding:1.5rem 1.6rem; margin-bottom:1.1rem; border:1px solid var(--line);
+  }
+  .fn-band .fn-code{font-size:.75rem; letter-spacing:.1em; text-transform:uppercase;}
+  .fn-band h2{font-size:1.55rem; margin:.25rem 0 .5rem;}
+  .fn-band .fn-role{font-size:.95rem; color:var(--ink-soft); max-width:66ch; margin:0 0 .3rem;}
+  .fn-band .fn-question{
+    font-family:'Fraunces', serif; font-style:italic; font-size:1.05rem; margin-top:.6rem;
+  }
+
+  .accordion{border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; background:var(--paper-raised); margin-bottom:.6rem;}
+  .accordion + .accordion{margin-top:.6rem;}
+  .acc-trigger{
+    width:100%; display:flex; align-items:center; justify-content:space-between; gap:1rem;
+    background:none; border:none; text-align:left; cursor:pointer;
+    padding:.95rem 1.1rem; font:inherit; color:var(--ink);
+  }
+  .acc-trigger .label{display:flex; align-items:baseline; gap:.6rem;}
+  .acc-trigger .cat-code{font-family:'IBM Plex Mono', monospace; font-size:.78rem; color:var(--ink-soft); flex:none;}
+  .acc-trigger .cat-title{font-weight:600; font-size:.98rem;}
+  .acc-trigger .chevron{transition:transform .18s ease; flex:none; font-size:.9rem; color:var(--ink-soft);}
+  .accordion[data-open="true"] .chevron{transform:rotate(180deg);}
+  .acc-panel{
+    max-height:0; overflow:hidden; transition:max-height .25s ease;
+    border-top:1px solid transparent;
+  }
+  .accordion[data-open="true"] .acc-panel{border-top-color:var(--line);}
+  .acc-panel-inner{padding:.9rem 1.1rem 1.1rem 1.1rem;}
+  .acc-panel-inner ul{margin:0; padding-left:1.15rem;}
+  .acc-panel-inner li{margin-bottom:.5rem; font-size:.92rem; color:var(--ink-soft);}
+  .acc-panel-inner li strong{color:var(--ink); font-weight:600;}
+
+  /* Cycle note */
+  .cycle-note{
+    display:flex; gap:.8rem; align-items:flex-start;
+    background:var(--govern-tint); border:1px solid var(--line); border-radius:var(--radius);
+    padding:1rem 1.2rem; margin:1.4rem 0 2.4rem; font-size:.9rem; color:var(--ink-soft);
+  }
+  .cycle-note .mark{font-family:'IBM Plex Mono', monospace; color:var(--govern); font-weight:600;}
+
+  /* How-to-use timeline */
+  .steps{counter-reset:step; list-style:none; margin:1.2rem 0 2rem; padding:0; display:grid; gap:.7rem;}
+  .steps li{
+    counter-increment:step; position:relative;
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius);
+    padding:.9rem 1.1rem 1rem 3rem; font-size:.92rem; color:var(--ink-soft);
+  }
+  .steps li::before{
+    content:counter(step);
+    position:absolute; left:1rem; top:.85rem;
+    font-family:'IBM Plex Mono', monospace; font-weight:700; color:var(--accent); font-size:.85rem;
+  }
+  .steps li strong{color:var(--ink); display:block; margin-bottom:.15rem; font-family:'Fraunces', serif; font-weight:600;}
+
+  footer{
+    border-top:1px solid var(--line); padding:2rem clamp(1rem,3vw,2.5rem) 3rem;
+    max-width:var(--maxw); margin:0 auto; color:var(--ink-soft); font-size:.85rem;
+  }
+  footer a{color:var(--accent); text-decoration:underline;}
+
+  /* Mobile nav toggle */
+  .nav-toggle{display:none;}
+  @media (max-width: 900px){
+    .shell{grid-template-columns:1fr;}
+    nav.side{
+      position:fixed; top:57px; left:0; right:0; bottom:0; z-index:90;
+      background:var(--paper); height:auto; max-height:calc(100vh - 57px);
+      transform:translateX(-100%); transition:transform .2s ease;
+      border-right:none;
+    }
+    nav.side.open{transform:translateX(0);}
+    .nav-toggle{display:inline-flex;}
+    .hero{grid-template-columns:1fr; text-align:left;}
+    .card-grid{grid-template-columns:1fr;}
+  }
+  @media print{
+    nav.side, .topbar, .hero-actions, .nav-toggle{display:none !important;}
+    .acc-panel{max-height:none !important;}
+    .shell{grid-template-columns:1fr;}
+    body{background:#fff; color:#000;}
+  }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="topbar">
+  <div class="brand">
+    <svg class="ring-mini" viewBox="0 0 40 40" aria-hidden="true">
+      <circle cx="20" cy="20" r="17" fill="none" stroke="var(--govern)" stroke-width="4"/>
+      <circle cx="20" cy="20" r="9" fill="none" stroke="var(--manage)" stroke-width="3"/>
+    </svg>
+    NIST AI RMF 1.0 — Student Guide
+  </div>
+  <div class="topbar-controls">
+    <button class="btn nav-toggle icon" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <button class="btn icon" id="themeToggle" aria-label="Toggle dark mode">🌓</button>
+    <button class="btn" onclick="window.print()">Print / PDF</button>
+  </div>
+</header>
+
+<div class="shell">
+  <nav class="side" id="sideNav" aria-label="Section navigation">
+    <span class="eyebrow">Orientation</span>
+    <a href="#purpose">Purpose &amp; Origin</a>
+    <a href="#how-to-use">How to Use This Guide</a>
+    <a href="#trust">Characteristics of Trustworthy AI</a>
+
+    <span class="eyebrow">Core Functions</span>
+    <a href="#govern"><span class="dot" style="background:var(--govern)"></span>Govern</a>
+    <a href="#map"><span class="dot" style="background:var(--map)"></span>Map</a>
+    <a href="#measure"><span class="dot" style="background:var(--measure)"></span>Measure</a>
+    <a href="#manage"><span class="dot" style="background:var(--manage)"></span>Manage</a>
+
+    <span class="eyebrow">Reference</span>
+    <a href="#classroom">Classroom Uses</a>
+    <a href="#sources">Sources &amp; Further Reading</a>
+  </nav>
+
+  <main id="main">
+
+    <section class="hero" id="top">
+      <div>
+        <span class="kicker">NIST · AI 100-1 · January 2023</span>
+        <h1>The AI Risk Management Framework, mapped for the classroom.</h1>
+        <p class="lede">A voluntary, non-sector-specific framework for identifying, measuring, and responding to the risks of designing, developing, deploying, and using AI systems — built around four functions and seven characteristics of trustworthy AI.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#purpose">Start with Purpose</a>
+          <a class="btn" href="#govern">Jump to the four functions</a>
+        </div>
+      </div>
+      <div>
+        <div class="hero-diagram">
+          <svg id="ringDiagram" viewBox="0 0 360 360" width="320" height="320" role="img" aria-label="Diagram: Govern surrounds the continuous cycle of Map, Measure, and Manage">
+            <circle cx="180" cy="180" r="160" fill="none" stroke="var(--govern)" stroke-width="26" stroke-dasharray="2 10" stroke-linecap="round"/>
+            <text x="180" y="34" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="15" font-weight="700" fill="var(--govern)">GOVERN</text>
+            <text x="180" y="340" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--ink-soft)">cross-cutting · continuous</text>
+
+            <g class="ring-arc" data-fn="map">
+              <path id="arcMap" d="M 180 60 A 120 120 0 0 1 283.9 240" fill="none" stroke="var(--map)" stroke-width="34" stroke-linecap="round"/>
+            </g>
+            <g class="ring-arc" data-fn="measure">
+              <path id="arcMeasure" d="M 283.9 240 A 120 120 0 0 1 76.1 240" fill="none" stroke="var(--measure)" stroke-width="34" stroke-linecap="round"/>
+            </g>
+            <g class="ring-arc" data-fn="manage">
+              <path id="arcManage" d="M 76.1 240 A 120 120 0 0 1 180 60" fill="none" stroke="var(--manage)" stroke-width="34" stroke-linecap="round"/>
+            </g>
+
+            <text x="245" y="130" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" font-weight="700" fill="#fff">MAP</text>
+            <text x="180" y="275" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" font-weight="700" fill="#fff">MEASURE</text>
+            <text x="115" y="130" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" font-weight="700" fill="#fff">MANAGE</text>
+
+            <circle cx="180" cy="180" r="44" fill="var(--paper-raised)" stroke="var(--line)" stroke-width="1.5"/>
+            <text x="180" y="176" text-anchor="middle" font-family="Fraunces, serif" font-size="12" font-weight="600" fill="var(--ink)">AI</text>
+            <text x="180" y="192" text-anchor="middle" font-family="Fraunces, serif" font-size="12" font-weight="600" fill="var(--ink)">System</text>
+          </svg>
+        </div>
+        <p class="ring-caption">Govern is the outer, always-on function. Map → Measure → Manage form the inner, iterative cycle applied to a given AI system, use case, or lifecycle stage.</p>
+      </div>
+    </section>
+
+    <section id="purpose">
+      <div class="section-head">
+        <span class="kicker">01 — Foundations</span>
+        <h2>Purpose &amp; Origin</h2>
+        <p>Why the framework exists, who it's for, and what problem it's solving.</p>
+      </div>
+      <div class="card-grid">
+        <div class="info-card">
+          <h3>What it is</h3>
+          <p>The NIST AI Risk Management Framework (AI RMF 1.0) is a voluntary, consensus-driven framework, published by the U.S. National Institute of Standards and Technology in January 2023, that gives organizations a common vocabulary and structured process for managing risks introduced by AI systems — across their entire lifecycle, from design through decommissioning.</p>
+        </div>
+        <div class="info-card">
+          <h3>Why it was created</h3>
+          <p>AI systems introduce risks that traditional software risk management wasn't built for: statistical and data-driven uncertainty, opacity in how models reach conclusions, third-party and supply-chain dependencies (pretrained models, datasets, APIs), and impacts that are harder to test for and can surface long after deployment. The framework was directed by the National AI Initiative Act of 2020 and built with broad public and private-sector input.</p>
+        </div>
+        <div class="info-card">
+          <h3>Who it's for</h3>
+          <p>Any organization designing, developing, deploying, evaluating, or procuring AI systems — regardless of sector, size, or stage of AI adoption. It is intentionally sector- and use-case-agnostic, meant to be adapted rather than applied as a fixed checklist.</p>
+        </div>
+        <div class="info-card">
+          <h3>What it is not</h3>
+          <p>It is not a compliance checklist, not a certification standard, and not a technical standard for any specific AI technique. It does not assign legal liability or define a pass/fail test. It's a flexible process for reasoning about risk, meant to be tailored to context.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="how-to-use">
+      <div class="section-head">
+        <span class="kicker">02 — Using this guide</span>
+        <h2>How to Use This Guide</h2>
+        <p>This tool is built for a course session, not a policy office. Suggested path through the material:</p>
+      </div>
+      <ol class="steps">
+        <li><strong>Read the seven characteristics first.</strong> Before the functions make sense, you need the target: what does "trustworthy" actually mean here? Start at the Characteristics section below.</li>
+        <li><strong>Walk the ring, not a checklist.</strong> Govern, Map, Measure, Manage are not steps 1–4 you complete once. Govern runs the whole time; Map → Measure → Manage repeat every time context changes — new use case, new data, new deployment.</li>
+        <li><strong>Open each function's categories.</strong> Click into Govern, Map, Measure, and Manage below. Each accordion holds the categories NIST defines under that function, with a plain-language summary of the intent — use these as discussion prompts, not verbatim policy text.</li>
+        <li><strong>Apply it to one real or hypothetical AI system.</strong> The framework is only useful in the applying. Pick a system (an admissions chatbot, a proctoring tool, a hiring screener) and ask, function by function: who governs this, what's been mapped, what's being measured, and what happens when it fails?</li>
+        <li><strong>Go to the primary source for anything graded.</strong> This guide is a teaching scaffold summarizing NIST AI 100-1 and its companion Playbook. For assignments, quote and cite the original NIST text — see Sources below.</li>
+      </ol>
+    </section>
+
+    <section id="trust">
+      <div class="section-head">
+        <span class="kicker">03 — The target</span>
+        <h2>Characteristics of Trustworthy AI</h2>
+        <p>NIST frames these seven characteristics as the outcome the four functions are managing toward. An AI system is not trustworthy because one characteristic is strong — trade-offs between them are expected and must be documented, not hidden.</p>
+      </div>
+      <div class="chip-grid">
+        <div class="chip"><span class="glyph">01</span><h4>Valid &amp; Reliable</h4><p>Performs as intended, accurately, and consistently under expected conditions, with ongoing testing rather than one-time validation.</p></div>
+        <div class="chip"><span class="glyph">02</span><h4>Safe</h4><p>Does not endanger human life, health, property, or the environment under defined conditions of use, including foreseeable misuse.</p></div>
+        <div class="chip"><span class="glyph">03</span><h4>Secure &amp; Resilient</h4><p>Withstands adversarial manipulation (data poisoning, evasion, model extraction) and recovers from unexpected adverse events.</p></div>
+        <div class="chip"><span class="glyph">04</span><h4>Accountable &amp; Transparent</h4><p>Roles, responsibilities, and decisions are documented and traceable; information about the system is available to those who need it.</p></div>
+        <div class="chip"><span class="glyph">05</span><h4>Explainable &amp; Interpretable</h4><p>Explainable: can describe the mechanism behind an output. Interpretable: the output has meaning in context for the person using it — two related but distinct properties.</p></div>
+        <div class="chip"><span class="glyph">06</span><h4>Privacy-Enhanced</h4><p>Safeguards human autonomy, identity, and dignity — anonymity, confidentiality, and control over data are actively engineered in.</p></div>
+        <div class="chip"><span class="glyph">07</span><h4>Fair, with Harmful Bias Managed</h4><p>Addresses systemic, statistical, and human/cognitive bias; fairness includes equity concerns and disparate impact, not just a single metric.</p></div>
+      </div>
+    </section>
+
+    <!-- GOVERN -->
+    <section class="fn-section" id="govern">
+      <div class="fn-band" style="background:var(--govern-tint); border-color:var(--govern);">
+        <span class="fn-code mono" style="color:var(--govern);">FUNCTION 01 · CROSS-CUTTING</span>
+        <h2>Govern</h2>
+        <p class="fn-role">Cultivates and implements a culture of risk management across the organization. Govern is the only function that runs continuously and touches every other function — it's the policies, structures, and accountability that make Map, Measure, and Manage possible and consistent.</p>
+        <p class="fn-question">"Who is responsible when this AI system causes harm, and how would we know?"</p>
+      </div>
+
+      <div class="accordion" data-open="false">
+        <button class="acc-trigger" aria-expanded="false"><span class="label"><span class="cat-code">GOVERN 1</span><span class="cat-title">Policies, processes &amp; procedures established</span></span><span class="chevron">▾</span></button>
+        <div class="acc-panel"><div class="acc-panel-inner"><ul>
+          <li><strong>Legal &amp; regulatory landscape.</strong> The organization understands which laws, regulations, and standards apply to its AI systems before deployment, not after.</li>
+          <li><strong>Trade-offs documented.</strong> When trustworthy characteristics conflict (e.g., more explainability can reduce accuracy), the trade-off and rationale are written down, not left implicit.</li>
+          <li><strong>Risk tolerance defined.</strong> The organization has articulated what level of AI risk it is and isn't willing to accept, tied to its broader risk appetite.</li>
+        </ul></div></div>
+      </div>
+
+      <div class="accordion" data-open="false">
+        <button class="acc-trigger" aria-expanded="false"><span class="label"><span class="cat-code">GOVERN 2</span><span class="cat-title">Accountability structures in place</span></span><span class="chevron">▾</span></button>
+        <div class="acc-panel"><div class="acc-panel-inner"><ul>
+          <li><strong>Roles &amp; responsibilities.</strong> Specific people or teams are named as accountable for AI risk decisions — not diffused across "the team."</li>
+          <li><strong>Human oversight.</strong> Mechanisms exist for humans to intervene in, override, or halt an AI system's outputs when needed.</li>
+        </ul></div></div>
+      </div>
+
+      <div class="accordion" data-open="false">
+        <button class="acc-trigger" aria-expanded="false"><span class="label"><span class="cat-code">GOVERN 3</span><span class="cat-title">Workforce diversity &amp; risk-aware culture</span></span><span class="chevron">▾</span></button>
+        <div class="acc-panel"><div class="acc-panel-inner"><ul>
+          <li><strong>Diverse perspectives.</strong> Teams building and reviewing AI systems include a range of disciplines and lived experiences, reducing blind spots in what risks get noticed.</li>
+          <li><strong>Training.</strong> Staff who interact with AI systems — not just engineers — are trained to recognize and escalate risk.</li>
+        </ul></div></div>
+      </div>
+
+      <div class="accordion" data-open="false">
+        <button class="acc-trigger" aria-expanded="false"><span class="label"><span class="cat-code">GOVERN 4–6</span><span class="cat-title">Organizational commitment &amp; third-party risk</span></span><span class="chevron">▾</span></button>
+        <div class="acc-panel"><div class="acc-panel-inner"><ul>
+          <li><strong>Communicated commitment.</strong> The organization's stance on trustworthy AI is documented and communicated internally and to its supply chain.</li>
+          <li><strong>External input.</strong> Processes exist for people outside the organization (users, affected communities, auditors) to raise concerns.</li>
+          <li><strong>Third-party risk.</strong> Policies extend to vendors, pretrained models, and third-party datasets — risk doesn't stop at the organization's own code.</li>
+        </ul></div></div>
+      </div>
+    </section>
+
+    <div class="cycle-note"><span class="mark">↻</span><span>Map, Measure, and Manage below are not a one-time sequence. NIST describes them as applied repeatedly — every new use case, deployment context, or significant model update re-enters the cycle.</span></div>
+
+    <!-- MAP -->
+    <section class="fn-section" id="map">
+      <div class="fn-band" style="background:var(--map-tint); border-color:var(--map);">
+        <span class="fn-code mono" style="color:var(--map);">FUNCTION 02 · CONTEXT</span>
+        <h2>Map</h2>
+        <p class="fn-role">Establishes the context in which risk will be framed. Before you can measure or manage a risk, you have to know what the system is, what it's for, who it touches, and what could plausibly go wrong.</p>
+        <p class="fn-question">"What is this system actually being used for, and by whom, and who else does it affect?"</p>
+      </div>
+
+      <div class="accordion" data-open="false">
+        <button class="acc-trigger" aria-expanded="false"><span class="label"><span class="cat-code">MAP 1</span><span class="cat-title">Context established &amp; understood</span></span><span class="chevron">▾</span></button>
+        <div class="acc-panel"><div class="acc-panel-inner"><ul>
+          <li><strong>Intended purpose.</strong> The specific use case, users, and setting are documented — an AI system's risk profile changes entirely with context.</li>
+          <li><strong>Business/mission value.</strong> Why the organization is deploying this system, so risk decisions can be weighed against actual benefit, not assumed benefit.</li>
+        </ul></div></div>
+      </div>
+
+      <div class="accordion" data-open="false">
+        <button class="acc-trigger" aria-expanded="false"><span class="label"><span class="cat-code">MAP 2</span><span class="cat-title">System categorized</span></span><span class="chevron">▾</span></button>
+        <div class="acc-panel"><div class="acc-panel-inner"><ul>
+          <li><strong>Type of system.</strong> Whether it's generative, predictive, a recommender, biometric, etc. — different categories carry different characteristic risks.</li>
+          <li><strong>Lifecycle stage.</strong> Whether it's being designed, piloted, deployed at scale, or nearing retirement, since risk-management needs differ by stage.</li>
+        </ul></div></div>
+      </div>
+
+      <div class="accordion" data-open="false">
+        <button class="acc-trigger" aria-expanded="false"><span class="label"><span class="cat-code">MAP 3</span><span class="cat-title">Capabilities, goals &amp; costs/benefits mapped</span></span><span class="chevron">▾</span></button>
+        <div class="acc-panel"><div class="acc-panel-inner"><ul>
+          <li><strong>Capabilities vs. claims.</strong> What the system can actually do is documented separately from what it's marketed or assumed to do.</li>
+          <li><strong>Costs and benefits.</strong> Weighed across affected groups, not only the deploying organization — a benefit to the business can be a cost to an end user.</li>
+        </ul></div></div>
+      </div>
+
+      <div class="accordion" data-open="false">
+        <button class="acc-trigger" aria-expanded="false"><span class="label"><span class="cat-code">MAP 4–5</span><span class="cat-title">Risks &amp; impacts identified</span></span><span class="chevron">▾</span></button>
+        <div class="acc-panel"><div class="acc-panel-inner"><ul>
+          <li><strong>Component-level risk.</strong> Risks are traced to specific components — training data, model architecture, integration points — not treated as one undifferentiated "AI risk."</li>
+          <li><strong>Impacts to people.</strong> Effects on individuals, groups, communities, organizations, society, and the environment are identified, including impacts on those who never directly use the system.</li>
+        </ul></div></div>
+      </div>
+    </section>
+
+    <!-- MEASURE -->
+    <section class="fn-section" id="measure">
+      <div class="fn-band" style="background:var(--measure-tint); border-color:var(--measure);">
+        <span class="fn-code mono" style="color:var(--measure);">FUNCTION 03 · ANALYSIS</span>
+        <h2>Measure</h2>
+        <p class="fn-role">Employs quantitative, qualitative, or mixed methods to analyze, assess, benchmark, and monitor AI risk and its impacts. If Map defines what could go wrong, Measure is how you'd actually know whether it is.</p>
+        <p class="fn-question">"What evidence do we have that this system is behaving the way we mapped it to — and is anyone watching for drift?"</p>
+      </div>
+
+      <div class="accordion" data-open="false">
+        <button class="acc-trigger" aria-expanded="false"><span class="label"><span class="cat-code">MEASURE 1</span><span class="cat-title">Appropriate methods &amp; metrics identified</span></span><span class="chevron">▾</span></button>
+        <div class="acc-panel"><div class="acc-panel-inner"><ul>
+          <li><strong>Fit-for-purpose metrics.</strong> Chosen metrics actually reflect the risks mapped earlier, rather than defaulting to whatever is easiest to compute (e.g., aggregate accuracy hiding subgroup failure).</li>
+        </ul></div></div>
+      </div>
+
+      <div class="accordion" data-open="false">
+        <button class="acc-trigger" aria-expanded="false"><span class="label"><span class="cat-code">MEASURE 2</span><span class="cat-title">Trustworthy characteristics evaluated</span></span><span class="chevron">▾</span></button>
+        <div class="acc-panel"><div class="acc-panel-inner"><ul>
+          <li><strong>Testing against the seven characteristics.</strong> The system is evaluated for validity/reliability, safety, security, fairness, and the others — not just overall performance.</li>
+          <li><strong>Red-teaming &amp; adversarial testing.</strong> Deliberate attempts to find failure modes before adversaries or end users do.</li>
+        </ul></div></div>
+      </div>
+
+      <div class="accordion" data-open="false">
+        <button class="acc-trigger" aria-expanded="false"><span class="label"><span class="cat-code">MEASURE 3–4</span><span class="cat-title">Ongoing tracking &amp; feedback</span></span><span class="chevron">▾</span></button>
+        <div class="acc-panel"><div class="acc-panel-inner"><ul>
+          <li><strong>Mechanisms for tracking risk over time.</strong> Since models drift and contexts change, measurement is repeated, not a one-time gate before launch.</li>
+          <li><strong>Feedback on the measurement itself.</strong> The organization checks whether its own metrics and methods are actually working, and revises them when they aren't.</li>
+        </ul></div></div>
+      </div>
+    </section>
+
+    <!-- MANAGE -->
+    <section class="fn-section" id="manage">
+      <div class="fn-band" style="background:var(--manage-tint); border-color:var(--manage);">
+        <span class="fn-code mono" style="color:var(--manage);">FUNCTION 04 · RESPONSE</span>
+        <h2>Manage</h2>
+        <p class="fn-role">Allocates resources to mapped and measured risks on a regular basis, and treats them: mitigate, transfer, avoid, or accept. Manage is where risk analysis turns into an actual decision and an actual action.</p>
+        <p class="fn-question">"Given what we've mapped and measured, what are we doing about it — and who finds out if it happens anyway?"</p>
+      </div>
+
+      <div class="accordion" data-open="false">
+        <button class="acc-trigger" aria-expanded="false"><span class="label"><span class="cat-code">MANAGE 1</span><span class="cat-title">Risks prioritized &amp; acted on</span></span><span class="chevron">▾</span></button>
+        <div class="acc-panel"><div class="acc-panel-inner"><ul>
+          <li><strong>Prioritization.</strong> Risks are ranked by severity and likelihood, given finite time and budget — not treated as equally urgent.</li>
+          <li><strong>Treatment decision.</strong> For each significant risk: mitigate it, transfer it (e.g., insurance, contract terms), avoid it (don't deploy), or accept it explicitly and document why.</li>
+        </ul></div></div>
+      </div>
+
+      <div class="accordion" data-open="false">
+        <button class="acc-trigger" aria-expanded="false"><span class="label"><span class="cat-code">MANAGE 2</span><span class="cat-title">Benefits maximized, harms minimized</span></span><span class="chevron">▾</span></button>
+        <div class="acc-panel"><div class="acc-panel-inner"><ul>
+          <li><strong>Ongoing optimization.</strong> Strategies are implemented and revisited, not set once at launch.</li>
+        </ul></div></div>
+      </div>
+
+      <div class="accordion" data-open="false">
+        <button class="acc-trigger" aria-expanded="false"><span class="label"><span class="cat-code">MANAGE 3</span><span class="cat-title">Third-party risk managed</span></span><span class="chevron">▾</span></button>
+        <div class="acc-panel"><div class="acc-panel-inner"><ul>
+          <li><strong>Vendor &amp; supply-chain accountability.</strong> Risks introduced by third-party models, data, or services are actively managed, not assumed to be someone else's problem.</li>
+        </ul></div></div>
+      </div>
+
+      <div class="accordion" data-open="false">
+        <button class="acc-trigger" aria-expanded="false"><span class="label"><span class="cat-code">MANAGE 4</span><span class="cat-title">Incident response, recovery &amp; communication</span></span><span class="chevron">▾</span></button>
+        <div class="acc-panel"><div class="acc-panel-inner"><ul>
+          <li><strong>Response plans.</strong> Documented plans exist for when an AI system fails or causes harm — not improvised after the fact.</li>
+          <li><strong>Communication.</strong> Affected parties are told what happened, in plain language, as part of the plan rather than an afterthought.</li>
+        </ul></div></div>
+      </div>
+    </section>
+
+    <section id="classroom">
+      <div class="section-head">
+        <span class="kicker">04 — In the classroom</span>
+        <h2>Classroom Uses</h2>
+        <p>Ways instructors have used this structure with students.</p>
+      </div>
+      <div class="card-grid">
+        <div class="info-card">
+          <h3>Case study walk-through</h3>
+          <p>Give students a real or fictional AI deployment (a hiring tool, a chatbot, a proctoring system). Have them fill in one sentence per category — Govern through Manage — using only what's known, and flag what's missing.</p>
+        </div>
+        <div class="info-card">
+          <h3>Trade-off debate</h3>
+          <p>Pick two trustworthy characteristics that pull against each other for a given system (e.g., Explainability vs. Valid &amp; Reliable) and have students argue both sides before proposing a documented trade-off.</p>
+        </div>
+        <div class="info-card">
+          <h3>Govern audit exercise</h3>
+          <p>Have students draft a one-page "who's accountable" chart for an AI system at their own institution — a low-stakes way to make GOVERN concrete before touching the more technical MAP/MEASURE work.</p>
+        </div>
+        <div class="info-card">
+          <h3>Playbook comparison</h3>
+          <p>Assign students a single subcategory from the official NIST AI RMF Playbook and have them present the suggested actions in their own words — building comfort with primary-source policy language.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="section-head">
+        <span class="kicker">05 — Go to the source</span>
+        <h2>Sources &amp; Further Reading</h2>
+        <p>This guide is a teaching summary. For anything graded, cite NIST directly.</p>
+      </div>
+      <div class="card-grid">
+        <div class="info-card">
+          <h3>NIST AI RMF 1.0 (AI 100-1)</h3>
+          <p>The primary publication: full text of all four functions, categories, and subcategories.<br><code>nvlpubs.nist.gov</code> — search "NIST AI 100-1."</p>
+        </div>
+        <div class="info-card">
+          <h3>NIST AI RMF Playbook</h3>
+          <p>A companion resource with suggested actions, references, and documentation for every subcategory — the practical "how" to this guide's "what."<br><code>airc.nist.gov/AI_RMF_Knowledge_Base/Playbook</code></p>
+        </div>
+        <div class="info-card">
+          <h3>NIST AI Resource Center</h3>
+          <p>Ongoing NIST guidance, crosswalks to other frameworks (ISO/IEC 42001, EU AI Act), and generative-AI-specific profile documents.<br><code>airc.nist.gov</code></p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  <p>Built as a course companion summarizing the NIST AI Risk Management Framework (AI RMF 1.0, January 2023) for classroom use. Category descriptions are paraphrased for instructional clarity — always verify exact subcategory language against the official NIST publication and Playbook before using in graded or compliance work. Single-file HTML5, no external dependencies, safe to host on GitHub Pages.</p>
+</footer>
+
+<script>
+(function(){
+  // Theme toggle with localStorage persistence
+  var root = document.documentElement;
+  var themeBtn = document.getElementById('themeToggle');
+  var saved = localStorage.getItem('nist-rmf-theme');
+  if(saved){ root.setAttribute('data-theme', saved); }
+  else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
+    root.setAttribute('data-theme','dark');
+  }
+  themeBtn.addEventListener('click', function(){
+    var current = root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    var next = current === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('nist-rmf-theme', next);
+  });
+
+  // Mobile nav toggle
+  var navToggle = document.getElementById('navToggle');
+  var sideNav = document.getElementById('sideNav');
+  navToggle.addEventListener('click', function(){
+    var open = sideNav.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  sideNav.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      sideNav.classList.remove('open');
+      navToggle.setAttribute('aria-expanded','false');
+    });
+  });
+
+  // Accordion behavior
+  document.querySelectorAll('.accordion').forEach(function(acc){
+    var trigger = acc.querySelector('.acc-trigger');
+    var panel = acc.querySelector('.acc-panel');
+    trigger.addEventListener('click', function(){
+      var isOpen = acc.getAttribute('data-open') === 'true';
+      var next = !isOpen;
+      acc.setAttribute('data-open', next ? 'true' : 'false');
+      trigger.setAttribute('aria-expanded', next ? 'true' : 'false');
+      panel.style.maxHeight = next ? (panel.scrollHeight + 20) + 'px' : 0;
+    });
+  });
+
+  // Scrollspy for side nav active state
+  var navLinks = Array.from(document.querySelectorAll('nav.side a'));
+  var sections = navLinks.map(function(a){ return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+  function onScroll(){
+    var pos = window.scrollY + 110;
+    var current = sections[0];
+    sections.forEach(function(sec){ if(sec.offsetTop <= pos){ current = sec; } });
+    navLinks.forEach(function(a){
+      a.classList.toggle('active', current && a.getAttribute('href') === '#' + current.id);
+    });
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+})();
+</script>
+</body>
+</html>
