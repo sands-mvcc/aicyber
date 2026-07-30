@@ -196,6 +196,58 @@
   .lesson-time { font-size: .78rem; color: var(--c-text-soft); margin-bottom: .3rem; }
   .lesson-lo { font-size: .76rem; color: var(--c-text-soft); }
 
+  /* Media Library accordion */
+  .media-accordion { display: flex; flex-direction: column; gap: .6rem; margin-top: 1.2rem; }
+
+  .media-item {
+    border: 1px solid var(--c-border); border-radius: var(--radius);
+    background: var(--c-bg); overflow: hidden;
+  }
+  .media-item[open] { border-color: var(--c-accent-mid); box-shadow: var(--shadow); }
+
+  .media-item summary {
+    list-style: none; cursor: pointer; user-select: none;
+    display: flex; align-items: center; gap: .9rem;
+    padding: .85rem 1.1rem; background: var(--c-surface);
+    font-family: var(--font-sans); transition: background .15s;
+  }
+  .media-item summary::-webkit-details-marker { display: none; }
+  .media-item summary:hover { background: var(--c-surface2); }
+  .media-item[open] summary { background: var(--c-accent-light); }
+
+  .media-item summary:focus-visible {
+    outline: 2px solid var(--c-accent); outline-offset: -2px;
+  }
+
+  .media-day-chip {
+    font-family: var(--font-serif); font-weight: 700; font-size: 1rem;
+    color: var(--c-accent); background: var(--c-bg); border: 1px solid var(--c-border);
+    border-radius: 6px; min-width: 2.4rem; text-align: center; padding: .15rem .3rem;
+    flex-shrink: 0;
+  }
+  .media-summary-title {
+    flex: 1; font-weight: 600; font-size: .92rem; color: var(--c-text);
+  }
+  .media-chevron {
+    flex-shrink: 0; width: 1rem; height: 1rem; color: var(--c-text-soft);
+    transition: transform .2s ease;
+  }
+  .media-item[open] .media-chevron { transform: rotate(180deg); color: var(--c-accent); }
+
+  .media-body {
+    padding: .9rem 1.1rem 1.1rem; border-top: 1px solid var(--c-border);
+    display: flex; flex-wrap: wrap; gap: .6rem;
+  }
+  .media-link {
+    display: inline-flex; align-items: center; gap: .45rem;
+    text-decoration: none; border-radius: 6px; padding: .45rem .9rem;
+    font-size: .82rem; font-weight: 600; border: 1px solid transparent;
+    transition: filter .15s;
+  }
+  .media-link:hover { filter: brightness(.95); }
+  .media-link.podcast { background: var(--c-blue-light); color: var(--c-blue); border-color: var(--c-blue); }
+  .media-link.slides { background: var(--c-gold-light); color: var(--c-gold); border-color: var(--c-gold); }
+
   /* Grading table */
   .grade-table { width: 100%; border-collapse: collapse; font-size: .88rem; margin: 1.2rem 0; }
   .grade-table th { background: var(--c-text); color: #fff; padding: .65rem .9rem; text-align: left; font-weight: 600; font-size: .82rem; }
@@ -226,6 +278,7 @@
   <a href="#objectives">Objectives</a><span class="sep">·</span>
   <a href="#lessons">Lessons</a><span class="sep">·</span>
   <a href="#frameworks">Frameworks</a><span class="sep">·</span>
+  <a href="#media">Podcasts &amp; Slides</a><span class="sep">·</span>
   <a href="#grading">Grading</a><span class="sep">·</span>
   <a href="lesson01.html" style="color:var(--c-accent);font-weight:600;">→ Day 1</a>
 </nav>
@@ -761,6 +814,198 @@
           </div>
         </div>
       </div>
+
+    </div>
+  </section>
+
+  <!-- ======================================================
+       MEDIA LIBRARY — PODCASTS & SLIDE DECKS
+  ====================================================== -->
+  <section id="media">
+    <h2><span class="sec-kicker">🎧 Media Library</span>Lesson Podcasts &amp; Slide Decks</h2>
+    <p style="font-size:.88rem;color:var(--c-text-soft);margin-bottom:.5rem;">Each of the 15 lessons has a companion audio podcast (NotebookLM overview) and a slide deck. Click a lesson bar below to expand it and reveal both links. Sections are collapsed by default — expand only the lesson you need.</p>
+
+    <div class="media-accordion">
+
+      <details class="media-item">
+        <summary>
+          <span class="media-day-chip">1</span>
+          <span class="media-summary-title">Expanding Cybersecurity Principles for AI</span>
+          <svg class="media-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="media-body">
+          <a class="media-link podcast" href="https://notebook.google.com/notebook/799f6d28-a9e9-4aa3-8e6f-81c69f836cba/artifact/a13b76e4-6f2a-47e7-bde0-6da80fc5623e?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast — Lesson 1</a>
+          <a class="media-link slides" href="https://notebook.google.com/notebook/799f6d28-a9e9-4aa3-8e6f-81c69f836cba/artifact/f6076098-51de-48d0-8f95-2ef25a6d4f68?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🖥 Slide Deck — Lesson 1</a>
+        </div>
+      </details>
+
+      <details class="media-item">
+        <summary>
+          <span class="media-day-chip">2</span>
+          <span class="media-summary-title">AI Governance Foundations &amp; Framework Landscape</span>
+          <svg class="media-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="media-body">
+          <a class="media-link podcast" href="https://notebook.google.com/notebook/f4de9afe-ef16-465b-a7d7-4ea8782aa659/artifact/30d77f8d-b816-40b8-a976-e476a562cd73?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast — Lesson 2</a>
+          <a class="media-link slides" href="https://notebook.google.com/notebook/f4de9afe-ef16-465b-a7d7-4ea8782aa659/artifact/31a4584f-9fb8-4dc7-85dc-1a027a3518a8?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🖥 Slide Deck — Lesson 2</a>
+        </div>
+      </details>
+
+      <details class="media-item">
+        <summary>
+          <span class="media-day-chip">3</span>
+          <span class="media-summary-title">NIST AI RMF in Depth: Govern &amp; Map</span>
+          <svg class="media-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="media-body">
+          <a class="media-link podcast" href="https://notebook.google.com/notebook/ff1113da-27b3-4918-94de-7f3f114778bf/artifact/fc16820d-94f7-4bdc-adf3-1259022c5fc5?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast — Lesson 3</a>
+          <a class="media-link slides" href="https://notebook.google.com/notebook/ff1113da-27b3-4918-94de-7f3f114778bf/artifact/00c723c8-82d0-48fd-8731-db9624607862?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🖥 Slide Deck — Lesson 3</a>
+        </div>
+      </details>
+
+      <details class="media-item">
+        <summary>
+          <span class="media-day-chip">4</span>
+          <span class="media-summary-title">NIST AI RMF: Measure &amp; Manage</span>
+          <svg class="media-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="media-body">
+          <a class="media-link podcast" href="https://notebook.google.com/notebook/3e34e657-3b72-463e-bb99-94639bad3485/artifact/9b117879-cc11-4424-896c-43a701b6957a?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast — Lesson 4</a>
+          <a class="media-link slides" href="https://notebook.google.com/notebook/3e34e657-3b72-463e-bb99-94639bad3485/artifact/5b78bf6c-fb91-44a3-8e74-1c50bf01d0c0?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🖥 Slide Deck — Lesson 4</a>
+        </div>
+      </details>
+
+      <details class="media-item">
+        <summary>
+          <span class="media-day-chip">5</span>
+          <span class="media-summary-title">EU AI Act Risk Tiers &amp; Obligations</span>
+          <svg class="media-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="media-body">
+          <a class="media-link podcast" href="https://notebook.google.com/notebook/3fe6bfcc-bc46-4336-97a1-da40e063d5c0/artifact/dd136d5f-54c6-455f-96fb-10c3605a4901?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast — Lesson 5</a>
+          <a class="media-link slides" href="https://notebook.google.com/notebook/3fe6bfcc-bc46-4336-97a1-da40e063d5c0/artifact/8a247614-7f55-4637-8532-235f3664785c?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🖥 Slide Deck — Lesson 5</a>
+        </div>
+      </details>
+
+      <details class="media-item">
+        <summary>
+          <span class="media-day-chip">6</span>
+          <span class="media-summary-title">AI Risk Categories &amp; Shadow AI</span>
+          <svg class="media-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="media-body">
+          <a class="media-link podcast" href="https://notebook.google.com/notebook/a7627c8d-ddc5-41b3-95ad-8cf73e6dbe91/artifact/f7290ebd-703e-4a62-bbd2-a8304b0b6518?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast — Lesson 6</a>
+          <a class="media-link slides" href="https://notebook.google.com/notebook/a7627c8d-ddc5-41b3-95ad-8cf73e6dbe91/artifact/436c4665-a9f6-4f91-9519-5b8e379741f4?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🖥 Slide Deck — Lesson 6</a>
+        </div>
+      </details>
+
+      <details class="media-item">
+        <summary>
+          <span class="media-day-chip">7</span>
+          <span class="media-summary-title">AI as Target I: Threats, ATT&amp;CK/ATLAS, &amp; OWASP Landscape</span>
+          <svg class="media-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="media-body">
+          <a class="media-link podcast" href="https://notebook.google.com/notebook/49d18b68-006b-4a58-b9fb-7dd4cb79d59d/artifact/bbe70b23-d18c-41cf-9874-620e5e624deb?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast — Lesson 7</a>
+          <a class="media-link slides" href="https://notebook.google.com/notebook/49d18b68-006b-4a58-b9fb-7dd4cb79d59d/artifact/c17c5e01-eaa7-43a9-a617-f5a0c96b2815?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🖥 Slide Deck — Lesson 7</a>
+        </div>
+      </details>
+
+      <details class="media-item">
+        <summary>
+          <span class="media-day-chip">8</span>
+          <span class="media-summary-title">AI as Target II: OWASP Top 10 for LLMs Deep Dive</span>
+          <svg class="media-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="media-body">
+          <a class="media-link podcast" href="https://notebook.google.com/notebook/b8db77ce-d7ec-4830-93c6-51a3c6220056/artifact/b1bbaf33-a076-4308-ad72-bb83d28277a3?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast — Lesson 8</a>
+          <a class="media-link slides" href="https://notebook.google.com/notebook/b8db77ce-d7ec-4830-93c6-51a3c6220056/artifact/d9e4a6a6-8620-4281-85aa-c388f9309a6b?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🖥 Slide Deck — Lesson 8</a>
+        </div>
+      </details>
+
+      <details class="media-item">
+        <summary>
+          <span class="media-day-chip">9</span>
+          <span class="media-summary-title">AI as Target III: Attacks on Data &amp; Models</span>
+          <svg class="media-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="media-body">
+          <a class="media-link podcast" href="https://notebook.google.com/notebook/a4c6d8a0-832f-47cb-8bb1-db40f2a9d655/artifact/104186bf-c25e-4919-b881-c919d7af02e8?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast — Lesson 9</a>
+          <a class="media-link slides" href="https://notebook.google.com/notebook/a4c6d8a0-832f-47cb-8bb1-db40f2a9d655/artifact/3520ea4b-d011-44dd-9b90-02ea011d6335?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🖥 Slide Deck — Lesson 9</a>
+        </div>
+      </details>
+
+      <details class="media-item">
+        <summary>
+          <span class="media-day-chip">10</span>
+          <span class="media-summary-title">AI as a Weapon: Deepfakes, Phishing &amp; Influence Operations</span>
+          <svg class="media-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="media-body">
+          <a class="media-link podcast" href="https://notebook.google.com/notebook/b9731694-c64b-454b-9491-3ca59f0193a8/artifact/478b5c94-9b5b-4544-9369-08cdd91c1b65?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast — Lesson 10</a>
+          <a class="media-link slides" href="https://notebook.google.com/notebook/b9731694-c64b-454b-9491-3ca59f0193a8/artifact/9a8adbcd-ffe9-4c06-a240-617e9e2a4196?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🖥 Slide Deck — Lesson 10</a>
+        </div>
+      </details>
+
+      <details class="media-item">
+        <summary>
+          <span class="media-day-chip">11</span>
+          <span class="media-summary-title">Architecting Secure AI Systems &amp; Lifecycle Controls</span>
+          <svg class="media-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="media-body">
+          <a class="media-link podcast" href="https://notebook.google.com/notebook/ec0a83cf-5795-4618-8b52-15d9f69f8159/artifact/9d8cbfec-26b4-40db-82f9-a74854107002?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast — Lesson 11</a>
+          <a class="media-link slides" href="https://notebook.google.com/notebook/ec0a83cf-5795-4618-8b52-15d9f69f8159/artifact/3dbc2603-5443-498c-bb8f-04eab987ce4f?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🖥 Slide Deck — Lesson 11</a>
+        </div>
+      </details>
+
+      <details class="media-item">
+        <summary>
+          <span class="media-day-chip">12</span>
+          <span class="media-summary-title">Vendor &amp; Supply Chain Risk for AI</span>
+          <svg class="media-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="media-body">
+          <a class="media-link podcast" href="https://notebook.google.com/notebook/6229492f-7260-40a6-afa1-bfc072708a26/artifact/402b970e-260f-46a5-b565-e09224efda03?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast — Lesson 12</a>
+          <a class="media-link slides" href="https://notebook.google.com/notebook/6229492f-7260-40a6-afa1-bfc072708a26/artifact/aa0f22d8-8719-4753-bc52-16e1f5fa0cc7?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🖥 Slide Deck — Lesson 12</a>
+        </div>
+      </details>
+
+      <details class="media-item">
+        <summary>
+          <span class="media-day-chip">13</span>
+          <span class="media-summary-title">AI Policies, AUPs &amp; Governance Documents</span>
+          <svg class="media-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="media-body">
+          <a class="media-link podcast" href="https://notebook.google.com/notebook/b3f5bfe5-62c3-4e47-9056-f61fb3f8e147/artifact/6b49fdfb-6db6-4792-8edd-f5977396c732?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast — Lesson 13</a>
+          <a class="media-link slides" href="https://notebook.google.com/notebook/b3f5bfe5-62c3-4e47-9056-f61fb3f8e147/artifact/a45972ed-d9e2-4bdc-a903-5f462b1d92d9?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🖥 Slide Deck — Lesson 13</a>
+        </div>
+      </details>
+
+      <details class="media-item">
+        <summary>
+          <span class="media-day-chip">14</span>
+          <span class="media-summary-title">AI Incident Response, Red Teaming &amp; Tabletops</span>
+          <svg class="media-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="media-body">
+          <a class="media-link podcast" href="https://notebook.google.com/notebook/c0cc578d-b969-495c-8e81-9b074518abd1/artifact/35ddeaf7-730c-434f-98ad-b34b70420445?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast — Lesson 14</a>
+          <a class="media-link slides" href="https://notebook.google.com/notebook/c0cc578d-b969-495c-8e81-9b074518abd1/artifact/e12a68dd-29e4-486c-b28b-817bfc4cdacc?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🖥 Slide Deck — Lesson 14</a>
+        </div>
+      </details>
+
+      <details class="media-item">
+        <summary>
+          <span class="media-day-chip">15</span>
+          <span class="media-summary-title">Synthesis &amp; Final Capstone Presentations</span>
+          <svg class="media-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </summary>
+        <div class="media-body">
+          <a class="media-link podcast" href="https://notebook.google.com/notebook/4d913da9-00ce-459b-b847-0451da596f8a/artifact/3c627bf7-9621-4174-89a5-de7038d53101?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast — Lesson 15</a>
+          <a class="media-link slides" href="https://notebook.google.com/notebook/4d913da9-00ce-459b-b847-0451da596f8a/artifact/bdbd276a-8120-4102-99b8-97690d136e2d?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🖥 Slide Deck — Lesson 15</a>
+        </div>
+      </details>
 
     </div>
   </section>
