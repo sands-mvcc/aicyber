@@ -116,10 +116,42 @@
   .framework-card {
     background: var(--c-surface); border: 1px solid var(--c-border);
     border-radius: var(--radius); padding: 1.1rem 1.2rem;
+    display: flex; flex-direction: column;
   }
   .framework-card .fw-icon { font-size: 1.6rem; margin-bottom: .4rem; }
   .framework-card .fw-name { font-weight: 700; font-size: .95rem; margin-bottom: .3rem; }
-  .framework-card .fw-desc { font-size: .84rem; color: var(--c-text-mid); }
+  .framework-card .fw-desc { font-size: .84rem; color: var(--c-text-mid); margin-bottom: .9rem; }
+  .fw-link {
+    display: inline-block; align-self: flex-start; margin-top: auto;
+    background: var(--c-accent); color: #fff; text-decoration: none;
+    border-radius: 6px; padding: .4rem .85rem; font-size: .78rem; font-weight: 600;
+    transition: filter .15s;
+  }
+  .fw-link:hover { filter: brightness(.85); }
+
+  /* Accordion sections */
+  .acc-header { margin-bottom: 0; }
+  .acc-trigger {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    width: 100%; background: none; border: none; text-align: left; cursor: pointer;
+    font-family: inherit; padding: 0; margin-bottom: .3rem;
+  }
+  .acc-trigger:hover .acc-trigger-text h2-inline,
+  .acc-trigger:hover { opacity: .85; }
+  .acc-trigger-text { display: block; }
+  .acc-trigger-text .acc-title {
+    font-family: var(--font-serif); font-size: 1.6rem; font-weight: 700; color: var(--c-text);
+  }
+  .acc-chevron {
+    flex: none; font-size: 1.1rem; color: var(--c-accent); transition: transform .2s ease;
+    margin-top: .2rem;
+  }
+  .acc-trigger[aria-expanded="true"] .acc-chevron { transform: rotate(180deg); }
+  .acc-panel {
+    max-height: 0; overflow: hidden; transition: max-height .3s ease;
+  }
+  .acc-panel-inner { padding-top: .5rem; }
+  :focus-visible { outline: 3px solid var(--c-accent); outline-offset: 2px; }
 
   /* Objectives */
   .obj-grid {
@@ -196,105 +228,6 @@
   .lesson-time { font-size: .78rem; color: var(--c-text-soft); margin-bottom: .3rem; }
   .lesson-lo { font-size: .76rem; color: var(--c-text-soft); }
 
-  /* Section-level accordion (wraps an entire section: Media Library, Generation Tools) */
-  .section-accordion { border: none; }
-  .section-accordion > summary {
-    list-style: none; cursor: pointer; user-select: none;
-    display: flex; align-items: center; gap: 1rem;
-    padding: 0; margin-bottom: .3rem;
-  }
-  .section-accordion > summary::-webkit-details-marker { display: none; }
-  .section-accordion > summary:focus-visible { outline: 2px solid var(--c-accent); outline-offset: 4px; }
-
-  .section-accordion-heading { flex: 1; }
-  .section-accordion-heading h2 { margin-bottom: 0; }
-  .section-accordion-sub {
-    font-size: .85rem; color: var(--c-text-soft); margin-top: .2rem; font-weight: 400;
-  }
-
-  .section-chevron {
-    flex-shrink: 0; width: 1.4rem; height: 1.4rem; color: var(--c-text-soft);
-    border: 1px solid var(--c-border); border-radius: 50%; padding: .3rem;
-    background: var(--c-surface); transition: transform .2s ease, background .15s, color .15s;
-  }
-  .section-accordion > summary:hover .section-chevron { background: var(--c-surface2); color: var(--c-accent); }
-  .section-accordion[open] > summary .section-chevron { transform: rotate(180deg); color: var(--c-accent); background: var(--c-accent-light); }
-
-  .section-accordion-body { padding-top: 1rem; }
-
-  /* Generation Tools */
-  .tools-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 1rem; margin-top: 1.2rem;
-  }
-  .tool-card {
-    display: flex; flex-direction: column; gap: .6rem;
-    border: 1px solid var(--c-border); border-radius: var(--radius);
-    padding: 1.2rem 1.2rem 1.3rem; background: var(--c-surface);
-  }
-  .tool-icon { font-size: 1.6rem; }
-  .tool-name { font-weight: 700; font-size: .95rem; color: var(--c-text); }
-  .tool-desc { font-size: .82rem; color: var(--c-text-mid); flex: 1; }
-  .tool-btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: .4rem;
-    background: var(--c-accent); color: #fff; text-decoration: none;
-    border-radius: 6px; padding: .55rem 1rem; font-size: .84rem; font-weight: 600;
-    transition: filter .15s;
-  }
-  .tool-btn:hover { filter: brightness(.85); }
-
-  /* Media Library accordion */
-  .media-accordion { display: flex; flex-direction: column; gap: .6rem; margin-top: 1.2rem; }
-
-  .media-item {
-    border: 1px solid var(--c-border); border-radius: var(--radius);
-    background: var(--c-bg); overflow: hidden;
-  }
-  .media-item[open] { border-color: var(--c-accent-mid); box-shadow: var(--shadow); }
-
-  .media-item summary {
-    list-style: none; cursor: pointer; user-select: none;
-    display: flex; align-items: center; gap: .9rem;
-    padding: .85rem 1.1rem; background: var(--c-surface);
-    font-family: var(--font-sans); transition: background .15s;
-  }
-  .media-item summary::-webkit-details-marker { display: none; }
-  .media-item summary:hover { background: var(--c-surface2); }
-  .media-item[open] summary { background: var(--c-accent-light); }
-
-  .media-item summary:focus-visible {
-    outline: 2px solid var(--c-accent); outline-offset: -2px;
-  }
-
-  .media-day-chip {
-    font-family: var(--font-serif); font-weight: 700; font-size: 1rem;
-    color: var(--c-accent); background: var(--c-bg); border: 1px solid var(--c-border);
-    border-radius: 6px; min-width: 2.4rem; text-align: center; padding: .15rem .3rem;
-    flex-shrink: 0;
-  }
-  .media-summary-title {
-    flex: 1; font-weight: 600; font-size: .92rem; color: var(--c-text);
-  }
-  .media-chevron {
-    flex-shrink: 0; width: 1rem; height: 1rem; color: var(--c-text-soft);
-    transition: transform .2s ease;
-  }
-  .media-item[open] .media-chevron { transform: rotate(180deg); color: var(--c-accent); }
-
-  .media-body {
-    padding: .9rem 1.1rem 1.1rem; border-top: 1px solid var(--c-border);
-    display: flex; flex-wrap: wrap; gap: .6rem;
-  }
-  .media-link {
-    display: inline-flex; align-items: center; gap: .45rem;
-    text-decoration: none; border-radius: 6px; padding: .45rem .9rem;
-    font-size: .82rem; font-weight: 600; border: 1px solid transparent;
-    transition: filter .15s;
-  }
-  .media-link:hover { filter: brightness(.95); }
-  .media-link.podcast { background: var(--c-blue-light); color: var(--c-blue); border-color: var(--c-blue); }
-  .media-link.slides { background: var(--c-gold-light); color: var(--c-gold); border-color: var(--c-gold); }
-
   /* Grading table */
   .grade-table { width: 100%; border-collapse: collapse; font-size: .88rem; margin: 1.2rem 0; }
   .grade-table th { background: var(--c-text); color: #fff; padding: .65rem .9rem; text-align: left; font-weight: 600; font-size: .82rem; }
@@ -325,8 +258,6 @@
   <a href="#objectives">Objectives</a><span class="sep">·</span>
   <a href="#lessons">Lessons</a><span class="sep">·</span>
   <a href="#frameworks">Frameworks</a><span class="sep">·</span>
-  <a href="#media">Podcasts &amp; Slides</a><span class="sep">·</span>
-  <a href="#tools">Generation Tools</a><span class="sep">·</span>
   <a href="#grading">Grading</a><span class="sep">·</span>
   <a href="lesson01.html" style="color:var(--c-accent);font-weight:600;">→ Day 1</a>
 </nav>
@@ -365,57 +296,81 @@
        USING THIS COURSE (pacing + accessibility)
   ====================================================== -->
   <section id="using">
-    <h2><span class="sec-kicker">📖 Using This Course</span>How to Work Through the Material</h2>
-    <p><strong>Structure.</strong> The course is 15 lessons (labeled <em>Day 1</em>–<em>Day 15</em>), each equivalent to roughly one 4-hour class session. Every lesson follows the same rhythm, so you always know what to expect:</p>
-    <p style="margin-left:1rem;"><strong>Part A</strong> (mini-lecture + a short structured activity — poll, think-pair-share, or micro-case) → <strong>Part B</strong> (a lab, case study, or tabletop tied to that lesson's objectives) → a <strong>daily artifact</strong> you produce (memo, worksheet, or builder) → a short, ungraded <strong>knowledge check</strong> to confirm you're ready to move on.</p>
-    <p><strong>Pacing (delivered across a term).</strong> Although each lesson is written as a "Day," this course is spaced across a full term — plan on <strong>one lesson per weekly session</strong>, not 15 consecutive days. Budget about 4 hours of guided/contact time per lesson plus independent time to finish the daily artifact. The spacing is a feature: use the gap between sessions to complete the artifact, review the knowledge check, and let concepts consolidate before the next unit. The capstone reuses your Day 1 artifacts, so keep your work organized as you go.</p>
-    <p><strong>Suggested cadence:</strong> Days 1–5 (governance &amp; risk foundations) → Days 6–10 (threat landscape &amp; architecture) → Days 11–15 (policy, incident response, red-teaming &amp; capstone). Knowledge checks are formative and do not affect your grade — use them to self-assess.</p>
+    <h2 class="acc-header">
+      <button class="acc-trigger" aria-expanded="false" aria-controls="using-panel" id="using-trigger">
+        <span class="acc-trigger-text"><span class="sec-kicker">📖 Using This Course</span><span class="acc-title">How to Work Through the Material</span></span>
+        <span class="acc-chevron" aria-hidden="true">▾</span>
+      </button>
+    </h2>
+    <div class="acc-panel" id="using-panel" role="region" aria-labelledby="using-trigger">
+      <div class="acc-panel-inner">
+        <p><strong>Structure.</strong> The course is 15 lessons (labeled <em>Day 1</em>–<em>Day 15</em>), each equivalent to roughly one 4-hour class session. Every lesson follows the same rhythm, so you always know what to expect:</p>
+        <p style="margin-left:1rem;"><strong>Part A</strong> (mini-lecture + a short structured activity — poll, think-pair-share, or micro-case) → <strong>Part B</strong> (a lab, case study, or tabletop tied to that lesson's objectives) → a <strong>daily artifact</strong> you produce (memo, worksheet, or builder) → a short, ungraded <strong>knowledge check</strong> to confirm you're ready to move on.</p>
+        <p><strong>Pacing (delivered across a term).</strong> Although each lesson is written as a "Day," this course is spaced across a full term — plan on <strong>one lesson per weekly session</strong>, not 15 consecutive days. Budget about 4 hours of guided/contact time per lesson plus independent time to finish the daily artifact. The spacing is a feature: use the gap between sessions to complete the artifact, review the knowledge check, and let concepts consolidate before the next unit. The capstone reuses your Day 1 artifacts, so keep your work organized as you go.</p>
+        <p><strong>Suggested cadence:</strong> Days 1–5 (governance &amp; risk foundations) → Days 6–10 (threat landscape &amp; architecture) → Days 11–15 (policy, incident response, red-teaming &amp; capstone). Knowledge checks are formative and do not affect your grade — use them to self-assess.</p>
 
-    <h3 style="margin-top:1.5rem;">🧪 About the Labs &amp; Activities</h3>
-    <p>Every lesson includes hands-on activities — but in this course, <strong>"lab" means structured applied analysis, not live coding or attacking real systems.</strong> Activities are scenario classifiers, decision labs, matchers, and builders (risk registers, governance charters, threat models, defense matrices), plus think-pair-share and worksheets — all set in realistic scenarios such as an MVCC AI enrollment assistant. You apply the frameworks to a realistic case and produce a written artifact.</p>
-    <p>Where an activity mentions tools, API keys, or sandboxes, those appear as <em>analysis material</em> (things to reason about), not instructions to run live systems. <strong>No programming environment or coding is required.</strong> The capstone (Day 15) is a synthesis and presentation of your accumulated artifacts.</p>
+        <h3 style="margin-top:1.5rem;">🧪 About the Labs &amp; Activities</h3>
+        <p>Every lesson includes hands-on activities — but in this course, <strong>"lab" means structured applied analysis, not live coding or attacking real systems.</strong> Activities are scenario classifiers, decision labs, matchers, and builders (risk registers, governance charters, threat models, defense matrices), plus think-pair-share and worksheets — all set in realistic scenarios such as an MVCC AI enrollment assistant. You apply the frameworks to a realistic case and produce a written artifact.</p>
+        <p>Where an activity mentions tools, API keys, or sandboxes, those appear as <em>analysis material</em> (things to reason about), not instructions to run live systems. <strong>No programming environment or coding is required.</strong> The capstone (Day 15) is a synthesis and presentation of your accumulated artifacts.</p>
 
-    <h3 style="margin-top:1.5rem;">♿ Accessibility &amp; Accommodations</h3>
-    <p>Moraine Valley Community College is committed to equal access. If you need academic accommodations (extended time, alternate formats, assistive technology, or other support), please arrange them early through the college's disability-services office. Instructors will work with you to implement approved accommodations.</p>
-    <p><em>[Instructor: insert the official MVCC Center for Disability Services statement here — office name, location, phone, email, and the college's standard accommodation language — and link the syllabus accessibility policy.]</em></p>
-    <p><strong>Materials accessibility.</strong> These web lessons use semantic headings, keyboard-operable interactions, and alt text on informative graphics; interactive cards and sorting activities include text fallbacks. If you encounter a barrier in any lesson, report it to your instructor so it can be fixed.</p>
+        <h3 style="margin-top:1.5rem;">♿ Accessibility &amp; Accommodations</h3>
+        <p>Moraine Valley Community College is committed to equal access. If you need academic accommodations (extended time, alternate formats, assistive technology, or other support), please arrange them early through the college's disability-services office. Instructors will work with you to implement approved accommodations.</p>
+        <p><em>[Instructor: insert the official MVCC Center for Disability Services statement here — office name, location, phone, email, and the college's standard accommodation language — and link the syllabus accessibility policy.]</em></p>
+        <p><strong>Materials accessibility.</strong> These web lessons use semantic headings, keyboard-operable interactions, and alt text on informative graphics; interactive cards and sorting activities include text fallbacks. If you encounter a barrier in any lesson, report it to your instructor so it can be fixed.</p>
+      </div>
+    </div>
   </section>
 
   <!-- ======================================================
        FRAMEWORKS
   ====================================================== -->
   <section id="frameworks">
-    <h2><span class="sec-kicker">🗺 Core Frameworks</span>The Framework Stack</h2>
-    <div class="framework-grid">
-      <div class="framework-card">
-        <div class="fw-icon">🛡️</div>
-        <div class="fw-name">NIST AI RMF 1.0</div>
-        <div class="fw-desc">Voluntary risk management framework organized around four functions: Govern, Map, Measure, and Manage. The operating model of this course.</div>
-      </div>
-      <div class="framework-card">
-        <div class="fw-icon">🏛️</div>
-        <div class="fw-name">ISO/IEC 42001</div>
-        <div class="fw-desc">Certifiable AI Management System standard — the ISO 27001 analogue for AI. Defines auditable controls and processes for an AIMS.</div>
-      </div>
-      <div class="framework-card">
-        <div class="fw-icon">⚖️</div>
-        <div class="fw-name">EU AI Act</div>
-        <div class="fw-desc">Binding regulation (2024/1689) with extraterritorial reach. Risk-tiered obligations; fines up to €35M or 7% of global turnover.</div>
-      </div>
-      <div class="framework-card">
-        <div class="fw-icon">🔓</div>
-        <div class="fw-name">OWASP LLM Top 10</div>
-        <div class="fw-desc">Practitioner threat reference for LLM applications (2025 edition). Covers prompt injection, insecure output handling, supply chain, and more.</div>
-      </div>
-      <div class="framework-card">
-        <div class="fw-icon">🤖</div>
-        <div class="fw-name">AAISM (ISACA)</div>
-        <div class="fw-desc">Advanced in AI Security Management — ISACA's stackable credential for CISM/CISSP holders. Three domains: Governance, Risk, and Technologies &amp; Controls.</div>
-      </div>
-      <div class="framework-card">
-        <div class="fw-icon">🗡️</div>
-        <div class="fw-name">MITRE ATLAS</div>
-        <div class="fw-desc">Adversarial Threat Landscape for AI Systems — ATT&amp;CK-style knowledge base of real-world ML adversarial tactics and techniques.</div>
+    <h2 class="acc-header">
+      <button class="acc-trigger" aria-expanded="false" aria-controls="frameworks-panel" id="frameworks-trigger">
+        <span class="acc-trigger-text"><span class="sec-kicker">🗺 Core Frameworks</span><span class="acc-title">The Framework Stack</span></span>
+        <span class="acc-chevron" aria-hidden="true">▾</span>
+      </button>
+    </h2>
+    <div class="acc-panel" id="frameworks-panel" role="region" aria-labelledby="frameworks-trigger">
+      <div class="acc-panel-inner">
+        <div class="framework-grid">
+          <div class="framework-card">
+            <div class="fw-icon">🛡️</div>
+            <div class="fw-name">NIST AI RMF 1.0</div>
+            <div class="fw-desc">Voluntary risk management framework organized around four functions: Govern, Map, Measure, and Manage. The operating model of this course.</div>
+            <a class="fw-link" href="nist-ai-rmf.html">Open Guide →</a>
+          </div>
+          <div class="framework-card">
+            <div class="fw-icon">🏛️</div>
+            <div class="fw-name">ISO/IEC 42001</div>
+            <div class="fw-desc">Certifiable AI Management System standard — the ISO 27001 analogue for AI. Defines auditable controls and processes for an AIMS.</div>
+            <a class="fw-link" href="iso-42001.html">Open Guide →</a>
+          </div>
+          <div class="framework-card">
+            <div class="fw-icon">⚖️</div>
+            <div class="fw-name">EU AI Act</div>
+            <div class="fw-desc">Binding regulation (2024/1689) with extraterritorial reach. Risk-tiered obligations; fines up to €35M or 7% of global turnover.</div>
+            <a class="fw-link" href="eu-ai-act.html">Open Guide →</a>
+          </div>
+          <div class="framework-card">
+            <div class="fw-icon">🔓</div>
+            <div class="fw-name">OWASP LLM Top 10</div>
+            <div class="fw-desc">Practitioner threat reference for LLM applications (2025 edition). Covers prompt injection, insecure output handling, supply chain, and more.</div>
+            <a class="fw-link" href="owasp-top-10.html">Open Guide →</a>
+          </div>
+          <div class="framework-card">
+            <div class="fw-icon">🤖</div>
+            <div class="fw-name">AAISM (ISACA)</div>
+            <div class="fw-desc">Advanced in AI Security Management — ISACA's stackable credential for CISM/CISSP holders. Three domains: Governance, Risk, and Technologies &amp; Controls.</div>
+            <a class="fw-link" href="aaism.html">Open Guide →</a>
+          </div>
+          <div class="framework-card">
+            <div class="fw-icon">🗡️</div>
+            <div class="fw-name">MITRE ATLAS</div>
+            <div class="fw-desc">Adversarial Threat Landscape for AI Systems — ATT&amp;CK-style knowledge base of real-world ML adversarial tactics and techniques.</div>
+            <a class="fw-link" href="mitre-atlas.html">Open Guide →</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -424,28 +379,37 @@
        OBJECTIVES
   ====================================================== -->
   <section id="objectives">
-    <h2><span class="sec-kicker">🎯 Learning Objectives</span>20 Course-Level Competencies</h2>
-    <div class="obj-grid">
-      <div class="obj-item"><span class="obj-num">1</span>Explain why traditional cybersecurity principles alone are insufficient for AI-enabled enterprises and where AAISM extends them.</div>
-      <div class="obj-item"><span class="obj-num">2</span>Identify the major AI governance frameworks (NIST AI RMF, ISO/IEC 42001, EU AI Act) and how they interrelate.</div>
-      <div class="obj-item"><span class="obj-num">3</span>Apply the four NIST AI RMF functions (Govern, Map, Measure, and Manage) to enterprise AI deployment.</div>
-      <div class="obj-item"><span class="obj-num">4</span>Classify AI systems under the EU AI Act's four risk tiers and identify required obligations.</div>
-      <div class="obj-item"><span class="obj-num">5</span>Differentiate AI risk categories: model risk, data risk, operational risk, ethical risk, and third-party risk.</div>
-      <div class="obj-item"><span class="obj-num">6</span>Recognize shadow AI patterns and apply appropriate governance responses.</div>
-      <div class="obj-item"><span class="obj-num">7</span>Conduct vendor and supply-chain risk assessments for AI-enabled solutions.</div>
-      <div class="obj-item"><span class="obj-num">8</span>Distinguish provider, deployer, and importer responsibilities under emerging AI regulation.</div>
-      <div class="obj-item"><span class="obj-num">9</span>Develop an enterprise AI acceptable use policy that holds up under audit.</div>
-      <div class="obj-item"><span class="obj-num">10</span>Describe the AI threat landscape and how it differs from traditional cyber threats.</div>
-      <div class="obj-item"><span class="obj-num">11</span>Identify and explain each of the OWASP Top 10 for LLM Applications (2025 edition).</div>
-      <div class="obj-item"><span class="obj-num">12</span>Match real-world attack scenarios to OWASP threat categories.</div>
-      <div class="obj-item"><span class="obj-num">13</span>Design a defense-in-depth architecture for an AI-enabled application.</div>
-      <div class="obj-item"><span class="obj-num">14</span>Apply controls across the AI data lifecycle — provenance, lineage, AIBOM, and model cards.</div>
-      <div class="obj-item"><span class="obj-num">15</span>Plan and conduct AI red-team exercises appropriate to system risk.</div>
-      <div class="obj-item"><span class="obj-num">16</span>Adapt the NIST SP 800-61 incident response lifecycle for AI-specific incidents.</div>
-      <div class="obj-item"><span class="obj-num">17</span>Execute a tabletop exercise for deepfake-enabled fraud, prompt injection, and model poisoning.</div>
-      <div class="obj-item"><span class="obj-num">18</span>Document AI incident lessons learned in a way that strengthens the AI governance program.</div>
-      <div class="obj-item"><span class="obj-num">19</span>Apply the AI shared-responsibility model to allocate security duties between the organization and its AI service providers across IaaS, PaaS, and SaaS deployments.</div>
-      <div class="obj-item"><span class="obj-num">20</span>Design an AI evaluation plan — selecting robustness, safety, and performance metrics with acceptance thresholds — and interpret benchmark and red-team results to justify a deploy / no-go decision.</div>
+    <h2 class="acc-header">
+      <button class="acc-trigger" aria-expanded="false" aria-controls="objectives-panel" id="objectives-trigger">
+        <span class="acc-trigger-text"><span class="sec-kicker">🎯 Learning Objectives</span><span class="acc-title">20 Course-Level Competencies</span></span>
+        <span class="acc-chevron" aria-hidden="true">▾</span>
+      </button>
+    </h2>
+    <div class="acc-panel" id="objectives-panel" role="region" aria-labelledby="objectives-trigger">
+      <div class="acc-panel-inner">
+        <div class="obj-grid">
+          <div class="obj-item"><span class="obj-num">1</span>Explain why traditional cybersecurity principles alone are insufficient for AI-enabled enterprises and where AAISM extends them.</div>
+          <div class="obj-item"><span class="obj-num">2</span>Identify the major AI governance frameworks (NIST AI RMF, ISO/IEC 42001, EU AI Act) and how they interrelate.</div>
+          <div class="obj-item"><span class="obj-num">3</span>Apply the four NIST AI RMF functions (Govern, Map, Measure, and Manage) to enterprise AI deployment.</div>
+          <div class="obj-item"><span class="obj-num">4</span>Classify AI systems under the EU AI Act's four risk tiers and identify required obligations.</div>
+          <div class="obj-item"><span class="obj-num">5</span>Differentiate AI risk categories: model risk, data risk, operational risk, ethical risk, and third-party risk.</div>
+          <div class="obj-item"><span class="obj-num">6</span>Recognize shadow AI patterns and apply appropriate governance responses.</div>
+          <div class="obj-item"><span class="obj-num">7</span>Conduct vendor and supply-chain risk assessments for AI-enabled solutions.</div>
+          <div class="obj-item"><span class="obj-num">8</span>Distinguish provider, deployer, and importer responsibilities under emerging AI regulation.</div>
+          <div class="obj-item"><span class="obj-num">9</span>Develop an enterprise AI acceptable use policy that holds up under audit.</div>
+          <div class="obj-item"><span class="obj-num">10</span>Describe the AI threat landscape and how it differs from traditional cyber threats.</div>
+          <div class="obj-item"><span class="obj-num">11</span>Identify and explain each of the OWASP Top 10 for LLM Applications (2025 edition).</div>
+          <div class="obj-item"><span class="obj-num">12</span>Match real-world attack scenarios to OWASP threat categories.</div>
+          <div class="obj-item"><span class="obj-num">13</span>Design a defense-in-depth architecture for an AI-enabled application.</div>
+          <div class="obj-item"><span class="obj-num">14</span>Apply controls across the AI data lifecycle — provenance, lineage, AIBOM, and model cards.</div>
+          <div class="obj-item"><span class="obj-num">15</span>Plan and conduct AI red-team exercises appropriate to system risk.</div>
+          <div class="obj-item"><span class="obj-num">16</span>Adapt the NIST SP 800-61 incident response lifecycle for AI-specific incidents.</div>
+          <div class="obj-item"><span class="obj-num">17</span>Execute a tabletop exercise for deepfake-enabled fraud, prompt injection, and model poisoning.</div>
+          <div class="obj-item"><span class="obj-num">18</span>Document AI incident lessons learned in a way that strengthens the AI governance program.</div>
+          <div class="obj-item"><span class="obj-num">19</span>Apply the AI shared-responsibility model to allocate security duties between the organization and its AI service providers across IaaS, PaaS, and SaaS deployments.</div>
+          <div class="obj-item"><span class="obj-num">20</span>Design an AI evaluation plan — selecting robustness, safety, and performance metrics with acceptance thresholds — and interpret benchmark and red-team results to justify a deploy / no-go decision.</div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -867,259 +831,6 @@
   </section>
 
   <!-- ======================================================
-       MEDIA LIBRARY — PODCASTS & SLIDE DECKS
-  ====================================================== -->
-  <section id="media">
-    <details class="section-accordion">
-      <summary>
-        <span class="section-accordion-heading">
-          <h2><span class="sec-kicker">🎧 Media Library</span>Lesson Podcasts &amp; Slide Decks</h2>
-          <span class="section-accordion-sub">Click to expand — audio podcast and slide deck for each of the 15 lessons.</span>
-        </span>
-        <svg class="section-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </summary>
-      <div class="section-accordion-body">
-        <p style="font-size:.88rem;color:var(--c-text-soft);margin-bottom:.5rem;">Each of the 15 lessons has a companion audio podcast (NotebookLM overview) and a slide deck. Click a lesson bar below to expand it and reveal both links. Sections are collapsed by default — expand only the lesson you need.</p>
-
-        <div class="media-accordion">
-
-      <details class="media-item">
-        <summary>
-          <span class="media-day-chip">1</span>
-          <span class="media-summary-title">Expanding Cybersecurity Principles for AI</span>
-          <svg class="media-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </summary>
-        <div class="media-body">
-          <a class="media-link podcast" href="https://notebook.google.com/notebook/799f6d28-a9e9-4aa3-8e6f-81c69f836cba/artifact/a13b76e4-6f2a-47e7-bde0-6da80fc5623e?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast — Lesson 1</a>
-          <a class="media-link slides" href="https://notebook.google.com/notebook/799f6d28-a9e9-4aa3-8e6f-81c69f836cba/artifact/f6076098-51de-48d0-8f95-2ef25a6d4f68?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🖥 Slide Deck — Lesson 1</a>
-        </div>
-      </details>
-
-      <details class="media-item">
-        <summary>
-          <span class="media-day-chip">2</span>
-          <span class="media-summary-title">AI Governance Foundations &amp; Framework Landscape</span>
-          <svg class="media-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </summary>
-        <div class="media-body">
-          <a class="media-link podcast" href="https://notebook.google.com/notebook/f4de9afe-ef16-465b-a7d7-4ea8782aa659/artifact/30d77f8d-b816-40b8-a976-e476a562cd73?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast — Lesson 2</a>
-          <a class="media-link slides" href="https://notebook.google.com/notebook/f4de9afe-ef16-465b-a7d7-4ea8782aa659/artifact/31a4584f-9fb8-4dc7-85dc-1a027a3518a8?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🖥 Slide Deck — Lesson 2</a>
-        </div>
-      </details>
-
-      <details class="media-item">
-        <summary>
-          <span class="media-day-chip">3</span>
-          <span class="media-summary-title">NIST AI RMF in Depth: Govern &amp; Map</span>
-          <svg class="media-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </summary>
-        <div class="media-body">
-          <a class="media-link podcast" href="https://notebook.google.com/notebook/ff1113da-27b3-4918-94de-7f3f114778bf/artifact/fc16820d-94f7-4bdc-adf3-1259022c5fc5?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast — Lesson 3</a>
-          <a class="media-link slides" href="https://notebook.google.com/notebook/ff1113da-27b3-4918-94de-7f3f114778bf/artifact/00c723c8-82d0-48fd-8731-db9624607862?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🖥 Slide Deck — Lesson 3</a>
-        </div>
-      </details>
-
-      <details class="media-item">
-        <summary>
-          <span class="media-day-chip">4</span>
-          <span class="media-summary-title">NIST AI RMF: Measure &amp; Manage</span>
-          <svg class="media-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </summary>
-        <div class="media-body">
-          <a class="media-link podcast" href="https://notebook.google.com/notebook/3e34e657-3b72-463e-bb99-94639bad3485/artifact/9b117879-cc11-4424-896c-43a701b6957a?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast — Lesson 4</a>
-          <a class="media-link slides" href="https://notebook.google.com/notebook/3e34e657-3b72-463e-bb99-94639bad3485/artifact/5b78bf6c-fb91-44a3-8e74-1c50bf01d0c0?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🖥 Slide Deck — Lesson 4</a>
-        </div>
-      </details>
-
-      <details class="media-item">
-        <summary>
-          <span class="media-day-chip">5</span>
-          <span class="media-summary-title">EU AI Act Risk Tiers &amp; Obligations</span>
-          <svg class="media-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </summary>
-        <div class="media-body">
-          <a class="media-link podcast" href="https://notebook.google.com/notebook/3fe6bfcc-bc46-4336-97a1-da40e063d5c0/artifact/dd136d5f-54c6-455f-96fb-10c3605a4901?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast — Lesson 5</a>
-          <a class="media-link slides" href="https://notebook.google.com/notebook/3fe6bfcc-bc46-4336-97a1-da40e063d5c0/artifact/8a247614-7f55-4637-8532-235f3664785c?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🖥 Slide Deck — Lesson 5</a>
-        </div>
-      </details>
-
-      <details class="media-item">
-        <summary>
-          <span class="media-day-chip">6</span>
-          <span class="media-summary-title">AI Risk Categories &amp; Shadow AI</span>
-          <svg class="media-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </summary>
-        <div class="media-body">
-          <a class="media-link podcast" href="https://notebook.google.com/notebook/a7627c8d-ddc5-41b3-95ad-8cf73e6dbe91/artifact/f7290ebd-703e-4a62-bbd2-a8304b0b6518?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast — Lesson 6</a>
-          <a class="media-link slides" href="https://notebook.google.com/notebook/a7627c8d-ddc5-41b3-95ad-8cf73e6dbe91/artifact/436c4665-a9f6-4f91-9519-5b8e379741f4?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🖥 Slide Deck — Lesson 6</a>
-        </div>
-      </details>
-
-      <details class="media-item">
-        <summary>
-          <span class="media-day-chip">7</span>
-          <span class="media-summary-title">AI as Target I: Threats, ATT&amp;CK/ATLAS, &amp; OWASP Landscape</span>
-          <svg class="media-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </summary>
-        <div class="media-body">
-          <a class="media-link podcast" href="https://notebook.google.com/notebook/49d18b68-006b-4a58-b9fb-7dd4cb79d59d/artifact/bbe70b23-d18c-41cf-9874-620e5e624deb?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast — Lesson 7</a>
-          <a class="media-link slides" href="https://notebook.google.com/notebook/49d18b68-006b-4a58-b9fb-7dd4cb79d59d/artifact/c17c5e01-eaa7-43a9-a617-f5a0c96b2815?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🖥 Slide Deck — Lesson 7</a>
-        </div>
-      </details>
-
-      <details class="media-item">
-        <summary>
-          <span class="media-day-chip">8</span>
-          <span class="media-summary-title">AI as Target II: OWASP Top 10 for LLMs Deep Dive</span>
-          <svg class="media-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </summary>
-        <div class="media-body">
-          <a class="media-link podcast" href="https://notebook.google.com/notebook/b8db77ce-d7ec-4830-93c6-51a3c6220056/artifact/b1bbaf33-a076-4308-ad72-bb83d28277a3?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast — Lesson 8</a>
-          <a class="media-link slides" href="https://notebook.google.com/notebook/b8db77ce-d7ec-4830-93c6-51a3c6220056/artifact/d9e4a6a6-8620-4281-85aa-c388f9309a6b?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🖥 Slide Deck — Lesson 8</a>
-        </div>
-      </details>
-
-      <details class="media-item">
-        <summary>
-          <span class="media-day-chip">9</span>
-          <span class="media-summary-title">AI as Target III: Attacks on Data &amp; Models</span>
-          <svg class="media-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </summary>
-        <div class="media-body">
-          <a class="media-link podcast" href="https://notebook.google.com/notebook/a4c6d8a0-832f-47cb-8bb1-db40f2a9d655/artifact/104186bf-c25e-4919-b881-c919d7af02e8?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast — Lesson 9</a>
-          <a class="media-link slides" href="https://notebook.google.com/notebook/a4c6d8a0-832f-47cb-8bb1-db40f2a9d655/artifact/3520ea4b-d011-44dd-9b90-02ea011d6335?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🖥 Slide Deck — Lesson 9</a>
-        </div>
-      </details>
-
-      <details class="media-item">
-        <summary>
-          <span class="media-day-chip">10</span>
-          <span class="media-summary-title">AI as a Weapon: Deepfakes, Phishing &amp; Influence Operations</span>
-          <svg class="media-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </summary>
-        <div class="media-body">
-          <a class="media-link podcast" href="https://notebook.google.com/notebook/b9731694-c64b-454b-9491-3ca59f0193a8/artifact/478b5c94-9b5b-4544-9369-08cdd91c1b65?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast — Lesson 10</a>
-          <a class="media-link slides" href="https://notebook.google.com/notebook/b9731694-c64b-454b-9491-3ca59f0193a8/artifact/9a8adbcd-ffe9-4c06-a240-617e9e2a4196?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🖥 Slide Deck — Lesson 10</a>
-        </div>
-      </details>
-
-      <details class="media-item">
-        <summary>
-          <span class="media-day-chip">11</span>
-          <span class="media-summary-title">Architecting Secure AI Systems &amp; Lifecycle Controls</span>
-          <svg class="media-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </summary>
-        <div class="media-body">
-          <a class="media-link podcast" href="https://notebook.google.com/notebook/ec0a83cf-5795-4618-8b52-15d9f69f8159/artifact/9d8cbfec-26b4-40db-82f9-a74854107002?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast — Lesson 11</a>
-          <a class="media-link slides" href="https://notebook.google.com/notebook/ec0a83cf-5795-4618-8b52-15d9f69f8159/artifact/3dbc2603-5443-498c-bb8f-04eab987ce4f?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🖥 Slide Deck — Lesson 11</a>
-        </div>
-      </details>
-
-      <details class="media-item">
-        <summary>
-          <span class="media-day-chip">12</span>
-          <span class="media-summary-title">Vendor &amp; Supply Chain Risk for AI</span>
-          <svg class="media-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </summary>
-        <div class="media-body">
-          <a class="media-link podcast" href="https://notebook.google.com/notebook/6229492f-7260-40a6-afa1-bfc072708a26/artifact/402b970e-260f-46a5-b565-e09224efda03?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast — Lesson 12</a>
-          <a class="media-link slides" href="https://notebook.google.com/notebook/6229492f-7260-40a6-afa1-bfc072708a26/artifact/aa0f22d8-8719-4753-bc52-16e1f5fa0cc7?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🖥 Slide Deck — Lesson 12</a>
-        </div>
-      </details>
-
-      <details class="media-item">
-        <summary>
-          <span class="media-day-chip">13</span>
-          <span class="media-summary-title">AI Policies, AUPs &amp; Governance Documents</span>
-          <svg class="media-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </summary>
-        <div class="media-body">
-          <a class="media-link podcast" href="https://notebook.google.com/notebook/b3f5bfe5-62c3-4e47-9056-f61fb3f8e147/artifact/6b49fdfb-6db6-4792-8edd-f5977396c732?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast — Lesson 13</a>
-          <a class="media-link slides" href="https://notebook.google.com/notebook/b3f5bfe5-62c3-4e47-9056-f61fb3f8e147/artifact/a45972ed-d9e2-4bdc-a903-5f462b1d92d9?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🖥 Slide Deck — Lesson 13</a>
-        </div>
-      </details>
-
-      <details class="media-item">
-        <summary>
-          <span class="media-day-chip">14</span>
-          <span class="media-summary-title">AI Incident Response, Red Teaming &amp; Tabletops</span>
-          <svg class="media-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </summary>
-        <div class="media-body">
-          <a class="media-link podcast" href="https://notebook.google.com/notebook/c0cc578d-b969-495c-8e81-9b074518abd1/artifact/35ddeaf7-730c-434f-98ad-b34b70420445?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast — Lesson 14</a>
-          <a class="media-link slides" href="https://notebook.google.com/notebook/c0cc578d-b969-495c-8e81-9b074518abd1/artifact/e12a68dd-29e4-486c-b28b-817bfc4cdacc?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🖥 Slide Deck — Lesson 14</a>
-        </div>
-      </details>
-
-      <details class="media-item">
-        <summary>
-          <span class="media-day-chip">15</span>
-          <span class="media-summary-title">Synthesis &amp; Final Capstone Presentations</span>
-          <svg class="media-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </summary>
-        <div class="media-body">
-          <a class="media-link podcast" href="https://notebook.google.com/notebook/4d913da9-00ce-459b-b847-0451da596f8a/artifact/3c627bf7-9621-4174-89a5-de7038d53101?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast — Lesson 15</a>
-          <a class="media-link slides" href="https://notebook.google.com/notebook/4d913da9-00ce-459b-b847-0451da596f8a/artifact/bdbd276a-8120-4102-99b8-97690d136e2d?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🖥 Slide Deck — Lesson 15</a>
-        </div>
-      </details>
-
-        </div>
-      </div>
-    </details>
-  </section>
-
-  <!-- ======================================================
-       GENERATION TOOLS
-  ====================================================== -->
-  <section id="tools">
-    <details class="section-accordion">
-      <summary>
-        <span class="section-accordion-heading">
-          <h2><span class="sec-kicker">⚙️ Generation Tools</span>Instructional Content Generators</h2>
-          <span class="section-accordion-sub">Click to expand — quick-launch tools for building lesson materials.</span>
-        </span>
-        <svg class="section-chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </summary>
-      <div class="section-accordion-body">
-        <p style="font-size:.88rem;color:var(--c-text-soft);margin-bottom:.5rem;">Standalone builders for generating supplementary instructional materials. Each opens its own tool page in this repository.</p>
-
-        <div class="tools-grid">
-          <div class="tool-card">
-            <div class="tool-icon">🖼️</div>
-            <div class="tool-name">Generate Instructional Graphics</div>
-            <div class="tool-desc">Build prompts and specs for lesson graphics, diagrams, and visual aids.</div>
-            <a class="tool-btn" href="gen-graphics.html">Open Tool →</a>
-          </div>
-          <div class="tool-card">
-            <div class="tool-icon">📝</div>
-            <div class="tool-name">Generate Instructional Content</div>
-            <div class="tool-desc">Draft lesson text, explanations, and supporting written material.</div>
-            <a class="tool-btn" href="gen-content.html">Open Tool →</a>
-          </div>
-          <div class="tool-card">
-            <div class="tool-icon">📋</div>
-            <div class="tool-name">Generate Instructional Cheatsheets</div>
-            <div class="tool-desc">Produce quick-reference sheets summarizing key lesson concepts.</div>
-            <a class="tool-btn" href="gen-sheets.html">Open Tool →</a>
-          </div>
-          <div class="tool-card">
-            <div class="tool-icon">🧩</div>
-            <div class="tool-name">Generate Instructional Activities</div>
-            <div class="tool-desc">Create hands-on activities, labs, and structured exercises.</div>
-            <a class="tool-btn" href="gen-activities.html">Open Tool →</a>
-          </div>
-          <div class="tool-card">
-            <div class="tool-icon">💡</div>
-            <div class="tool-name">Generate Instructional Examples</div>
-            <div class="tool-desc">Produce worked examples and applied scenarios for a lesson topic.</div>
-            <a class="tool-btn" href="gen-examples.html">Open Tool →</a>
-          </div>
-        </div>
-      </div>
-    </details>
-  </section>
-
-  <!-- ======================================================
        GRADING
   ====================================================== -->
   <section id="grading">
@@ -1168,5 +879,38 @@
   <p><strong>AI-103: AI Cybersecurity Foundations</strong> · Moraine Valley Community College · Department of Engineering &amp; Technology · Dr. John L. Sands · 2026</p>
 </footer>
 
+<script>
+(function(){
+  var triggers = document.querySelectorAll('.acc-trigger');
+  triggers.forEach(function(trigger){
+    var panelId = trigger.getAttribute('aria-controls');
+    var panel = document.getElementById(panelId);
+    // Start collapsed
+    panel.style.maxHeight = 0;
+
+    trigger.addEventListener('click', function(){
+      var isOpen = trigger.getAttribute('aria-expanded') === 'true';
+      var next = !isOpen;
+      trigger.setAttribute('aria-expanded', next ? 'true' : 'false');
+      panel.style.maxHeight = next ? (panel.scrollHeight + 40) + 'px' : 0;
+    });
+  });
+
+  // If a section is targeted directly via URL hash (e.g. #frameworks),
+  // auto-expand its accordion so the linked content is visible.
+  function expandForHash(){
+    var hash = window.location.hash.replace('#','');
+    if(!hash) return;
+    var section = document.getElementById(hash);
+    if(!section) return;
+    var trigger = section.querySelector('.acc-trigger');
+    if(trigger && trigger.getAttribute('aria-expanded') !== 'true'){
+      trigger.click();
+    }
+  }
+  window.addEventListener('hashchange', expandForHash);
+  expandForHash();
+})();
+</script>
 </body>
 </html>
