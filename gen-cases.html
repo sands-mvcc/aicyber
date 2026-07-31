@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instructional Case Study Prompt Builder | AI Cyber Class</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal-950:#062a2c;
+    --teal-900:#0a3638;
+    --teal-800:#0f4547;
+    --teal-700:#14595c;
+    --cyan-400:#4fd8e0;
+    --cyan-300:#7fe6ec;
+    --amber-500:#e0a840;
+    --amber-400:#f0bf5f;
+    --ink:#0d1b1c;
+    --paper:#f6f4ee;
+    --paper-2:#eeebe1;
+    --line:#d8d3c4;
+    --text-1:#1a2b2c;
+    --text-2:#4a5657;
+    --radius:10px;
+    --shadow:0 2px 10px rgba(6,42,44,0.08);
+    --bg:var(--paper);
+    --bg-2:var(--paper-2);
+    --surface:#ffffff;
+    --fg:var(--text-1);
+    --fg-2:var(--text-2);
+    --border:var(--line);
+    --accent:var(--teal-800);
+    --accent-2:var(--cyan-400);
+  }
+  [data-theme="dark"]{
+    --bg:var(--teal-950);
+    --bg-2:var(--teal-900);
+    --surface:#0c3739;
+    --fg:#eef7f6;
+    --fg-2:#a9c6c5;
+    --border:#1c4c4e;
+    --accent:var(--cyan-400);
+    --accent-2:var(--amber-500);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--fg);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.5;
+    transition:background .25s ease, color .25s ease;
+  }
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+    color:var(--fg);
+  }
+  .mono{font-family:'IBM Plex Mono', monospace;}
+  a{color:var(--accent);}
+
+  /* Header */
+  header.top{
+    background:var(--teal-950);
+    color:#f2fbfb;
+    padding:22px 32px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:3px solid var(--cyan-400);
+  }
+  header.top .brand{display:flex; align-items:baseline; gap:14px;}
+  header.top .brand .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--cyan-300);
+  }
+  header.top h1{
+    font-size:22px;
+    margin:2px 0 0 0;
+    color:#f2fbfb;
+  }
+  header.top .version{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    background:rgba(79,216,224,0.15);
+    border:1px solid var(--cyan-400);
+    color:var(--cyan-300);
+    padding:3px 8px;
+    border-radius:20px;
+    margin-left:10px;
+  }
+  .theme-toggle{
+    background:transparent;
+    border:1px solid var(--cyan-400);
+    color:var(--cyan-300);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    padding:8px 14px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:background .2s;
+  }
+  .theme-toggle:hover{background:rgba(79,216,224,0.12);}
+
+  .subtitle-bar{
+    background:var(--bg-2);
+    border-bottom:1px solid var(--border);
+    padding:14px 32px;
+    font-size:14px;
+    color:var(--fg-2);
+  }
+
+  /* Layout */
+  .layout{
+    display:grid;
+    grid-template-columns:minmax(360px, 1.05fr) 1fr;
+    gap:0;
+    align-items:start;
+  }
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr;}
+  }
+  .form-col{
+    padding:28px 32px 80px;
+    max-width:760px;
+  }
+  .output-col{
+    position:sticky;
+    top:0;
+    height:100vh;
+    overflow-y:auto;
+    background:var(--bg-2);
+    border-left:1px solid var(--border);
+    padding:28px 32px 60px;
+  }
+  @media (max-width:980px){
+    .output-col{position:static; height:auto;}
+  }
+
+  section.panel{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:20px 22px;
+    margin-bottom:20px;
+    box-shadow:var(--shadow);
+  }
+  section.panel .panel-head{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:14px;
+  }
+  .step-num{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    width:26px;height:26px;
+    border-radius:50%;
+    background:var(--accent);
+    color:var(--surface);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  [data-theme="dark"] .step-num{color:var(--teal-950);}
+  section.panel h2{
+    font-size:17px;
+    margin:0;
+  }
+  .field{margin-bottom:14px;}
+  .field label{
+    display:block;
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--fg-2);
+    margin-bottom:6px;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    font-family:'IBM Plex Mono', monospace;
+  }
+  select, input[type="text"], input[type="number"], textarea{
+    width:100%;
+    padding:10px 12px;
+    border-radius:8px;
+    border:1px solid var(--border);
+    background:var(--bg);
+    color:var(--fg);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:14px;
+  }
+  textarea{min-height:76px; resize:vertical;}
+  select:focus, input:focus, textarea:focus{
+    outline:2px solid var(--accent-2);
+    outline-offset:1px;
+  }
+  select[multiple]{min-height:120px;}
+  .hint{font-size:12px; color:var(--fg-2); margin-top:4px; text-transform:none; letter-spacing:0; font-weight:400;}
+  .field-row{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  @media (max-width:520px){.field-row{grid-template-columns:1fr;}}
+
+  .chip-group{display:flex; flex-wrap:wrap; gap:8px;}
+  .chip{
+    border:1px solid var(--border);
+    background:var(--bg);
+    color:var(--fg);
+    padding:7px 12px;
+    border-radius:20px;
+    font-size:13px;
+    cursor:pointer;
+    user-select:none;
+    transition:all .15s;
+    font-family:'IBM Plex Sans', sans-serif;
+  }
+  .chip:hover{border-color:var(--accent-2);}
+  .chip:focus-visible{outline:2px solid var(--accent-2); outline-offset:1px;}
+  .chip.active{
+    background:var(--accent);
+    border-color:var(--accent);
+    color:var(--surface);
+  }
+  [data-theme="dark"] .chip.active{color:var(--teal-950);}
+
+  .radio-row{display:flex; flex-direction:column; gap:8px;}
+  .radio-opt{
+    display:flex; align-items:flex-start; gap:8px;
+    border:1px solid var(--border);
+    padding:9px 11px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:13.5px;
+  }
+  .radio-opt:hover{border-color:var(--accent-2);}
+  .radio-opt input{margin-top:3px;}
+  .radio-opt .opt-desc{color:var(--fg-2); font-size:12px; display:block; margin-top:2px;}
+
+  .toggle-row{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:8px 0;
+    border-bottom:1px solid var(--border);
+    font-size:13.5px;
+    gap:14px;
+  }
+  .toggle-row:last-child{border-bottom:none;}
+  .toggle-row .tr-label{display:block;}
+  .toggle-row .tr-sub{display:block; color:var(--fg-2); font-size:12px; margin-top:1px;}
+  .switch{
+    position:relative; width:40px; height:22px; flex-shrink:0;
+  }
+  .switch input{opacity:0; width:0; height:0;}
+  .slider{
+    position:absolute; cursor:pointer; inset:0;
+    background:var(--border); border-radius:22px; transition:.2s;
+  }
+  .slider:before{
+    content:""; position:absolute; height:16px; width:16px; left:3px; top:3px;
+    background:var(--surface); border-radius:50%; transition:.2s;
+  }
+  .switch input:checked + .slider{background:var(--accent);}
+  .switch input:focus-visible + .slider{outline:2px solid var(--accent-2); outline-offset:2px;}
+  .switch input:checked + .slider:before{transform:translateX(18px);}
+
+  .model-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  @media (max-width:520px){.model-grid{grid-template-columns:1fr;}}
+  .model-card{
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px;
+    cursor:pointer;
+    font-size:13px;
+    background:transparent;
+    color:var(--fg);
+    text-align:left;
+    font-family:'IBM Plex Sans', sans-serif;
+  }
+  .model-card strong{display:block; font-family:'Fraunces',serif; font-size:15px; margin-bottom:2px;}
+  .model-card span{color:var(--fg-2); font-size:12px;}
+  .model-card:focus-visible{outline:2px solid var(--accent-2); outline-offset:1px;}
+  .model-card.active{
+    border-color:var(--accent);
+    background:var(--bg-2);
+    box-shadow:0 0 0 1px var(--accent) inset;
+  }
+
+  /* Output */
+  .output-col h2{font-size:18px; margin:0 0 4px 0;}
+  .output-col .live-tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--accent-2);
+    display:inline-flex; align-items:center; gap:6px;
+    margin-bottom:14px;
+  }
+  .live-dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--accent-2);
+    display:inline-block;
+    animation:pulse 1.8s infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.35;}}
+  @media (prefers-reduced-motion: reduce){
+    .live-dot{animation:none;}
+    *{transition:none !important;}
+  }
+
+  #promptOutput{
+    background:var(--ink);
+    color:#dff5f4;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.8px;
+    line-height:1.65;
+    padding:18px;
+    border-radius:10px;
+    white-space:pre-wrap;
+    word-break:break-word;
+    min-height:320px;
+    border:1px solid var(--teal-700);
+  }
+  [data-theme="dark"] #promptOutput{background:#041d1e;}
+
+  .meta-row{
+    display:flex; gap:14px; flex-wrap:wrap;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--fg-2);
+    margin-top:10px;
+  }
+
+  .action-row{display:flex; gap:10px; margin-top:14px; flex-wrap:wrap;}
+  .btn{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    padding:9px 16px;
+    border-radius:8px;
+    border:1px solid var(--border);
+    background:var(--surface);
+    color:var(--fg);
+    cursor:pointer;
+    transition:all .15s;
+  }
+  .btn:hover{border-color:var(--accent-2); color:var(--accent);}
+  .btn:focus-visible{outline:2px solid var(--accent-2); outline-offset:1px;}
+  .btn.primary{
+    background:var(--accent);
+    color:var(--surface);
+    border-color:var(--accent);
+  }
+  [data-theme="dark"] .btn.primary{color:var(--teal-950);}
+  .btn.primary:hover{opacity:0.9;}
+
+  .toast{
+    position:fixed; bottom:22px; right:22px;
+    background:var(--teal-950); color:#eafffe;
+    padding:10px 16px; border-radius:8px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    border:1px solid var(--cyan-400);
+    opacity:0; transform:translateY(10px);
+    transition:all .25s;
+    pointer-events:none;
+    z-index:50;
+  }
+  .toast.show{opacity:1; transform:translateY(0);}
+
+  footer.print-only{display:none;}
+  @media print{
+    header, .output-col .action-row, .theme-toggle{display:none;}
+    body{background:#fff; color:#000;}
+    .layout{display:block;}
+  }
+  ::-webkit-scrollbar{width:10px;}
+  ::-webkit-scrollbar-thumb{background:var(--border); border-radius:6px;}
+</style>
+</head>
+<body data-theme="light">
+
+<header class="top">
+  <div class="brand">
+    <div>
+      <div class="eyebrow">AI Cyber Class · Educator Tooling</div>
+      <h1>Instructional Case Study Prompt Builder<span class="version">v1.0</span></h1>
+    </div>
+  </div>
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">◐ Dark Mode</button>
+</header>
+<div class="subtitle-bar">A structured workbench for composing precise, model-aware prompts that produce realistic case studies for discussion, analysis, and scenario-based instruction — built for the 15-day AI-103 AI Cybersecurity Foundations course.</div>
+
+<div class="layout">
+  <!-- FORM COLUMN -->
+  <div class="form-col">
+
+    <!-- 1. CONTENT -->
+    <section class="panel">
+      <div class="panel-head"><div class="step-num">1</div><h2>Content</h2></div>
+
+      <div class="field">
+        <label for="lesson">Topic / Lesson Title</label>
+        <select id="lesson"></select>
+      </div>
+
+      <div class="field" id="customTopicField" style="display:none;">
+        <label for="customTopic">Custom Topic</label>
+        <input type="text" id="customTopic" placeholder="e.g., Securing retrieval-augmented generation pipelines">
+      </div>
+
+      <div class="field">
+        <label for="subjectArea">Subject Area (module focus)</label>
+        <select id="subjectArea"></select>
+      </div>
+
+      <div class="field" id="customSubjectField" style="display:none;">
+        <label for="customSubject">Custom Subject Area</label>
+        <input type="text" id="customSubject" placeholder="e.g., Embedding-store access control">
+      </div>
+
+      <div class="field">
+        <label for="audience">Audience / Skill Level</label>
+        <select id="audience">
+          <option>Community College / Undergraduate</option>
+          <option>Graduate / Professional</option>
+          <option>Adult Workforce Training</option>
+          <option>Executive / Industry</option>
+        </select>
+      </div>
+
+      <div class="field" id="objectivesField">
+        <label for="objectives">Learning Objective(s) <span class="hint">— ctrl/cmd-click for multiple</span></label>
+        <select id="objectives" multiple></select>
+      </div>
+
+      <div class="field" id="customObjField" style="display:none;">
+        <label for="customObjectives">Custom Learning Objective(s)</label>
+        <textarea id="customObjectives" placeholder="One objective per line, e.g.&#10;Evaluate access controls on a vector database used for RAG."></textarea>
+      </div>
+    </section>
+
+    <!-- 2. CASE TYPE -->
+    <section class="panel">
+      <div class="panel-head"><div class="step-num">2</div><h2>Case Type</h2></div>
+      <div class="field" style="margin-bottom:0;">
+        <div class="radio-row" id="caseTypeGroup"></div>
+      </div>
+    </section>
+
+    <!-- 3. SCENARIO DESIGN -->
+    <section class="panel">
+      <div class="panel-head"><div class="step-num">3</div><h2>Scenario Design</h2></div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="sector">Industry / Sector</label>
+          <select id="sector">
+            <option selected>Higher Education</option>
+            <option>K-12 School District</option>
+            <option>Healthcare / Hospital System</option>
+            <option>Financial Services / Banking</option>
+            <option>Insurance</option>
+            <option>Manufacturing / Industrial</option>
+            <option>Retail / E-commerce</option>
+            <option>State or Local Government</option>
+            <option>Federal Agency</option>
+            <option>Defense Contractor</option>
+            <option>Critical Infrastructure / Utility</option>
+            <option>SaaS / Technology Startup</option>
+            <option>Nonprofit / NGO</option>
+            <option>Legal / Professional Services</option>
+            <option>Let the model choose an apt sector</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="orgSize">Organization Scale</label>
+          <select id="orgSize">
+            <option>Small (under 100 staff)</option>
+            <option selected>Mid-market (100–1,000 staff)</option>
+            <option>Large enterprise (1,000–10,000 staff)</option>
+            <option>Global enterprise (10,000+ staff)</option>
+            <option>Let the model choose</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="sourcing">Sourcing Basis <span class="hint">— governs how much citation rigor the prompt demands</span></label>
+        <select id="sourcing">
+          <option selected>Fictional composite organization</option>
+          <option>Anonymized real incident (disguised details)</option>
+          <option>Documented public incident (cited sources required)</option>
+          <option>Hypothetical near-future scenario</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="protagonist">Protagonist Viewpoint</label>
+        <select id="protagonist">
+          <option>CISO / Chief Information Security Officer</option>
+          <option selected>AI Governance Lead</option>
+          <option>Risk &amp; Compliance Officer</option>
+          <option>SOC Analyst</option>
+          <option>Data Scientist / ML Engineer</option>
+          <option>CIO / CTO</option>
+          <option>General Counsel</option>
+          <option>Privacy Officer</option>
+          <option>Business Unit Manager</option>
+          <option>Third-Party Auditor</option>
+          <option>Board Member / Trustee</option>
+          <option>Junior Analyst (limited authority)</option>
+          <option>Multiple competing viewpoints</option>
+        </select>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="ambiguity">Ambiguity Level</label>
+          <select id="ambiguity">
+            <option>Low — one defensible answer with plausible distractors</option>
+            <option selected>Moderate — two or three credible paths</option>
+            <option>High — genuinely contested; experts would disagree</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="timeSetting">Time Setting</label>
+          <select id="timeSetting">
+            <option selected>Present day</option>
+            <option>Recent past (last 2–3 years)</option>
+            <option>Near future (next 2–5 years)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field" style="margin-bottom:0;">
+        <label for="constraintNote">Scenario Wrinkle <span class="hint">— optional complication to force the issue</span></label>
+        <input type="text" id="constraintNote" placeholder="e.g., a board meeting in 48 hours, or a vendor contract already signed">
+      </div>
+    </section>
+
+    <!-- 4. CASE STRUCTURE -->
+    <section class="panel">
+      <div class="panel-head"><div class="step-num">4</div><h2>Case Structure</h2></div>
+
+      <div class="field">
+        <label for="caseLength">Case Length</label>
+        <select id="caseLength">
+          <option>Short — 400–600 words (~5 min read)</option>
+          <option selected>Standard — 800–1,200 words (~10 min read)</option>
+          <option>Extended — 1,500–2,500 words (~20 min read)</option>
+          <option>Long-form / Harvard-style — 3,000+ words</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="caseParts">Structure</label>
+        <select id="caseParts">
+          <option selected>Single continuous case</option>
+          <option>Two parts (A / B) — decision, then consequences</option>
+          <option>Three parts (A / B / C) — staged escalation</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="voice">Narrative Voice</label>
+        <select id="voice">
+          <option selected>Third-person narrative</option>
+          <option>Second person — "you are the protagonist"</option>
+          <option>First-person protagonist account</option>
+          <option>Documentary / after-action report style</option>
+        </select>
+      </div>
+
+      <div class="field" style="margin-bottom:0;">
+        <label>Supporting Exhibits <span class="hint">— click to toggle; these become the evidence students reason from</span></label>
+        <div class="chip-group" id="exhibits"></div>
+      </div>
+    </section>
+
+    <!-- 5. INSTRUCTIONAL PACKAGE -->
+    <section class="panel">
+      <div class="panel-head"><div class="step-num">5</div><h2>Instructional Package</h2></div>
+
+      <div class="toggle-row">
+        <span><span class="tr-label">Student case narrative</span><span class="tr-sub">The case text students receive</span></span>
+        <label class="switch"><input type="checkbox" id="pkgNarrative" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span><span class="tr-label">Supporting exhibits &amp; artifacts</span><span class="tr-sub">Rendered as labeled Exhibit 1, 2, 3…</span></span>
+        <label class="switch"><input type="checkbox" id="pkgExhibits" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span><span class="tr-label">Tiered discussion questions</span><span class="tr-sub">Laddered across Bloom's levels</span></span>
+        <label class="switch"><input type="checkbox" id="pkgQuestions" checked><span class="slider"></span></label>
+      </div>
+      <div class="field" id="qCountField" style="margin:10px 0 4px;">
+        <label for="qCount">Number of Discussion Questions</label>
+        <input type="number" id="qCount" min="3" max="20" value="6">
+      </div>
+      <div class="toggle-row">
+        <span><span class="tr-label">Facilitator teaching note</span><span class="tr-sub">Board plan, misconceptions, timing</span></span>
+        <label class="switch"><input type="checkbox" id="pkgTeachingNote" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span><span class="tr-label">Answer key / model analysis</span><span class="tr-sub">What a strong response contains</span></span>
+        <label class="switch"><input type="checkbox" id="pkgAnswerKey" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span><span class="tr-label">Assessment rubric</span><span class="tr-sub">Criteria mapped to the stated objectives</span></span>
+        <label class="switch"><input type="checkbox" id="pkgRubric"><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span><span class="tr-label">Debrief script &amp; board plan</span><span class="tr-sub">How to close the discussion</span></span>
+        <label class="switch"><input type="checkbox" id="pkgDebrief"><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span><span class="tr-label">Extension &amp; differentiation activities</span><span class="tr-sub">Stretch and support variants</span></span>
+        <label class="switch"><input type="checkbox" id="pkgExtension"><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span><span class="tr-label">Role assignment cards</span><span class="tr-sub">Private briefs per stakeholder</span></span>
+        <label class="switch"><input type="checkbox" id="pkgRoles"><span class="slider"></span></label>
+      </div>
+    </section>
+
+    <!-- 6. PEDAGOGICAL & INTEGRITY CONSTRAINTS -->
+    <section class="panel">
+      <div class="panel-head"><div class="step-num">6</div><h2>Pedagogical &amp; Integrity Constraints</h2></div>
+
+      <div class="toggle-row">
+        <span>Align every question to the stated learning objectives</span>
+        <label class="switch"><input type="checkbox" id="k1" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span>Ensure no single obviously correct answer</span>
+        <label class="switch"><input type="checkbox" id="k2" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span>Ground technical detail in named frameworks</span>
+        <label class="switch"><input type="checkbox" id="k3" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span>Never fabricate citations, statistics, or quotations</span>
+        <label class="switch"><input type="checkbox" id="k4" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span>Use inclusive, diverse names and contexts</span>
+        <label class="switch"><input type="checkbox" id="k5" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span>Write in plain language; define jargon at first use</span>
+        <label class="switch"><input type="checkbox" id="k6" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span>Include realistic time pressure and incomplete information</span>
+        <label class="switch"><input type="checkbox" id="k7" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span>Provide explicit facilitation timing cues</span>
+        <label class="switch"><input type="checkbox" id="k8"><span class="slider"></span></label>
+      </div>
+    </section>
+
+    <!-- 7. DELIVERY & FORMAT -->
+    <section class="panel">
+      <div class="panel-head"><div class="step-num">7</div><h2>Delivery &amp; Format</h2></div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="duration">Session Duration</label>
+          <select id="duration">
+            <option>20 minutes — warm-up / bell-ringer</option>
+            <option selected>50 minutes — single class period</option>
+            <option>75 minutes — extended period</option>
+            <option>2–3 hours — workshop block</option>
+            <option>Multi-session — spans several classes</option>
+            <option>Asynchronous — no fixed duration</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="delivery">Delivery Mode</label>
+          <select id="delivery">
+            <option selected>Live in-person seminar discussion</option>
+            <option>Synchronous online discussion</option>
+            <option>Asynchronous discussion board</option>
+            <option>Small-group breakout analysis</option>
+            <option>Individual written analysis</option>
+            <option>Facilitated tabletop exercise</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="outFormat">Output Format</label>
+          <select id="outFormat">
+            <option selected>Markdown with clear headings</option>
+            <option>Formatted HTML handout</option>
+            <option>Word / Google Docs ready (plain formatting)</option>
+            <option>Canvas LMS page content</option>
+            <option>Slide-deck outline</option>
+            <option>Plain text</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="citation">Citation Style</label>
+          <select id="citation">
+            <option selected>No citations needed</option>
+            <option>APA 7th edition</option>
+            <option>IEEE</option>
+            <option>Inline links to sources</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. TARGET MODEL -->
+    <section class="panel">
+      <div class="panel-head"><div class="step-num">8</div><h2>Target Model</h2></div>
+      <div class="model-grid" id="modelGrid">
+        <button type="button" class="model-card active" data-model="Claude"><strong>Claude</strong><span>Structured / Anthropic</span></button>
+        <button type="button" class="model-card" data-model="ChatGPT"><strong>ChatGPT</strong><span>Conversational / OpenAI</span></button>
+        <button type="button" class="model-card" data-model="Gemini"><strong>Gemini</strong><span>Multimodal / Google</span></button>
+        <button type="button" class="model-card" data-model="Perplexity"><strong>Perplexity</strong><span>Research-first</span></button>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- OUTPUT COLUMN -->
+  <div class="output-col">
+    <h2>Generated Prompt</h2>
+    <div class="live-tag"><span class="live-dot"></span> Every selection reshapes the prompt in real time</div>
+    <div id="promptOutput" class="mono" aria-live="polite"></div>
+    <div class="meta-row">
+      <span id="metaWords">0 words</span>
+      <span id="metaChars">0 characters</span>
+      <span id="metaDeliverables">0 deliverables</span>
+    </div>
+    <div class="action-row">
+      <button class="btn primary" id="copyBtn">⧉ Copy</button>
+      <button class="btn" id="downloadBtn">⬇ Download .TXT</button>
+      <button class="btn" id="resetBtn">↺ Reset</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ COURSE DATA (AI-103: AI Cybersecurity Foundations) ============ */
+const LESSONS = [
+  { day:1, title:"Day 1 – Expanding Cybersecurity Principles for AI",
+    modules:["CISM Domains","AAISM","Non-determinism","Data as Code","Prompts as Attack Surface"],
+    objectives:["LO#1: Explain why traditional cybersecurity principles alone are insufficient for AI-enabled enterprises and where AAISM extends them."] },
+  { day:2, title:"Day 2 – AI Governance Foundations & Framework Landscape",
+    modules:["NIST AI RMF","ISO 42001","EU AI Act","OWASP LLM Top 10","Framework Stack"],
+    objectives:["LO#2: Identify the major AI governance frameworks (NIST AI RMF, ISO/IEC 42001, EU AI Act) and how they interrelate."] },
+  { day:3, title:"Day 3 – NIST AI RMF in Depth: Govern & Map",
+    modules:["GOVERN 1–6","MAP 1–5","Charter Builder","MAP Worksheet Sorter Activity"],
+    objectives:["LO#3: Apply the four NIST AI RMF functions (Govern, Map, Measure, and Manage) to enterprise AI deployment."] },
+  { day:4, title:"Day 4 – NIST AI RMF: Measure & Manage",
+    modules:["MEASURE 1–4","MANAGE 1–4","Risk Register","Flip Cards","Decision Lab"],
+    objectives:["LO#3: Apply the four NIST AI RMF functions (Govern, Map, Measure, and Manage) to enterprise AI deployment."] },
+  { day:5, title:"Day 5 – EU AI Act Risk Tiers & Obligations",
+    modules:["Art. 5 Prohibited","Annex III High Risk","Articles 9–15","Provider vs Deployer","GPAI Models"],
+    objectives:["LO#4: Classify AI systems under the EU AI Act's four risk tiers and identify required obligations.","LO#8: Distinguish provider, deployer, and importer responsibilities under emerging AI regulation."] },
+  { day:6, title:"Day 6 – AI Risk Categories & Shadow AI",
+    modules:["Five Risk Categories","Three Forces","Shadow AI Detection","Block/Channel/Register","Checklist Audit"],
+    objectives:["LO#5: Differentiate AI risk categories: model risk, data risk, operational risk, ethical risk, and third-party risk.","LO#6: Recognize shadow AI patterns and apply appropriate governance responses."] },
+  { day:7, title:"Day 7 – AI as Target I: Threats, ATT&CK/ATLAS, & OWASP Landscape",
+    modules:["MITRE ATLAS v5.1","NIST AI 100-2","Attack Chain Builder","Threat Model Lab","OWASP Mapping"],
+    objectives:["LO#10: Describe the AI threat landscape and how it differs from traditional cyber threats.","LO#11: Identify and explain each of the OWASP Top 10 for LLM Applications (2025 edition)."] },
+  { day:8, title:"Day 8 – AI as Target II: OWASP Top 10 for LLMs Deep Dive",
+    modules:["LLM01–LLM10","Attack Lab","Case Study Match","Defense Builder","Flip Cards"],
+    objectives:["LO#11: Identify and explain each of the OWASP Top 10 for LLM Applications (2025 edition).","LO#12: Match real-world attack scenarios to OWASP threat categories."] },
+  { day:9, title:"Day 9 – AI as Target III: Attacks on Data & Models",
+    modules:["5 Poisoning Types","Backdoor Mechanics","4 Drift Types","MLOps Security","Defense Matrix"],
+    objectives:["LO#12: Match real-world attack scenarios to OWASP threat categories.","LO#13: Design a defense-in-depth architecture for an AI-enabled application."] },
+  { day:10, title:"Day 10 – AI as a Weapon: Deepfakes, Phishing & Influence Operations",
+    modules:["Deepfakes","AI Phishing","82.6% BEC & TOAD","Influence Ops","Detection Lab"],
+    objectives:["LO#14: Apply controls across the AI data lifecycle — provenance, lineage, AIBOM, and model cards.","LO#15: Plan and conduct AI red-team exercises appropriate to system risk."] },
+  { day:11, title:"Day 11 – Architecting Secure AI Systems & Lifecycle Controls",
+    modules:["Defense in Depth","AIBOM","Model Cards","Excessive Agency","Data Lifecycle"],
+    objectives:["LO#13: Design a defense-in-depth architecture for an AI-enabled application.","LO#14: Apply controls across the AI data lifecycle — provenance, lineage, AIBOM, and model cards."] },
+  { day:12, title:"Day 12 – Vendor & Supply Chain Risk for AI",
+    modules:["AI Value Chain","Vendor Assessment","EU AI Act Roles","Embedded AI Risk","Contract Clauses"],
+    objectives:["LO#7: Conduct vendor and supply-chain risk assessments for AI-enabled solutions.","LO#8: Distinguish provider, deployer, and importer responsibilities under emerging AI regulation."] },
+  { day:13, title:"Day 13 – AI Policies, AUPs & Governance Documents",
+    modules:["AI AUP Builder","Use Case Register","ISO 42001 Docs","IR Annex","Policy Gap Analysis"],
+    objectives:["LO#9: Develop an enterprise AI acceptable use policy that holds up under audit."] },
+  { day:14, title:"Day 14 – AI Incident Response, Red Teaming & Tabletops",
+    modules:["NIST SP 800-61r3","AI Red Teaming","Tabletop Exercise","Deepfake TTX","Lessons Learned"],
+    objectives:["LO#15: Plan and conduct AI red-team exercises appropriate to system risk.","LO#16: Adapt the NIST SP 800-61 incident response lifecycle for AI-specific incidents.","LO#17: Execute a tabletop exercise for deepfake-enabled fraud, prompt injection, and model poisoning."] },
+  { day:15, title:"Day 15 – Synthesis & Final Capstone Presentations",
+    modules:["All 18 Objectives","Trustworthiness","Capstone Pack","Peer Review","Final Quiz"],
+    objectives:["All Course LOs (course-wide synthesis)","LO#18: Document lessons learned to strengthen governance.","LO#19: Apply shared-responsibility models across the AI stack.","LO#20: Design AI evaluation plans for trustworthiness and reliability."] }
+];
+
+/* ============ CASE TYPE TAXONOMY ============ */
+const CASE_TYPES = [
+  { name:"Decision-Forcing Case", purpose:"put the learner in the protagonist's chair",
+    desc:"stops at a decision point with incomplete information." },
+  { name:"Retrospective Incident Analysis", purpose:"diagnose what went wrong",
+    desc:"reconstructs a completed event for post-mortem examination." },
+  { name:"Multi-Part Sequential Case (A/B/C)", purpose:"reveal consequences in stages",
+    desc:"releases new facts only after each decision is committed." },
+  { name:"Comparative Case Pair", purpose:"contrast two responses to one problem",
+    desc:"runs parallel organizations to divergent outcomes." },
+  { name:"Role-Play / Stakeholder Negotiation", purpose:"surface competing interests",
+    desc:"assigns private objectives to each stakeholder." },
+  { name:"Tabletop Exercise Scenario", purpose:"rehearse response under pressure",
+    desc:"escalates through timed injects." },
+  { name:"Ethical Dilemma Case", purpose:"force value trade-offs",
+    desc:"leaves no option fully defensible." },
+  { name:"Policy / Document Critique Case", purpose:"audit an artifact",
+    desc:"supplies a flawed policy, AUP, or model card to review." },
+  { name:"Risk Assessment Case", purpose:"quantify and prioritize exposure",
+    desc:"provides raw data for scoring and risk-register entry." },
+  { name:"Vendor / Third-Party Evaluation Case", purpose:"judge an outside provider",
+    desc:"delivers a due-diligence packet with deliberate gaps." },
+  { name:"Audit / Compliance Mapping Case", purpose:"trace controls to requirements",
+    desc:"maps an evidence set against a named framework." },
+  { name:"Failure / Near-Miss Case", purpose:"learn from what almost happened",
+    desc:"examines the control that barely held." },
+  { name:"Greenfield Design Case", purpose:"architect from scratch",
+    desc:"gives requirements and constraints but no existing system." },
+  { name:"Data-Driven Analytical Case", purpose:"reason from evidence",
+    desc:"makes logs, metrics, and exhibits carry the argument." },
+  { name:"Executive Briefing Case", purpose:"communicate upward",
+    desc:"requires translating technical risk for a board." }
+];
+
+/* ============ EXHIBIT TYPES ============ */
+const EXHIBITS = [
+  "Email / Slack thread", "System or audit log excerpt", "Risk register extract",
+  "Org chart", "Incident timeline", "Policy or AUP excerpt", "Model card / AIBOM",
+  "Vendor security questionnaire", "Budget or financial data", "News clipping",
+  "Dashboard / metrics screenshot", "Contract clause", "Incident ticket"
+];
+
+const DEFAULT_EXHIBITS = ["Email / Slack thread", "System or audit log excerpt", "Incident timeline"];
+
+const FRAMEWORKS = "NIST AI RMF (AI 100-1), NIST AI 100-2, NIST SP 800-61r3, ISO/IEC 42001, the EU AI Act, the OWASP Top 10 for LLM Applications (2025), and MITRE ATLAS";
+
+let state = {
+  caseType: "Decision-Forcing Case",
+  exhibits: DEFAULT_EXHIBITS.slice(),
+  targetModel: "Claude"
+};
+
+/* ============ HELPERS ============ */
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const isCustom = () => $('lesson').value === 'custom';
+
+/* ============ POPULATE ============ */
+function populateLessons(){
+  $('lesson').innerHTML =
+    LESSONS.map(l => `<option value="${l.day}">${esc(l.title)}</option>`).join('') +
+    `<option value="custom">Custom topic — outside the AI-103 sequence…</option>`;
+}
+
+function currentLesson(){
+  if (isCustom()) return null;
+  return LESSONS.find(l => l.day === parseInt($('lesson').value, 10));
+}
+
+function populateSubjectArea(){
+  const lesson = currentLesson();
+  const sel = $('subjectArea');
+  if (!lesson){ sel.innerHTML = ''; return; }
+  sel.innerHTML = lesson.modules.map(m => `<option>${esc(m)}</option>`).join('');
+}
+
+function populateObjectives(){
+  const lesson = currentLesson();
+  const sel = $('objectives');
+  if (!lesson){ sel.innerHTML = ''; return; }
+  sel.innerHTML = lesson.objectives.map(o => `<option selected>${esc(o)}</option>`).join('');
+}
+
+function syncCustomFields(){
+  const custom = isCustom();
+  $('customTopicField').style.display   = custom ? 'block' : 'none';
+  $('customSubjectField').style.display = custom ? 'block' : 'none';
+  $('customObjField').style.display     = custom ? 'block' : 'none';
+  $('subjectArea').parentElement.style.display = custom ? 'none' : 'block';
+  $('objectivesField').style.display    = custom ? 'none' : 'block';
+}
+
+function populateCaseTypes(){
+  const group = $('caseTypeGroup');
+  group.innerHTML = CASE_TYPES.map(c => `
+    <label class="radio-opt">
+      <input type="radio" name="caseType" value="${esc(c.name)}" ${c.name===state.caseType?'checked':''}>
+      <span><strong>${esc(c.name)}</strong> — ${esc(c.purpose)}.<span class="opt-desc">${esc(c.desc)}</span></span>
+    </label>
+  `).join('');
+  group.querySelectorAll('input[name="caseType"]').forEach(r => {
+    r.addEventListener('change', e => { state.caseType = e.target.value; renderPrompt(); });
+  });
+}
+
+function populateExhibits(){
+  const wrap = $('exhibits');
+  wrap.innerHTML = EXHIBITS.map(x => `
+    <button type="button" class="chip ${state.exhibits.includes(x)?'active':''}"
+            data-val="${esc(x)}" aria-pressed="${state.exhibits.includes(x)}">${esc(x)}</button>
+  `).join('');
+  wrap.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const val = chip.dataset.val;
+      const i = state.exhibits.indexOf(val);
+      if (i === -1) state.exhibits.push(val); else state.exhibits.splice(i, 1);
+      chip.classList.toggle('active');
+      chip.setAttribute('aria-pressed', chip.classList.contains('active'));
+      renderPrompt();
+    });
+  });
+}
+
+/* ============ EVENT WIRING ============ */
+function wireEvents(){
+  $('lesson').addEventListener('change', () => {
+    populateSubjectArea(); populateObjectives(); syncCustomFields(); renderPrompt();
+  });
+
+  ['subjectArea','audience','objectives','customTopic','customSubject','customObjectives',
+   'sector','orgSize','sourcing','protagonist','ambiguity','timeSetting','constraintNote',
+   'caseLength','caseParts','voice','qCount','duration','delivery','outFormat','citation'
+  ].forEach(id => {
+    const el = $(id);
+    el.addEventListener('change', renderPrompt);
+    el.addEventListener('input', renderPrompt);
+  });
+
+  ['pkgNarrative','pkgExhibits','pkgQuestions','pkgTeachingNote','pkgAnswerKey',
+   'pkgRubric','pkgDebrief','pkgExtension','pkgRoles'
+  ].forEach(id => $(id).addEventListener('change', () => { syncQCount(); renderPrompt(); }));
+
+  ['k1','k2','k3','k4','k5','k6','k7','k8'].forEach(id => {
+    $(id).addEventListener('change', renderPrompt);
+  });
+
+  document.querySelectorAll('.model-card').forEach(card => {
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.model-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      state.targetModel = card.dataset.model;
+      renderPrompt();
+    });
+  });
+
+  $('copyBtn').addEventListener('click', copyPrompt);
+  $('downloadBtn').addEventListener('click', downloadPrompt);
+  $('resetBtn').addEventListener('click', resetForm);
+  $('themeToggle').addEventListener('click', toggleTheme);
+}
+
+function syncQCount(){
+  $('qCountField').style.display = $('pkgQuestions').checked ? 'block' : 'none';
+}
+
+/* ============ COLLECT ============ */
+function collectValues(){
+  const lesson = currentLesson();
+  const custom = isCustom();
+
+  const topic = custom
+    ? ($('customTopic').value.trim() || 'Custom topic (not yet specified)')
+    : lesson.title;
+
+  const subjectArea = custom
+    ? ($('customSubject').value.trim() || 'General focus')
+    : $('subjectArea').value;
+
+  let objectives;
+  if (custom){
+    objectives = $('customObjectives').value.split('\n').map(s => s.trim()).filter(Boolean);
+    if (!objectives.length) objectives = ['Objective not yet specified — infer a suitable one from the topic and state it explicitly.'];
+  } else {
+    objectives = Array.from($('objectives').selectedOptions).map(o => o.value);
+    if (!objectives.length) objectives = [lesson.objectives[0]];
+  }
+
+  const pkg = [];
+  if ($('pkgNarrative').checked)    pkg.push('narrative');
+  if ($('pkgExhibits').checked)     pkg.push('exhibits');
+  if ($('pkgQuestions').checked)    pkg.push('questions');
+  if ($('pkgTeachingNote').checked) pkg.push('teachingNote');
+  if ($('pkgAnswerKey').checked)    pkg.push('answerKey');
+  if ($('pkgRubric').checked)       pkg.push('rubric');
+  if ($('pkgDebrief').checked)      pkg.push('debrief');
+  if ($('pkgExtension').checked)    pkg.push('extension');
+  if ($('pkgRoles').checked)        pkg.push('roles');
+
+  const constraints = [];
+  if ($('k1').checked) constraints.push('Align every discussion question and assessment element to the stated learning objectives above.');
+  if ($('k2').checked) constraints.push('Ensure no single obviously correct answer exists — each credible path must carry a real cost.');
+  if ($('k3').checked) constraints.push(`Ground all technical detail in the actual content of ${FRAMEWORKS}; name the specific control, article, or category being invoked.`);
+  if ($('k4').checked) constraints.push('Never fabricate citations, statistics, quotations, or incident details. If a figure is invented for the scenario, mark it plainly as illustrative.');
+  if ($('k5').checked) constraints.push('Use inclusive, culturally varied names and contexts without stereotyping any group.');
+  if ($('k6').checked) constraints.push('Write in plain language and define technical jargon at first use — the case should test analysis, not vocabulary.');
+  if ($('k7').checked) constraints.push('Build in realistic time pressure and deliberately incomplete information, as practitioners actually encounter.');
+  if ($('k8').checked) constraints.push('Provide explicit facilitation timing cues (minutes per segment) throughout the teaching materials.');
+
+  return {
+    topic, subjectArea, objectives, custom,
+    audience: $('audience').value,
+    sector: $('sector').value,
+    orgSize: $('orgSize').value,
+    sourcing: $('sourcing').value,
+    protagonist: $('protagonist').value,
+    ambiguity: $('ambiguity').value,
+    timeSetting: $('timeSetting').value,
+    wrinkle: $('constraintNote').value.trim(),
+    caseLength: $('caseLength').value,
+    caseParts: $('caseParts').value,
+    voice: $('voice').value,
+    qCount: $('qCount').value || '6',
+    duration: $('duration').value,
+    delivery: $('delivery').value,
+    outFormat: $('outFormat').value,
+    citation: $('citation').value,
+    pkg, constraints
+  };
+}
+
+/* ============ SOURCING MANDATE ============ */
+function sourcingMandate(sourcing){
+  switch (sourcing){
+    case 'Fictional composite organization':
+      return 'This is a fictional composite. Invent the organization, its people, and its specifics freely — but pattern the dynamics on real classes of incident so the reasoning transfers. Do not present any invented specific as a documented fact, and open the case with a one-line note that the organization is fictional.';
+    case 'Anonymized real incident (disguised details)':
+      return 'This case is drawn from a real incident with identifying details disguised. Preserve the technical mechanics exactly as they occurred — the attack path, the control failure, and the sequence must remain accurate. Change only names, locations, and non-essential identifiers, and state plainly to students that identities have been disguised.';
+    case 'Documented public incident (cited sources required)':
+      return 'Use only a verifiable, publicly documented incident. Cite named sources for every factual claim about what happened. If a detail the case needs is not in the public record, say so explicitly rather than inventing it — a gap acknowledged is instructionally useful; a gap filled with invention is not. Do not attribute quotations to real people unless they are documented.';
+    default:
+      return 'This is a speculative near-future scenario. Label it as such at the top. Extrapolate only from capabilities that are already demonstrated today, and make the extrapolation reasoning visible so students can judge its plausibility.';
+  }
+}
+
+/* ============ DELIVERABLES ============ */
+function buildDeliverables(v){
+  const d = [];
+  const has = k => v.pkg.includes(k);
+
+  if (has('narrative')){
+    d.push(`**Case Narrative** — the text students receive. ${v.caseLength.split('—')[0].trim()} length, written in ${v.voice.toLowerCase()}. Open with the situation, establish the protagonist's authority and constraints, and end where the ${v.ambiguity.split('—')[0].trim().toLowerCase()}-ambiguity decision actually bites.`);
+  }
+  if (has('exhibits')){
+    const list = state.exhibits.length ? state.exhibits.join('; ') : 'exhibits of your choosing, appropriate to the scenario';
+    d.push(`**Supporting Exhibits** — labeled Exhibit 1, Exhibit 2, and so on. Include: ${list}. Each exhibit must carry information the analysis genuinely needs; no filler artifacts.`);
+  }
+  if (has('questions')){
+    d.push(`**Discussion Questions** — exactly ${v.qCount}, laddered across Bloom's levels: begin with comprehension (what happened), move through analysis (why it happened, which framework applies), then evaluation (which option is defensible and at what cost), and close with creation (what the learner would build or write instead). Label each question with its cognitive level.`);
+  }
+  if (has('teachingNote')){
+    d.push(`**Facilitator Teaching Note** — the instructional intent of the case, a board plan showing what to capture and where, the two or three misconceptions students most often bring to this material, and the pivot points where discussion typically stalls along with how to restart it.`);
+  }
+  if (has('answerKey')){
+    d.push(`**Model Analysis / Answer Key** — what a strong student response contains for each question, including the reasoning path rather than only the conclusion. Where the question is genuinely contested, present the competing positions and the evidence each rests on instead of declaring a winner.`);
+  }
+  if (has('rubric')){
+    d.push(`**Assessment Rubric** — four to six criteria across four performance levels (Exemplary / Proficient / Developing / Beginning), with observable descriptors at each level. Map each criterion explicitly back to one of the stated learning objectives.`);
+  }
+  if (has('debrief')){
+    d.push(`**Debrief Script & Board Plan** — a closing sequence that surfaces the generalizable principle, a concrete board or whiteboard layout, and three synthesis prompts that connect this case back to the broader framework.`);
+  }
+  if (has('extension')){
+    d.push(`**Extension & Differentiation** — one stretch variant that raises the analytical demand for advanced learners, and one scaffolded variant with additional structure for learners who need support. Keep both anchored to the same objectives.`);
+  }
+  if (has('roles')){
+    d.push(`**Role Assignment Cards** — one card per stakeholder, each with a public position, a private objective, and one piece of information that stakeholder alone holds. Cards must be distributable without revealing each other's contents.`);
+  }
+  if (!d.length){
+    d.push(`**Case Narrative** — no deliverables were selected, so produce the student-facing case narrative only.`);
+  }
+  return d;
+}
+
+/* ============ PROMPT ASSEMBLY ============ */
+function buildPrompt(v){
+  const ct = CASE_TYPES.find(c => c.name === state.caseType);
+  const deliverables = buildDeliverables(v);
+  const objectivesText = v.objectives.map(o => `    • ${o}`).join('\n');
+
+  const lines = [];
+
+  lines.push(`Create a ${state.caseType} (${ct.purpose}; ${ct.desc}) for a ${v.audience} audience.`);
+  lines.push('');
+  lines.push('LESSON CONTEXT');
+  lines.push(`- Topic / Lesson: ${v.topic}`);
+  lines.push(`- Subject Area / Module Focus: ${v.subjectArea}`);
+  lines.push(`- Learning Objective(s):`);
+  lines.push(objectivesText);
+  lines.push('');
+  lines.push('CASE FORMAT');
+  lines.push(`- Case Type: ${state.caseType} — ${ct.desc}`);
+  lines.push(`- Protagonist Viewpoint: ${v.protagonist}`);
+  lines.push(`- Ambiguity Level: ${v.ambiguity}`);
+  lines.push(`- Narrative Voice: ${v.voice}`);
+  lines.push('');
+  lines.push('SCENARIO PARAMETERS');
+  lines.push(`- Sector: ${v.sector}`);
+  lines.push(`- Organization Scale: ${v.orgSize}`);
+  lines.push(`- Time Setting: ${v.timeSetting}`);
+  lines.push(`- Sourcing Basis: ${v.sourcing}`);
+  if (v.wrinkle) lines.push(`- Scenario Wrinkle: ${v.wrinkle}`);
+  lines.push('');
+  lines.push('SOURCING & ACCURACY MANDATE');
+  lines.push(sourcingMandate(v.sourcing));
+  lines.push('');
+  lines.push('CASE STRUCTURE');
+  lines.push(`- Target Length: ${v.caseLength}`);
+  lines.push(`- Structure: ${v.caseParts}`);
+  lines.push(`- Supporting Exhibits: ${state.exhibits.length ? state.exhibits.join(', ') : 'none specified — choose what the analysis requires'}`);
+  lines.push('');
+  lines.push('REQUIRED DELIVERABLES');
+  deliverables.forEach((d, i) => lines.push(`${i + 1}. ${d}`));
+  lines.push('');
+  lines.push('FACILITATION CONTEXT');
+  lines.push(`- Session Duration: ${v.duration}`);
+  lines.push(`- Delivery Mode: ${v.delivery}`);
+  lines.push(`- Output Format: ${v.outFormat}`);
+  lines.push(`- Citations: ${v.citation}`);
+  lines.push('');
+  lines.push('PEDAGOGICAL & INTEGRITY CONSTRAINTS');
+  lines.push(v.constraints.length ? v.constraints.map(c => `- ${c}`).join('\n') : '- None specified');
+
+  return wrapForModel(state.targetModel, lines.join('\n'), v);
+}
+
+function wrapForModel(model, core, v){
+  if (model === 'Claude'){
+    return [
+      `You are an instructional designer and cybersecurity subject-matter expert building a classroom-ready case study.`,
+      ``,
+      core,
+      ``,
+      `INSTRUCTIONS`,
+      `Before writing, work out the instructional architecture: identify the single decision or judgment the case is really testing, then reverse-engineer the facts, exhibits, and omissions that make that judgment hard in an instructive way. Every detail in the narrative should either be load-bearing for the analysis or be deliberate noise that teaches students to filter. Produce materials a community college instructor could teach from directly, without further editing. Return only the finished case materials — no preamble, no explanation of your process.`
+    ].join('\n');
+  }
+  if (model === 'ChatGPT'){
+    return [
+      `Hi! I'm building a case study for my class and I'd like your help writing it. Here's exactly what I need:`,
+      ``,
+      core,
+      ``,
+      `Please make the scenario feel genuinely real — the kind of messy situation a practitioner would actually recognize — while keeping every technical detail accurate. Format it so I can drop it straight into my course materials, with clear section breaks between the student-facing content and anything meant only for me as the instructor.`
+    ].join('\n');
+  }
+  if (model === 'Gemini'){
+    return [
+      `Generate a complete instructional case study package from the following specification. Treat the narrative, the exhibits, and the facilitation scaffolding as equally weighted deliverables — the exhibits are not decoration, they are the evidence base students reason from.`,
+      ``,
+      core,
+      ``,
+      `Structure the output so it exports cleanly to Google Docs and Google Classroom, keeping student-facing and instructor-only sections clearly separated under distinct headings.`
+    ].join('\n');
+  }
+  return [
+    `Research task: before writing anything, verify the technical substrate of this case against current authoritative sources — ${FRAMEWORKS}, plus reputable incident reporting where the case draws on real events. Confirm that every framework reference, control name, threat category, and regulatory obligation you plan to use is accurate as published.`,
+    ``,
+    core,
+    ``,
+    `Once verified, produce the case materials described above and append a source list documenting what you used to confirm technical accuracy. Flag any claim you could not verify rather than presenting it as established.`
+  ].join('\n');
+}
+
+/* ============ RENDER ============ */
+function renderPrompt(){
+  const v = collectValues();
+  const text = buildPrompt(v);
+  $('promptOutput').textContent = text;
+  $('metaWords').textContent = `${text.trim().split(/\s+/).length} words`;
+  $('metaChars').textContent = `${text.length} characters`;
+  const n = v.pkg.length || 1;
+  $('metaDeliverables').textContent = `${n} deliverable${n === 1 ? '' : 's'}`;
+}
+
+/* ============ ACTIONS ============ */
+function showToast(msg){
+  const t = $('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+function copyPrompt(){
+  const text = $('promptOutput').textContent;
+  navigator.clipboard.writeText(text)
+    .then(() => showToast('Prompt copied to clipboard'))
+    .catch(() => showToast('Copy failed — select text manually'));
+}
+
+function downloadPrompt(){
+  const text = $('promptOutput').textContent;
+  const blob = new Blob([text], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'instructional-case-study-prompt.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('Downloaded .TXT');
+}
+
+function resetForm(){
+  $('lesson').selectedIndex = 0;
+  syncCustomFields();
+  populateSubjectArea();
+  populateObjectives();
+  $('customTopic').value = '';
+  $('customSubject').value = '';
+  $('customObjectives').value = '';
+  $('audience').selectedIndex = 0;
+
+  state.caseType = 'Decision-Forcing Case';
+  populateCaseTypes();
+
+  $('sector').value = 'Higher Education';
+  $('orgSize').value = 'Mid-market (100–1,000 staff)';
+  $('sourcing').selectedIndex = 0;
+  $('protagonist').value = 'AI Governance Lead';
+  $('ambiguity').selectedIndex = 1;
+  $('timeSetting').selectedIndex = 0;
+  $('constraintNote').value = '';
+
+  $('caseLength').selectedIndex = 1;
+  $('caseParts').selectedIndex = 0;
+  $('voice').selectedIndex = 0;
+  state.exhibits = DEFAULT_EXHIBITS.slice();
+  populateExhibits();
+
+  ['pkgNarrative','pkgExhibits','pkgQuestions','pkgTeachingNote','pkgAnswerKey']
+    .forEach(id => $(id).checked = true);
+  ['pkgRubric','pkgDebrief','pkgExtension','pkgRoles']
+    .forEach(id => $(id).checked = false);
+  $('qCount').value = 6;
+  syncQCount();
+
+  ['k1','k2','k3','k4','k5','k6','k7'].forEach(id => $(id).checked = true);
+  $('k8').checked = false;
+
+  $('duration').selectedIndex = 1;
+  $('delivery').selectedIndex = 0;
+  $('outFormat').selectedIndex = 0;
+  $('citation').selectedIndex = 0;
+
+  state.targetModel = 'Claude';
+  document.querySelectorAll('.model-card')
+    .forEach(c => c.classList.toggle('active', c.dataset.model === 'Claude'));
+
+  renderPrompt();
+  showToast('Form reset');
+}
+
+/* ============ THEME (persisted) ============ */
+function toggleTheme(){
+  const body = document.body;
+  const isDark = body.getAttribute('data-theme') === 'dark';
+  body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  $('themeToggle').textContent = isDark ? '◐ Dark Mode' : '☀ Light Mode';
+  localStorage.setItem('icpb-theme', isDark ? 'light' : 'dark');
+}
+function initTheme(){
+  const saved = localStorage.getItem('icpb-theme');
+  if (saved === 'dark'){
+    document.body.setAttribute('data-theme', 'dark');
+    $('themeToggle').textContent = '☀ Light Mode';
+  }
+}
+
+/* ============ INIT ============ */
+function init(){
+  populateLessons();
+  populateSubjectArea();
+  populateObjectives();
+  syncCustomFields();
+  populateCaseTypes();
+  populateExhibits();
+  syncQCount();
+  wireEvents();
+  initTheme();
+  renderPrompt();
+}
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
