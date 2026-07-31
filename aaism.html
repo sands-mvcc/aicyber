@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AAISM (ISACA) — Interactive Guide</title>
+<meta name="description" content="An interactive student guide to ISACA's AAISM (Advanced in AI Security Management) credential: purpose, domain structure, and how to apply it.">
+<style>
+  :root{
+    --paper:#F4F3F7;
+    --paper-raised:#FFFFFF;
+    --ink:#1B1A24;
+    --ink-soft:#565368;
+    --line:#DBD8E3;
+    --indigo:#2E2168;
+    --indigo-tint:#E8E5F3;
+    --coral:#C8642F;
+    --coral-tint:#F6E5D8;
+    --gov:#2E2168;
+    --gov-tint:#E8E5F3;
+    --risk:#8A3B6B;
+    --risk-tint:#F3E3ED;
+    --tech:#1F6B5E;
+    --tech-tint:#E3F0EC;
+    --focus:#E0A300;
+    --radius:8px;
+    --shadow:0 1px 2px rgba(20,15,30,.06), 0 10px 26px rgba(20,15,30,.07);
+    --maxw:1180px;
+  }
+  html[data-theme="dark"]{
+    --paper:#131019;
+    --paper-raised:#1C1826;
+    --ink:#E9E7EE;
+    --ink-soft:#9C97AC;
+    --line:#2E293A;
+    --indigo-tint:#221C3A;
+    --gov-tint:#221C3A;
+    --risk-tint:#2E1D28;
+    --tech-tint:#16261F;
+    --coral-tint:#301F14;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 26px rgba(0,0,0,.4);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} *{animation-duration:.001ms !important; transition-duration:.001ms !important;} }
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:'IBM Plex Sans',-apple-system,Segoe UI,sans-serif; line-height:1.55; transition:background .25s ease,color .25s ease;}
+  h1,h2,h3,.display{font-family:'Fraunces',Georgia,serif; font-weight:600; letter-spacing:-0.01em; color:var(--ink);}
+  code,.mono,.dom-code{font-family:'IBM Plex Mono',ui-monospace,monospace;}
+  a{color:inherit;}
+  ::selection{background:var(--focus); color:#1B1A24;}
+  :focus-visible{outline:3px solid var(--focus); outline-offset:3px; border-radius:4px;}
+
+  .skip-link{position:absolute; left:-999px; top:0; background:var(--ink); color:var(--paper); padding:.6rem 1rem; z-index:200; border-radius:0 0 8px 0;}
+  .skip-link:focus{left:0;}
+
+  .topbar{position:sticky; top:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:.75rem 1.25rem; background:var(--paper); border-bottom:1px solid var(--line);}
+  .topbar .brand{display:flex; align-items:center; gap:.6rem; font-family:'Fraunces',serif; font-weight:600; font-size:1.0rem;}
+  .brand .badge-mini{width:24px; height:24px; flex:none;}
+  .topbar-controls{display:flex; align-items:center; gap:.5rem;}
+  .btn{font-family:inherit; font-size:.85rem; font-weight:500; background:var(--paper-raised); color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:.5rem .8rem; cursor:pointer; transition:transform .12s ease, border-color .12s ease;}
+  .btn:hover{border-color:var(--indigo); transform:translateY(-1px);}
+  .btn:active{transform:translateY(0);}
+  .btn.icon{padding:.5rem; line-height:0;}
+
+  .shell{display:grid; grid-template-columns:270px minmax(0,1fr); max-width:var(--maxw); margin:0 auto;}
+  nav.side{position:sticky; top:57px; align-self:start; height:calc(100vh - 57px); overflow-y:auto; padding:1.75rem 1rem 2rem 1.25rem; border-right:1px solid var(--line);}
+  nav.side .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:.66rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-soft); margin:1.3rem 0 .5rem;}
+  nav.side .eyebrow:first-child{margin-top:0;}
+  nav.side a{display:flex; align-items:center; gap:.5rem; padding:.38rem .5rem; margin:.05rem 0; border-radius:6px; text-decoration:none; font-size:.86rem; color:var(--ink-soft); border-left:2px solid transparent;}
+  nav.side a:hover{background:var(--paper-raised); color:var(--ink);}
+  nav.side a.active{color:var(--ink); font-weight:600; border-left-color:var(--indigo); background:var(--paper-raised);}
+  nav.side a .dot{width:8px; height:8px; border-radius:50%; flex:none;}
+
+  main{padding:0 clamp(1rem,3vw,2.5rem) 4rem;}
+  section{scroll-margin-top:75px;}
+
+  .caution-banner{
+    background:var(--coral-tint); border:1px solid var(--coral); border-radius:var(--radius);
+    padding:.9rem 1.2rem; margin:1.2rem 0; font-size:.85rem; color:var(--ink-soft); display:flex; gap:.7rem;
+  }
+  .caution-banner strong{color:var(--ink);}
+
+  .hero{padding:2.2rem 0 2rem; display:grid; grid-template-columns:1.1fr .9fr; gap:2.5rem; align-items:center; border-bottom:1px solid var(--line);}
+  .hero .kicker{font-family:'IBM Plex Mono',monospace; font-size:.74rem; letter-spacing:.14em; text-transform:uppercase; color:var(--indigo);}
+  .hero h1{font-size:clamp(1.8rem,3.2vw,2.4rem); margin:.2rem 0 .8rem; line-height:1.1;}
+  .hero p.lede{color:var(--ink-soft); font-size:1.02rem; max-width:54ch;}
+  .hero-actions{display:flex; gap:.7rem; margin-top:1.1rem; flex-wrap:wrap;}
+  .hero-actions .btn.primary{background:var(--indigo); color:#fff; border-color:var(--indigo);}
+  .badge-row{display:flex; gap:.5rem; margin-top:.9rem; flex-wrap:wrap;}
+  .badge{font-family:'IBM Plex Mono',monospace; font-size:.7rem; letter-spacing:.04em; padding:.3rem .6rem; border-radius:20px; border:1px solid var(--line); color:var(--ink-soft); background:var(--paper-raised);}
+  .badge.indigo{color:var(--indigo); border-color:var(--indigo); background:var(--indigo-tint);}
+
+  .badge-caption{text-align:center; font-size:.78rem; color:var(--ink-soft); margin-top:.5rem; font-family:'IBM Plex Mono',monospace; max-width:34ch;}
+  .badge-wrap{display:flex; flex-direction:column; align-items:center;}
+
+  .section-head{padding:2.2rem 0 .6rem;}
+  .section-head .kicker{font-family:'IBM Plex Mono',monospace; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); display:block; margin-bottom:.3rem;}
+  .section-head h2{font-size:1.5rem; margin:.1rem 0 .4rem;}
+  .section-head p{color:var(--ink-soft); max-width:70ch; margin:0;}
+
+  .card-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:1rem; margin:1.2rem 0 2rem;}
+  .info-card{background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem 1.3rem; box-shadow:var(--shadow);}
+  .info-card h3{font-size:1.0rem; margin:0 0 .4rem;}
+  .info-card p{margin:0; color:var(--ink-soft); font-size:.92rem;}
+
+  .steps{counter-reset:step; list-style:none; margin:1.2rem 0 2rem; padding:0; display:grid; gap:.7rem;}
+  .steps li{counter-increment:step; position:relative; background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius); padding:.9rem 1.1rem 1rem 3rem; font-size:.92rem; color:var(--ink-soft);}
+  .steps li::before{content:counter(step); position:absolute; left:1rem; top:.85rem; font-family:'IBM Plex Mono',monospace; font-weight:700; color:var(--indigo); font-size:.85rem;}
+  .steps li strong{color:var(--ink); display:block; margin-bottom:.15rem; font-family:'Fraunces',serif; font-weight:600;}
+
+  .glance-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:.9rem; margin:1.2rem 0 2rem;}
+  .glance-card{background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius); padding:1rem 1.15rem;}
+  .glance-card .g-label{font-family:'IBM Plex Mono',monospace; font-size:.7rem; letter-spacing:.06em; text-transform:uppercase; color:var(--indigo); display:block; margin-bottom:.35rem;}
+  .glance-card p{margin:0; font-size:.88rem; color:var(--ink-soft);}
+
+  .compare-table{width:100%; border-collapse:collapse; margin:1rem 0 2rem; font-size:.9rem; background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;}
+  .compare-table th,.compare-table td{padding:.7rem .9rem; text-align:left; border-bottom:1px solid var(--line); vertical-align:top;}
+  .compare-table thead th{background:var(--indigo-tint); color:var(--indigo); font-family:'IBM Plex Mono',monospace; font-size:.72rem; letter-spacing:.06em; text-transform:uppercase;}
+  .compare-table tbody tr:last-child td{border-bottom:none;}
+  .compare-table td:first-child{font-weight:600; white-space:nowrap;}
+
+  /* Domain bands */
+  .domain-band{border-radius:12px; padding:1.4rem 1.6rem; margin-bottom:.9rem; border:1px solid var(--line);}
+  .domain-band .domain-tag{font-family:'IBM Plex Mono',monospace; font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; padding:.2rem .55rem; border-radius:4px; display:inline-block; margin-bottom:.5rem;}
+  .tag-gov{color:var(--gov); background:var(--gov-tint);}
+  .tag-risk{color:var(--risk); background:var(--risk-tint);}
+  .tag-tech{color:var(--tech); background:var(--tech-tint);}
+  .domain-band h2{font-size:1.4rem; margin:.15rem 0 .4rem; display:flex; align-items:baseline; gap:.6rem;}
+  .domain-band .domain-weight{font-size:.85rem; color:var(--ink-soft); font-weight:500;}
+  .domain-band p.intent{color:var(--ink-soft); font-size:.94rem; max-width:70ch; margin:0 0 .8rem;}
+
+  .accordion{border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; background:var(--paper-raised); margin-bottom:.55rem;}
+  .accordion:last-child{margin-bottom:0;}
+  .acc-trigger{width:100%; display:flex; align-items:center; justify-content:space-between; gap:1rem; background:none; border:none; text-align:left; cursor:pointer; padding:.8rem 1rem; font:inherit; color:var(--ink);}
+  .acc-trigger .label{display:flex; align-items:baseline; gap:.6rem;}
+  .acc-trigger .sub-title{font-weight:600; font-size:.94rem;}
+  .acc-trigger .chevron{transition:transform .18s ease; flex:none; font-size:.85rem; color:var(--ink-soft);}
+  .accordion[data-open="true"] .chevron{transform:rotate(180deg);}
+  .acc-panel{max-height:0; overflow:hidden; transition:max-height .25s ease; border-top:1px solid transparent;}
+  .accordion[data-open="true"] .acc-panel{border-top-color:var(--line);}
+  .acc-panel-inner{padding:.8rem 1rem 1rem;}
+  .acc-panel-inner ul{margin:0; padding-left:1.1rem;}
+  .acc-panel-inner li{margin-bottom:.4rem; font-size:.9rem; color:var(--ink-soft);}
+  .acc-panel-inner p{margin:0; font-size:.9rem; color:var(--ink-soft);}
+
+  footer{border-top:1px solid var(--line); padding:2rem clamp(1rem,3vw,2.5rem) 3rem; max-width:var(--maxw); margin:0 auto; color:var(--ink-soft); font-size:.85rem;}
+
+  .nav-toggle{display:none;}
+  @media (max-width:900px){
+    .shell{grid-template-columns:1fr;}
+    nav.side{position:fixed; top:57px; left:0; right:0; bottom:0; z-index:90; background:var(--paper); height:auto; max-height:calc(100vh - 57px); transform:translateX(-100%); transition:transform .2s ease; border-right:none;}
+    nav.side.open{transform:translateX(0);}
+    .nav-toggle{display:inline-flex;}
+    .hero{grid-template-columns:1fr;}
+    .card-grid{grid-template-columns:1fr;}
+  }
+  @media print{
+    nav.side,.topbar,.hero-actions,.nav-toggle{display:none !important;}
+    .acc-panel{max-height:none !important;}
+    .shell{grid-template-columns:1fr;}
+    body{background:#fff; color:#000;}
+  }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="topbar">
+  <div class="brand">
+    <svg class="badge-mini" viewBox="0 0 40 40" aria-hidden="true">
+      <path d="M20 4 L34 10 V20 C34 29 28 34 20 37 C12 34 6 29 6 20 V10 Z" fill="var(--indigo)"/>
+      <path d="M14 20 L18 24 L27 14" fill="none" stroke="var(--coral)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    AAISM (ISACA) — Student Guide
+  </div>
+  <div class="topbar-controls">
+    <button class="btn nav-toggle icon" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <button class="btn icon" id="themeToggle" aria-label="Toggle dark mode">🌓</button>
+    <button class="btn" onclick="window.print()">Print / PDF</button>
+  </div>
+</header>
+
+<div class="shell">
+  <nav class="side" id="sideNav" aria-label="Section navigation">
+    <span class="eyebrow">Orientation</span>
+    <a href="#purpose">Purpose &amp; Origin</a>
+    <a href="#how-to-use">How to Use This Guide</a>
+    <a href="#glance">Credential at a Glance</a>
+    <a href="#compare">AAISM vs. the Frameworks</a>
+
+    <span class="eyebrow">Domains</span>
+    <a href="#d1"><span class="dot" style="background:var(--gov)"></span>Governance</a>
+    <a href="#d2"><span class="dot" style="background:var(--risk)"></span>Risk Management</a>
+    <a href="#d3"><span class="dot" style="background:var(--tech)"></span>Technologies &amp; Controls</a>
+
+    <span class="eyebrow">Reference</span>
+    <a href="#classroom">Classroom Uses</a>
+    <a href="#sources">Sources &amp; Further Reading</a>
+  </nav>
+
+  <main id="main">
+
+    <section class="hero" id="top">
+      <div>
+        <span class="kicker">ISACA · Advanced in AI Security Management</span>
+        <h1>A professional credential for the person who has to actually run AI security, mapped for the classroom.</h1>
+        <p class="lede">Where NIST AI RMF, ISO/IEC 42001, and the EU AI Act tell an organization what to do, AAISM is ISACA's attempt to certify that a specific professional knows how to do it — govern, assess risk on, and technically secure AI systems inside a real enterprise.</p>
+        <div class="badge-row">
+          <span class="badge indigo">Professional credential</span>
+          <span class="badge">Stackable with CISM / CISSP</span>
+          <span class="badge">Emerging — verify current details</span>
+        </div>
+        <div class="hero-actions">
+          <a class="btn primary" href="#purpose">Start with Purpose</a>
+          <a class="btn" href="#d1">Explore the three domains</a>
+        </div>
+      </div>
+      <div class="badge-wrap">
+        <svg viewBox="0 0 320 320" width="300" height="300" role="img" aria-label="Shield badge divided into three sections: Governance, Risk Management, and Technologies and Controls">
+          <path d="M160 20 L280 55 V150 C280 220 220 270 160 300 C100 270 40 220 40 150 V55 Z" fill="none" stroke="var(--line)" stroke-width="2"/>
+          <path d="M160 20 L280 55 V150 C280 175 271 197 257 217 L160 160 Z" fill="var(--gov-tint)" stroke="var(--gov)" stroke-width="1.5"/>
+          <path d="M160 160 L257 217 C238 244 213 265 160 300 L138 200 Z" fill="var(--risk-tint)" stroke="var(--risk)" stroke-width="1.5"/>
+          <path d="M160 160 L138 200 L160 300 C107 265 82 244 63 217 L160 160 Z" fill="var(--tech-tint)" stroke="var(--tech)" stroke-width="1.5"/>
+          <path d="M40 55 L160 20 L160 160 Z" fill="var(--tech-tint)" stroke="var(--tech)" stroke-width="1.5"/>
+          <path d="M40 55 L40 150 C40 165 41 180 43 194 L160 160 Z" fill="var(--tech-tint)" stroke="var(--tech)" stroke-width="1.5"/>
+
+          <text x="205" y="100" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="700" fill="var(--gov)">GOVERN.</text>
+          <text x="195" y="235" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="700" fill="var(--risk)">RISK</text>
+          <text x="95" y="115" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="700" fill="var(--tech)">TECH &amp;</text>
+          <text x="95" y="128" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="700" fill="var(--tech)">CONTROLS</text>
+
+          <circle cx="160" cy="160" r="30" fill="var(--paper-raised)" stroke="var(--line)" stroke-width="1.5"/>
+          <text x="160" y="165" text-anchor="middle" font-family="Fraunces, serif" font-size="13" font-weight="700" fill="var(--ink)">AAISM</text>
+        </svg>
+        <p class="badge-caption">Three domains, one credential — a professional's competence, not a system's control set.</p>
+      </div>
+    </section>
+
+    <div class="caution-banner">
+      <span>⚠️</span>
+      <span><strong>A note on currency:</strong> AAISM is a newer ISACA credential and, unlike the standards elsewhere in this course, its exact domain weightings, prerequisites, and exam blueprint are the kind of detail that can change as ISACA finalizes and updates the program. Everything below is paraphrased and organized for teaching — confirm current specifics at isaca.org before publishing anything as official guidance.</span>
+    </div>
+
+    <section id="purpose">
+      <div class="section-head">
+        <span class="kicker">01 — Foundations</span>
+        <h2>Purpose &amp; Origin</h2>
+        <p>What AAISM is, why ISACA built it, and who it's actually for.</p>
+      </div>
+      <div class="card-grid">
+        <div class="info-card">
+          <h3>What it is</h3>
+          <p>AAISM — Advanced in AI Security Management — is a professional certification from ISACA, the organization behind long-established credentials like CISM (security management), CRISC (risk management), and CGEIT (governance). AAISM applies that same credentialing model specifically to AI security management.</p>
+        </div>
+        <div class="info-card">
+          <h3>Why it was created</h3>
+          <p>Frameworks like NIST AI RMF and ISO/IEC 42001 describe what an organization's AI risk program should look like — but none of them certify that an individual professional actually has the judgment to run one. AAISM fills that gap: a way for security and risk professionals to demonstrate AI-specific competence the way CISM already demonstrates general security-management competence.</p>
+        </div>
+        <div class="info-card">
+          <h3>Who it's for</h3>
+          <p>Practitioners already working in security, risk, audit, or governance roles — often already CISM, CISSP, CRISC, or CGEIT holders — who are being asked to extend their existing expertise to cover AI-enabled systems, and want a credential that documents that extension.</p>
+        </div>
+        <div class="info-card">
+          <h3>How it's positioned</h3>
+          <p>ISACA describes it as a stackable, advanced-level credential rather than an entry-level certificate — built for someone who already manages security or risk programs and needs the AI-specific layer, not someone starting a security career from zero.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="how-to-use">
+      <div class="section-head">
+        <span class="kicker">02 — Using this guide</span>
+        <h2>How to Use This Guide</h2>
+        <p>Built for a course session introducing a credential-based career pathway, not a substitute for ISACA's own study materials.</p>
+      </div>
+      <ol class="steps">
+        <li><strong>Treat this as a competency map, not a syllabus.</strong> AAISM's three domains describe what a professional should be able to do — govern, assess risk, and secure AI systems — mirroring the same three moves you've already studied through NIST AI RMF, ISO/IEC 42001, and the OWASP/ATLAS threat catalogs.</li>
+        <li><strong>Notice the direction of fit.</strong> The other frameworks in this course describe an AI system or organization's obligations. AAISM describes a person's competence to carry those obligations out — it's the credential that says "this professional can actually run the program those frameworks call for."</li>
+        <li><strong>Map each domain back to what you already know.</strong> Domain 1 (Governance) draws on NIST's GOVERN function and ISO 42001's Clauses 4–5. Domain 2 (Risk Management) draws on NIST's MAP/MEASURE/MANAGE and ISO 42001 Clause 6/8. Domain 3 (Technologies &amp; Controls) draws on OWASP's LLM Top 10 and MITRE ATLAS.</li>
+        <li><strong>Use the "Credential at a Glance" section for orientation, not for exam prep.</strong> If you or a student is actually pursuing AAISM, go to ISACA directly for eligibility, exam format, and study materials — this guide exists to place the credential in context, not to prepare someone to sit the exam.</li>
+      </ol>
+    </section>
+
+    <section id="glance">
+      <div class="section-head">
+        <span class="kicker">03 — Orientation</span>
+        <h2>Credential at a Glance</h2>
+        <p>High-level orientation only — confirm every detail here against ISACA's current program page before relying on it.</p>
+      </div>
+      <div class="glance-grid">
+        <div class="glance-card"><span class="g-label">Issuing body</span><p>ISACA — the same organization behind CISM, CRISC, CGEIT, and CISA.</p></div>
+        <div class="glance-card"><span class="g-label">Credential type</span><p>Advanced-level professional certification, not an entry-level certificate.</p></div>
+        <div class="glance-card"><span class="g-label">Typical audience</span><p>Security, risk, audit, and governance professionals extending into AI-specific responsibilities.</p></div>
+        <div class="glance-card"><span class="g-label">Domain structure</span><p>Three domains: Governance, Risk Management, and Technologies &amp; Controls.</p></div>
+        <div class="glance-card"><span class="g-label">Relationship to other ISACA certs</span><p>Positioned as stackable — intended to complement, not replace, credentials like CISM or CISSP.</p></div>
+        <div class="glance-card"><span class="g-label">Where to confirm details</span><p>isaca.org — for prerequisites, exam format, domain weightings, and renewal/CPE requirements.</p></div>
+      </div>
+    </section>
+
+    <section id="compare">
+      <div class="section-head">
+        <span class="kicker">04 — Positioning</span>
+        <h2>AAISM vs. the Frameworks You've Already Studied</h2>
+        <p>The other tools in this course describe systems and organizations. This one describes a person.</p>
+      </div>
+      <table class="compare-table">
+        <thead><tr><th>&nbsp;</th><th>NIST AI RMF / ISO 42001 / EU AI Act</th><th>OWASP LLM Top 10 / MITRE ATLAS</th><th>AAISM</th></tr></thead>
+        <tbody>
+          <tr><td>What it certifies</td><td>An organization's process or product</td><td>Nothing — a threat reference, not a certification</td><td>An individual professional's competence</td></tr>
+          <tr><td>Unit of analysis</td><td>The AI management system or AI system</td><td>The attack surface or attacker technique</td><td>The practitioner running the program</td></tr>
+          <tr><td>Typical holder</td><td>N/A — organizations comply or certify</td><td>N/A — practitioners reference it</td><td>A security/risk/governance professional</td></tr>
+          <tr><td>How they connect</td><td colspan="2">A credentialed AAISM professional is the person expected to actually implement NIST/ISO/EU AI Act obligations and defend against OWASP/ATLAS-cataloged threats.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- DOMAIN 1 -->
+    <section id="d1">
+      <div class="domain-band" style="background:var(--gov-tint); border-color:var(--gov);">
+        <span class="domain-tag tag-gov">Domain 1</span>
+        <h2>Governance <span class="domain-weight">— establishing accountability for AI</span></h2>
+        <p class="intent">The competencies for building and running the oversight structure an organization's AI use actually needs — policy, roles, reporting, and alignment with strategy and risk appetite.</p>
+
+        <div class="accordion" data-open="false"><button class="acc-trigger" aria-expanded="false"><span class="label"><span class="sub-title">AI strategy &amp; organizational alignment</span></span><span class="chevron">▾</span></button><div class="acc-panel"><div class="acc-panel-inner"><p>Ensuring AI initiatives are pursued in service of actual business objectives and risk appetite, not adopted for its own sake — and that leadership understands the trade-offs it's approving.</p></div></div></div>
+
+        <div class="accordion" data-open="false"><button class="acc-trigger" aria-expanded="false"><span class="label"><span class="sub-title">Policy &amp; oversight structures</span></span><span class="chevron">▾</span></button><div class="acc-panel"><div class="acc-panel-inner"><p>Establishing AI use policies, an AI governance committee or equivalent body, and clear escalation paths — the practical machinery behind a policy document.</p></div></div></div>
+
+        <div class="accordion" data-open="false"><button class="acc-trigger" aria-expanded="false"><span class="label"><span class="sub-title">Roles &amp; accountability</span></span><span class="chevron">▾</span></button><div class="acc-panel"><div class="acc-panel-inner"><p>Defining who owns a given model or AI system, who signs off on deployment, and who is accountable when something goes wrong — accountability that has to survive contact with an actual incident.</p></div></div></div>
+
+        <div class="accordion" data-open="false"><button class="acc-trigger" aria-expanded="false"><span class="label"><span class="sub-title">Regulatory &amp; standards alignment</span></span><span class="chevron">▾</span></button><div class="acc-panel"><div class="acc-panel-inner"><p>Translating external obligations — the EU AI Act, ISO/IEC 42001, sector-specific regulation — into internal policy a practitioner can actually operationalize.</p></div></div></div>
+
+        <div class="accordion" data-open="false"><button class="acc-trigger" aria-expanded="false"><span class="label"><span class="sub-title">Board &amp; executive communication</span></span><span class="chevron">▾</span></button><div class="acc-panel"><div class="acc-panel-inner"><p>Reporting AI risk posture and program maturity to leadership in terms they can act on — a skill CISM already emphasizes for security generally, extended here to AI specifics.</p></div></div></div>
+      </div>
+    </section>
+
+    <!-- DOMAIN 2 -->
+    <section id="d2">
+      <div class="domain-band" style="background:var(--risk-tint); border-color:var(--risk);">
+        <span class="domain-tag tag-risk">Domain 2</span>
+        <h2>Risk Management <span class="domain-weight">— identifying and treating AI-specific risk</span></h2>
+        <p class="intent">The competencies for finding, sizing, and deciding what to do about the risks AI systems specifically introduce — and folding that work into the organization's existing enterprise risk management, rather than running it as a separate silo.</p>
+
+        <div class="accordion" data-open="false"><button class="acc-trigger" aria-expanded="false"><span class="label"><span class="sub-title">AI-specific risk identification</span></span><span class="chevron">▾</span></button><div class="acc-panel"><div class="acc-panel-inner"><p>Recognizing risk categories that don't map cleanly onto traditional IT risk — model risk, data risk, algorithmic bias, third-party/vendor AI risk, and adversarial risk.</p></div></div></div>
+
+        <div class="accordion" data-open="false"><button class="acc-trigger" aria-expanded="false"><span class="label"><span class="sub-title">Impact &amp; risk assessment</span></span><span class="chevron">▾</span></button><div class="acc-panel"><div class="acc-panel-inner"><p>Running structured assessments of a given AI system's potential impact on individuals, the organization, and third parties — the practitioner-level skill behind what NIST AI RMF's Map function and ISO 42001's impact-assessment clauses call for.</p></div></div></div>
+
+        <div class="accordion" data-open="false"><button class="acc-trigger" aria-expanded="false"><span class="label"><span class="sub-title">Risk registers &amp; ERM integration</span></span><span class="chevron">▾</span></button><div class="acc-panel"><div class="acc-panel-inner"><p>Maintaining a live AI risk register and integrating it into the organization's broader enterprise risk management process, rather than tracking AI risk in a parallel, disconnected system.</p></div></div></div>
+
+        <div class="accordion" data-open="false"><button class="acc-trigger" aria-expanded="false"><span class="label"><span class="sub-title">Risk appetite &amp; treatment decisions</span></span><span class="chevron">▾</span></button><div class="acc-panel"><div class="acc-panel-inner"><p>Applying the organization's stated risk appetite to real AI deployment decisions — mitigate, transfer, avoid, or accept — and documenting the reasoning well enough to survive an audit.</p></div></div></div>
+
+        <div class="accordion" data-open="false"><button class="acc-trigger" aria-expanded="false"><span class="label"><span class="sub-title">Ongoing monitoring &amp; reporting</span></span><span class="chevron">▾</span></button><div class="acc-panel"><div class="acc-panel-inner"><p>Tracking AI risk over time as models drift, usage expands, and new threats emerge — risk management as a continuous practice, not a one-time assessment before launch.</p></div></div></div>
+      </div>
+    </section>
+
+    <!-- DOMAIN 3 -->
+    <section id="d3">
+      <div class="domain-band" style="background:var(--tech-tint); border-color:var(--tech);">
+        <span class="domain-tag tag-tech">Domain 3</span>
+        <h2>Technologies &amp; Controls <span class="domain-weight">— securing AI systems technically</span></h2>
+        <p class="intent">The competencies for actually implementing and validating technical controls across an AI system's lifecycle — the domain that draws most directly on threat catalogs like OWASP's LLM Top 10 and MITRE ATLAS.</p>
+
+        <div class="accordion" data-open="false"><button class="acc-trigger" aria-expanded="false"><span class="label"><span class="sub-title">AI system architecture literacy</span></span><span class="chevron">▾</span></button><div class="acc-panel"><div class="acc-panel-inner"><p>Understanding enough of how a given AI system is built — training pipeline, model, inference layer, retrieval/tooling — to assess whether its controls are actually appropriate.</p></div></div></div>
+
+        <div class="accordion" data-open="false"><button class="acc-trigger" aria-expanded="false"><span class="label"><span class="sub-title">Data &amp; model security controls</span></span><span class="chevron">▾</span></button><div class="acc-panel"><div class="acc-panel-inner"><p>Applying access control, data governance, and model-protection practices across the AI lifecycle — securing training data, model artifacts, and inference endpoints as distinct assets with distinct risks.</p></div></div></div>
+
+        <div class="accordion" data-open="false"><button class="acc-trigger" aria-expanded="false"><span class="label"><span class="sub-title">Secure MLOps &amp; pipeline security</span></span><span class="chevron">▾</span></button><div class="acc-panel"><div class="acc-panel-inner"><p>Securing the pipeline that builds and deploys models — versioning, CI/CD for ML, dependency and supply-chain checks — not just the deployed model itself.</p></div></div></div>
+
+        <div class="accordion" data-open="false"><button class="acc-trigger" aria-expanded="false"><span class="label"><span class="sub-title">Testing, validation &amp; adversarial robustness</span></span><span class="chevron">▾</span></button><div class="acc-panel"><div class="acc-panel-inner"><p>Evaluating a system against known attack patterns — the technical link back to OWASP's LLM Top 10 and MITRE ATLAS's tactic/technique matrix — before and after deployment.</p></div></div></div>
+
+        <div class="accordion" data-open="false"><button class="acc-trigger" aria-expanded="false"><span class="label"><span class="sub-title">AI-specific incident response</span></span><span class="chevron">▾</span></button><div class="acc-panel"><div class="acc-panel-inner"><p>Adapting traditional incident-response processes for AI-specific events — prompt injection, model poisoning, deepfake-enabled fraud — where the failure mode doesn't look like a conventional breach.</p></div></div></div>
+      </div>
+    </section>
+
+    <section id="classroom">
+      <div class="section-head">
+        <span class="kicker">05 — In the classroom</span>
+        <h2>Classroom Uses</h2>
+        <p>Ways instructors have used this structure with students.</p>
+      </div>
+      <div class="card-grid">
+        <div class="info-card">
+          <h3>Career pathway discussion</h3>
+          <p>Use AAISM's three domains as a jumping-off point to discuss how a security-management career (CISM, CRISC, CISSP) extends into AI-specific roles — useful for students already holding or pursuing those credentials.</p>
+        </div>
+        <div class="info-card">
+          <h3>Framework-to-domain mapping</h3>
+          <p>Have students map specific NIST AI RMF categories, ISO 42001 clauses, or OWASP/ATLAS entries onto the AAISM domain each would fall under — reinforcing that these tools all describe pieces of the same job.</p>
+        </div>
+        <div class="info-card">
+          <h3>Role-play: the AAISM-credentialed hire</h3>
+          <p>Have students write a one-page justification for why an organization should hire or promote someone with this credential, using specific competencies from all three domains.</p>
+        </div>
+        <div class="info-card">
+          <h3>Currency-check exercise</h3>
+          <p>Assign students to look up the current AAISM domain weightings, prerequisites, and exam format on isaca.org and report what, if anything, has changed since this guide was written — a live lesson in how quickly a new credential evolves.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="section-head">
+        <span class="kicker">06 — Go to the source</span>
+        <h2>Sources &amp; Further Reading</h2>
+        <p>This guide is a teaching summary of a newer, evolving credential — verify everything here before treating it as authoritative.</p>
+      </div>
+      <div class="card-grid">
+        <div class="info-card">
+          <h3>ISACA — AAISM program page</h3>
+          <p>The authoritative source for eligibility, exam blueprint, domain weightings, and renewal requirements.<br><code>isaca.org — search "AAISM"</code></p>
+        </div>
+        <div class="info-card">
+          <h3>ISACA — related credentials</h3>
+          <p>CISM, CRISC, and CGEIT program pages, useful for understanding the credentialing model AAISM extends.<br><code>isaca.org/credentialing</code></p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  <p>Built as a course companion summarizing ISACA's AAISM credential for classroom use. Domain descriptions are paraphrased and organized for instructional clarity, not quoted from ISACA's official exam blueprint. AAISM is a newer, actively evolving credential — always verify current prerequisites, domain weightings, and exam format against isaca.org before using in graded or advising work. Single-file HTML5, no external dependencies, safe to host on GitHub Pages.</p>
+</footer>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var themeBtn = document.getElementById('themeToggle');
+  var saved = localStorage.getItem('aaism-theme');
+  if(saved){ root.setAttribute('data-theme', saved); }
+  else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
+    root.setAttribute('data-theme','dark');
+  }
+  themeBtn.addEventListener('click', function(){
+    var current = root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    var next = current === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('aaism-theme', next);
+  });
+
+  var navToggle = document.getElementById('navToggle');
+  var sideNav = document.getElementById('sideNav');
+  navToggle.addEventListener('click', function(){
+    var open = sideNav.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  sideNav.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      sideNav.classList.remove('open');
+      navToggle.setAttribute('aria-expanded','false');
+    });
+  });
+
+  document.querySelectorAll('.accordion').forEach(function(acc){
+    var trigger = acc.querySelector('.acc-trigger');
+    var panel = acc.querySelector('.acc-panel');
+    trigger.addEventListener('click', function(){
+      var isOpen = acc.getAttribute('data-open') === 'true';
+      var next = !isOpen;
+      acc.setAttribute('data-open', next ? 'true' : 'false');
+      trigger.setAttribute('aria-expanded', next ? 'true' : 'false');
+      panel.style.maxHeight = next ? (panel.scrollHeight + 20) + 'px' : 0;
+    });
+  });
+
+  var navLinks = Array.from(document.querySelectorAll('nav.side a'));
+  var sections = navLinks.map(function(a){ return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+  function onScroll(){
+    var pos = window.scrollY + 110;
+    var current = sections[0];
+    sections.forEach(function(sec){ if(sec.offsetTop <= pos){ current = sec; } });
+    navLinks.forEach(function(a){
+      a.classList.toggle('active', current && a.getAttribute('href') === '#' + current.id);
+    });
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+})();
+</script>
+</body>
+</html>
