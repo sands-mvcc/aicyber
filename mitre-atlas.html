@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MITRE ATLAS — Interactive Guide</title>
+<meta name="description" content="An interactive student guide to MITRE ATLAS, the Adversarial Threat Landscape for Artificial-Intelligence Systems: purpose, tactic/technique matrix, and how to apply it.">
+<style>
+  :root{
+    --paper:#F2F4F5;
+    --paper-raised:#FFFFFF;
+    --ink:#141A1F;
+    --ink-soft:#4E5964;
+    --line:#D6DCE0;
+    --teal:#0B6E7F;
+    --teal-tint:#E1EEF0;
+    --amber:#B5790A;
+    --amber-tint:#F4E9D5;
+    --grid-ink:#1E2A33;
+    --focus:#E0A300;
+    --radius:8px;
+    --shadow:0 1px 2px rgba(10,15,20,.06), 0 10px 26px rgba(10,15,20,.07);
+    --maxw:1200px;
+  }
+  html[data-theme="dark"]{
+    --paper:#0E1216;
+    --paper-raised:#171C22;
+    --ink:#E6E9EB;
+    --ink-soft:#96A0A8;
+    --line:#2A323A;
+    --teal-tint:#12292E;
+    --amber-tint:#2C2410;
+    --grid-ink:#0B1114;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 26px rgba(0,0,0,.4);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} *{animation-duration:.001ms !important; transition-duration:.001ms !important;} }
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:'IBM Plex Sans',-apple-system,Segoe UI,sans-serif; line-height:1.55; transition:background .25s ease,color .25s ease;}
+  h1,h2,h3,.display{font-family:'Fraunces',Georgia,serif; font-weight:600; letter-spacing:-0.01em; color:var(--ink);}
+  code,.mono,.tac-code{font-family:'IBM Plex Mono',ui-monospace,monospace;}
+  a{color:inherit;}
+  ::selection{background:var(--focus); color:#141A1F;}
+  :focus-visible{outline:3px solid var(--focus); outline-offset:3px; border-radius:4px;}
+
+  .skip-link{position:absolute; left:-999px; top:0; background:var(--ink); color:var(--paper); padding:.6rem 1rem; z-index:200; border-radius:0 0 8px 0;}
+  .skip-link:focus{left:0;}
+
+  .topbar{position:sticky; top:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:.75rem 1.25rem; background:var(--paper); border-bottom:1px solid var(--line);}
+  .topbar .brand{display:flex; align-items:center; gap:.6rem; font-family:'Fraunces',serif; font-weight:600; font-size:1.0rem;}
+  .brand .mark-mini{width:24px; height:24px; flex:none;}
+  .topbar-controls{display:flex; align-items:center; gap:.5rem;}
+  .btn{font-family:inherit; font-size:.85rem; font-weight:500; background:var(--paper-raised); color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:.5rem .8rem; cursor:pointer; transition:transform .12s ease, border-color .12s ease;}
+  .btn:hover{border-color:var(--teal); transform:translateY(-1px);}
+  .btn:active{transform:translateY(0);}
+  .btn.icon{padding:.5rem; line-height:0;}
+
+  .shell{display:grid; grid-template-columns:270px minmax(0,1fr); max-width:var(--maxw); margin:0 auto;}
+  nav.side{position:sticky; top:57px; align-self:start; height:calc(100vh - 57px); overflow-y:auto; padding:1.75rem 1rem 2rem 1.25rem; border-right:1px solid var(--line);}
+  nav.side .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:.66rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-soft); margin:1.3rem 0 .5rem;}
+  nav.side .eyebrow:first-child{margin-top:0;}
+  nav.side a{display:flex; align-items:center; gap:.5rem; padding:.34rem .5rem; margin:.03rem 0; border-radius:6px; text-decoration:none; font-size:.83rem; color:var(--ink-soft); border-left:2px solid transparent;}
+  nav.side a:hover{background:var(--paper-raised); color:var(--ink);}
+  nav.side a.active{color:var(--ink); font-weight:600; border-left-color:var(--teal); background:var(--paper-raised);}
+  nav.side a .num{font-family:'IBM Plex Mono',monospace; font-size:.68rem; color:var(--teal); flex:none; width:1.4em;}
+
+  main{padding:0 clamp(1rem,3vw,2.5rem) 4rem;}
+  section{scroll-margin-top:75px;}
+
+  .hero{padding:2.3rem 0 2rem; display:grid; grid-template-columns:1fr; gap:1.4rem; border-bottom:1px solid var(--line);}
+  .hero .kicker{font-family:'IBM Plex Mono',monospace; font-size:.74rem; letter-spacing:.14em; text-transform:uppercase; color:var(--teal);}
+  .hero h1{font-size:clamp(1.8rem,3.2vw,2.4rem); margin:.2rem 0 .7rem; line-height:1.1; max-width:24ch;}
+  .hero p.lede{color:var(--ink-soft); font-size:1.02rem; max-width:68ch;}
+  .hero-actions{display:flex; gap:.7rem; margin-top:.3rem; flex-wrap:wrap;}
+  .hero-actions .btn.primary{background:var(--teal); color:#fff; border-color:var(--teal);}
+  .badge-row{display:flex; gap:.5rem; flex-wrap:wrap;}
+  .badge{font-family:'IBM Plex Mono',monospace; font-size:.7rem; letter-spacing:.04em; padding:.3rem .6rem; border-radius:20px; border:1px solid var(--line); color:var(--ink-soft); background:var(--paper-raised);}
+  .badge.teal{color:var(--teal); border-color:var(--teal); background:var(--teal-tint);}
+
+  /* Matrix */
+  .matrix-wrap{
+    background:var(--grid-ink); border-radius:12px; padding:1.2rem; overflow-x:auto;
+  }
+  .matrix{display:flex; gap:.5rem; min-width:max-content;}
+  .matrix-col{width:150px; flex:none;}
+  .matrix-col .phase-strip{height:5px; border-radius:3px; margin-bottom:.5rem;}
+  .matrix-col .tac-header{
+    font-family:'IBM Plex Mono',monospace; font-size:.68rem; color:#E6E9EB; font-weight:700;
+    padding:.4rem .3rem; text-align:center; border-radius:5px; margin-bottom:.4rem;
+    background:rgba(255,255,255,.06);
+  }
+  .matrix-col .tech-chip{
+    display:block; font-size:.68rem; color:#B7C0C7; background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.08); border-radius:5px; padding:.35rem .45rem; margin-bottom:.3rem;
+    text-align:center; line-height:1.3;
+  }
+  .matrix-caption{text-align:center; font-size:.78rem; color:var(--ink-soft); margin-top:.8rem; font-family:'IBM Plex Mono',monospace;}
+
+  .section-head{padding:2.2rem 0 .6rem;}
+  .section-head .kicker{font-family:'IBM Plex Mono',monospace; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); display:block; margin-bottom:.3rem;}
+  .section-head h2{font-size:1.5rem; margin:.1rem 0 .4rem;}
+  .section-head p{color:var(--ink-soft); max-width:70ch; margin:0;}
+
+  .card-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:1rem; margin:1.2rem 0 2rem;}
+  .info-card{background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius); padding:1.2rem 1.3rem; box-shadow:var(--shadow);}
+  .info-card h3{font-size:1.0rem; margin:0 0 .4rem;}
+  .info-card p{margin:0; color:var(--ink-soft); font-size:.92rem;}
+
+  .compare-table{width:100%; border-collapse:collapse; margin:1rem 0 2rem; font-size:.9rem; background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;}
+  .compare-table th,.compare-table td{padding:.7rem .9rem; text-align:left; border-bottom:1px solid var(--line); vertical-align:top;}
+  .compare-table thead th{background:var(--teal-tint); color:var(--teal); font-family:'IBM Plex Mono',monospace; font-size:.72rem; letter-spacing:.06em; text-transform:uppercase;}
+  .compare-table tbody tr:last-child td{border-bottom:none;}
+  .compare-table td:first-child{font-weight:600; white-space:nowrap;}
+
+  .steps{counter-reset:step; list-style:none; margin:1.2rem 0 2rem; padding:0; display:grid; gap:.7rem;}
+  .steps li{counter-increment:step; position:relative; background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius); padding:.9rem 1.1rem 1rem 3rem; font-size:.92rem; color:var(--ink-soft);}
+  .steps li::before{content:counter(step); position:absolute; left:1rem; top:.85rem; font-family:'IBM Plex Mono',monospace; font-weight:700; color:var(--teal); font-size:.85rem;}
+  .steps li strong{color:var(--ink); display:block; margin-bottom:.15rem; font-family:'Fraunces',serif; font-weight:600;}
+
+  /* Phase groups */
+  .phase-group{margin-bottom:1.6rem;}
+  .phase-head{display:flex; align-items:baseline; gap:.7rem; margin-bottom:.7rem;}
+  .phase-head .phase-num{font-family:'IBM Plex Mono',monospace; font-size:.75rem; color:var(--teal); font-weight:700;}
+  .phase-head h3{margin:0; font-size:1.12rem;}
+  .phase-head .phase-desc{font-size:.85rem; color:var(--ink-soft); margin:0;}
+
+  .tac-card{border:1px solid var(--line); border-radius:var(--radius); background:var(--paper-raised); margin-bottom:.55rem; overflow:hidden;}
+  .tac-card:last-child{margin-bottom:0;}
+  .tac-trigger{width:100%; display:flex; align-items:center; justify-content:space-between; gap:1rem; background:none; border:none; text-align:left; cursor:pointer; padding:.85rem 1.05rem; font:inherit; color:var(--ink);}
+  .tac-trigger .label{display:flex; align-items:center; gap:.8rem;}
+  .tac-trigger .tac-num{
+    font-family:'IBM Plex Mono',monospace; font-size:.75rem; font-weight:700; color:#fff;
+    background:var(--teal); width:1.9em; height:1.9em; border-radius:5px; flex:none;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .tac-trigger .tac-title{font-weight:600; font-size:.95rem;}
+  .tac-trigger .chevron{transition:transform .18s ease; flex:none; font-size:.85rem; color:var(--ink-soft);}
+  .tac-card[data-open="true"] .chevron{transform:rotate(180deg);}
+  .tac-panel{max-height:0; overflow:hidden; transition:max-height .25s ease; border-top:1px solid transparent;}
+  .tac-card[data-open="true"] .tac-panel{border-top-color:var(--line);}
+  .tac-panel-inner{padding:.85rem 1.05rem 1.05rem;}
+  .tac-panel-inner p{margin:0 0 .6rem; font-size:.9rem; color:var(--ink-soft);}
+  .tac-panel-inner .field-label{font-family:'IBM Plex Mono',monospace; font-size:.7rem; text-transform:uppercase; letter-spacing:.08em; color:var(--teal); display:block; margin-bottom:.2rem;}
+  .tac-panel-inner ul{margin:0; padding-left:1.1rem;}
+  .tac-panel-inner li{margin-bottom:.35rem; font-size:.88rem; color:var(--ink-soft);}
+  .tac-panel-inner li strong{color:var(--ink);}
+
+  .case-note{
+    display:flex; gap:.8rem; align-items:flex-start; background:var(--amber-tint); border:1px solid var(--amber);
+    border-radius:var(--radius); padding:1rem 1.2rem; margin:1.4rem 0 2.2rem; font-size:.9rem; color:var(--ink-soft);
+  }
+  .case-note strong{color:var(--ink);}
+
+  footer{border-top:1px solid var(--line); padding:2rem clamp(1rem,3vw,2.5rem) 3rem; max-width:var(--maxw); margin:0 auto; color:var(--ink-soft); font-size:.85rem;}
+
+  .nav-toggle{display:none;}
+  @media (max-width:900px){
+    .shell{grid-template-columns:1fr;}
+    nav.side{position:fixed; top:57px; left:0; right:0; bottom:0; z-index:90; background:var(--paper); height:auto; max-height:calc(100vh - 57px); transform:translateX(-100%); transition:transform .2s ease; border-right:none;}
+    nav.side.open{transform:translateX(0);}
+    .nav-toggle{display:inline-flex;}
+    .card-grid{grid-template-columns:1fr;}
+  }
+  @media print{
+    nav.side,.topbar,.hero-actions,.nav-toggle{display:none !important;}
+    .tac-panel{max-height:none !important;}
+    .shell{grid-template-columns:1fr;}
+    body{background:#fff; color:#000;}
+    .matrix-wrap{background:#fff; border:1px solid #000;}
+  }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="topbar">
+  <div class="brand">
+    <svg class="mark-mini" viewBox="0 0 40 40" aria-hidden="true">
+      <rect x="4" y="4" width="14" height="14" rx="2" fill="var(--teal)"/>
+      <rect x="22" y="4" width="14" height="14" rx="2" fill="var(--teal)" opacity="0.7"/>
+      <rect x="4" y="22" width="14" height="14" rx="2" fill="var(--teal)" opacity="0.7"/>
+      <rect x="22" y="22" width="14" height="14" rx="2" fill="var(--teal)" opacity="0.45"/>
+    </svg>
+    MITRE ATLAS — Student Guide
+  </div>
+  <div class="topbar-controls">
+    <button class="btn nav-toggle icon" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <button class="btn icon" id="themeToggle" aria-label="Toggle dark mode">🌓</button>
+    <button class="btn" onclick="window.print()">Print / PDF</button>
+  </div>
+</header>
+
+<div class="shell">
+  <nav class="side" id="sideNav" aria-label="Section navigation">
+    <span class="eyebrow">Orientation</span>
+    <a href="#purpose">Purpose &amp; Origin</a>
+    <a href="#how-to-use">How to Use This Guide</a>
+    <a href="#compare">ATLAS vs. ATT&amp;CK vs. OWASP</a>
+    <a href="#matrix">The ATLAS Matrix</a>
+
+    <span class="eyebrow">Preparing the Attack</span>
+    <a href="#t1"><span class="num">1</span>Reconnaissance</a>
+    <a href="#t2"><span class="num">2</span>Resource Development</a>
+    <a href="#t3"><span class="num">3</span>Initial Access</a>
+    <a href="#t4"><span class="num">4</span>ML Model Access</a>
+
+    <span class="eyebrow">Executing the Attack</span>
+    <a href="#t5"><span class="num">5</span>Execution</a>
+    <a href="#t6"><span class="num">6</span>Persistence</a>
+    <a href="#t7"><span class="num">7</span>Privilege Escalation</a>
+    <a href="#t8"><span class="num">8</span>Defense Evasion</a>
+    <a href="#t9"><span class="num">9</span>Credential Access</a>
+    <a href="#t10"><span class="num">10</span>Discovery</a>
+    <a href="#t11"><span class="num">11</span>Collection</a>
+    <a href="#t12"><span class="num">12</span>ML Attack Staging</a>
+
+    <span class="eyebrow">Completing the Attack</span>
+    <a href="#t13"><span class="num">13</span>Exfiltration</a>
+    <a href="#t14"><span class="num">14</span>Impact</a>
+
+    <span class="eyebrow">Reference</span>
+    <a href="#classroom">Classroom Uses</a>
+    <a href="#sources">Sources &amp; Further Reading</a>
+  </nav>
+
+  <main id="main">
+
+    <section class="hero" id="top">
+      <span class="kicker">MITRE ATLAS · atlas.mitre.org</span>
+      <h1>The adversary's playbook against AI systems, mapped for the classroom.</h1>
+      <p class="lede">ATLAS — the Adversarial Threat Landscape for Artificial-Intelligence Systems — is a MITRE knowledge base of real-world adversary tactics and techniques against machine learning systems, built on the same tactic/technique matrix structure as MITRE ATT&CK, but adapted specifically for how attackers actually target models, training pipelines, and ML-integrated applications.</p>
+      <div class="badge-row">
+        <span class="badge teal">ATT&amp;CK-style matrix</span>
+        <span class="badge">Grounded in real incidents</span>
+        <span class="badge">Community-contributed</span>
+      </div>
+      <div class="hero-actions">
+        <a class="btn primary" href="#purpose">Start with Purpose</a>
+        <a class="btn" href="#matrix">Explore the matrix</a>
+      </div>
+
+      <div class="matrix-wrap">
+        <div class="matrix">
+          <div class="matrix-col"><div class="phase-strip" style="background:var(--teal)"></div><div class="tac-header">RECON</div><span class="tech-chip">Victim research</span><span class="tech-chip">Vuln. analysis search</span></div>
+          <div class="matrix-col"><div class="phase-strip" style="background:var(--teal)"></div><div class="tac-header">RESOURCE DEV</div><span class="tech-chip">Acquire ML artifacts</span><span class="tech-chip">Poison datasets</span></div>
+          <div class="matrix-col"><div class="phase-strip" style="background:var(--teal)"></div><div class="tac-header">INITIAL ACCESS</div><span class="tech-chip">Supply chain</span><span class="tech-chip">Valid accounts</span></div>
+          <div class="matrix-col"><div class="phase-strip" style="background:var(--teal)"></div><div class="tac-header">ML MODEL ACCESS</div><span class="tech-chip">Inference API</span><span class="tech-chip">Full model access</span></div>
+          <div class="matrix-col"><div class="phase-strip" style="background:var(--amber)"></div><div class="tac-header">EXECUTION</div><span class="tech-chip">Unsafe ML artifact</span><span class="tech-chip">Plugin compromise</span></div>
+          <div class="matrix-col"><div class="phase-strip" style="background:var(--amber)"></div><div class="tac-header">PERSISTENCE</div><span class="tech-chip">Backdoor model</span><span class="tech-chip">Poison training data</span></div>
+          <div class="matrix-col"><div class="phase-strip" style="background:var(--amber)"></div><div class="tac-header">PRIV. ESCALATION</div><span class="tech-chip">LLM jailbreak</span><span class="tech-chip">Excessive agency</span></div>
+          <div class="matrix-col"><div class="phase-strip" style="background:var(--amber)"></div><div class="tac-header">DEFENSE EVASION</div><span class="tech-chip">Adversarial example</span><span class="tech-chip">Prompt injection</span></div>
+          <div class="matrix-col"><div class="phase-strip" style="background:var(--amber)"></div><div class="tac-header">CRED. ACCESS</div><span class="tech-chip">Unsecured creds</span></div>
+          <div class="matrix-col"><div class="phase-strip" style="background:var(--amber)"></div><div class="tac-header">DISCOVERY</div><span class="tech-chip">Model ontology</span><span class="tech-chip">Model family</span></div>
+          <div class="matrix-col"><div class="phase-strip" style="background:var(--amber)"></div><div class="tac-header">COLLECTION</div><span class="tech-chip">ML artifacts</span><span class="tech-chip">Local data</span></div>
+          <div class="matrix-col"><div class="phase-strip" style="background:var(--amber)"></div><div class="tac-header">ML ATTACK STAGING</div><span class="tech-chip">Craft adversarial data</span><span class="tech-chip">Proxy model</span></div>
+          <div class="matrix-col"><div class="phase-strip" style="background:#8A3B3B"></div><div class="tac-header">EXFILTRATION</div><span class="tech-chip">Via inference API</span><span class="tech-chip">Via cyber means</span></div>
+          <div class="matrix-col"><div class="phase-strip" style="background:#8A3B3B"></div><div class="tac-header">IMPACT</div><span class="tech-chip">Erode integrity</span><span class="tech-chip">Cost harvesting</span></div>
+        </div>
+      </div>
+      <p class="matrix-caption">14 tactics (columns), left to right in rough attack order. Full detail on each is below — this hero strip is a preview, not the complete technique list.</p>
+    </section>
+
+    <section id="purpose">
+      <div class="section-head">
+        <span class="kicker">01 — Foundations</span>
+        <h2>Purpose &amp; Origin</h2>
+        <p>What ATLAS is, why MITRE built it as a matrix, and who actually uses it.</p>
+      </div>
+      <div class="card-grid">
+        <div class="info-card">
+          <h3>What it is</h3>
+          <p>ATLAS is a knowledge base cataloging adversary tactics, techniques, and case studies specific to attacks on AI and machine learning systems. It's maintained by MITRE, with contributions from industry, academia, and government partners actively researching adversarial ML.</p>
+        </div>
+        <div class="info-card">
+          <h3>Why it's a matrix, not a list</h3>
+          <p>ATLAS deliberately reuses MITRE ATT&CK's structure: <strong>tactics</strong> (the "why" — an adversary's goal at a given stage) as columns, and <strong>techniques</strong> (the "how" — specific methods to achieve that goal) as entries under each. Anyone who's used ATT&CK for traditional IT security can navigate ATLAS with almost no relearning.</p>
+        </div>
+        <div class="info-card">
+          <h3>Grounded in real incidents</h3>
+          <p>Unlike a purely theoretical taxonomy, ATLAS techniques are tied to case studies — documented real-world attacks, red-team exercises, and published research demonstrations — so each entry in the matrix has at least one concrete example behind it, not just a hypothetical description.</p>
+        </div>
+        <div class="info-card">
+          <h3>Who uses it</h3>
+          <p>Red teams planning realistic ML-focused exercises, blue teams mapping detection and mitigation coverage, threat intelligence analysts describing an observed campaign in common vocabulary, and researchers organizing new adversarial ML findings into an existing framework.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="how-to-use">
+      <div class="section-head">
+        <span class="kicker">02 — Using this guide</span>
+        <h2>How to Use This Guide</h2>
+        <p>Built for a course session bridging traditional cybersecurity thinking and AI-specific threats.</p>
+      </div>
+      <ol class="steps">
+        <li><strong>If you already know ATT&CK, start there.</strong> ATLAS's 14 tactics are ATT&CK's familiar kill-chain logic plus two ML-specific insertions — ML Model Access and ML Attack Staging. Recognizing what's new versus what's carried over does most of the learning for you.</li>
+        <li><strong>Read the matrix left to right as a rough attack lifecycle</strong>, not as fourteen unrelated categories — a real intrusion typically touches several tactics in sequence, not all fourteen at once.</li>
+        <li><strong>Open a tactic's accordion and read technique-to-case-study.</strong> Each technique entry below is paired with why it matters and a realistic scenario — use the scenario as the discussion seed, not the label.</li>
+        <li><strong>Pick one attack chain and walk it end to end.</strong> Choose a plausible attacker goal (steal a proprietary model, poison a public chatbot, force excessive spend on an API) and select one technique per tactic that would plausibly get them there.</li>
+        <li><strong>Cross-reference against OWASP's LLM Top 10.</strong> OWASP catalogs risk categories for LLM applications specifically; ATLAS catalogs the full attacker lifecycle across all ML system types. Many OWASP risks map onto one or more ATLAS techniques.</li>
+        <li><strong>Go to atlas.mitre.org for anything graded.</strong> ATLAS is actively updated with new techniques and case studies — confirm current technique names and IDs against the live matrix.</li>
+      </ol>
+    </section>
+
+    <section id="compare">
+      <div class="section-head">
+        <span class="kicker">03 — Positioning</span>
+        <h2>ATLAS vs. ATT&amp;CK vs. OWASP LLM Top 10</h2>
+        <p>Three related but distinct references — worth knowing which one a given task actually calls for.</p>
+      </div>
+      <table class="compare-table">
+        <thead><tr><th>&nbsp;</th><th>MITRE ATLAS</th><th>MITRE ATT&amp;CK</th><th>OWASP LLM Top 10</th></tr></thead>
+        <tbody>
+          <tr><td>Scope</td><td>Attacks on AI/ML systems specifically</td><td>Attacks on traditional IT/enterprise systems</td><td>Risks in LLM-powered applications specifically</td></tr>
+          <tr><td>Structure</td><td>14 tactics × techniques (matrix)</td><td>Tactics × techniques (matrix)</td><td>10 ranked risk categories</td></tr>
+          <tr><td>Grounding</td><td>Real ML-attack case studies</td><td>Real cyber-intrusion case data</td><td>Community practitioner consensus</td></tr>
+          <tr><td>Best for</td><td>Threat modeling an ML pipeline or model</td><td>Threat modeling general IT infrastructure</td><td>Reviewing/designing a specific LLM app</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="matrix">
+      <div class="section-head">
+        <span class="kicker">04 — Orientation</span>
+        <h2>The ATLAS Matrix</h2>
+        <p>Fourteen tactics, grouped below into three phases of an attack lifecycle. Click any tactic to see representative techniques.</p>
+      </div>
+    </section>
+
+    <!-- PHASE A -->
+    <div class="phase-group" id="phaseA">
+      <div class="phase-head"><span class="phase-num">PHASE A</span><h3>Preparing the Attack</h3></div>
+      <p class="phase-desc" style="margin:0 0 .8rem;">Before touching the target system — research, tooling, and gaining a first foothold or access point.</p>
+
+      <div class="tac-card" data-open="false" id="t1">
+        <button class="tac-trigger" aria-expanded="false"><span class="label"><span class="tac-num">1</span><span class="tac-title">Reconnaissance</span></span><span class="chevron">▾</span></button>
+        <div class="tac-panel"><div class="tac-panel-inner">
+          <span class="field-label">Goal</span><p>Gather information about the target's AI system before acting against it.</p>
+          <span class="field-label">Representative techniques</span>
+          <ul><li><strong>Search victim-owned research materials</strong> — published papers, model cards, blog posts describing the target's ML system.</li>
+          <li><strong>Search for adversarial vulnerability research</strong> — published attacks against the same model family or architecture.</li>
+          <li><strong>Active scanning</strong> — probing exposed ML endpoints to learn what's running.</li></ul>
+        </div></div>
+      </div>
+
+      <div class="tac-card" data-open="false" id="t2">
+        <button class="tac-trigger" aria-expanded="false"><span class="label"><span class="tac-num">2</span><span class="tac-title">Resource Development</span></span><span class="chevron">▾</span></button>
+        <div class="tac-panel"><div class="tac-panel-inner">
+          <span class="field-label">Goal</span><p>Build or acquire the resources needed to carry out the operation.</p>
+          <span class="field-label">Representative techniques</span>
+          <ul><li><strong>Acquire public ML artifacts</strong> — pretrained models or datasets used to build a surrogate for offline attack development.</li>
+          <li><strong>Develop adversarial ML capability</strong> — custom tooling to generate adversarial inputs or backdoors.</li>
+          <li><strong>Publish poisoned datasets</strong> — seeding public data sources the victim is likely to scrape or train on.</li></ul>
+        </div></div>
+      </div>
+
+      <div class="tac-card" data-open="false" id="t3">
+        <button class="tac-trigger" aria-expanded="false"><span class="label"><span class="tac-num">3</span><span class="tac-title">Initial Access</span></span><span class="chevron">▾</span></button>
+        <div class="tac-panel"><div class="tac-panel-inner">
+          <span class="field-label">Goal</span><p>Get an initial foothold into the environment surrounding the AI system.</p>
+          <span class="field-label">Representative techniques</span>
+          <ul><li><strong>ML supply chain compromise</strong> — a tainted upstream model, dataset, or package.</li>
+          <li><strong>Valid accounts</strong> — credentials for the ML pipeline or hosting environment.</li>
+          <li><strong>Exploit public-facing application</strong> — a vulnerability in the app fronting the model.</li></ul>
+        </div></div>
+      </div>
+
+      <div class="tac-card" data-open="false" id="t4">
+        <button class="tac-trigger" aria-expanded="false"><span class="label"><span class="tac-num">4</span><span class="tac-title">ML Model Access <span class="mono" style="font-weight:400;font-size:.72em;color:var(--ink-soft);">(AI-specific)</span></span></span><span class="chevron">▾</span></button>
+        <div class="tac-panel"><div class="tac-panel-inner">
+          <span class="field-label">Goal</span><p>Establish what level of access the adversary has to the model itself — a tactic with no direct ATT&CK equivalent.</p>
+          <span class="field-label">Representative techniques</span>
+          <ul><li><strong>ML-model inference API access</strong> — black-box, query-only access.</li>
+          <li><strong>Full ML-model access</strong> — white-box access to model weights and architecture, e.g. via a leak or theft.</li>
+          <li><strong>Physical environment access</strong> — needed for physical-world adversarial examples (e.g., altered road signs).</li></ul>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- PHASE B -->
+    <div class="phase-group" id="phaseB">
+      <div class="phase-head"><span class="phase-num">PHASE B</span><h3>Executing the Attack</h3></div>
+      <p class="phase-desc" style="margin:0 0 .8rem;">The bulk of the matrix — running attacker logic, maintaining access, avoiding detection, and building the specific technique that will work against this model.</p>
+
+      <div class="tac-card" data-open="false" id="t5">
+        <button class="tac-trigger" aria-expanded="false"><span class="label"><span class="tac-num">5</span><span class="tac-title">Execution</span></span><span class="chevron">▾</span></button>
+        <div class="tac-panel"><div class="tac-panel-inner">
+          <span class="field-label">Goal</span><p>Run attacker-controlled code or logic within the target environment.</p>
+          <span class="field-label">Representative techniques</span>
+          <ul><li><strong>User execution of unsafe ML artifacts</strong> — a victim loads a malicious model file (e.g., an unsafely deserialized pickle) that executes code.</li>
+          <li><strong>LLM plugin compromise</strong> — a malicious or vulnerable plugin executes attacker logic through the LLM's tool-use interface.</li></ul>
+        </div></div>
+      </div>
+
+      <div class="tac-card" data-open="false" id="t6">
+        <button class="tac-trigger" aria-expanded="false"><span class="label"><span class="tac-num">6</span><span class="tac-title">Persistence</span></span><span class="chevron">▾</span></button>
+        <div class="tac-panel"><div class="tac-panel-inner">
+          <span class="field-label">Goal</span><p>Maintain a foothold or effect that survives restarts, updates, or retraining.</p>
+          <span class="field-label">Representative techniques</span>
+          <ul><li><strong>Poison training data</strong> — so a backdoor re-enters the model even after retraining on refreshed data.</li>
+          <li><strong>Backdoor ML model</strong> — directly modify model weights to embed a persistent trigger-based behavior.</li></ul>
+        </div></div>
+      </div>
+
+      <div class="tac-card" data-open="false" id="t7">
+        <button class="tac-trigger" aria-expanded="false"><span class="label"><span class="tac-num">7</span><span class="tac-title">Privilege Escalation</span></span><span class="chevron">▾</span></button>
+        <div class="tac-panel"><div class="tac-panel-inner">
+          <span class="field-label">Goal</span><p>Gain capabilities beyond what was initially granted.</p>
+          <span class="field-label">Representative techniques</span>
+          <ul><li><strong>LLM jailbreak</strong> — bypassing a model's safety training to unlock disallowed behavior.</li>
+          <li><strong>Abusing excessive agency</strong> — leveraging tool access granted to an LLM-integrated system beyond its intended scope.</li></ul>
+        </div></div>
+      </div>
+
+      <div class="tac-card" data-open="false" id="t8">
+        <button class="tac-trigger" aria-expanded="false"><span class="label"><span class="tac-num">8</span><span class="tac-title">Defense Evasion</span></span><span class="chevron">▾</span></button>
+        <div class="tac-panel"><div class="tac-panel-inner">
+          <span class="field-label">Goal</span><p>Avoid detection by security controls, including the model's own safety mechanisms.</p>
+          <span class="field-label">Representative techniques</span>
+          <ul><li><strong>Adversarial examples</strong> — inputs perturbed just enough to evade a classifier while looking normal to a human.</li>
+          <li><strong>Prompt injection for evasion</strong> — crafted input that bypasses a model's content filters.</li>
+          <li><strong>Impersonation</strong> — disguising attacker-originated content as legitimate.</li></ul>
+        </div></div>
+      </div>
+
+      <div class="tac-card" data-open="false" id="t9">
+        <button class="tac-trigger" aria-expanded="false"><span class="label"><span class="tac-num">9</span><span class="tac-title">Credential Access</span></span><span class="chevron">▾</span></button>
+        <div class="tac-panel"><div class="tac-panel-inner">
+          <span class="field-label">Goal</span><p>Steal credentials that grant further access.</p>
+          <span class="field-label">Representative techniques</span>
+          <ul><li><strong>Unsecured credentials</strong> — API keys or tokens left in notebooks, config files, or training scripts.</li></ul>
+        </div></div>
+      </div>
+
+      <div class="tac-card" data-open="false" id="t10">
+        <button class="tac-trigger" aria-expanded="false"><span class="label"><span class="tac-num">10</span><span class="tac-title">Discovery</span></span><span class="chevron">▾</span></button>
+        <div class="tac-panel"><div class="tac-panel-inner">
+          <span class="field-label">Goal</span><p>Learn about the target ML environment to plan further action.</p>
+          <span class="field-label">Representative techniques</span>
+          <ul><li><strong>Discover ML model ontology</strong> — determine what categories or classes the model was built to recognize.</li>
+          <li><strong>Discover ML model family</strong> — identify the underlying architecture, informing which known attacks might transfer.</li>
+          <li><strong>Discover ML artifacts</strong> — locate stored models, datasets, or checkpoints in the environment.</li></ul>
+        </div></div>
+      </div>
+
+      <div class="tac-card" data-open="false" id="t11">
+        <button class="tac-trigger" aria-expanded="false"><span class="label"><span class="tac-num">11</span><span class="tac-title">Collection</span></span><span class="chevron">▾</span></button>
+        <div class="tac-panel"><div class="tac-panel-inner">
+          <span class="field-label">Goal</span><p>Gather data of interest before it's exfiltrated or used to stage the final attack.</p>
+          <span class="field-label">Representative techniques</span>
+          <ul><li><strong>ML artifact collection</strong> — gathering models, weights, or training data found in the environment.</li>
+          <li><strong>Data from information repositories or local systems</strong> — same broad category as in traditional ATT&CK, applied to ML-adjacent stores.</li></ul>
+        </div></div>
+      </div>
+
+      <div class="tac-card" data-open="false" id="t12">
+        <button class="tac-trigger" aria-expanded="false"><span class="label"><span class="tac-num">12</span><span class="tac-title">ML Attack Staging <span class="mono" style="font-weight:400;font-size:.72em;color:var(--ink-soft);">(AI-specific)</span></span></span><span class="chevron">▾</span></button>
+        <div class="tac-panel"><div class="tac-panel-inner">
+          <span class="field-label">Goal</span><p>Prepare the actual technical attack against the model — the second ML-specific tactic with no direct ATT&CK equivalent.</p>
+          <span class="field-label">Representative techniques</span>
+          <ul><li><strong>Create proxy ML model</strong> — train a surrogate model to develop and test attacks offline before touching the real target.</li>
+          <li><strong>Craft adversarial data</strong> — generate the specific input designed to fool or manipulate the model.</li>
+          <li><strong>Verify attack</strong> — confirm the crafted attack actually works before deploying it against the live target.</li></ul>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- PHASE C -->
+    <div class="phase-group" id="phaseC">
+      <div class="phase-head"><span class="phase-num">PHASE C</span><h3>Completing the Attack</h3></div>
+      <p class="phase-desc" style="margin:0 0 .8rem;">Getting value out of the compromise and realizing the intended harm.</p>
+
+      <div class="tac-card" data-open="false" id="t13">
+        <button class="tac-trigger" aria-expanded="false"><span class="label"><span class="tac-num">13</span><span class="tac-title">Exfiltration</span></span><span class="chevron">▾</span></button>
+        <div class="tac-panel"><div class="tac-panel-inner">
+          <span class="field-label">Goal</span><p>Extract stolen data or model information out of the target environment.</p>
+          <span class="field-label">Representative techniques</span>
+          <ul><li><strong>Exfiltration via ML-inference API</strong> — reconstructing a proprietary model's behavior (or training data) purely through repeated queries.</li>
+          <li><strong>Exfiltration via traditional cyber means</strong> — standard data-theft channels once inside the environment.</li></ul>
+        </div></div>
+      </div>
+
+      <div class="tac-card" data-open="false" id="t14">
+        <button class="tac-trigger" aria-expanded="false"><span class="label"><span class="tac-num">14</span><span class="tac-title">Impact</span></span><span class="chevron">▾</span></button>
+        <div class="tac-panel"><div class="tac-panel-inner">
+          <span class="field-label">Goal</span><p>Realize the actual harm the operation was aimed at.</p>
+          <span class="field-label">Representative techniques</span>
+          <ul><li><strong>Erode ML model integrity</strong> — gradually degrade accuracy or reliability over time.</li>
+          <li><strong>Cost harvesting</strong> — force expensive computation to drive up the victim's operating costs.</li>
+          <li><strong>Denial of ML service</strong> — make the system unavailable to legitimate users.</li>
+          <li><strong>External harms</strong> — reputational, financial, or societal damage stemming from the compromised system's behavior.</li></ul>
+        </div></div>
+      </div>
+    </div>
+
+    <div class="case-note"><span>📎</span><span><strong>On case studies:</strong> every technique in the live ATLAS matrix links to at least one documented real-world case study or red-team exercise. This guide summarizes technique categories for teaching — for the actual incident write-ups (which are genuinely worth assigning as reading), send students to the case study library at atlas.mitre.org rather than relying on secondhand retellings.</span></div>
+
+    <section id="classroom">
+      <div class="section-head">
+        <span class="kicker">05 — In the classroom</span>
+        <h2>Classroom Uses</h2>
+        <p>Ways instructors have used this structure with students.</p>
+      </div>
+      <div class="card-grid">
+        <div class="info-card">
+          <h3>Attack-chain building exercise</h3>
+          <p>Give students an attacker goal (e.g., "steal a proprietary fraud-detection model") and have them select one technique per tactic that forms a plausible end-to-end chain.</p>
+        </div>
+        <div class="info-card">
+          <h3>ATT&amp;CK-to-ATLAS bridge</h3>
+          <p>For students who've studied ATT&CK already, have them identify which ATLAS tactics map directly to ATT&CK tactics they know, and which two are genuinely new.</p>
+        </div>
+        <div class="info-card">
+          <h3>Case study assignment</h3>
+          <p>Assign each student a real case study from the ATLAS library; have them present which tactics and techniques it demonstrated and what mitigation would have interrupted the chain.</p>
+        </div>
+        <div class="info-card">
+          <h3>Blue-team mapping</h3>
+          <p>Give students a described ML system's existing security controls and have them mark which ATLAS techniques those controls would and wouldn't catch — a gap-analysis exercise mirroring real SOC work.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="section-head">
+        <span class="kicker">06 — Go to the source</span>
+        <h2>Sources &amp; Further Reading</h2>
+        <p>This guide is a teaching summary. For anything graded, cite the live matrix and case studies directly.</p>
+      </div>
+      <div class="card-grid">
+        <div class="info-card">
+          <h3>MITRE ATLAS</h3>
+          <p>The live, interactive matrix, full technique catalog, and case study library.<br><code>atlas.mitre.org</code></p>
+        </div>
+        <div class="info-card">
+          <h3>MITRE ATT&amp;CK</h3>
+          <p>The parent framework ATLAS is structurally modeled on — useful background for understanding why ATLAS is organized the way it is.<br><code>attack.mitre.org</code></p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  <p>Built as a course companion summarizing MITRE ATLAS for classroom use. Tactic and technique descriptions are paraphrased and illustrative, written for instructional clarity rather than quoted verbatim from MITRE's published matrix. ATLAS is actively updated with new techniques and case studies — always verify current technique names, IDs, and case study details against atlas.mitre.org before using in graded work. Single-file HTML5, no external dependencies, safe to host on GitHub Pages.</p>
+</footer>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var themeBtn = document.getElementById('themeToggle');
+  var saved = localStorage.getItem('mitre-atlas-theme');
+  if(saved){ root.setAttribute('data-theme', saved); }
+  else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
+    root.setAttribute('data-theme','dark');
+  }
+  themeBtn.addEventListener('click', function(){
+    var current = root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    var next = current === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('mitre-atlas-theme', next);
+  });
+
+  var navToggle = document.getElementById('navToggle');
+  var sideNav = document.getElementById('sideNav');
+  navToggle.addEventListener('click', function(){
+    var open = sideNav.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  sideNav.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      sideNav.classList.remove('open');
+      navToggle.setAttribute('aria-expanded','false');
+    });
+  });
+
+  document.querySelectorAll('.tac-card').forEach(function(card){
+    var trigger = card.querySelector('.tac-trigger');
+    var panel = card.querySelector('.tac-panel');
+    trigger.addEventListener('click', function(){
+      var isOpen = card.getAttribute('data-open') === 'true';
+      var next = !isOpen;
+      card.setAttribute('data-open', next ? 'true' : 'false');
+      trigger.setAttribute('aria-expanded', next ? 'true' : 'false');
+      panel.style.maxHeight = next ? (panel.scrollHeight + 20) + 'px' : 0;
+    });
+  });
+
+  var navLinks = Array.from(document.querySelectorAll('nav.side a'));
+  var sections = navLinks.map(function(a){ return document.querySelector(a.getAttribute('href')); }).filter(Boolean);
+  function onScroll(){
+    var pos = window.scrollY + 110;
+    var current = sections[0];
+    sections.forEach(function(sec){ if(sec.offsetTop <= pos){ current = sec; } });
+    navLinks.forEach(function(a){
+      a.classList.toggle('active', current && a.getAttribute('href') === '#' + current.id);
+    });
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+})();
+</script>
+</body>
+</html>
