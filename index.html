@@ -228,6 +228,19 @@
   .lesson-time { font-size: .78rem; color: var(--c-text-soft); margin-bottom: .3rem; }
   .lesson-lo { font-size: .76rem; color: var(--c-text-soft); }
 
+  /* Lesson resource buttons (podcast + slide deck) */
+  .resource-row { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .5rem; }
+  .resource-btn {
+    display: inline-flex; align-items: center; gap: .3rem;
+    font-size: .72rem; font-weight: 600; text-decoration: none;
+    padding: .32rem .6rem; border-radius: 6px; border: 1px solid;
+    transition: filter .15s, background .15s;
+    white-space: nowrap;
+  }
+  .resource-btn:hover { filter: brightness(.92); }
+  .resource-btn.podcast { color: var(--c-gold); border-color: var(--c-gold); background: var(--c-gold-light); }
+  .resource-btn.slides { color: var(--c-blue); border-color: var(--c-blue); background: var(--c-blue-light); }
+
   /* Grading table */
   .grade-table { width: 100%; border-collapse: collapse; font-size: .88rem; margin: 1.2rem 0; }
   .grade-table th { background: var(--c-text); color: #fff; padding: .65rem .9rem; text-align: left; font-weight: 600; font-size: .82rem; }
@@ -445,6 +458,10 @@
           <div>
             <div class="lesson-time">⏱ 4 hrs · LO #1</div>
             <a class="lesson-link" href="lesson01.html">Open Lesson →</a>
+            <div class="resource-row">
+              <a class="resource-btn podcast" href="https://notebook.google.com/notebook/799f6d28-a9e9-4aa3-8e6f-81c69f836cba/artifact/a13b76e4-6f2a-47e7-bde0-6da80fc5623e?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast</a>
+              <a class="resource-btn slides" href="https://notebook.google.com/notebook/799f6d28-a9e9-4aa3-8e6f-81c69f836cba/artifact/f6076098-51de-48d0-8f95-2ef25a6d4f68?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">📊 Slides</a>
+            </div>
           </div>
         </div>
       </div>
@@ -464,12 +481,16 @@
             <span class="tag">OWASP LLM Top 10</span>
             <span class="tag">Framework Stack</span>
           </div>
-          <div class="action-col">
+        </div>
+        <div class="action-col">
           <span class="status-badge status-available">Now Available</span>
           <div>
-        </div>
             <div class="lesson-time">⏱ 4 hrs · LO #2</div>
             <a class="lesson-link" href="lesson02.html">Open Lesson →</a>
+            <div class="resource-row">
+              <a class="resource-btn podcast" href="https://notebook.google.com/notebook/f4de9afe-ef16-465b-a7d7-4ea8782aa659/artifact/30d77f8d-b816-40b8-a976-e476a562cd73?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast</a>
+              <a class="resource-btn slides" href="https://notebook.google.com/notebook/f4de9afe-ef16-465b-a7d7-4ea8782aa659/artifact/31a4584f-9fb8-4dc7-85dc-1a027a3518a8?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">📊 Slides</a>
+            </div>
           </div>
         </div>
       </div>
@@ -494,6 +515,10 @@
           <div>
             <div class="lesson-time">⏱ 4 hrs · LO #3</div>
             <a class="lesson-link" href="lesson03.html">Open Lesson →</a>
+            <div class="resource-row">
+              <a class="resource-btn podcast" href="https://notebook.google.com/notebook/ff1113da-27b3-4918-94de-7f3f114778bf/artifact/fc16820d-94f7-4bdc-adf3-1259022c5fc5?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast</a>
+              <a class="resource-btn slides" href="https://notebook.google.com/notebook/ff1113da-27b3-4918-94de-7f3f114778bf/artifact/00c723c8-82d0-48fd-8731-db9624607862?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">📊 Slides</a>
+            </div>
           </div>
         </div>
       </div>
@@ -525,6 +550,10 @@
           <div>
             <div class="lesson-time">⏱ 4 hrs · LO #3</div>
             <a class="lesson-link" href="lesson04.html">Open Lesson →</a>
+            <div class="resource-row">
+              <a class="resource-btn podcast" href="https://notebook.google.com/notebook/3e34e657-3b72-463e-bb99-94639bad3485/artifact/9b117879-cc11-4424-896c-43a701b6957a?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast</a>
+              <a class="resource-btn slides" href="https://notebook.google.com/notebook/3e34e657-3b72-463e-bb99-94639bad3485/artifact/5b78bf6c-fb91-44a3-8e74-1c50bf01d0c0?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">📊 Slides</a>
+            </div>
           </div>
         </div>
       </div>
@@ -550,6 +579,10 @@
           <div>
             <div class="lesson-time">⏱ 4 hrs · LO #4, #8</div>
             <a class="lesson-link" href="lesson05.html">Open Lesson →</a>
+            <div class="resource-row">
+              <a class="resource-btn podcast" href="https://notebook.google.com/notebook/3fe6bfcc-bc46-4336-97a1-da40e063d5c0/artifact/dd136d5f-54c6-455f-96fb-10c3605a4901?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast</a>
+              <a class="resource-btn slides" href="https://notebook.google.com/notebook/3fe6bfcc-bc46-4336-97a1-da40e063d5c0/artifact/8a247614-7f55-4637-8532-235f3664785c?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">📊 Slides</a>
+            </div>
           </div>
         </div>
       </div>
@@ -575,6 +608,10 @@
           <div>
             <div class="lesson-time">⏱ 4 hrs · LO #5, #6</div>
             <a class="lesson-link" href="lesson06.html">Open Lesson →</a>
+            <div class="resource-row">
+              <a class="resource-btn podcast" href="https://notebook.google.com/notebook/a7627c8d-ddc5-41b3-95ad-8cf73e6dbe91/artifact/f7290ebd-703e-4a62-bbd2-a8304b0b6518?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast</a>
+              <a class="resource-btn slides" href="https://notebook.google.com/notebook/a7627c8d-ddc5-41b3-95ad-8cf73e6dbe91/artifact/436c4665-a9f6-4f91-9519-5b8e379741f4?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">📊 Slides</a>
+            </div>
           </div>
         </div>
       </div>
@@ -606,6 +643,10 @@
           <div>
             <div class="lesson-time">⏱ 4 hrs · LO #10, #11</div>
             <a class="lesson-link" href="lesson07.html">Open Lesson →</a>
+            <div class="resource-row">
+              <a class="resource-btn podcast" href="https://notebook.google.com/notebook/49d18b68-006b-4a58-b9fb-7dd4cb79d59d/artifact/bbe70b23-d18c-41cf-9874-620e5e624deb?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast</a>
+              <a class="resource-btn slides" href="https://notebook.google.com/notebook/49d18b68-006b-4a58-b9fb-7dd4cb79d59d/artifact/c17c5e01-eaa7-43a9-a617-f5a0c96b2815?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">📊 Slides</a>
+            </div>
           </div>
         </div>
       </div>
@@ -631,6 +672,10 @@
           <div>
             <div class="lesson-time">⏱ 4 hrs · LO #11, #12</div>
             <a class="lesson-link" href="lesson08.html">Open Lesson →</a>
+            <div class="resource-row">
+              <a class="resource-btn podcast" href="https://notebook.google.com/notebook/b8db77ce-d7ec-4830-93c6-51a3c6220056/artifact/b1bbaf33-a076-4308-ad72-bb83d28277a3?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast</a>
+              <a class="resource-btn slides" href="https://notebook.google.com/notebook/b8db77ce-d7ec-4830-93c6-51a3c6220056/artifact/d9e4a6a6-8620-4281-85aa-c388f9309a6b?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">📊 Slides</a>
+            </div>
           </div>
         </div>
       </div>
@@ -656,6 +701,10 @@
           <div>
             <div class="lesson-time">⏱ 4 hrs · LO #12, #13</div>
             <a class="lesson-link" href="lesson09.html">Open Lesson →</a>
+            <div class="resource-row">
+              <a class="resource-btn podcast" href="https://notebook.google.com/notebook/a4c6d8a0-832f-47cb-8bb1-db40f2a9d655/artifact/104186bf-c25e-4919-b881-c919d7af02e8?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast</a>
+              <a class="resource-btn slides" href="https://notebook.google.com/notebook/a4c6d8a0-832f-47cb-8bb1-db40f2a9d655/artifact/3520ea4b-d011-44dd-9b90-02ea011d6335?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">📊 Slides</a>
+            </div>
           </div>
         </div>
       </div>
@@ -687,6 +736,10 @@
           <div>
             <div class="lesson-time">⏱ 4 hrs · LO #14, #15</div>
             <a class="lesson-link" href="lesson10.html">Open Lesson →</a>
+            <div class="resource-row">
+              <a class="resource-btn podcast" href="https://notebook.google.com/notebook/b9731694-c64b-454b-9491-3ca59f0193a8/artifact/478b5c94-9b5b-4544-9369-08cdd91c1b65?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast</a>
+              <a class="resource-btn slides" href="https://notebook.google.com/notebook/b9731694-c64b-454b-9491-3ca59f0193a8/artifact/9a8adbcd-ffe9-4c06-a240-617e9e2a4196?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">📊 Slides</a>
+            </div>
           </div>
         </div>
       </div>
@@ -713,6 +766,10 @@
           <div>
             <div class="lesson-time">⏱ 4 hrs · LO #13, #14</div>
             <a class="lesson-link" href="lesson11.html">Open Lesson →</a>
+            <div class="resource-row">
+              <a class="resource-btn podcast" href="https://notebook.google.com/notebook/ec0a83cf-5795-4618-8b52-15d9f69f8159/artifact/9d8cbfec-26b4-40db-82f9-a74854107002?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast</a>
+              <a class="resource-btn slides" href="https://notebook.google.com/notebook/ec0a83cf-5795-4618-8b52-15d9f69f8159/artifact/3dbc2603-5443-498c-bb8f-04eab987ce4f?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">📊 Slides</a>
+            </div>
           </div>
         </div>
       </div>
@@ -739,6 +796,10 @@
           <div>
             <div class="lesson-time">⏱ 4 hrs · LO #7, #8</div>
             <a class="lesson-link" href="lesson12.html">Open Lesson →</a>
+            <div class="resource-row">
+              <a class="resource-btn podcast" href="https://notebook.google.com/notebook/6229492f-7260-40a6-afa1-bfc072708a26/artifact/402b970e-260f-46a5-b565-e09224efda03?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast</a>
+              <a class="resource-btn slides" href="https://notebook.google.com/notebook/6229492f-7260-40a6-afa1-bfc072708a26/artifact/aa0f22d8-8719-4753-bc52-16e1f5fa0cc7?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">📊 Slides</a>
+            </div>
           </div>
         </div>
       </div>
@@ -771,6 +832,10 @@
           <div>
             <div class="lesson-time">⏱ 4 hrs · LO #9</div>
             <a class="lesson-link" href="lesson13.html">Open Lesson →</a>
+            <div class="resource-row">
+              <a class="resource-btn podcast" href="https://notebook.google.com/notebook/b3f5bfe5-62c3-4e47-9056-f61fb3f8e147/artifact/6b49fdfb-6db6-4792-8edd-f5977396c732?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast</a>
+              <a class="resource-btn slides" href="https://notebook.google.com/notebook/b3f5bfe5-62c3-4e47-9056-f61fb3f8e147/artifact/a45972ed-d9e2-4bdc-a903-5f462b1d92d9?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">📊 Slides</a>
+            </div>
           </div>
         </div>
       </div>
@@ -797,6 +862,10 @@
           <div>
             <div class="lesson-time">⏱ 4 hrs · LO #15, #16, #17</div>
             <a class="lesson-link" href="lesson14.html">Open Lesson →</a>
+            <div class="resource-row">
+              <a class="resource-btn podcast" href="https://notebook.google.com/notebook/c0cc578d-b969-495c-8e81-9b074518abd1/artifact/35ddeaf7-730c-434f-98ad-b34b70420445?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast</a>
+              <a class="resource-btn slides" href="https://notebook.google.com/notebook/c0cc578d-b969-495c-8e81-9b074518abd1/artifact/e12a68dd-29e4-486c-b28b-817bfc4cdacc?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">📊 Slides</a>
+            </div>
           </div>
         </div>
       </div>
@@ -823,6 +892,10 @@
           <div>
             <div class="lesson-time">⏱ 4 hrs · All LOs</div>
             <a class="lesson-link" href="lesson15.html">Open Lesson →</a>
+            <div class="resource-row">
+              <a class="resource-btn podcast" href="https://notebook.google.com/notebook/4d913da9-00ce-459b-b847-0451da596f8a/artifact/3c627bf7-9621-4174-89a5-de7038d53101?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">🎙 Podcast</a>
+              <a class="resource-btn slides" href="https://notebook.google.com/notebook/4d913da9-00ce-459b-b847-0451da596f8a/artifact/bdbd276a-8120-4102-99b8-97690d136e2d?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_" target="_blank" rel="noopener">📊 Slides</a>
+            </div>
           </div>
         </div>
       </div>
