@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instructional Activities Prompt Builder | AI Cyber Class</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal-950:#062a2c;
+    --teal-900:#0a3638;
+    --teal-800:#0f4547;
+    --teal-700:#14595c;
+    --cyan-400:#4fd8e0;
+    --cyan-300:#7fe6ec;
+    --amber-500:#e0a840;
+    --amber-400:#f0bf5f;
+    --ink:#0d1b1c;
+    --paper:#f6f4ee;
+    --paper-2:#eeebe1;
+    --line:#d8d3c4;
+    --text-1:#1a2b2c;
+    --text-2:#4a5657;
+    --radius:10px;
+    --shadow:0 2px 10px rgba(6,42,44,0.08);
+    --bg:var(--paper);
+    --bg-2:var(--paper-2);
+    --surface:#ffffff;
+    --fg:var(--text-1);
+    --fg-2:var(--text-2);
+    --border:var(--line);
+    --accent:var(--teal-800);
+    --accent-2:var(--cyan-400);
+  }
+  [data-theme="dark"]{
+    --bg:var(--teal-950);
+    --bg-2:var(--teal-900);
+    --surface:#0c3739;
+    --fg:#eef7f6;
+    --fg-2:#a9c6c5;
+    --border:#1c4c4e;
+    --accent:var(--cyan-400);
+    --accent-2:var(--amber-500);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--fg);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.5;
+    transition:background .25s ease, color .25s ease;
+  }
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+    color:var(--fg);
+  }
+  .mono{font-family:'IBM Plex Mono', monospace;}
+  a{color:var(--accent);}
+
+  header.top{
+    background:var(--teal-950);
+    color:#f2fbfb;
+    padding:22px 32px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:3px solid var(--cyan-400);
+  }
+  header.top .brand{display:flex; align-items:baseline; gap:14px;}
+  header.top .brand .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--cyan-300);
+  }
+  header.top h1{
+    font-size:21px;
+    margin:2px 0 0 0;
+    color:#f2fbfb;
+  }
+  header.top .version{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    background:rgba(79,216,224,0.15);
+    border:1px solid var(--cyan-400);
+    color:var(--cyan-300);
+    padding:3px 8px;
+    border-radius:20px;
+    margin-left:10px;
+  }
+  .theme-toggle{
+    background:transparent;
+    border:1px solid var(--cyan-400);
+    color:var(--cyan-300);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    padding:8px 14px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:background .2s;
+    flex-shrink:0;
+  }
+  .theme-toggle:hover{background:rgba(79,216,224,0.12);}
+
+  .subtitle-bar{
+    background:var(--bg-2);
+    border-bottom:1px solid var(--border);
+    padding:14px 32px;
+    font-size:14px;
+    color:var(--fg-2);
+  }
+
+  .layout{
+    display:grid;
+    grid-template-columns:minmax(360px, 1.05fr) 1fr;
+    gap:0;
+    align-items:start;
+  }
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr;}
+  }
+  .form-col{
+    padding:28px 32px 80px;
+    max-width:760px;
+  }
+  .output-col{
+    position:sticky;
+    top:0;
+    height:100vh;
+    overflow-y:auto;
+    background:var(--bg-2);
+    border-left:1px solid var(--border);
+    padding:28px 32px 60px;
+  }
+  @media (max-width:980px){
+    .output-col{position:static; height:auto;}
+  }
+
+  section.panel{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:20px 22px;
+    margin-bottom:20px;
+    box-shadow:var(--shadow);
+  }
+  section.panel .panel-head{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:14px;
+  }
+  .step-num{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    width:26px;height:26px;
+    border-radius:50%;
+    background:var(--accent);
+    color:var(--surface);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  [data-theme="dark"] .step-num{color:var(--teal-950);}
+  section.panel h2{
+    font-size:17px;
+    margin:0;
+  }
+  .field{margin-bottom:14px;}
+  .field label{
+    display:block;
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--fg-2);
+    margin-bottom:6px;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    font-family:'IBM Plex Mono', monospace;
+  }
+  select, input[type="text"], textarea{
+    width:100%;
+    padding:10px 12px;
+    border-radius:8px;
+    border:1px solid var(--border);
+    background:var(--bg);
+    color:var(--fg);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:14px;
+  }
+  select:focus, input:focus, textarea:focus{
+    outline:2px solid var(--accent-2);
+    outline-offset:1px;
+  }
+  select[multiple]{min-height:120px;}
+  .hint{font-size:12px; color:var(--fg-2); margin-top:4px;}
+
+  .chip-group{display:flex; flex-wrap:wrap; gap:8px;}
+  .chip{
+    border:1px solid var(--border);
+    background:var(--bg);
+    color:var(--fg);
+    padding:7px 12px;
+    border-radius:20px;
+    font-size:13px;
+    cursor:pointer;
+    user-select:none;
+    transition:all .15s;
+  }
+  .chip:hover{border-color:var(--accent-2);}
+  .chip.active{
+    background:var(--accent);
+    border-color:var(--accent);
+    color:var(--surface);
+  }
+  [data-theme="dark"] .chip.active{color:var(--teal-950);}
+
+  .radio-row{display:flex; flex-direction:column; gap:8px;}
+  .radio-opt{
+    display:flex; align-items:flex-start; gap:8px;
+    border:1px solid var(--border);
+    padding:9px 11px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:13.5px;
+  }
+  .radio-opt:hover{border-color:var(--accent-2);}
+  .radio-opt input{margin-top:3px;}
+  .radio-opt .opt-desc{color:var(--fg-2); font-size:12px; display:block; margin-top:2px;}
+
+  .toggle-row{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:8px 0;
+    border-bottom:1px solid var(--border);
+    font-size:13.5px;
+  }
+  .toggle-row:last-child{border-bottom:none;}
+  .switch{
+    position:relative; width:40px; height:22px; flex-shrink:0;
+  }
+  .switch input{opacity:0; width:0; height:0;}
+  .slider{
+    position:absolute; cursor:pointer; inset:0;
+    background:var(--border); border-radius:22px; transition:.2s;
+  }
+  .slider:before{
+    content:""; position:absolute; height:16px; width:16px; left:3px; top:3px;
+    background:var(--surface); border-radius:50%; transition:.2s;
+  }
+  .switch input:checked + .slider{background:var(--accent);}
+  .switch input:checked + .slider:before{transform:translateX(18px);}
+
+  .model-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  @media (max-width:520px){.model-grid{grid-template-columns:1fr;}}
+  .model-card{
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px;
+    cursor:pointer;
+    font-size:13px;
+  }
+  .model-card strong{display:block; font-family:'Fraunces',serif; font-size:15px; margin-bottom:2px;}
+  .model-card span{color:var(--fg-2); font-size:12px;}
+  .model-card.active{
+    border-color:var(--accent);
+    background:var(--bg-2);
+    box-shadow:0 0 0 1px var(--accent) inset;
+  }
+
+  .output-col h2{font-size:18px; margin:0 0 4px 0;}
+  .output-col .live-tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--accent-2);
+    display:inline-flex; align-items:center; gap:6px;
+    margin-bottom:14px;
+  }
+  .live-dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--accent-2);
+    display:inline-block;
+    animation:pulse 1.8s infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.35;}}
+
+  #promptOutput{
+    background:var(--ink);
+    color:#dff5f4;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.8px;
+    line-height:1.65;
+    padding:18px;
+    border-radius:10px;
+    white-space:pre-wrap;
+    word-break:break-word;
+    min-height:320px;
+    border:1px solid var(--teal-700);
+  }
+  [data-theme="dark"] #promptOutput{background:#041d1e;}
+
+  .action-row{display:flex; gap:10px; margin-top:14px; flex-wrap:wrap;}
+  .btn{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    padding:9px 16px;
+    border-radius:8px;
+    border:1px solid var(--border);
+    background:var(--surface);
+    color:var(--fg);
+    cursor:pointer;
+    transition:all .15s;
+  }
+  .btn:hover{border-color:var(--accent-2); color:var(--accent);}
+  .btn.primary{
+    background:var(--accent);
+    color:var(--surface);
+    border-color:var(--accent);
+  }
+  [data-theme="dark"] .btn.primary{color:var(--teal-950);}
+  .btn.primary:hover{opacity:0.9;}
+
+  .toast{
+    position:fixed; bottom:22px; right:22px;
+    background:var(--teal-950); color:#eafffe;
+    padding:10px 16px; border-radius:8px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    border:1px solid var(--cyan-400);
+    opacity:0; transform:translateY(10px);
+    transition:all .25s;
+    pointer-events:none;
+    z-index:50;
+  }
+  .toast.show{opacity:1; transform:translateY(0);}
+
+  @media print{
+    header, .output-col .action-row, .theme-toggle{display:none;}
+    body{background:#fff; color:#000;}
+    .layout{display:block;}
+  }
+  ::-webkit-scrollbar{width:10px;}
+  ::-webkit-scrollbar-thumb{background:var(--border); border-radius:6px;}
+</style>
+</head>
+<body data-theme="light">
+
+<header class="top">
+  <div class="brand">
+    <div>
+      <div class="eyebrow">AI Cyber Class · Educator Tooling</div>
+      <h1>Instructional Activities Prompt Builder<span class="version">v1.0</span></h1>
+    </div>
+  </div>
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">◐ Dark Mode</button>
+</header>
+<div class="subtitle-bar">A structured workbench for composing precise, model-aware prompts that produce classroom-ready instructional activities for the 15-day AI-103 AI Cybersecurity Foundations course.</div>
+
+<div class="layout">
+  <!-- FORM COLUMN -->
+  <div class="form-col">
+
+    <!-- 1. CONTENT -->
+    <section class="panel">
+      <div class="panel-head"><div class="step-num">1</div><h2>Content</h2></div>
+
+      <div class="field">
+        <label for="lesson">Topic / Lesson Title</label>
+        <select id="lesson"></select>
+      </div>
+
+      <div class="field">
+        <label for="subjectArea">Subject Area (module focus)</label>
+        <select id="subjectArea"></select>
+      </div>
+
+      <div class="field">
+        <label for="gradeLevel">Grade / Skill Level</label>
+        <select id="gradeLevel">
+          <option>Community College / Undergraduate</option>
+          <option>Graduate / Professional</option>
+          <option>Adult Workforce Training</option>
+          <option>Executive / Industry</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="objectives">Learning Objective(s) <span class="hint">— ctrl/cmd-click for multiple</span></label>
+        <select id="objectives" multiple></select>
+      </div>
+    </section>
+
+    <!-- 2. ACTIVITY TYPE -->
+    <section class="panel">
+      <div class="panel-head"><div class="step-num">2</div><h2>Activity Type</h2></div>
+      <div class="field" style="margin-bottom:0;">
+        <div class="radio-row" id="contentTypeGroup"></div>
+      </div>
+    </section>
+
+    <!-- 3. ACTIVITY PARAMETERS -->
+    <section class="panel">
+      <div class="panel-head"><div class="step-num">3</div><h2>Activity Parameters</h2></div>
+
+      <div class="field">
+        <label for="complexityLevel">Complexity Level</label>
+        <select id="complexityLevel">
+          <option>Low — introductory, guided</option>
+          <option>Low → Medium — light scaffolding</option>
+          <option selected>Medium — applied, some ambiguity</option>
+          <option>Medium → High — realistic, multi-step</option>
+          <option>High — open-ended, expert-level</option>
+        </select>
+        <div class="hint">Defaults to this activity type's typical complexity range — adjust as needed.</div>
+      </div>
+
+      <div class="field">
+        <label for="duration">Duration</label>
+        <select id="duration">
+          <option>Quick — 15–20 minutes</option>
+          <option selected>Standard — 30–45 minutes</option>
+          <option>Extended — 60–90 minutes</option>
+          <option>Multi-session / take-home</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Group Structure</label>
+        <div class="chip-group" id="groupStructure">
+          <div class="chip" data-val="Individual">Individual</div>
+          <div class="chip" data-val="Pairs">Pairs</div>
+          <div class="chip active" data-val="Small groups (3–4)">Small groups (3–4)</div>
+          <div class="chip" data-val="Whole class">Whole class</div>
+          <div class="chip" data-val="Flexible / instructor's choice">Flexible / instructor's choice</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="deliverable">Deliverable / Assessment Artifact</label>
+        <select id="deliverable">
+          <option>Written response or worksheet</option>
+          <option>Working build or artifact</option>
+          <option>Completed log / evidence writeup</option>
+          <option>Presentation or debrief</option>
+          <option>Scored challenge results / leaderboard</option>
+          <option>Reflection or transfer journal entry</option>
+          <option selected>Let model recommend best fit</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="materials">Materials / Tools Needed <span class="hint">— optional</span></label>
+        <input type="text" id="materials" placeholder="e.g., Kali VM, sample log files, Wireshark capture, AI chatbot access">
+      </div>
+    </section>
+
+    <!-- 4. VISUALS & FORMAT -->
+    <section class="panel">
+      <div class="panel-head"><div class="step-num">4</div><h2>Visuals &amp; Format</h2></div>
+
+      <div class="field">
+        <label for="visualStyle">Visual / Layout Style</label>
+        <select id="visualStyle">
+          <option>Clean editorial worksheet layout</option>
+          <option>Minimal line-art / icon-based</option>
+          <option>Editorial / textbook page</option>
+          <option>Cybersecurity / HUD aesthetic</option>
+          <option selected>Structured handout with callout boxes</option>
+          <option>Slide-ready visual summary</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="tone">Tone</label>
+        <select id="tone">
+          <option>Professional / formal</option>
+          <option>Friendly / approachable</option>
+          <option>Playful / engaging</option>
+          <option selected>Authoritative / technical</option>
+          <option>Calm / contemplative</option>
+          <option>High-energy / dynamic</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="colorScheme">Color Scheme</label>
+        <select id="colorScheme">
+          <option>Editorial neutrals (cream, ink, single accent)</option>
+          <option>Classic academic (navy, gold, white)</option>
+          <option selected>Cybersecurity (dark teal, cyan, amber)</option>
+          <option>Warm & approachable (terracotta, sand, sage)</option>
+          <option>Cool & analytical (slate blue, charcoal, white)</option>
+          <option>Vibrant primary (bold red, blue, yellow)</option>
+          <option>Pastel / soft</option>
+          <option>Monochrome grayscale</option>
+          <option>High-contrast black & white</option>
+          <option>Brand-neutral (let model choose)</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="density">Complexity / Density</label>
+        <select id="density">
+          <option>Minimal — single concept, sparse</option>
+          <option selected>Moderate — balanced detail</option>
+          <option>Rich — comprehensive reference</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Icon & Illustration Preference</label>
+        <div class="chip-group" id="iconPref">
+          <div class="chip" data-val="Icons only">Icons only</div>
+          <div class="chip active" data-val="Icons + illustrations">Icons + illustrations</div>
+          <div class="chip" data-val="Illustrations of people">Illustrations of people</div>
+          <div class="chip" data-val="Abstract shapes only">Abstract shapes only</div>
+          <div class="chip" data-val="Labeled diagrams">Labeled diagrams</div>
+          <div class="chip" data-val="Type only">Type only</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. OUTPUT SPECIFICATIONS -->
+    <section class="panel">
+      <div class="panel-head"><div class="step-num">5</div><h2>Output Specifications</h2></div>
+
+      <div class="field">
+        <label for="fileFormat">File Format</label>
+        <select id="fileFormat">
+          <option>PNG — screen &amp; presentation (transparency-capable)</option>
+          <option>JPG — photographs, smaller files</option>
+          <option>PDF — print, scalable text</option>
+          <option>SVG — scalable vector, editable</option>
+          <option selected>Let model recommend best format</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="resolution">Resolution</label>
+        <select id="resolution">
+          <option>300 DPI (print quality)</option>
+          <option selected>150 DPI (high-quality screen)</option>
+          <option>72 DPI (standard screen)</option>
+          <option>Vector — resolution-independent</option>
+        </select>
+      </div>
+
+      <div class="toggle-row">
+        <span>Transparent background</span>
+        <label class="switch"><input type="checkbox" id="transparentBg" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span>Include safe margins / bleed area</span>
+        <label class="switch"><input type="checkbox" id="safeMargins" checked><span class="slider"></span></label>
+      </div>
+    </section>
+
+    <!-- 5. PEDAGOGICAL / ADA CONSTRAINTS -->
+    <section class="panel">
+      <div class="panel-head"><div class="step-num">6</div><h2>Pedagogical Constraints</h2></div>
+
+      <div class="toggle-row">
+        <span>Include a debrief / reflection component</span>
+        <label class="switch"><input type="checkbox" id="c1" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span>Include a rubric or scoring criteria</span>
+        <label class="switch"><input type="checkbox" id="c2" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span>Enforce factual and technical accuracy</span>
+        <label class="switch"><input type="checkbox" id="c3" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span>Scaffold for varying skill levels (hints/extensions)</span>
+        <label class="switch"><input type="checkbox" id="c4" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span>Include facilitator / instructor notes</span>
+        <label class="switch"><input type="checkbox" id="c5" checked><span class="slider"></span></label>
+      </div>
+      <div class="toggle-row">
+        <span>Include responsible-use guardrails for any AI tools involved</span>
+        <label class="switch"><input type="checkbox" id="c6"><span class="slider"></span></label>
+      </div>
+    </section>
+
+    <!-- 6. TARGET MODEL -->
+    <section class="panel">
+      <div class="panel-head"><div class="step-num">7</div><h2>Target Model</h2></div>
+      <div class="model-grid" id="modelGrid">
+        <div class="model-card active" data-model="Claude"><strong>Claude</strong><span>Structured / Anthropic</span></div>
+        <div class="model-card" data-model="ChatGPT"><strong>ChatGPT</strong><span>Conversational / OpenAI</span></div>
+        <div class="model-card" data-model="Gemini"><strong>Gemini</strong><span>Multimodal / Google</span></div>
+        <div class="model-card" data-model="Perplexity"><strong>Perplexity</strong><span>Research-first</span></div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- OUTPUT COLUMN -->
+  <div class="output-col">
+    <h2>Generated Prompt</h2>
+    <div class="live-tag"><span class="live-dot"></span> Every selection reshapes the prompt in real time</div>
+    <div id="promptOutput" class="mono"></div>
+    <div class="action-row">
+      <button class="btn primary" id="copyBtn">⧉ Copy</button>
+      <button class="btn" id="downloadBtn">⬇ Download .TXT</button>
+      <button class="btn" id="resetBtn">↺ Reset</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ COURSE DATA (AI-103: AI Cybersecurity Foundations) ============ */
+const LESSONS = [
+  { day:1, title:"Day 1 – Expanding Cybersecurity Principles for AI",
+    modules:["CISM Domains","AAISM","Non-determinism","Data as Code","Prompts as Attack Surface"],
+    objectives:["LO#1: Explain why traditional cybersecurity principles alone are insufficient for AI-enabled enterprises and where AAISM extends them."] },
+  { day:2, title:"Day 2 – AI Governance Foundations & Framework Landscape",
+    modules:["NIST AI RMF","ISO 42001","EU AI Act","OWASP LLM Top 10","Framework Stack"],
+    objectives:["LO#2: Identify the major AI governance frameworks (NIST AI RMF, ISO/IEC 42001, EU AI Act) and how they interrelate."] },
+  { day:3, title:"Day 3 – NIST AI RMF in Depth: Govern & Map",
+    modules:["GOVERN 1–6","MAP 1–5","Charter Builder","MAP Worksheet Sorter Activity"],
+    objectives:["LO#3: Apply the four NIST AI RMF functions (Govern, Map, Measure, and Manage) to enterprise AI deployment."] },
+  { day:4, title:"Day 4 – NIST AI RMF: Measure & Manage",
+    modules:["MEASURE 1–4","MANAGE 1–4","Risk Register","Flip Cards","Decision Lab"],
+    objectives:["LO#3: Apply the four NIST AI RMF functions (Govern, Map, Measure, and Manage) to enterprise AI deployment."] },
+  { day:5, title:"Day 5 – EU AI Act Risk Tiers & Obligations",
+    modules:["Art. 5 Prohibited","Annex III High Risk","Articles 9–15","Provider vs Deployer","GPAI Models"],
+    objectives:["LO#4: Classify AI systems under the EU AI Act's four risk tiers and identify required obligations.","LO#8: Distinguish provider, deployer, and importer responsibilities under emerging AI regulation."] },
+  { day:6, title:"Day 6 – AI Risk Categories & Shadow AI",
+    modules:["Five Risk Categories","Three Forces","Shadow AI Detection","Block/Channel/Register","Checklist Audit"],
+    objectives:["LO#5: Differentiate AI risk categories: model risk, data risk, operational risk, ethical risk, and third-party risk.","LO#6: Recognize shadow AI patterns and apply appropriate governance responses."] },
+  { day:7, title:"Day 7 – AI as Target I: Threats, ATT&CK/ATLAS, & OWASP Landscape",
+    modules:["MITRE ATLAS v5.1","NIST AI 100-2","Attack Chain Builder","Threat Model Lab","OWASP Mapping"],
+    objectives:["LO#10: Describe the AI threat landscape and how it differs from traditional cyber threats.","LO#11: Identify and explain each of the OWASP Top 10 for LLM Applications (2025 edition)."] },
+  { day:8, title:"Day 8 – AI as Target II: OWASP Top 10 for LLMs Deep Dive",
+    modules:["LLM01–LLM10","Attack Lab","Case Study Match","Defense Builder","Flip Cards"],
+    objectives:["LO#11: Identify and explain each of the OWASP Top 10 for LLM Applications (2025 edition).","LO#12: Match real-world attack scenarios to OWASP threat categories."] },
+  { day:9, title:"Day 9 – AI as Target III: Attacks on Data & Models",
+    modules:["5 Poisoning Types","Backdoor Mechanics","4 Drift Types","MLOps Security","Defense Matrix"],
+    objectives:["LO#12: Match real-world attack scenarios to OWASP threat categories.","LO#13: Design a defense-in-depth architecture for an AI-enabled application."] },
+  { day:10, title:"Day 10 – AI as a Weapon: Deepfakes, Phishing & Influence Operations",
+    modules:["Deepfakes","AI Phishing","82.6% BEC & TOAD","Influence Ops","Detection Lab"],
+    objectives:["LO#14: Apply controls across the AI data lifecycle — provenance, lineage, AIBOM, and model cards.","LO#15: Plan and conduct AI red-team exercises appropriate to system risk."] },
+  { day:11, title:"Day 11 – Architecting Secure AI Systems & Lifecycle Controls",
+    modules:["Defense in Depth","AIBOM","Model Cards","Excessive Agency","Data Lifecycle"],
+    objectives:["LO#13: Design a defense-in-depth architecture for an AI-enabled application.","LO#14: Apply controls across the AI data lifecycle — provenance, lineage, AIBOM, and model cards."] },
+  { day:12, title:"Day 12 – Vendor & Supply Chain Risk for AI",
+    modules:["AI Value Chain","Vendor Assessment","EU AI Act Roles","Embedded AI Risk","Contract Clauses"],
+    objectives:["LO#7: Conduct vendor and supply-chain risk assessments for AI-enabled solutions.","LO#8: Distinguish provider, deployer, and importer responsibilities under emerging AI regulation."] },
+  { day:13, title:"Day 13 – AI Policies, AUPs & Governance Documents",
+    modules:["AI AUP Builder","Use Case Register","ISO 42001 Docs","IR Annex","Policy Gap Analysis"],
+    objectives:["LO#9: Develop an enterprise AI acceptable use policy that holds up under audit."] },
+  { day:14, title:"Day 14 – AI Incident Response, Red Teaming & Tabletops",
+    modules:["NIST SP 800-61r3","AI Red Teaming","Tabletop Exercise","Deepfake TTX","Lessons Learned"],
+    objectives:["LO#15: Plan and conduct AI red-team exercises appropriate to system risk.","LO#16: Adapt the NIST SP 800-61 incident response lifecycle for AI-specific incidents.","LO#17: Execute a tabletop exercise for deepfake-enabled fraud, prompt injection, and model poisoning."] },
+  { day:15, title:"Day 15 – Synthesis & Final Capstone Presentations",
+    modules:["All 18 Objectives","Trustworthiness","Capstone Pack","Peer Review","Final Quiz"],
+    objectives:["All Course LOs (course-wide synthesis)","LO#18: Document lessons learned to strengthen governance.","LO#19: Apply shared-responsibility models across the AI stack.","LO#20: Design AI evaluation plans for trustworthiness and reliability."] }
+];
+
+const CONTENT_TYPES = [
+  { name:"Hands-On Technical Labs", goal:"Perform technical procedures", complexity:"Low → High",
+    desc:"Structured, sequential exercises where students execute real technical procedures (commands, configurations, tool usage) in a live or simulated environment to build procedural fluency.",
+    guidance:"Provide clear numbered steps with an expected outcome or checkpoint after each one, list required tools/environment up front, and include a brief troubleshooting note for common errors. Scale step granularity to the specified complexity level." },
+  { name:"Scenario-Based Challenges", goal:"Apply knowledge to realistic situations", complexity:"Medium → High",
+    desc:"Realistic workplace or operational situations that require students to apply course concepts to make a judgment call, not just recall facts.",
+    guidance:"Open with a short, realistic scenario framing (role, stakes, constraints), then pose 2–4 decision points or questions requiring applied reasoning. Avoid single 'correct' answers where real-world judgment is expected; require students to justify their choice." },
+  { name:"Troubleshooting & Diagnostic Activities", goal:"Find and correct problems", complexity:"Medium → High",
+    desc:"Activities that present a broken, misconfigured, or compromised system or artifact and ask students to diagnose the root cause and propose or apply a fix.",
+    guidance:"Describe the observable symptoms first, then require students to work backward to root cause using a structured diagnostic method (isolate, test, confirm). Include a hint ladder for scaffolding and a model diagnostic path in the facilitator notes." },
+  { name:"Simulations & Virtual Environments", goal:"Operate systems in realistic conditions", complexity:"Medium → High",
+    desc:"Extended, realistic operating environments (SOC simulation, sandboxed network, virtual lab) where students manage systems under near-real conditions over time.",
+    guidance:"Define the simulated environment, participant roles, starting conditions, and a timeline of injects or events. Specify what students must monitor, decide, or respond to at each stage, and how end-state success is measured." },
+  { name:"Case Studies & Incident Analysis", goal:"Analyze real-world events", complexity:"Medium",
+    desc:"Structured analysis of a real or realistic past incident, requiring students to examine what happened, why it happened, and what should change.",
+    guidance:"Present background, timeline, and key facts of the incident, then pose analytical questions covering root cause, decision points, and lessons learned. Ground the incident in verifiable reporting or a clearly-labeled realistic composite; avoid unverifiable specifics." },
+  { name:"Role-Playing & Tabletop Exercises", goal:"Make operational decisions", complexity:"Medium → High",
+    desc:"Facilitated exercises where students take on defined roles and make operational decisions in response to an unfolding scenario, often with injects.",
+    guidance:"Assign clear roles and objectives per participant or team, provide an initial situation brief, and outline 2–4 sequential injects that escalate the scenario. Include a facilitator script with rough timing and a debrief question set." },
+  { name:"Capture-the-Flag & Gamified Challenges", goal:"Solve technical security problems", complexity:"Medium → High",
+    desc:"Competitive or points-based technical challenges (flags, puzzles, scoring) that motivate applied problem-solving through game mechanics.",
+    guidance:"Define challenge categories, point values, and the flag/answer submission format. Provide 2–4 graduated challenges per category (easy to hard) with hints available at a point cost, and describe the scoring or leaderboard structure." },
+  { name:"Project/Build Activities", goal:"Design and create working solutions", complexity:"High",
+    desc:"Extended activities where students design, build, and deliver a working artifact (tool, policy, architecture, script) that demonstrates applied mastery.",
+    guidance:"Specify the deliverable, required components or features, milestones or checkpoints along the way, and evaluation criteria. Leave room for design choices rather than a single prescribed solution, and require a short justification write-up alongside the build." },
+  { name:"Investigation & Forensics Activities", goal:"Analyze evidence and reach conclusions", complexity:"High",
+    desc:"Evidence-based activities where students examine logs, artifacts, or data trails to reconstruct events and support a defensible conclusion.",
+    guidance:"Provide a bounded evidence set (logs, artifacts, metadata) and a central question to answer. Require students to cite specific evidence for each conclusion and document their reasoning or chain-of-custody trail." },
+  { name:"AI-Assisted Challenge Activities", goal:"Use and critically evaluate AI", complexity:"Medium → High",
+    desc:"Activities that require students to use an AI tool to complete part of a task, then critically evaluate the AI's output for accuracy, bias, hallucination, or security risk.",
+    guidance:"Specify the exact AI task students must perform, then require a structured critique of the output (accuracy check, source verification, risk flagging). Build in at least one deliberate AI failure mode students should be able to catch and explain." }
+];
+
+let state = {
+  contentType: "Hands-On Technical Labs",
+  iconPref: "Icons + illustrations",
+  groupStructure: "Small groups (3–4)",
+  targetModel: "Claude"
+};
+
+/* ============ POPULATE STATIC LISTS ============ */
+function populateLessons(){
+  const sel = document.getElementById('lesson');
+  sel.innerHTML = LESSONS.map(l => `<option value="${l.day}">${l.title}</option>`).join('');
+}
+
+function populateSubjectArea(){
+  const day = parseInt(document.getElementById('lesson').value, 10);
+  const lesson = LESSONS.find(l => l.day === day);
+  const sel = document.getElementById('subjectArea');
+  sel.innerHTML = lesson.modules.map(m => `<option>${m}</option>`).join('');
+}
+
+function populateObjectives(){
+  const day = parseInt(document.getElementById('lesson').value, 10);
+  const lesson = LESSONS.find(l => l.day === day);
+  const sel = document.getElementById('objectives');
+  sel.innerHTML = lesson.objectives.map(o => `<option selected>${o}</option>`).join('');
+}
+
+function populateContentTypes(){
+  const group = document.getElementById('contentTypeGroup');
+  group.innerHTML = CONTENT_TYPES.map(g => `
+    <label class="radio-opt">
+      <input type="radio" name="contentType" value="${g.name}" ${g.name===state.contentType?'checked':''}>
+      <span><strong>${g.name}</strong> — ${g.goal} <span class="hint mono" style="text-transform:none;">(typical complexity: ${g.complexity})</span><span class="opt-desc">${g.desc}</span></span>
+    </label>
+  `).join('');
+  group.querySelectorAll('input[name="contentType"]').forEach(r => {
+    r.addEventListener('change', e => {
+      state.contentType = e.target.value;
+      syncComplexityDefault();
+      renderPrompt();
+    });
+  });
+}
+
+function syncComplexityDefault(){
+  const aType = CONTENT_TYPES.find(g => g.name === state.contentType);
+  const map = {
+    "Low → High": "Medium — applied, some ambiguity",
+    "Medium → High": "Medium → High — realistic, multi-step",
+    "Medium": "Medium — applied, some ambiguity",
+    "High": "High — open-ended, expert-level"
+  };
+  const target = map[aType.complexity];
+  if (target) document.getElementById('complexityLevel').value = target;
+}
+
+/* ============ EVENT WIRING ============ */
+function wireEvents(){
+  document.getElementById('lesson').addEventListener('change', () => {
+    populateSubjectArea(); populateObjectives(); renderPrompt();
+  });
+  document.getElementById('subjectArea').addEventListener('change', renderPrompt);
+  document.getElementById('gradeLevel').addEventListener('change', renderPrompt);
+  document.getElementById('objectives').addEventListener('change', renderPrompt);
+
+  ['complexityLevel','duration','deliverable','materials'].forEach(id => {
+    document.getElementById(id).addEventListener(id === 'materials' ? 'input' : 'change', renderPrompt);
+  });
+
+  document.querySelectorAll('#groupStructure .chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('#groupStructure .chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      state.groupStructure = chip.dataset.val;
+      renderPrompt();
+    });
+  });
+
+  ['visualStyle','tone','colorScheme','density'].forEach(id => {
+    document.getElementById(id).addEventListener('change', renderPrompt);
+  });
+
+  document.querySelectorAll('#iconPref .chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('#iconPref .chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      state.iconPref = chip.dataset.val;
+      renderPrompt();
+    });
+  });
+
+  document.getElementById('fileFormat').addEventListener('change', renderPrompt);
+  document.getElementById('resolution').addEventListener('change', renderPrompt);
+  document.getElementById('transparentBg').addEventListener('change', renderPrompt);
+  document.getElementById('safeMargins').addEventListener('change', renderPrompt);
+
+  ['c1','c2','c3','c4','c5','c6'].forEach(id => {
+    document.getElementById(id).addEventListener('change', renderPrompt);
+  });
+
+  document.querySelectorAll('.model-card').forEach(card => {
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.model-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      state.targetModel = card.dataset.model;
+      renderPrompt();
+    });
+  });
+
+  document.getElementById('copyBtn').addEventListener('click', copyPrompt);
+  document.getElementById('downloadBtn').addEventListener('click', downloadPrompt);
+  document.getElementById('resetBtn').addEventListener('click', resetForm);
+  document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+}
+
+/* ============ PROMPT ASSEMBLY ============ */
+function collectValues(){
+  const day = parseInt(document.getElementById('lesson').value, 10);
+  const lesson = LESSONS.find(l => l.day === day);
+  const subjectArea = document.getElementById('subjectArea').value;
+  const gradeLevel = document.getElementById('gradeLevel').value;
+  const objectives = Array.from(document.getElementById('objectives').selectedOptions).map(o => o.value);
+
+  const complexityLevel = document.getElementById('complexityLevel').value;
+  const duration = document.getElementById('duration').value;
+  const deliverable = document.getElementById('deliverable').value;
+  const materials = document.getElementById('materials').value.trim();
+
+  const visualStyle = document.getElementById('visualStyle').value;
+  const tone = document.getElementById('tone').value;
+  const colorScheme = document.getElementById('colorScheme').value;
+  const density = document.getElementById('density').value;
+
+  const fileFormat = document.getElementById('fileFormat').value;
+  const resolution = document.getElementById('resolution').value;
+  const transparentBg = document.getElementById('transparentBg').checked;
+  const safeMargins = document.getElementById('safeMargins').checked;
+
+  const constraints = [];
+  if (document.getElementById('c1').checked) constraints.push("Include a debrief or reflection component");
+  if (document.getElementById('c2').checked) constraints.push("Include a rubric or scoring criteria");
+  if (document.getElementById('c3').checked) constraints.push("Enforce factual and technical accuracy");
+  if (document.getElementById('c4').checked) constraints.push("Scaffold for varying skill levels (hints/extensions)");
+  if (document.getElementById('c5').checked) constraints.push("Include facilitator / instructor notes");
+  if (document.getElementById('c6').checked) constraints.push("Include responsible-use guardrails for any AI tools involved");
+
+  return { lesson, subjectArea, gradeLevel, objectives, complexityLevel, duration, deliverable, materials,
+    visualStyle, tone, colorScheme, density,
+    fileFormat, resolution, transparentBg, safeMargins, constraints };
+}
+
+function buildPrompt(v){
+  const aType = CONTENT_TYPES.find(g => g.name === state.contentType);
+  const objectivesText = v.objectives.length ? v.objectives.join(' ') : lessonFallback(v.lesson);
+
+  const core = [
+    `Create a "${state.contentType}" instructional activity (${aType.desc}) for a ${v.gradeLevel} audience.`,
+    ``,
+    `LESSON CONTEXT`,
+    `- Topic / Lesson: ${v.lesson.title}`,
+    `- Subject Area / Module Focus: ${v.subjectArea}`,
+    `- Learning Objective(s): ${objectivesText}`,
+    ``,
+    `ACTIVITY IMPLEMENTATION GUIDANCE`,
+    `- Primary Learning Goal: ${aType.goal}`,
+    `- ${aType.guidance}`,
+    ``,
+    `ACTIVITY PARAMETERS`,
+    `- Complexity Level: ${v.complexityLevel} (typical range for this activity type: ${aType.complexity})`,
+    `- Duration: ${v.duration}`,
+    `- Group Structure: ${state.groupStructure}`,
+    `- Deliverable / Assessment Artifact: ${v.deliverable}`,
+    `- Materials / Tools Needed: ${v.materials || 'Let model recommend based on lesson context'}`,
+    ``,
+    `VISUAL & FORMAT DIRECTION`,
+    `- Style: ${v.visualStyle}`,
+    `- Tone: ${v.tone}`,
+    `- Color Scheme: ${v.colorScheme}`,
+    `- Complexity / Density: ${v.density}`,
+    `- Icon & Illustration Preference: ${state.iconPref}`,
+    ``,
+    `OUTPUT SPECIFICATIONS`,
+    `- File Format: ${v.fileFormat}`,
+    `- Resolution: ${v.resolution}`,
+    `- Transparent background: ${v.transparentBg ? 'Yes' : 'No'}`,
+    `- Safe margins / bleed area: ${v.safeMargins ? 'Include' : 'Not required'}`,
+    ``,
+    `PEDAGOGICAL & DESIGN CONSTRAINTS`,
+    v.constraints.length ? v.constraints.map(c => `- ${c}`).join('\n') : `- None specified`,
+  ].join('\n');
+
+  return wrapForModel(state.targetModel, core, v);
+}
+
+function lessonFallback(lesson){
+  return lesson.objectives[0] || "Reinforce the core concept of the selected lesson.";
+}
+
+function wrapForModel(model, core, v){
+  if (model === 'Claude'){
+    return [
+      `You are an instructional designer creating a hands-on learning activity for a cybersecurity course, not a lecture or a passive handout.`,
+      ``,
+      core,
+      ``,
+      `INSTRUCTIONS`,
+      `Think through what students will actually do, in order, and design the activity so each step builds toward the stated learning goal rather than just covering the topic. Produce a classroom-ready activity a community college instructor could facilitate directly — including student-facing instructions, any needed materials or setup, and a facilitator-side answer key or debrief guide where relevant. Return only the finished activity — no explanatory preamble.`
+    ].join('\n');
+  }
+  if (model === 'ChatGPT'){
+    return [
+      `Hi! I'd like you to design a learning activity for my cybersecurity class. Here's what I need:`,
+      ``,
+      core,
+      ``,
+      `Please make it engaging and easy to run in class or online, with clear student-facing instructions and a short facilitator note on how to introduce and debrief it. Feel free to suggest timing adjustments if the activity naturally needs more or less time.`
+    ].join('\n');
+  }
+  if (model === 'Gemini'){
+    return [
+      `Generate an instructional activity using the following specification. Treat the student-facing instructions, any supporting materials, and the facilitator/debrief guidance as equally weighted design considerations.`,
+      ``,
+      core,
+      ``,
+      `Optimize the output for both in-person facilitation and asynchronous/online delivery, and ensure instructions remain unambiguous without a live instructor present to clarify.`
+    ].join('\n');
+  }
+  // Perplexity — research-first
+  return [
+    `Research task: before designing this activity, verify the technical accuracy of the underlying concepts, tools, commands, or referenced frameworks against current, authoritative sources (NIST, OWASP, MITRE ATT&CK/ATLAS, vendor documentation, or peer-reviewed literature as applicable).`,
+    ``,
+    core,
+    ``,
+    `Once verified, produce the instructional activity described above, and list the sources used to confirm factual accuracy alongside the output.`
+  ].join('\n');
+}
+
+/* ============ RENDER ============ */
+function renderPrompt(){
+  const v = collectValues();
+  const text = buildPrompt(v);
+  document.getElementById('promptOutput').textContent = text;
+}
+
+/* ============ ACTIONS ============ */
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+function copyPrompt(){
+  const text = document.getElementById('promptOutput').textContent;
+  navigator.clipboard.writeText(text).then(() => showToast('Prompt copied to clipboard')).catch(() => showToast('Copy failed — select text manually'));
+}
+
+function downloadPrompt(){
+  const text = document.getElementById('promptOutput').textContent;
+  const blob = new Blob([text], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'instructional-activity-prompt.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('Downloaded .TXT');
+}
+
+function resetForm(){
+  document.getElementById('lesson').selectedIndex = 0;
+  populateSubjectArea();
+  populateObjectives();
+  document.getElementById('gradeLevel').selectedIndex = 0;
+  state.contentType = 'Hands-On Technical Labs';
+  populateContentTypes();
+  document.getElementById('complexityLevel').value = 'Medium — applied, some ambiguity';
+  syncComplexityDefault();
+  document.getElementById('duration').value = 'Standard — 30–45 minutes';
+  state.groupStructure = 'Small groups (3–4)';
+  document.querySelectorAll('#groupStructure .chip').forEach(c => c.classList.toggle('active', c.dataset.val === state.groupStructure));
+  document.getElementById('deliverable').value = 'Let model recommend best fit';
+  document.getElementById('materials').value = '';
+  document.getElementById('visualStyle').value = 'Structured handout with callout boxes';
+  document.getElementById('tone').value = 'Authoritative / technical';
+  document.getElementById('colorScheme').value = 'Cybersecurity (dark teal, cyan, amber)';
+  document.getElementById('density').value = 'Moderate — balanced detail';
+  state.iconPref = 'Icons + illustrations';
+  document.querySelectorAll('#iconPref .chip').forEach(c => c.classList.toggle('active', c.dataset.val === state.iconPref));
+  document.getElementById('fileFormat').selectedIndex = 4;
+  document.getElementById('resolution').selectedIndex = 1;
+  document.getElementById('transparentBg').checked = true;
+  document.getElementById('safeMargins').checked = true;
+  ['c1','c2','c3','c4','c5'].forEach(id => document.getElementById(id).checked = true);
+  document.getElementById('c6').checked = false;
+  state.targetModel = 'Claude';
+  document.querySelectorAll('.model-card').forEach(c => c.classList.toggle('active', c.dataset.model === 'Claude'));
+  renderPrompt();
+  showToast('Form reset');
+}
+
+/* ============ THEME (persisted) ============ */
+function toggleTheme(){
+  const body = document.body;
+  const isDark = body.getAttribute('data-theme') === 'dark';
+  body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('themeToggle').textContent = isDark ? '◐ Dark Mode' : '☀ Light Mode';
+  localStorage.setItem('iapb-theme', isDark ? 'light' : 'dark');
+}
+function initTheme(){
+  const saved = localStorage.getItem('iapb-theme');
+  if (saved === 'dark'){
+    document.body.setAttribute('data-theme', 'dark');
+    document.getElementById('themeToggle').textContent = '☀ Light Mode';
+  }
+}
+
+/* ============ INIT ============ */
+function init(){
+  populateLessons();
+  populateSubjectArea();
+  populateObjectives();
+  populateContentTypes();
+  wireEvents();
+  initTheme();
+  renderPrompt();
+}
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
